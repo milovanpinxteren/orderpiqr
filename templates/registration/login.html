@@ -1,15 +1,10 @@
 {% load i18n %}
 {% load static %}
-{#{% get_current_language as CURRENT_LANG %}#}
-{#{% get_available_languages as LANGUAGES %}#}
-{#{% get_language_info_list for LANGUAGES as languages %}#}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/login/login_desktop.css' %}"/>
-{#    <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/components/footer.css' %}"/>#}
-{#    <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/components/language_picker.css' %}"/>#}
+    <link rel="stylesheet" type="text/css" href="{% static 'orderpiqrApp/stylesheets/login.css' %}"/>
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
     <title>{% trans 'login' %}</title>
 </head>
@@ -17,14 +12,12 @@
 <div class="page-container">
     <div class="form-div">
         <form class="login-form form_main" role="form" method="POST">
-            <p class="heading">Kerstdiner Login</p>
-            <h4 style="z-index: 1000">{{ message }}</h4>
+            <p class="heading">Orderpiqr Login</p>
             {% csrf_token %}
             <div class="login-form-contents">
                 {{ form.as_p }}
             </div>
             <button class="login-button" role="button">Login</button>
-{#            <a class="forgotLink" href="{% url 'show_change_password_page' %}">Wijzig Wachtwoord</a>#}
         </form>
     </div>
 </div>

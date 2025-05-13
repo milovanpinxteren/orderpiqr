@@ -1,0 +1,142 @@
+/* Basic layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f9;
+}
+
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Camera Scanner */
+.camera-container {
+    width: 100%;
+    height: 50%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.scanner {
+    width: 90%;
+    max-width: 600px;
+    height: 100%;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+/* Toggle Button */
+.btn-toggle {
+    padding: 10px 20px;
+    margin-top: 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-toggle:hover {
+    background-color: #218838;
+}
+
+.btn-toggle:active {
+    background-color: #1e7e34;
+}
+
+/* Scanned list */
+.scanned-list-container {
+    width: 100%;
+    max-width: 800px;
+    overflow-x: auto;
+    margin-top: 30px;
+}
+
+.scanned-list {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    background-color: #fff;
+}
+
+.scanned-list th, .scanned-list td {
+    padding: 12px 20px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.scanned-list th {
+    background-color: #007bff;
+    color: white;
+}
+
+.scanned-list tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.scanned-list tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Notifications */
+.notification-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999;
+    width: auto;
+}
+
+.notification {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.notification.error {
+    background-color: #dc3545;
+}
+
+.notification.show {
+    opacity: 1;
+    transition: opacity 1s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .scanner {
+        width: 100%;
+    }
+
+    .scanned-list-container {
+        margin-top: 20px;
+    }
+}
