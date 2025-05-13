@@ -1,10 +1,249 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'orderpiqrApp/stylesheets/camera_page.css' %}">
+    <title>Order Picking QR & Barcode Scanner</title>
 </head>
 <body>
-<h1>index</h1>
+    <div class="header">
+        <h1>Order Picking Scanner</h1>
+        <button id="toggle-order-btn" class="btn-toggle">Toggle Order Importance</button>
+    </div>
+
+    <div class="container">
+        <div id="camera-container" class="camera-container">
+            <div id="reader" class="scanner"></div>
+        </div>
+
+        <div id="scanned-list-container" class="scanned-list-container">
+            <table id="scanned-list" class="scanned-list">
+                <thead>
+                    <tr>
+                        <th>Product Code</th>
+                        <th>Product Name</th>
+                        <th>Pick Order</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="notification-container" class="notification-container"></div>
+
+
+<!-- Ensure the script is loaded here -->
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+<script>
+    const toggleButton = document.getElementById('toggle-order-btn');
+
+    // Add an event listener for the button click
+    toggleButton.addEventListener('click', function () {
+        toggleOrderImportance();
+
+        // Update the button text and style based on the current state
+        if (isOrderImportant) {
+            toggleButton.textContent = "Order Importance: Enabled";
+            toggleButton.style.backgroundColor = "#28a745";  // Green for enabled
+        } else {
+            toggleButton.textContent = "Order Importance: Disabled";
+            toggleButton.style.backgroundColor = "#dc3545";  // Red for disabled
+        }
+
+        console.log("Order importance toggled:", isOrderImportant ? "On" : "Off");
+    });
+
+    const productData = {
+        {% for product in productinfo %}
+            "{{ product.productID }}": {
+                "picknaam": "{{ product.picknaam }}",
+                "pickvolgorde": "{{ product.pickvolgorde }}"
+            },
+        {% endfor %}
+    };
+    console.log('productData: ', productData)
+    let isOrderImportant = false;  // Flag to track if order matters
+
+    // Make sure this code comes after the script tag above
+    let scannedCodes = []; // Array to store scanned codes
+    let currentPicklist = []; // Array to store the current picklist
+
+    function toggleOrderImportance() {
+        isOrderImportant = !isOrderImportant;
+    }
+
+    // Initialize the QR code and barcode scanner
+    const qrCodeScanner = new Html5QrcodeScanner("reader", {
+        fps: 10,  // Frames per second
+        qrbox: 250,  // Size of the scanning area
+        readers: ["qr_code_reader", "ean_reader", "upc_reader", "code_128_reader"]
+    });
+
+    // Render the scanner and handle scanned QR codes or barcodes
+    qrCodeScanner.render((scanResult) => {
+        const scannedCode = scanResult;
+        if (isPicklist(scannedCode)) {
+            handlePicklist(scannedCode);
+        } else {
+            handleProductCode(scannedCode);
+        }
+    });
+
+    function isPicklist(code) {
+        // A simple way to detect a picklist (can be expanded based on your needs)
+        return code.includes("\t") || code.includes(",") || code.includes(";");
+    }
+
+    function handlePicklist(code) {
+        const confirmStart = confirm("New list found, start this list?");
+        if (confirmStart) {
+            currentPicklist = [];
+            const rows = code.split("\n");  // Assuming the picklist is a multi-line string
+            rows.forEach(row => {
+                const parts = parsePicklistRow(row);
+                if (parts) {
+                    const [quantity, productCode] = parts;
+                    for (let i = 0; i < quantity; i++) {
+                        currentPicklist.push(productCode);  // Add product code multiple times based on quantity
+                    }
+                }
+            });
+            updateScannedList();
+        }
+    }
+
+    // Parse a picklist row to get quantity and product code
+    function parsePicklistRow(row) {
+        const separators = ['\t', ',', ';'];  // Define possible separators
+        for (const separator of separators) {
+            const parts = row.split(separator);
+            if (parts.length === 2) {
+                const quantity = parseInt(parts[0].trim(), 10);
+                const productCode = parts[1].trim();
+                if (!isNaN(quantity)) {
+                    return [quantity, productCode];
+                }
+            }
+        }
+        return null;  // If row can't be parsed, return null
+    }
+
+    // Example validation logic
+    function isValidCode(code) {
+        // In real use, replace this with actual validation (e.g., check if the product exists)
+        return code.startsWith("validProduct"); // Replace with your validation criteria
+    }
+
+    function updateScannedList() {
+        const listBody = document.getElementById('scanned-list').getElementsByTagName('tbody')[0];
+        listBody.innerHTML = '';  // Clear previous list
+        currentPicklist.forEach((code, index) => {
+            const product = productData[code];
+            if (product) {
+                const row = document.createElement('tr');
+                row.classList.add(index % 2 === 0 ? 'even' : 'odd');
+                row.innerHTML = `
+                        <td>${code}</td>
+                        <td>${product.picknaam}</td>
+                        <td>${product.pickvolgorde}</td>
+                    `;
+                listBody.appendChild(row);
+            }
+        });
+    }
+
+    function handleProductCode(code) {
+        if (isOrderImportant) {
+            const firstProductCode = currentPicklist[0];
+            if (code === firstProductCode) {
+                // Valid scan, remove the first product from the list
+                currentPicklist.splice(0, 1);
+                updateScannedList();
+                console.log("First product scanned:", code);
+                showNotification(`Scanned ${productData[code].picknaam}`);  // Show notification with product name
+
+
+            } else {
+                console.log("Please scan the first product in the list:", firstProductCode);
+                showNotification("Incorrect scan, please try again.", true);  // Show red notification
+
+            }
+        } else {
+            // If order doesn't matter, simply remove the product if it exists
+            const index = currentPicklist.indexOf(code);
+            if (index !== -1) {
+                currentPicklist.splice(index, 1);
+                updateScannedList();
+                {#setFeedback('green');  // Correct scan, turn screen green#}
+                showNotification(`Scanned ${productData[code].picknaam}`);  // Show notification with product name
+
+                console.log("Product code " + code + " removed from the list.");
+            } else {
+                console.log("Product code " + code + " not found in the list.");
+                showNotification("Incorrect scan, please try again.", true);  // Show red notification
+                {#setFeedback('red');  // Incorrect, turn screen red#}
+
+            }
+        }
+    }
+
+    function setFeedback(color) {
+        const container = document.querySelector('.container');  // Target the container element
+        container.style.transition = "background-color 0.5s ease";  // Smooth transition
+        if (color === 'green') {
+            container.style.backgroundColor = "#03ff3f";  // Green for correct
+            isFeedbackLocked = true;  // Lock feedback to prevent further changes
+            setTimeout(() => {
+                container.style.backgroundColor = "";  // Reset background to original
+                isFeedbackLocked = false;  // Unlock feedback after 2 seconds
+            }, 2000);
+        } else {
+            container.style.backgroundColor = "#dc3545";  // Red for incorrect
+            setTimeout(() => {
+                container.style.backgroundColor = "";  // Reset background to original
+            }, 1000);  // Keep red feedback for 1 second
+        }
+
+        // Reset to default background color after 1 second
+        setTimeout(() => {
+            container.style.backgroundColor = "";  // Reset background to original
+        }, 5000);  // 1 second delay
+    }
+
+    function showNotification(message, isError = false) {
+        const notificationContainer = document.getElementById('notification-container');
+
+        // Create a new notification element
+        const notification = document.createElement('div');
+        notification.classList.add('notification');
+        if (isError) {
+            notification.classList.add('error');
+        }
+
+        // Set the notification message
+        notification.textContent = message;
+
+        // Append the new notification to the container
+        notificationContainer.appendChild(notification);
+
+        // Fade in the notification
+        setTimeout(() => {
+            notification.style.opacity = 1;
+        }, 50);  // Small delay to allow visibility
+
+        // Remove the notification after 5 seconds
+        setTimeout(() => {
+            notification.style.opacity = 0;  // Fade out
+            setTimeout(() => {
+                notification.remove();  // Remove from DOM after fade-out
+            }, 300);  // Wait for fade-out before removing
+        }, 5000);  // Show for 5 seconds
+    }
+
+</script>
 </body>
 </html>
