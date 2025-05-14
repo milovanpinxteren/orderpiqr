@@ -73,19 +73,26 @@ TEMPLATES = [
 WSGI_APPLICATION = 'orderpiqr.wsgi.application'
 
 
+
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'orderpiqr_db',    # Replace with your created database name
+#         'USER': 'postgres',    # Replace with your PostgreSQL username (e.g., postgres)
+#         'PASSWORD': 'postgres',  # Replace with your password
+#         'HOST': 'localhost',             # Typically 'localhost' if it's on your machine
+#         'PORT': '5432',                  # Default PostgreSQL port
+#     }
+# }
+
+import dj_database_url
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'orderpiqr_db',    # Replace with your created database name
-        'USER': 'postgres',    # Replace with your PostgreSQL username (e.g., postgres)
-        'PASSWORD': 'postgres',  # Replace with your password
-        'HOST': 'localhost',             # Typically 'localhost' if it's on your machine
-        'PORT': '5432',                  # Default PostgreSQL port
-    }
+    'default': dj_database_url.config(default='postgres://localhost')
 }
+
 
 
 # Password validation
