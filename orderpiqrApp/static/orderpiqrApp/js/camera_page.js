@@ -9,7 +9,6 @@ import { updateScannedList } from './domUpdater.js';
 
 // Access the productData object injected into the HTML
 const productData = window.productData || {};  // Fallback in case the data is not injected
-
 let scannedCodes = []; // Array to store scanned codes
 let currentPicklist = []; // Array to store the current picklist
 
@@ -23,14 +22,28 @@ toggleButton.addEventListener('click', function () {
     console.log("Order importance toggled:", isOrderImportant ? "On" : "Off");
 });
 
+let isProcessingScan = false;  // Flag to ensure only one scan is processed at a time
+
 // Initialize the QR code scanner
 initializeScanner((scannedCode) => {
+    if (isProcessingScan) {
+        console.log("Scan already in process, ignoring duplicate scan.");
+        return;  // Exit if a scan is already being processed
+    }
+
+    // Set the flag to indicate that scanning is in progress
+    isProcessingScan = true;
+
     if (isPicklist(scannedCode)) {
-        handlePicklist(scannedCode, currentPicklist);
+        handlePicklist(scannedCode, currentPicklist, productData);
     } else {
         handleProductCode(scannedCode, currentPicklist, productData);
     }
+
+    // Reset the flag after processing the scan
+    isProcessingScan = false;
 });
+
 
 // Function to check if a scanned code is a picklist
 function isPicklist(code) {
@@ -39,12 +52,13 @@ function isPicklist(code) {
 
 // Function to handle scanned product codes
 function handleProductCode(code, currentPicklist, productData) {
+    console.log('productdata', productData)
     if (isOrderImportant) {
         const firstProductCode = currentPicklist[0];
         if (code === firstProductCode) {
             // Correct scan, remove the first product from the list
             currentPicklist.splice(0, 1);
-            updateScannedList(currentPicklist, productData); // Update the table
+            updateScannedList(currentPicklist, productData); // Update the table after removing the first product
             showNotification(`Scanned ${productData[code].picknaam}`); // Show success notification
         } else {
             // Incorrect scan, show error notification
@@ -55,13 +69,14 @@ function handleProductCode(code, currentPicklist, productData) {
         if (index !== -1) {
             // Valid scan, remove the product from the list
             currentPicklist.splice(index, 1);
-            updateScannedList(currentPicklist, productData);
+            updateScannedList(currentPicklist, productData);  // Update the table after a valid scan
             showNotification(`Scanned ${productData[code].picknaam}`);  // Show success notification
         } else {
             showNotification("Product code not found in the list.", true);  // Show error notification
         }
     }
 }
+
 
 // Fallback if the window.productData is not available
 if (Object.keys(productData).length === 0) {

@@ -22,6 +22,7 @@ class Product(models.Model):
     description = models.TextField()
     location = models.IntegerField()
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.description

@@ -8,32 +8,40 @@
     <title>Order Picking QR & Barcode Scanner</title>
 </head>
 <body>
-    <div class="header">
-        <h1>Order Picking Scanner</h1>
-        <button id="toggle-order-btn" class="btn-toggle">Toggle Order Importance</button>
+<div class="header">
+    <h1>Order Picking Scanner</h1>
+    <button id="toggle-order-btn" class="btn-toggle">Toggle Order Importance</button>
+</div>
+
+<div class="container">
+    <div id="camera-container" class="camera-container">
+        <div id="reader" class="scanner"></div>
     </div>
 
-    <div class="container">
-        <div id="camera-container" class="camera-container">
-            <div id="reader" class="scanner"></div>
-        </div>
-
-        <div id="scanned-list-container" class="scanned-list-container">
-            <table id="scanned-list" class="scanned-list">
-                <thead>
-                    <tr>
-                        <th>Product Code</th>
-                        <th>Product Name</th>
-                        <th>Pick Order</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+    <div id="scanned-list-container" class="scanned-list-container">
+        <table id="scanned-list" class="scanned-list">
+            <thead>
+            <tr>
+                <th>Product Code</th>
+                <th>Product Name</th>
+                <th>Pick Order</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
+</div>
 
-    <div id="notification-container" class="notification-container"></div>
+<div id="notification-container" class="notification-container"></div>
 
+<div id="product-data">{{ product_data }}</div>
+<script type="text/javascript">
+    console.log('parsing the data', document.getElementById("product-data").textContent)
+    const productData = JSON.parse(document.getElementById("product-data").textContent);
+    console.log('productdata in dom', productData);
+    window.productData = productData;
+
+</script>
 
 <!-- Ensure the script is loaded here -->
 <script src="{% static 'orderpiqrApp/js/qrScanner.js' %}" type="module"></script>
@@ -45,7 +53,6 @@
 <!-- The main camera_page.js should also be a module -->
 <script src="{% static 'orderpiqrApp/js/camera_page.js' %}" type="module"></script>
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
 
 
 </body>
