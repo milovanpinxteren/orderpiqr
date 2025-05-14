@@ -1,11 +1,11 @@
 // camera_page.js
 
 // Importing the necessary functions from the modular JS files
-import { initializeScanner } from './qrScanner.js';
-import { showNotification } from './notifications.js';
-import { toggleOrderImportance, updateOrderImportanceButton } from './orderImportance.js';
-import { handlePicklist } from './picklistHandler.js';
-import { updateScannedList } from './domUpdater.js';
+import {initializeScanner} from './qrScanner.js';
+import {showNotification} from './notifications.js';
+import {toggleOrderImportance, updateOrderImportanceButton} from './orderImportance.js';
+import {handlePicklist} from './picklistHandler.js';
+import {updateScannedList} from './domUpdater.js';
 
 // Access the productData object injected into the HTML
 const productData = window.productData || {};  // Fallback in case the data is not injected
@@ -14,7 +14,7 @@ let currentPicklist = []; // Array to store the current picklist
 
 // Toggle button for order importance
 const toggleButton = document.getElementById('toggle-order-btn');
-
+// let isOrderImportant = true
 // Event listener for toggling order importance
 toggleButton.addEventListener('click', function () {
     const isOrderImportant = toggleOrderImportance(); // Toggle the order importance state
@@ -35,13 +35,21 @@ initializeScanner((scannedCode) => {
     isProcessingScan = true;
 
     if (isPicklist(scannedCode)) {
-        handlePicklist(scannedCode, currentPicklist, productData);
+        currentPicklist = handlePicklist(scannedCode, currentPicklist, productData);
+        setTimeout(() => {
+            console.log('scan picklist done done')
+            isProcessingScan = false; // Reset the flag after the delay
+        }, 1000);
     } else {
-        handleProductCode(scannedCode, currentPicklist, productData);
+        console.log('handling product code')
+        handleProductCode(scannedCode, currentPicklist, productData, isOrderImportant);
+        setTimeout(() => {
+            console.log('handle done')
+            isProcessingScan = false; // Reset the flag after the delay
+        }, 1000);
     }
 
     // Reset the flag after processing the scan
-    isProcessingScan = false;
 });
 
 
@@ -51,29 +59,45 @@ function isPicklist(code) {
 }
 
 // Function to handle scanned product codes
-function handleProductCode(code, currentPicklist, productData) {
-    console.log('productdata', productData)
-    if (isOrderImportant) {
-        const firstProductCode = currentPicklist[0];
-        if (code === firstProductCode) {
-            // Correct scan, remove the first product from the list
-            currentPicklist.splice(0, 1);
-            updateScannedList(currentPicklist, productData); // Update the table after removing the first product
-            showNotification(`Scanned ${productData[code].picknaam}`); // Show success notification
+function handleProductCode(code, currentPicklist, productData, isOrderImportant) {
+    try {
+        console.log('handleProductCode', code)
+        console.log('isOrderImportant', isOrderImportant)
+        console.log('currentPicklist', currentPicklist)
+
+        if (isOrderImportant) {
+            const firstProductCode = currentPicklist[0];
+            console.log('firstProductCode', firstProductCode)
+
+            if (code === firstProductCode) {
+                // Correct scan, remove the first product from the list
+                currentPicklist.splice(0, 1);
+                console.log('correct code scanned', productData)
+                updateScannedList(currentPicklist, productData); // Update the table after removing the first product
+                const product = productData.find(item => item.code === firstProductCode);  // Match code in productData
+                showNotification(`Scanned ${product.description}`); // Show success notification
+                setTimeout(() => {
+                    isProcessingScan = false; // Allow scanning again after 1 second
+                }, "1000");
+
+            } else {
+                // Incorrect scan, show error notification
+                showNotification("Incorrect scan, please try again.", true);
+            }
         } else {
-            // Incorrect scan, show error notification
-            showNotification("Incorrect scan, please try again.", true);
+            const index = currentPicklist.indexOf(code);
+            console.log('index', index)
+            if (index !== -1) {
+                // Valid scan, remove the product from the list
+                currentPicklist.splice(index, 1);
+                updateScannedList(currentPicklist, productData);  // Update the table after a valid scan
+                showNotification(`Scanned ${productData[code].picknaam}`);  // Show success notification
+            } else {
+                showNotification("Product code not found in the list.", true);  // Show error notification
+            }
         }
-    } else {
-        const index = currentPicklist.indexOf(code);
-        if (index !== -1) {
-            // Valid scan, remove the product from the list
-            currentPicklist.splice(index, 1);
-            updateScannedList(currentPicklist, productData);  // Update the table after a valid scan
-            showNotification(`Scanned ${productData[code].picknaam}`);  // Show success notification
-        } else {
-            showNotification("Product code not found in the list.", true);  // Show error notification
-        }
+    } catch (error) {
+        console.error('Error in handleProductCode:', error);
     }
 }
 

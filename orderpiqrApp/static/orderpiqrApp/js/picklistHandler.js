@@ -49,22 +49,12 @@ export function handlePicklist(code, currentPicklist, productData) {
                 console.log("Skipping invalid row:", row);  // Debug invalid row
             }
         }
-        console.log('picklist after processing:', currentPicklist);  // Debugging log
-
-        console.log("Product Data Available:", productData);  // Debug this
         if (!productData || Object.keys(productData).length === 0) {
             console.log("Product data is empty, cannot update list.");
         } else {
-            console.log('update scanned list')
             updateScannedList(currentPicklist, productData);
-            showNotification(`Picklist ${code} added`);
+            showNotification(`Picklist added`);
         }
-
-
-        console.log('updating list');  // This will log even if some rows were invalid
-
-        // updateScannedList(currentPicklist, productData);  // This will update the table to show the picklist
-
 
         // If you need to save the orderID, you can handle it here separately later
         // const orderID = rows[0];  // First row is the orderID
@@ -77,6 +67,6 @@ export function handlePicklist(code, currentPicklist, productData) {
     }
 
     // Reset flag if the user cancels the picklist
-    // isProcessingPicklist = false;
+    isProcessingPicklist = false;
     return currentPicklist;  // Return the unchanged picklist if the user cancels
 }

@@ -2,12 +2,13 @@
 
 export function showNotification(message, isError = false) {
     const notificationContainer = document.getElementById('notification-container');
-
+    let timeout = 10000
     // Create a new notification element
     const notification = document.createElement('div');
     notification.classList.add('notification');
     if (isError) {
         notification.classList.add('error');
+        let timeout = 5000
     }
 
     // Set the notification message
@@ -26,6 +27,6 @@ export function showNotification(message, isError = false) {
         notification.classList.remove('show');
         setTimeout(() => {
             notification.remove();  // Remove from DOM after fade-out
-        }, 300);  // Wait for fade-out before removing
-    }, 5000);  // Show for 5 seconds
+        }, timeout);  // Wait for fade-out before removing
+    }, timeout);  // Show for 5 seconds
 }

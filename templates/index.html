@@ -34,13 +34,10 @@
 
 <div id="notification-container" class="notification-container"></div>
 
-<div id="product-data">{{ product_data }}</div>
+<div id="product-data" style="display: none;">{{ product_data }}</div>
 <script type="text/javascript">
-    console.log('parsing the data', document.getElementById("product-data").textContent)
     const productData = JSON.parse(document.getElementById("product-data").textContent);
-    console.log('productdata in dom', productData);
     window.productData = productData;
-
 </script>
 
 <!-- Ensure the script is loaded here -->
