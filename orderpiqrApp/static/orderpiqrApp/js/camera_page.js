@@ -14,10 +14,11 @@ let currentPicklist = []; // Array to store the current picklist
 
 // Toggle button for order importance
 const toggleButton = document.getElementById('toggle-order-btn');
-// let isOrderImportant = true
+let isOrderImportant = true
+
 // Event listener for toggling order importance
 toggleButton.addEventListener('click', function () {
-    const isOrderImportant = toggleOrderImportance(); // Toggle the order importance state
+    isOrderImportant = toggleOrderImportance(); // Toggle the order importance state
     updateOrderImportanceButton(toggleButton); // Update button appearance
     console.log("Order importance toggled:", isOrderImportant ? "On" : "Off");
 });
@@ -39,9 +40,14 @@ initializeScanner((scannedCode) => {
         setTimeout(() => {
             console.log('scan picklist done done')
             isProcessingScan = false; // Reset the flag after the delay
+
         }, 1000);
+        console.log('processing flag to false')
+
+        // isProcessingScan = false;
+
     } else {
-        console.log('handling product code')
+        console.log('handling product codeisProcessingScan, isOrderImportant', isProcessingScan, isOrderImportant)
         handleProductCode(scannedCode, currentPicklist, productData, isOrderImportant);
         setTimeout(() => {
             console.log('handle done')
@@ -61,14 +67,8 @@ function isPicklist(code) {
 // Function to handle scanned product codes
 function handleProductCode(code, currentPicklist, productData, isOrderImportant) {
     try {
-        console.log('handleProductCode', code)
-        console.log('isOrderImportant', isOrderImportant)
-        console.log('currentPicklist', currentPicklist)
-
         if (isOrderImportant) {
             const firstProductCode = currentPicklist[0];
-            console.log('firstProductCode', firstProductCode)
-
             if (code === firstProductCode) {
                 // Correct scan, remove the first product from the list
                 currentPicklist.splice(0, 1);
@@ -76,9 +76,9 @@ function handleProductCode(code, currentPicklist, productData, isOrderImportant)
                 updateScannedList(currentPicklist, productData); // Update the table after removing the first product
                 const product = productData.find(item => item.code === firstProductCode);  // Match code in productData
                 showNotification(`Scanned ${product.description}`); // Show success notification
-                setTimeout(() => {
-                    isProcessingScan = false; // Allow scanning again after 1 second
-                }, "1000");
+                // setTimeout(() => {
+                //     isProcessingScan = false; // Allow scanning again after 1 second
+                // }, "1000");
 
             } else {
                 // Incorrect scan, show error notification
@@ -86,7 +86,6 @@ function handleProductCode(code, currentPicklist, productData, isOrderImportant)
             }
         } else {
             const index = currentPicklist.indexOf(code);
-            console.log('index', index)
             if (index !== -1) {
                 // Valid scan, remove the product from the list
                 currentPicklist.splice(index, 1);
