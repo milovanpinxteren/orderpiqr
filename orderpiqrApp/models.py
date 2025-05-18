@@ -30,6 +30,7 @@ class Product(models.Model):
 class Device(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # Link Device to User
     device_id = models.AutoField(primary_key=True)
+    device_fingerprint = models.CharField(max_length=255, unique=True, null=True, blank=True)
     name = models.CharField(max_length=255)
     description = models.TextField()
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)

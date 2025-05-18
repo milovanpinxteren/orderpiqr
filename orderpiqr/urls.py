@@ -23,6 +23,7 @@ from orderpiqr.views import *
 urlpatterns = [
     path('', root_redirect, name='root_redirect'),  # Redirect to the appropriate page
     path('login/', custom_login, name='login'),
+    path('name-entry/', name_entry, name='name_entry'),  # Add this URL for name entry
 
     path('admin/', admin.site.urls),
     path('orderpiqr/', include('orderpiqrApp.urls')),

@@ -1,29 +1,20 @@
-{% load i18n %}
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{% static 'orderpiqrApp/stylesheets/login.css' %}"/>
-    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
-    <title>{% trans 'login' %}</title>
-    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.0.0/dist/fp.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Your Name</title>
+        <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.0.0/dist/fp.min.js"></script>
 
 </head>
 <body>
-<div class="page-container">
-    <div class="form-div">
-        <form id="login-form" class="login-form form_main" role="form" method="POST">
-            <p class="heading">Orderpiqr Login</p>
-            {% csrf_token %}
-            <div class="login-form-contents">
-                {{ form.as_p }}
-            </div>
-            <button class="login-button" role="button">Login</button>
-        </form>
-    </div>
-</div>
-
+    <h2>Enter Your Name</h2>
+    <form method="POST" id="name-form">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Submit</button>
+    </form>
 <script type="text/javascript">
     FingerprintJS.load().then(fingerprintJS => {
         fingerprintJS.get().then(result => {
@@ -31,7 +22,7 @@
             const deviceFingerprint = result.visitorId;
 
             // Add the fingerprint to the form before submission
-            const form = document.getElementById('login-form');
+            const form = document.getElementById('name-form');
             const fingerprintInput = document.createElement('input');
             fingerprintInput.type = 'hidden';
             fingerprintInput.name = 'device_fingerprint';  // The name of the hidden field
@@ -45,6 +36,5 @@
         });
     });
 </script>
-
 </body>
 </html>

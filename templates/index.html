@@ -9,8 +9,10 @@
 </head>
 <body>
 <div class="header">
-    <h1>Order Picking Scanner</h1>
+    <h1>Welcome {{ username }}</h1>
     <button id="toggle-order-btn" class="btn-toggle">Toggle Order Importance</button>
+        <a href="{% url 'login' %}" class="btn-login-link">Login</a>  <!-- Link to the login page -->
+
 </div>
 
 <div class="container">
