@@ -64,7 +64,7 @@ def name_entry(request):
             if device:
                print('device found, should not happen')
             else:
-                device = Device.objects.create(
+                Device.objects.create(
                     user=request.user,
                     device_fingerprint=device_fingerprint,
                     name=name,
