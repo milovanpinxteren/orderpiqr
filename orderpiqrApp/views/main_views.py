@@ -5,6 +5,7 @@ from orderpiqrApp.models import Product, Device
 
 def index(request):
     print('index main view')
+
     device_fingerprint = request.session.get('device_fingerprint')
     # device = Device.objects.first()
     device = Device.objects.filter(user=request.user, device_fingerprint=device_fingerprint).first()

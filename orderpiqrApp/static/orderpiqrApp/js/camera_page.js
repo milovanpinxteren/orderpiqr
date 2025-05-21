@@ -8,13 +8,12 @@ import {handlePicklist} from './picklistHandler.js';
 import {updateScannedList} from './domUpdater.js';
 
 // Access the productData object injected into the HTML
-const productData = window.productData || {};  // Fallback in case the data is not injected
-let scannedCodes = []; // Array to store scanned codes
-let currentPicklist = []; // Array to store the current picklist
+export let productData = window.productData || {};  // Fallback in case the data is not injected
+export let currentPicklist = []; // Array to store the current picklist
+export let isOrderImportant = true
 
 // Toggle button for order importance
 const toggleButton = document.getElementById('toggle-order-btn');
-let isOrderImportant = true
 
 // Event listener for toggling order importance
 toggleButton.addEventListener('click', function () {
@@ -65,14 +64,13 @@ function isPicklist(code) {
 }
 
 // Function to handle scanned product codes
-function handleProductCode(code, currentPicklist, productData, isOrderImportant) {
+export function handleProductCode(code, currentPicklist, productData, isOrderImportant) {
     try {
         if (isOrderImportant) {
             const firstProductCode = currentPicklist[0];
             if (code === firstProductCode) {
                 // Correct scan, remove the first product from the list
                 currentPicklist.splice(0, 1);
-                console.log('correct code scanned', productData)
                 updateScannedList(currentPicklist, productData); // Update the table after removing the first product
                 const product = productData.find(item => item.code === firstProductCode);  // Match code in productData
                 showNotification(`Scanned ${product.description}`); // Show success notification
