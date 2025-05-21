@@ -1,12 +1,113 @@
+import openpyxl
 from django.contrib import admin
 from django.contrib.auth.models import Group
+import csv
+
+from django.core.exceptions import ValidationError
 
 from orderpiqrApp.models import Product, UserProfile
+from django.contrib import messages
+from django import forms
 
+class ProductUploadForm(forms.Form):
+    upload_file = forms.FileField()
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('code', 'description', 'location', 'customer')  # Display relevant fields
     search_fields = ['code', 'description']
+    # actions = ['upload_file']  # Add the CSV upload action to the admin
+
+    def process_csv_file(self, file, customer):
+        """Process CSV file and create products"""
+        decoded_file = file.read().decode('utf-8').splitlines()
+        csv_reader = csv.reader(decoded_file)
+        header = next(csv_reader)  # Skip header row
+        header_mapping = {col.strip().lower(): index for index, col in enumerate(header)}
+
+        required_columns = ['code', 'description', 'location']
+        for column in required_columns:
+            if column not in header_mapping:
+                raise ValidationError(f'Missing required column: {column}')
+        added = 0
+        overwritten = 0
+        for row in csv_reader:
+            code = row[header_mapping['code']]
+            description = row[header_mapping['description']]
+            location = int(row[header_mapping['location']])
+            product, created = Product.objects.update_or_create(
+                code=code,
+                customer=customer,
+                defaults={'description': description, 'location': location, 'active': True}
+            )
+            if created:
+                added += 1
+            else:
+                overwritten += 1
+        return added, overwritten
+
+    def process_xlsx_file(self, file, customer):
+        """Process XLSX file and create products"""
+        wb = openpyxl.load_workbook(file)
+        sheet = wb.active
+        header = [cell.value.lower() for cell in sheet[1]]  # Assuming first row is header
+
+        required_columns = ['code', 'description', 'location']
+        for column in required_columns:
+            if column not in header:
+                raise ValidationError(f'Missing required column: {column}')
+        added = 0
+        overwritten = 0
+        for row in sheet.iter_rows(min_row=2, values_only=True):  # Skip header row
+            code, description, location = row[:3]
+            product, created = Product.objects.update_or_create(
+                code=code,
+                customer=customer,
+                defaults={'description': description, 'location': int(location), 'active': True}
+            )
+            if created:
+                added += 1
+            else:
+                overwritten += 1
+
+        return added, overwritten
+
+    def upload_file(self, request, queryset):
+        """Handle CSV and XLSX upload"""
+        if 'upload_file' in request.FILES:
+            file = request.FILES['upload_file']
+            try:
+                # Get customer for the current user
+                user_profile = UserProfile.objects.get(user=request.user)
+                customer = user_profile.customer
+
+                # Determine file type
+                if file.name.endswith('.csv'):
+                    added, overwritten = self.process_csv_file(file, customer)
+                elif file.name.endswith('.xlsx'):
+                    added, overwritten = self.process_xlsx_file(file, customer)
+                else:
+                    raise ValidationError("Unsupported file format, only .csv and .xlsx are supported")
+
+                messages.success(request, f'{added} products added, {overwritten} products overwritten.')
+            except Exception as e:
+                messages.error(request, f'Error processing file: {e}')
+        else:
+            messages.error(request, 'No file uploaded.')
+
+    upload_file.short_description = 'Upload CSV or XLSX File'
+
+    def changelist_view(self, request, extra_context=None):
+        """Override the changelist view to add the file upload form"""
+        extra_context = extra_context or {}
+        extra_context['product_upload_form'] = ProductUploadForm()
+        if request.method == 'POST' and 'upload_file' in request.FILES:
+            form = ProductUploadForm(request.POST, request.FILES)
+            if form.is_valid():
+                # Process the CSV file
+                self.upload_file(request, None)  # Call the upload_csv function
+            else:
+                messages.error(request, 'Invalid form submission.')
+        return super().changelist_view(request, extra_context=extra_context)
 
     def get_queryset(self, request):
         """Override queryset to filter by company"""
