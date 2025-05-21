@@ -6,13 +6,17 @@ body {
     background-color: #f4f6f9;
 }
 
-header {
-    background-color: #8fed8b;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
+.header {
+    display: flex; /* Align items on the same line */
+    align-items: center; /* Vertically align elements */
+    padding: 1%;
+    justify-content: space-between; /* Space between the two buttons */
+    /*font-size: 24px;*/
+    /*font-weight: bold;*/
+}
+
+h3  {
+    margin-top: 1%;
 }
 
 .container {
@@ -33,6 +37,39 @@ header {
     justify-content: center;
 }
 
+.btn-login-link {
+    margin-left: 1%; /* Push the button to the right */
+    color: #af4c5e;
+    /*font-size: 16px;*/
+    text-decoration: none;
+}
+
+/* Styling for the button */
+.btn-login {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.btn-login:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+
+.btn-login-link:hover {
+    text-decoration: underline;
+}
+
+header h3 {
+    margin-right: auto; /* Ensures the username stays on the left */
+}
+
+
 .scanner {
     width: 90%;
     max-width: 600px;
@@ -45,7 +82,8 @@ header {
 /* Toggle Button */
 .btn-toggle {
     padding: 10px 20px;
-    margin-top: 15px;
+    margin-top: 1%;
+    margin-right: 1%; /* Adjust margin if necessary */
     background-color: #28a745;
     color: white;
     border: none;
@@ -127,7 +165,7 @@ header {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
     .container {
         padding: 10px;
     }
@@ -142,30 +180,4 @@ header {
 }
 
 
-/* Styling for the button */
-.btn-login {
-    background-color: #4CAF50;  /* Green */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-left: 10px;
-}
 
-.btn-login:hover {
-    background-color: #45a049;  /* Darker green on hover */
-}
-
-/* Styling for the link */
-.btn-login-link {
-    color: #af4c5e;
-    font-size: 16px;
-    text-decoration: none;
-    margin-left: 10px;
-}
-
-.btn-login-link:hover {
-    text-decoration: underline;
-}
