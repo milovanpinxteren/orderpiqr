@@ -13,7 +13,7 @@ class DeviceAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return queryset
         if request.user.groups.filter(name='companyadmin').exists():
-            return queryset.filter(customer__user=request.user)  # Filter devices for the company of the logged-in user
+            return queryset.filter(customer=request.user.userprofile.customer)  # Filter devices for the company of the logged-in user
         return queryset.none()
 
 admin.site.register(Device, DeviceAdmin)

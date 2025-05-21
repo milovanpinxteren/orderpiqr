@@ -41,6 +41,7 @@ class Device(models.Model):
 
 class PickList(models.Model):
     picklist_id = models.AutoField(primary_key=True)
+    picklist_code = models.CharField(max_length=255, null=True, blank=True)
     device = models.ForeignKey(Device, on_delete=models.CASCADE)  # Link PickList to a Device
     pick_time = models.DateTimeField(auto_now_add=True)
     time_taken = models.DurationField()  # Total time taken for the full pick list

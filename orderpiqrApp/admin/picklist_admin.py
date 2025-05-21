@@ -18,7 +18,7 @@ class PickListAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return queryset
         if request.user.groups.filter(name='companyadmin').exists():
-            return queryset.filter(device__customer__user=request.user)  # Filter picklists by the company of the logged-in user
+            return queryset.filter(device__customer=request.user.userprofile.customer)  # Filter picklists by the company of the logged-in user
         return queryset.none()
 
 admin.site.register(PickList, PickListAdmin)
