@@ -119,14 +119,25 @@ class ProductAdmin(admin.ModelAdmin):
             return queryset.filter(customer=user_profile.customer)  # Only s # Assuming user is linked to customer
         return queryset.none()
 
-
     def save_model(self, request, obj, form, change):
-        """Automatically set customer for company admins."""
+        """Override save_model to handle validation for duplicate codes"""
         if request.user.groups.filter(name='companyadmin').exists():
             user_profile = UserProfile.objects.get(user=request.user)
-            obj.customer = user_profile.customer  # Assign the logged-in company's customer
-        super().save_model(request, obj, form, change)
+            obj.customer = user_profile.customer
+            if Product.objects.filter(code=obj.code, customer=obj.customer).exists():
+                form.add_error(None, f"A product with the code '{obj.code}' already exists for this customer.")
+                messages.error(request, f"A product with the code '{obj.code}' already exists, cannot add duplicate.")
+                return
+            else:
+                super().save_model(request, obj, form, change)
+                messages.success(request, f"The product '{obj.description}' was added successfully.")
 
+        else:
+            raise ValidationError('User is not allowed to save products.')
+
+    def message_user(self, request, message, level=messages.INFO, extra_tags='',
+                     fail_silently=False):
+        pass
 
     def get_readonly_fields(self, request, obj=None):
         """Make fields like customer read-only for companyadmin"""

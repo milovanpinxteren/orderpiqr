@@ -1,13 +1,65 @@
 {% extends 'admin/change_list.html' %}
 
 {% block content %}
-  <h2>Upload Products CSV</h2>
+    <div class="container">
+        <h2 class="page-title">Upload Product CSV/XLSX</h2>
+        <p class="instructions">
+            Please upload a CSV or XLSX file that includes the following columns:
+            <strong>code, description, location</strong>. Or manually add a product using the button at the top right of
+            the page.
+        </p>
 
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ product_upload_form.as_p }}
-    <button type="submit" class="button">Upload CSV</button>
-  </form>
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ product_upload_form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">Upload File</button>
+        </form>
 
-  {{ block.super }}
+        {{ block.super }}
+    </div>
+
+    <style>
+        .container {
+        {#margin: 20px;#} padding-left: 1%;
+        {#padding-left: 1%;#} background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .page-title {
+            font-size: 1.2em;
+        {#color: #333;#}{#margin-bottom: 10px;#}
+        }
+
+        .instructions {
+            font-size: 1em;
+        {#color: #555;#}{#margin-bottom: 20px;#}
+        }
+
+        .form-group {
+        {#margin-bottom: 15px;#}
+        }
+
+        .upload-form {
+            margin-bottom: 1%;
+            padding-bottom: 1%;
+
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #22e40c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #21b300;
+        }
+    </style>
 {% endblock %}

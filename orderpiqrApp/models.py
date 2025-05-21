@@ -25,12 +25,6 @@ class Product(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
 
-    def clean(self):
-        # Check for duplicate product codes for the same customer
-        if Product.objects.filter(code=self.code, customer=self.customer).exists():
-            raise ValidationError(f"A product with the code '{self.code}' already exists for this customer.")
-        super().clean()
-
     def __str__(self):
         return self.description
 
