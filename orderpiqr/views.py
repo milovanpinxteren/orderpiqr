@@ -31,6 +31,9 @@ def root_redirect(request):
 
 
 def custom_login(request):
+    is_demo = request.GET.get('demo', 'false') == 'true'
+
+
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -47,6 +50,16 @@ def custom_login(request):
                 return redirect('name_entry')  # Redirect to a name entry page
             return redirect('/')  # Redirect to root (or wherever you want after login)
     else:
+        if is_demo:
+            demo_username = 'orderpicker'
+            demo_password = 'yfiT328SPfaBaf8'
+            # demo_password = 'kerstdiner'
+            # Authenticate the demo user automatically
+            user = authenticate(request, username=demo_username, password=demo_password)
+            if user is not None:
+                login(request, user)  # Log the demo user in
+                return redirect('name_entry')  # Redirect to the name-entry page
+
         form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
 
