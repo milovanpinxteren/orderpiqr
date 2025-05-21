@@ -42,5 +42,10 @@ function handleManualOverride(code) {
     updateScannedList(currentPicklist, productData); // Update the table after removing the product
     const product = productData.find(item => item.code === code);  // Match code in productData
     // Show notification for the manual override
-    showNotification(`Manual override: ${product.description} confirmed`);
+    if (product) {
+            showNotification(`Manual override: ${product.description} confirmed`);
+    } else {
+                    showNotification(`Manual override: ${code} confirmed`);
+
+    }
 }

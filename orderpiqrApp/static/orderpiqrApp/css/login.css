@@ -41,7 +41,7 @@ body {
     background-color: #2f7e36;
     transform: rotate(45deg);
     left: -180px;
-    bottom: 30px;
+    /*bottom: 30px;*/
     z-index: 1;
     border-radius: 30px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.082);
@@ -90,4 +90,36 @@ body {
     text-decoration: none;
     padding: 8px 15px;
     border-radius: 20px;
+}
+
+
+@media (max-width: 1000px) {
+    .form-div {
+        margin-top: 25%;
+    }
+
+    .form_main {
+        min-width: 80%; /* Adjust the width to be bigger for mobile */
+        padding: 20px; /* Reduced padding for better fitting */
+    }
+
+    .heading {
+        font-size: 1.8em; /* Smaller heading for better mobile fit */
+    }
+
+    /*.login-form-contents {*/
+    /*    width: 100%; !* Ensure inputs take up full width *!*/
+    /*}*/
+    .login-form-contents input {
+        width: 100%; /* Make inputs full width */
+        padding: 15px; /* Increase input height */
+        font-size: 1.2em; /* Larger font size for better readability */
+    }
+
+    .login-button {
+        padding: 15px; /* Make button taller */
+        font-size: 1.5em; /* Larger button text */
+        border-radius: 5px;
+        width: 80%;
+    }
 }

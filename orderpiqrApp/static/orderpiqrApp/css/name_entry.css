@@ -1,0 +1,95 @@
+/* General Page Styling */
+body {
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+h2 {
+    color: #2f7e36;
+    font-size: 2em;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Form Styling */
+form {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    width: 100%;
+    margin: 20px;
+}
+
+label {
+    font-size: 1.1em;
+    color: #333333;
+    margin-bottom: 10px;
+    text-align: left;
+    /*width: 100%;*/
+    /*margin-left: 5%;*/
+}
+
+input[type="text"] {
+    width: 90%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    color: #333;
+}
+
+button[type="submit"] {
+    width: 90%;
+    padding: 12px;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: white;
+    background-color: #2f7e36;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #1f5c23;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1000px) {
+    body {
+        padding: 10px;
+        display: inline-block;
+    }
+
+    form {
+        max-width: 75%;
+    }
+
+    h2 {
+        font-size: 1.8em;
+    }
+
+    label {
+
+    }
+
+    input[type="text"], button[type="submit"] {
+        width: 100%;
+        font-size: 1.1em;
+        /*padding: 15px;*/
+    }
+}
