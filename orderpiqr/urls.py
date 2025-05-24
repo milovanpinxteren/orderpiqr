@@ -27,6 +27,5 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('orderpiqr/', include('orderpiqrApp.urls')),
-    path('orderpiqr/', include('orderpiqrApp.urls')),
 
 ]

@@ -32,8 +32,6 @@ def root_redirect(request):
 
 def custom_login(request):
     is_demo = request.GET.get('demo', 'false') == 'true'
-
-
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():

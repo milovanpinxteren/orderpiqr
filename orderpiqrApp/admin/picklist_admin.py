@@ -6,11 +6,13 @@ from orderpiqrApp.models import PickList, ProductPick
 class ProductPickInline(admin.TabularInline):
     model = ProductPick
     extra = 0  # No empty rows for adding new product picks
-    fields = ('product', 'quantity', 'time_taken', 'successful', 'notes')
+    fields = ('product', 'quantity', 'time_taken', 'successful')
 
 class PickListAdmin(admin.ModelAdmin):
     list_display = ('picklist_id', 'device', 'pick_time', 'time_taken', 'successful')
     search_fields = ['device__name', 'pick_time']
+    inlines = [ProductPickInline]  # Add ProductPickInline to the admin interface
+
 
     def get_queryset(self, request):
         """Override queryset to filter picklists by company"""

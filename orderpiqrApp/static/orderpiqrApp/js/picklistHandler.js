@@ -1,7 +1,9 @@
 // picklistHandler.js
 import {updateScannedList} from './domUpdater.js';
-//
+import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprint function
 import {showNotification} from './notifications.js';
+
+
 
 export function parsePicklistRow(row) {
     const separators = ['\t', ',', ';'];  // Define possible separators
@@ -57,8 +59,36 @@ export function handlePicklist(code, currentPicklist, productData) {
         }
 
         // If you need to save the orderID, you can handle it here separately later
-        // const orderID = rows[0];  // First row is the orderID
+        const orderID = rows[0];  // First row is the orderID
         // console.log('Order ID:', orderID);  // Debug this
+        getDeviceFingerprint()
+            .then(deviceFingerprint => {
+
+                console.log('csrfToken', csrfToken)
+                // Send the request with picklist and device fingerprint
+                fetch('/orderpiqr/scan-picklist', {  // Update the URL to your endpoint
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken  // Include CSRF token in the headers
+                    },
+                    body: JSON.stringify({
+                        orderID: orderID,
+                        picklist: currentPicklist,
+                        deviceFingerprint: deviceFingerprint,  // Add fingerprint to the request
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Picklist sent successfully:', data);
+                    })
+                    .catch(error => {
+                        console.error('Error sending picklist:', error);
+                    });
+            })
+            .catch(error => {
+                console.error('Error getting device fingerprint:', error);
+            });
 
         // Reset flag after processing the picklist
         isProcessingPicklist = false;

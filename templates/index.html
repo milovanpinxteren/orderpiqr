@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'orderpiqrApp/css/camera_page.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.0.0/dist/fp.min.js"></script>
+
     <title>Order Picking QR & Barcode Scanner</title>
 </head>
 <body>
@@ -14,7 +16,7 @@
 </div>
 
 <div class="container">
-        <h3>User: {{ username }}</h3>
+    <h3>User: {{ username }}</h3>
 
     <div id="camera-container" class="camera-container">
         <div id="reader" class="scanner"></div>
@@ -37,6 +39,11 @@
 <div id="notification-container" class="notification-container"></div>
 
 <div id="product-data" style="display: none;">{{ product_data }}</div>
+
+<script type="text/javascript">
+    var csrfToken = "{{ csrf_token }}";  // Render CSRF token into JavaScript
+    console.log("csrfTokencsrfToken", csrfToken);  // This will print the CSRF token to the console for debugging
+</script>
 <script type="text/javascript">
     const productData = JSON.parse(document.getElementById("product-data").textContent);
     window.productData = productData;

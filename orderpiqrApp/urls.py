@@ -17,9 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from orderpiqrApp.views import scan_picklist
 from orderpiqrApp.views.main_views import *
 
 urlpatterns = [
     path('', index, name='index'),
+    path('scan-picklist', scan_picklist, name='scan-picklist'),
+
 
 ]
