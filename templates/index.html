@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,12 +7,16 @@
     <link rel="stylesheet" href="{% static 'orderpiqrApp/css/camera_page.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.0.0/dist/fp.min.js"></script>
 
-    <title>Order Picking QR & Barcode Scanner</title>
+    <title>{% trans "Welcome to Orderpiqr!" %}</title>
+
 </head>
 <body>
 <div class="header">
-    <a href="{% url 'login' %}" class="btn-login-link">Log out</a>  <!-- Link to the login page -->
-    <button id="toggle-order-btn" class="btn-toggle">Order Importance: Enabled</button>
+    <a href="{% url 'login' %}" class="btn-login-link">Log out</a>
+    <div>
+        {% include 'partials/language_switcher.html' %}
+    </div>
+    <button id="toggle-order-btn" class="btn-toggle">{% trans "Order Importance" %}: {% trans "Enabled" %}</button>
 </div>
 
 <div class="container">

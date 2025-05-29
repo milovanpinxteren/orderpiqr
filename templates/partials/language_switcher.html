@@ -1,0 +1,61 @@
+{% load i18n %}
+<style>
+
+    .language-switcher-form {
+        display: inline-block;
+        margin: 0;
+    }
+
+    .language-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 8px;
+        color: #333;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .language-select:hover,
+    .language-select:focus {
+        border-color: #999;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    }
+
+    .language-select {
+        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='10' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 10px 6px;
+        padding-right: 30px; /* for arrow */
+    }
+
+    @media (max-width: 600px) {
+        .language-select {
+            font-size: 16px;
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+        }
+    }
+
+</style>
+
+<form action="{% url 'set_language' %}" method="post" class="language-switcher-form">
+    {% csrf_token %}
+    <select name="language" onchange="this.form.submit()" class="language-select">
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% for lang_code, lang_name in LANGUAGES %}
+            <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                {{ lang_name }}
+            </option>
+        {% endfor %}
+    </select>
+    <input type="hidden" name="next" value="{{ request.path }}">
+</form>

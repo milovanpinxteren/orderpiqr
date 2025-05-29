@@ -17,15 +17,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.conf.urls.i18n import i18n_patterns
 
 from orderpiqr.views import *
 
 urlpatterns = [
-    path('', root_redirect, name='root_redirect'),  # Redirect to the appropriate page
+    path('i18n/', include('django.conf.urls.i18n')),  # Enables the language switcher post endpoint
+
+    # path('', root_redirect, name='root_redirect'),  # Redirect to the appropriate page
     path('login/', custom_login, name='login'),
     path('name-entry/', name_entry, name='name_entry'),  # Add this URL for name entry
-
-    path('admin/', admin.site.urls),
-    path('orderpiqr/', include('orderpiqrApp.urls')),
+    # path('admin/', admin.site.urls),
+    # path('orderpiqr/', include('orderpiqrApp.urls')),
 
 ]
+
+urlpatterns += i18n_patterns(
+    path('admin/', admin.site.urls),
+    path('', root_redirect, name='root_redirect'),
+    path('orderpiqr/', include('orderpiqrApp.urls')),
+)

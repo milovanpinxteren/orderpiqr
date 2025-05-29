@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-p-75o+wln8vp7kf^2!8un_!_&p9_-^e4%m01-pu0^jd69$q)xz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = ['.herokuapp.com', 'localhost']
 
 LOGIN_URL = '/login/'  # Adjust this URL to match your login view or URL pattern
 LOGIN_REDIRECT_URL = '/'  # You can set this to any page you'd like as a fallback
@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 
 ]
 
@@ -90,10 +91,28 @@ WSGI_APPLICATION = 'orderpiqr.wsgi.application'
 #     }
 # }
 
+
+
+import environ
+
+env = environ.Env()
+environ.Env.read_env()  # Read environment variables from the .env file
+
+import os
 import dj_database_url
+
 DATABASES = {
-    'default': dj_database_url.config(default='postgres://localhost')
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL', 'postgres://localhost/orderpiqr_db')
+    )
 }
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.environ.get('DATABASE_URL', 'postgres://localhost/orderpiqr_db')
+#     )
+# }
+
 
 
 
@@ -119,11 +138,18 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+LANGUAGE_CODE = 'en'  # default language
 USE_I18N = True
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('nl', 'Nederlands'),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
+TIME_ZONE = 'UTC'
 
 USE_TZ = True
 
