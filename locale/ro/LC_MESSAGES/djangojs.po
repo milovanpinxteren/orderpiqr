@@ -1,0 +1,70 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-31 14:02+0200\n"
+"PO-Revision-Date: 2025-05-31 15:00+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: xx\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:78
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:96
+msgid "Scanned %(product)s"
+msgstr "Scanat: %(product)s"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:87
+msgid "Incorrect scan, please try again."
+msgstr "Scanare incorectă, te rugăm să încerci din nou."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:100
+msgid "Product code not found in the list."
+msgstr "Codul produsului nu a fost găsit în listă."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:105
+msgid "An unexpected error occurred, please try again. If this issue persists, contact support"
+msgstr "A apărut o eroare neașteptată. Te rugăm să încerci din nou. Dacă problema persistă, contactează suportul tehnic."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:113
+msgid "No product data was found, cannot update list"
+msgstr "Nu au fost găsite date despre produse, nu se poate actualiza lista."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:47
+msgid "Manual override: %(product)s confirmed"
+msgstr "Suprascriere manuală: %(product)s confirmat(ă)"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:52
+msgid "Manual override: %(code)s confirmed"
+msgstr "Suprascriere manuală: %(code)s confirmat(ă)"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\orderImportance.js:12
+msgid "Order Importance: Enabled"
+msgstr "Importanța ordinii: Activată"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\orderImportance.js:16
+msgid "Order Importance: Disabled"
+msgstr "Importanța ordinii: Dezactivată"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:33
+msgid "New list found, start this list?"
+msgstr "Listă nouă găsită, începi această listă?"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:56
+msgid "Product data is empty, cannot update list."
+msgstr "Datele produsului sunt goale, nu se poate actualiza lista."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:60
+msgid "Picklist added"
+msgstr "Listă de preluare adăugată"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:88
+msgid "Error sending picklist."
+msgstr "Eroare la trimiterea listei de preluare."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:93
+msgid "Error getting device fingerprint."
+msgstr "Eroare la obținerea amprentei dispozitivului."
