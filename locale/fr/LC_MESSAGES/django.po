@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-31 14:02+0200\n"
+"POT-Creation-Date: 2025-05-31 15:06+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,17 +12,163 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: .\orderpiqrApp\models.py:8 .\orderpiqrApp\models.py:50
+#, fuzzy
+#| msgid "Name:"
+msgid "Name"
+msgstr "Nom :"
+
+#: .\orderpiqrApp\models.py:9 .\orderpiqrApp\models.py:34
+#: .\orderpiqrApp\models.py:51
+msgid "Description"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:12 .\orderpiqrApp\models.py:20
+#: .\orderpiqrApp\models.py:36 .\orderpiqrApp\models.py:52
+#: .\orderpiqrApp\models.py:66
+msgid "Customer"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:13
+msgid "Customers"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:19 .\orderpiqrApp\models.py:47
+#: .\templates\index.html:25
+msgid "User"
+msgstr "Utilisateur"
+
+#: .\orderpiqrApp\models.py:23
+msgid "User Profile"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:24
+msgid "User Profiles"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:33 .\templates\index.html:35
+msgid "Product Code"
+msgstr "Code produit"
+
+#: .\orderpiqrApp\models.py:35
+msgid "Location"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:37
+msgid "Active"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:40 .\orderpiqrApp\models.py:89
+#, fuzzy
+#| msgid "Product Code"
+msgid "Product"
+msgstr "Code produit"
+
+#: .\orderpiqrApp\models.py:41
+#, fuzzy
+#| msgid "Product Code"
+msgid "Products"
+msgstr "Code produit"
+
+#: .\orderpiqrApp\models.py:49
+msgid "Device Fingerprint"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:53
+#, fuzzy
+#| msgid "Login"
+msgid "Last Login"
+msgstr "Connexion"
+
+#: .\orderpiqrApp\models.py:54
+msgid "Lists Picked"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:57 .\orderpiqrApp\models.py:68
+msgid "Device"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:58
+msgid "Devices"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:67
+#, fuzzy
+#| msgid "Product Code"
+msgid "Picklist Code"
+msgstr "Code produit"
+
+#: .\orderpiqrApp\models.py:69
+msgid "Created At"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:70
+msgid "Updated At"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:71
+#, fuzzy
+#| msgid "Pick Order"
+msgid "Pick Time"
+msgstr "Ordre de prélèvement"
+
+#: .\orderpiqrApp\models.py:72 .\orderpiqrApp\models.py:92
+msgid "Time Taken"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:73 .\orderpiqrApp\models.py:93
+msgid "Successful"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:74 .\orderpiqrApp\models.py:94
+msgid "Notes"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:77 .\orderpiqrApp\models.py:90
+msgid "Pick List"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:78
+msgid "Pick Lists"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:91
+msgid "Quantity"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:97
+#, fuzzy
+#| msgid "Product Code"
+msgid "Product Pick"
+msgstr "Code produit"
+
+#: .\orderpiqrApp\models.py:98
+#, fuzzy
+#| msgid "Product Code"
+msgid "Product Picks"
+msgstr "Code produit"
+
+#: .\orderpiqrApp\models.py:101
+#, python-format
+msgid "Pick of %(product)s in PickList %(picklist_id)s"
+msgstr ""
+
 #: .\templates\admin\orderpiqrApp\product\change_list.html:5
 msgid "Upload Product CSV/XLSX"
 msgstr "Télécharger un fichier produit CSV/XLSX"
 
 #: .\templates\admin\orderpiqrApp\product\change_list.html:7
 msgid "Please upload a CSV or XLSX file that includes the following columns:"
-msgstr "Veuillez télécharger un fichier CSV ou XLSX contenant les colonnes suivantes :"
+msgstr ""
+"Veuillez télécharger un fichier CSV ou XLSX contenant les colonnes "
+"suivantes :"
 
 #: .\templates\admin\orderpiqrApp\product\change_list.html:9
-msgid "Or manually add a product using the button at the top right of the page."
-msgstr "Ou ajoutez un produit manuellement à l'aide du bouton en haut à droite de la page."
+msgid ""
+"Or manually add a product using the button at the top right of the page."
+msgstr ""
+"Ou ajoutez un produit manuellement à l'aide du bouton en haut à droite de la "
+"page."
 
 #: .\templates\admin\orderpiqrApp\product\change_list.html:17
 msgid "Upload File"
@@ -43,14 +189,6 @@ msgstr "Importance de l'ordre"
 #: .\templates\index.html:20
 msgid "Enabled"
 msgstr "Activé"
-
-#: .\templates\index.html:25
-msgid "User"
-msgstr "Utilisateur"
-
-#: .\templates\index.html:35
-msgid "Product Code"
-msgstr "Code produit"
 
 #: .\templates\index.html:36
 msgid "Product Name"

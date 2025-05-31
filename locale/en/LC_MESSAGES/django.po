@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-31 14:02+0200\n"
+"POT-Creation-Date: 2025-05-31 15:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,132 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\orderpiqrApp\models.py:8 .\orderpiqrApp\models.py:50
+msgid "Name"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:9 .\orderpiqrApp\models.py:34
+#: .\orderpiqrApp\models.py:51
+msgid "Description"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:12 .\orderpiqrApp\models.py:20
+#: .\orderpiqrApp\models.py:36 .\orderpiqrApp\models.py:52
+#: .\orderpiqrApp\models.py:66
+msgid "Customer"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:13
+msgid "Customers"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:19 .\orderpiqrApp\models.py:47
+#: .\templates\index.html:25
+msgid "User"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:23
+msgid "User Profile"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:24
+msgid "User Profiles"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:33 .\templates\index.html:35
+msgid "Product Code"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:35
+msgid "Location"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:37
+msgid "Active"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:40 .\orderpiqrApp\models.py:89
+msgid "Product"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:41
+msgid "Products"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:49
+msgid "Device Fingerprint"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:53
+msgid "Last Login"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:54
+msgid "Lists Picked"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:57 .\orderpiqrApp\models.py:68
+msgid "Device"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:58
+msgid "Devices"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:67
+msgid "Picklist Code"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:69
+msgid "Created At"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:70
+msgid "Updated At"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:71
+msgid "Pick Time"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:72 .\orderpiqrApp\models.py:92
+msgid "Time Taken"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:73 .\orderpiqrApp\models.py:93
+msgid "Successful"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:74 .\orderpiqrApp\models.py:94
+msgid "Notes"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:77 .\orderpiqrApp\models.py:90
+msgid "Pick List"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:78
+msgid "Pick Lists"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:91
+msgid "Quantity"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:97
+msgid "Product Pick"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:98
+msgid "Product Picks"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:101
+#, python-format
+msgid "Pick of %(product)s in PickList %(picklist_id)s"
+msgstr ""
+
 #: .\templates\admin\orderpiqrApp\product\change_list.html:5
 msgid "Upload Product CSV/XLSX"
 msgstr ""
@@ -48,14 +174,6 @@ msgstr ""
 
 #: .\templates\index.html:20
 msgid "Enabled"
-msgstr ""
-
-#: .\templates\index.html:25
-msgid "User"
-msgstr ""
-
-#: .\templates\index.html:35
-msgid "Product Code"
 msgstr ""
 
 #: .\templates\index.html:36
