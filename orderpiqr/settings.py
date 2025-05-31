@@ -12,9 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'orderpiqrApp',
+    'statici18n',
 ]
 
 MIDDLEWARE = [
@@ -75,23 +76,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'orderpiqr.wsgi.application'
 
-
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'orderpiqr_db',    # Replace with your created database name
-#         'USER': 'postgres',    # Replace with your PostgreSQL username (e.g., postgres)
-#         'PASSWORD': 'postgres',  # Replace with your password
-#         'HOST': 'localhost',             # Typically 'localhost' if it's on your machine
-#         'PORT': '5432',                  # Default PostgreSQL port
-#     }
-# }
-
-
 
 import environ
 
@@ -106,15 +92,6 @@ DATABASES = {
         default=os.environ.get('DATABASE_URL', 'postgres://localhost/orderpiqr_db')
     )
 }
-
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=os.environ.get('DATABASE_URL', 'postgres://localhost/orderpiqr_db')
-#     )
-# }
-
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -134,16 +111,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = 'en'  # default language
 USE_I18N = True
 
+
 LANGUAGES = [
-    ('en', 'English'),
     ('nl', 'Nederlands'),
+    ('en', 'English'),
+    ('de', 'Deutsch'),
+    ('fr', 'Français'),
+    ('ro', 'Română'),
+    ('pl', 'Polski'),
 ]
 
 LOCALE_PATHS = [
@@ -153,7 +134,6 @@ TIME_ZONE = 'UTC'
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
@@ -161,6 +141,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATICI18N_ROOT = os.path.join(BASE_DIR, 'static', 'jsi18n')
+STATICI18N_PACKAGES = ['orderpiqrApp']  # app(s) with .po files
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

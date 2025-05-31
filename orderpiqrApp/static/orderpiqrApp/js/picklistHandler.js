@@ -3,6 +3,7 @@ import {updateScannedList} from './domUpdater.js';
 import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprint function
 import {showNotification} from './notifications.js';
 
+const gettext = window.gettext;  // Pull it from the global scope
 
 
 export function parsePicklistRow(row) {
@@ -29,8 +30,7 @@ export function handlePicklist(code, currentPicklist, productData) {
         return currentPicklist;  // Do nothing if a picklist is already being processed
     }
 
-    const confirmStart = confirm("New list found, start this list?");
-    console.log("Confirm start:", confirmStart);  // Debug this
+    const confirmStart = confirm(gettext("New list found, start this list?"));
 
     if (confirmStart) {
         isProcessingPicklist = true;  // Set flag to true to indicate processing has started
@@ -52,12 +52,13 @@ export function handlePicklist(code, currentPicklist, productData) {
             }
         }
         if (!productData || Object.keys(productData).length === 0) {
-            console.log("Product data is empty, cannot update list.");
+            // console.log("Product data is empty, cannot update list.");
+            showNotification(gettext("Product data is empty, cannot update list."));
         } else {
             updateScannedList(currentPicklist, productData);
-            showNotification(`Picklist added`);
+            // showNotification(`Picklist added`);
+            showNotification(gettext("Picklist added"));
         }
-
         // If you need to save the orderID, you can handle it here separately later
         const orderID = rows[0];  // First row is the orderID
         // console.log('Order ID:', orderID);  // Debug this
@@ -84,10 +85,12 @@ export function handlePicklist(code, currentPicklist, productData) {
                     })
                     .catch(error => {
                         console.error('Error sending picklist:', error);
+                        showNotification(gettext("Error sending picklist."), true);
                     });
             })
             .catch(error => {
                 console.error('Error getting device fingerprint:', error);
+                showNotification(gettext("Error getting device fingerprint."), true);
             });
 
         // Reset flag after processing the picklist

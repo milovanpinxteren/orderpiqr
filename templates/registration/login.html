@@ -1,5 +1,4 @@
-{% load i18n %}
-{% load static %}
+{% load static i18n%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,12 +13,12 @@
 <div class="page-container">
     <div class="form-div">
         <form id="login-form" class="login-form form_main" role="form" method="POST">
-            <p class="heading">Orderpiqr Login</p>
+            <p class="heading">{% trans "Orderpiqr Login" %}</p>
             {% csrf_token %}
             <div class="login-form-contents">
                 {{ form.as_p }}
             </div>
-            <button class="login-button" role="button">Login</button>
+            <button class="login-button" role="button">{% trans "Login" %}</button>
         </form>
     </div>
 </div>
@@ -29,19 +28,14 @@
         fingerprintJS.get().then(result => {
             // Get the generated device fingerprint
             const deviceFingerprint = result.visitorId;
-
             // Add the fingerprint to the form before submission
             const form = document.getElementById('login-form');
             const fingerprintInput = document.createElement('input');
             fingerprintInput.type = 'hidden';
             fingerprintInput.name = 'device_fingerprint';  // The name of the hidden field
             fingerprintInput.value = deviceFingerprint;
-
             // Append the fingerprint to the form
             form.appendChild(fingerprintInput);
-
-            // Optionally, log the fingerprint (for debugging)
-            console.log('Device Fingerprint:', deviceFingerprint);
         });
     });
 </script>

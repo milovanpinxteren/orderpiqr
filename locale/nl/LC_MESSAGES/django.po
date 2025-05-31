@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-29 15:22+0200\n"
+"POT-Creation-Date: 2025-05-31 14:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,18 +18,78 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\templates\index.html:10
+#: .\templates\admin\orderpiqrApp\product\change_list.html:5
+msgid "Upload Product CSV/XLSX"
+msgstr ""
+
+#: .\templates\admin\orderpiqrApp\product\change_list.html:7
+msgid "Please upload a CSV or XLSX file that includes the following columns:"
+msgstr ""
+
+#: .\templates\admin\orderpiqrApp\product\change_list.html:9
+msgid ""
+"Or manually add a product using the button at the top right of the page."
+msgstr ""
+
+#: .\templates\admin\orderpiqrApp\product\change_list.html:17
+msgid "Upload File"
+msgstr ""
+
+#: .\templates\index.html:11
 msgid "Welcome to Orderpiqr!"
 msgstr "Welkom bij Orderpiqr"
 
-#: .\templates\index.html:15
+#: .\templates\index.html:17
+msgid "Log out"
+msgstr "Log uit"
+
+#: .\templates\index.html:20
 msgid "Order Importance"
 msgstr "Vaste scanvolgorde"
 
-#: .\templates\index.html:15
+#: .\templates\index.html:20
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
-#: .\templates\registration\login.html:9
+#: .\templates\index.html:25
+msgid "User"
+msgstr "Gebruiker"
+
+#: .\templates\index.html:35
+msgid "Product Code"
+msgstr "Productcode"
+
+#: .\templates\index.html:36
+msgid "Product Name"
+msgstr "Productnaam"
+
+#: .\templates\index.html:37
+msgid "Pick Order"
+msgstr "Volgorde/locatie"
+
+#: .\templates\registration\login.html:8
 msgid "login"
 msgstr "Login"
+
+#: .\templates\registration\login.html:16
+msgid "Orderpiqr Login"
+msgstr "Orderpiqr Login"
+
+#: .\templates\registration\login.html:21
+#, fuzzy
+#| msgid "login"
+msgid "Login"
+msgstr "Login"
+
+#: .\templates\registration\name_entry.html:8
+#: .\templates\registration\name_entry.html:13
+msgid "Enter Your Name"
+msgstr "Vul uw naam in"
+
+#: .\templates\registration\name_entry.html:16
+msgid "Name:"
+msgstr "Naam:"
+
+#: .\templates\registration\name_entry.html:18
+msgid "Submit"
+msgstr "Verzenden"

@@ -6,21 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'orderpiqrApp/css/camera_page.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.0.0/dist/fp.min.js"></script>
+    <script src="{% url 'javascript-catalog' %}"></script>
 
     <title>{% trans "Welcome to Orderpiqr!" %}</title>
 
 </head>
 <body>
 <div class="header">
-    <a href="{% url 'login' %}" class="btn-login-link">Log out</a>
-    <div>
+    <div class="header-left">
+        <a href="{% url 'login' %}" class="btn-login-link">{% trans "Log out" %}</a>
         {% include 'partials/language_switcher.html' %}
     </div>
     <button id="toggle-order-btn" class="btn-toggle">{% trans "Order Importance" %}: {% trans "Enabled" %}</button>
 </div>
 
+
 <div class="container">
-    <h3>User: {{ username }}</h3>
+    <h3>{% trans "User" %}: {{ username }}</h3>
 
     <div id="camera-container" class="camera-container">
         <div id="reader" class="scanner"></div>
@@ -30,9 +32,9 @@
         <table id="scanned-list" class="scanned-list">
             <thead>
             <tr>
-                <th>Product Code</th>
-                <th>Product Name</th>
-                <th>Pick Order</th>
+                <th>{% trans "Product Code" %}</th>
+                <th>{% trans "Product Name" %}</th>
+                <th>{% trans "Pick Order" %}</th>
             </tr>
             </thead>
             <tbody></tbody>

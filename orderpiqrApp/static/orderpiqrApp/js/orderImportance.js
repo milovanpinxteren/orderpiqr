@@ -1,5 +1,5 @@
 // orderImportance.js
-
+const gettext = window.gettext;  // Pull it from the global scope
 let isOrderImportant = true;  // Flag to track if order matters
 
 export function toggleOrderImportance() {
@@ -9,11 +9,11 @@ export function toggleOrderImportance() {
 
 export function updateOrderImportanceButton(button) {
     if (isOrderImportant) {
-        button.textContent = "Order Importance: Enabled";
+        button.textContent = gettext('Order Importance: Enabled');
         button.style.backgroundColor = "#28a745";  // Green for enabled
         isOrderImportant = true
     } else {
-        button.textContent = "Order Importance: Disabled";
+        button.textContent = gettext('Order Importance: Disabled');
         button.style.backgroundColor = "#dc3545";  // Red for disabled
         isOrderImportant = false
     }

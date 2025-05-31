@@ -3,7 +3,6 @@
 export function updateScannedList(scannedCodes, productData) {
     const listBody = document.getElementById('scanned-list').getElementsByTagName('tbody')[0];
     listBody.innerHTML = '';  // Clear previous list
-    console.log('updating scanned list', scannedCodes, productData)
     scannedCodes.forEach((code, index) => {
         const stringCode = String(code);
 

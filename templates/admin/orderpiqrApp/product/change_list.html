@@ -2,11 +2,11 @@
 
 {% block content %}
     <div class="container">
-        <h2 class="page-title">Upload Product CSV/XLSX</h2>
+        <h2 class="page-title">{% trans "Upload Product CSV/XLSX" %}</h2>
         <p class="instructions">
-            Please upload a CSV or XLSX file that includes the following columns:
-            <strong>code, description, location</strong>. Or manually add a product using the button at the top right of
-            the page.
+            {% trans "Please upload a CSV or XLSX file that includes the following columns:" %}
+            <strong>code, description, location</strong>.
+            {% trans "Or manually add a product using the button at the top right of the page." %}
         </p>
 
         <form method="POST" enctype="multipart/form-data" class="upload-form">
@@ -14,7 +14,7 @@
             <div class="form-group">
                 {{ product_upload_form.as_p }}
             </div>
-            <button type="submit" class="btn btn-primary">Upload File</button>
+            <button type="submit" class="btn btn-primary">{% trans "Upload File" %}</button>
         </form>
 
         {{ block.super }}
@@ -47,8 +47,7 @@
             padding: 10px 20px;
             font-size: 16px;
             background-color: #22e40c;
-            {#color: white;#}
-            border: none;
+        {#color: white;#} border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;

@@ -7,13 +7,18 @@ body {
 }
 
 .header {
-    display: flex; /* Align items on the same line */
-    align-items: center; /* Vertically align elements */
-    padding: 1%;
-    justify-content: space-between; /* Space between the two buttons */
-    /*font-size: 24px;*/
-    /*font-weight: bold;*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem;
 }
+
+.header-left {
+    display: flex;
+    flex-direction: column;
+}
+
 
 h3  {
     margin-top: 1%;
@@ -38,9 +43,7 @@ h3  {
 }
 
 .btn-login-link {
-    margin-left: 1%; /* Push the button to the right */
     color: #af4c5e;
-    /*font-size: 16px;*/
     text-decoration: none;
 }
 
@@ -52,7 +55,7 @@ h3  {
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    font-size: 16px;
+    /*font-size: 16px;*/
     margin-left: 10px;
 }
 
@@ -89,7 +92,7 @@ header h3 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    /*font-size: 16px;*/
     transition: background-color 0.3s ease;
 }
 

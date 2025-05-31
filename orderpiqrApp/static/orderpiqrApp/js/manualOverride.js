@@ -2,6 +2,7 @@
 import {updateScannedList} from './domUpdater.js';
 import {showNotification} from './notifications.js';
 import {currentPicklist, productData} from './camera_page.js';  // Import currentPicklist and productData
+const gettext = window.gettext;
 
 
 let clickTimes = {}; // Store click timestamps for each product
@@ -12,7 +13,6 @@ const clickCountThreshold = 3; // 3 clicks required
 // Event listener to handle manual override through rapid clicks
 document.addEventListener('click', function (event) {
     const clickedCode = event.target.dataset.productCode;
-    console.log('clickedCode', clickedCode)
     if (clickedCode) {
         if (!clickTimes[clickedCode]) {
             clickTimes[clickedCode] = [];
@@ -43,9 +43,12 @@ function handleManualOverride(code) {
     const product = productData.find(item => item.code === code);  // Match code in productData
     // Show notification for the manual override
     if (product) {
-            showNotification(`Manual override: ${product.description} confirmed`);
-    } else {
-                    showNotification(`Manual override: ${code} confirmed`);
+        // showNotification(`Manual override: ${product.description} confirmed`);
+        showNotification(gettext("Manual override: %(product)s confirmed").replace("%(product)s", product.description));
 
-    }
+
+    } else {
+        // showNotification(`Manual override: ${code} confirmed`);
+        showNotification(gettext("Manual override: %(code)s confirmed").replace("%(code)s", code));
+            }
 }
