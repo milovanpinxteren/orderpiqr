@@ -15,6 +15,7 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name=_("User"))
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name=_("Customer"))
@@ -25,7 +26,6 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return str(self.user)
-
 
 
 class Product(models.Model):
@@ -42,6 +42,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.description
+
 
 class Device(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("User"))
@@ -85,6 +86,14 @@ class OrderLine(models.Model):
         verbose_name = _("Order Line")
         verbose_name_plural = _("Order Lines")
 
+    def __str__(self):
+        return _("Order %(order)s, Product: %(quantity)s x %(product)s") % {
+            "order": self.order.order_code,
+            "quantity": self.quantity,
+            "product": self.product.description
+        }
+
+
 class PickList(models.Model):
     picklist_id = models.AutoField(primary_key=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name=_("Customer"))
@@ -109,11 +118,16 @@ class PickList(models.Model):
         self.device.save()
 
     def __str__(self):
-        return f"PickList {self.picklist_id} for Device {self.device.name}"
+        return _("PickList %(id)s for Device %(device)s") % {
+            "id": self.picklist_id,
+            "device": self.device.name
+        }
+
 
 class ProductPick(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name=_("Product"))
-    picklist = models.ForeignKey(PickList, related_name='products', on_delete=models.CASCADE, verbose_name=_("Pick List"))
+    picklist = models.ForeignKey(PickList, related_name='products', on_delete=models.CASCADE,
+                                 verbose_name=_("Pick List"))
     quantity = models.IntegerField(_("Quantity"))
     time_taken = models.DurationField(_("Time Taken"), null=True, blank=True)
     successful = models.BooleanField(_("Successful"), null=True, blank=True)
@@ -128,7 +142,3 @@ class ProductPick(models.Model):
             "product": self.product,
             "picklist_id": self.picklist.picklist_id
         }
-
-
-
-

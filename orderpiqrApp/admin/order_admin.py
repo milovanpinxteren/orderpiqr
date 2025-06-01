@@ -3,17 +3,45 @@ import csv
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 from django import forms
-from orderpiqrApp.models import Order, OrderLine, Product, UserProfile
+from orderpiqrApp.models import Order, OrderLine, Product, UserProfile, PickList, ProductPick
 from django.utils.translation import gettext_lazy as _
-
+from orderpiqrApp.utils.qr_pdf_generator import QRPDFGenerator  # You’ll build this next
+from django.shortcuts import redirect
+from django.urls import reverse
 
 class OrderUploadForm(forms.Form):
     upload_file = forms.FileField()
 
 
+
 class OrderAdmin(admin.ModelAdmin):
+    class OrderLineInline(admin.TabularInline):  # or admin.StackedInline
+        model = OrderLine
+        extra = 0
+        readonly_fields = ('__str__',)
+        fields = ('__str__',)
+
+        can_delete = False
+        show_change_link = False
+
+    @admin.action(description=_("Generate QR PDF for selected Orders"))
+    def generate_qr_codes(self, request, queryset):
+        if not queryset.exists():
+            self.message_user(request, _("No orders selected."), level=messages.WARNING)
+            return
+
+        try:
+            generator = QRPDFGenerator()
+            pdf_path = generator.generate_multiple(queryset)
+            return redirect(reverse('download_batch_qr_pdf'))  # See next step
+
+        except Exception as e:
+            self.message_user(request, _("Failed to generate QR batch: %(error)s") % {"error": e}, level=messages.ERROR)
+
     list_display = ('order_code', 'customer', 'created_at')
     search_fields = ['order_code']
+    inlines = [OrderLineInline]
+    actions = [generate_qr_codes]
 
     def parse_rows(self, rows, header_mapping, customer):
         overwritten_orders = set()
@@ -148,6 +176,7 @@ class OrderAdmin(admin.ModelAdmin):
         if request.user.groups.filter(name='companyadmin').exists():
             return ['customer']
         return super().get_readonly_fields(request, obj)
+
 
 
 admin.site.register(Order, OrderAdmin)

@@ -4,7 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
-
+from django.http import FileResponse, Http404
+from django.conf import settings
+import os
 from orderpiqrApp.models import Device, UserProfile
 
 
@@ -89,3 +91,11 @@ def name_entry(request):
             return redirect('/')
 
     return render(request, 'registration/name_entry.html')  # Render a form for name input
+
+
+
+def download_batch_qr_pdf(request):
+    file_path = os.path.join(settings.MEDIA_ROOT, 'qr_pdfs', 'qr_batch_orders.pdf')
+    if not os.path.exists(file_path):
+        raise Http404("Batch QR PDF not found.")
+    return FileResponse(open(file_path, 'rb'), as_attachment=True, filename='qr_batch_orders.pdf')
