@@ -1,13 +1,16 @@
 from datetime import datetime
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
+from orderpiqrApp.models import Device, UserProfile
+from django.utils.encoding import smart_str
+from django.utils.translation import gettext_lazy as _
 from django.http import FileResponse, Http404
 from django.conf import settings
 import os
-from orderpiqrApp.models import Device, UserProfile
+import threading
+import time
 
 
 def index(request):
@@ -18,7 +21,6 @@ def index(request):
 
 def root_redirect(request):
     """Redirect user based on their group after login."""
-
 
     if not request.user.is_authenticated:
         return redirect('/login/')  # Redirect unauthenticated users to the login page
@@ -75,7 +77,7 @@ def name_entry(request):
             customer = user_profile.customer
             device = Device.objects.filter(user=request.user, device_fingerprint=device_fingerprint).first()
             if device:
-               print('device found, should not happen')
+                print('device found, should not happen')
             else:
                 Device.objects.create(
                     user=request.user,
@@ -93,9 +95,26 @@ def name_entry(request):
     return render(request, 'registration/name_entry.html')  # Render a form for name input
 
 
-
-def download_batch_qr_pdf(request):
-    file_path = os.path.join(settings.MEDIA_ROOT, 'qr_pdfs', 'qr_batch_orders.pdf')
+@login_required
+def download_batch_qr_pdf(request, file_name):
+    file_path = os.path.join(settings.MEDIA_ROOT, 'qr_pdfs', file_name)
     if not os.path.exists(file_path):
         raise Http404("Batch QR PDF not found.")
-    return FileResponse(open(file_path, 'rb'), as_attachment=True, filename='qr_batch_orders.pdf')
+
+    response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=file_name)
+    # Schedule deletion in the background
+    delete_file_delayed(file_path)
+
+    return response
+
+
+def delete_file_delayed(path, delay=10):
+    """Delete file after a short delay (in seconds)."""
+    def _delete():
+        time.sleep(delay)
+        try:
+            os.remove(path)
+        except Exception as e:
+            print(f"Failed to delete {path}: {e}")
+
+    threading.Thread(target=_delete).start()

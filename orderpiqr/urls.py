@@ -28,7 +28,7 @@ urlpatterns = [
     path('login/', custom_login, name='login'),
     path('name-entry/', name_entry, name='name_entry'),  # Add this URL for name entry
     path('admin/loginas/', include('loginas.urls')),
-    path('admin/download_batch_qr_pdf/', download_batch_qr_pdf, name='download_batch_qr_pdf'),
+    path('admin/download_batch_qr_pdf/<str:file_name>/', download_batch_qr_pdf, name='download_batch_qr_pdf'),
 
 ]
 

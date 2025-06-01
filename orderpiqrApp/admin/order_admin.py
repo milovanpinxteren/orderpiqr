@@ -32,8 +32,8 @@ class OrderAdmin(admin.ModelAdmin):
 
         try:
             generator = QRPDFGenerator()
-            pdf_path = generator.generate_multiple(queryset)
-            return redirect(reverse('download_batch_qr_pdf'))  # See next step
+            filename = generator.generate_multiple(queryset)
+            return redirect(reverse('download_batch_qr_pdf', args=[filename]))
 
         except Exception as e:
             self.message_user(request, _("Failed to generate QR batch: %(error)s") % {"error": e}, level=messages.ERROR)
