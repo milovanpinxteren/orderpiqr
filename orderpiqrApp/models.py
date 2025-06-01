@@ -61,13 +61,39 @@ class Device(models.Model):
         return self.name
 
 
+class Order(models.Model):
+    order_id = models.AutoField(primary_key=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name=_("Customer"))
+    order_code = models.CharField(_("Order Code"), max_length=255, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(_("Notes"), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Order")
+        verbose_name_plural = _("Orders")
+
+    def __str__(self):
+        return self.order_code
+
+
+class OrderLine(models.Model):
+    order = models.ForeignKey(Order, related_name='lines', on_delete=models.CASCADE, verbose_name=_("Order"))
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, verbose_name=_("Product"))
+    quantity = models.PositiveIntegerField(_("Quantity"))
+
+    class Meta:
+        verbose_name = _("Order Line")
+        verbose_name_plural = _("Order Lines")
+
 class PickList(models.Model):
     picklist_id = models.AutoField(primary_key=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name=_("Customer"))
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_("Source Order"))
     picklist_code = models.CharField(_("Picklist Code"), max_length=255, null=True, blank=True)
     device = models.ForeignKey(Device, on_delete=models.CASCADE, verbose_name=_("Device"))
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated At"), auto_now_add=True)
+    pick_started = models.BooleanField(_("Pick Started"), null=True, blank=True)
     pick_time = models.DateTimeField(_("Pick Time"), auto_now_add=True, null=True, blank=True)
     time_taken = models.DurationField(_("Time Taken"), null=True, blank=True)
     successful = models.BooleanField(_("Successful"), null=True, blank=True)

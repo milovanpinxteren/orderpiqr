@@ -1,0 +1,61 @@
+{% extends 'admin/change_list.html' %}
+{% load static i18n %}
+{% block content %}
+    <div class="container">
+        <h2 class="page-title">{% trans "Upload Order CSV/XLSX" %}</h2>
+        <p class="instructions">
+            {% trans "Please upload a CSV or XLSX file that includes the following columns:" %}
+            <strong>order_code, product_code, quantity</strong>.
+            {% trans "With each row representing a product/pick. The order code is repeated for each product" %}
+            {% trans "Or manually add a product using the button at the top right of the page." %}
+        </p>
+
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ order_upload_form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">{% trans "Upload File" %}</button>
+        </form>
+
+        {{ block.super }}
+    </div>
+
+    <style>
+        .container {
+            padding-left: 1%;
+            border-radius: 8px;
+        }
+
+        .page-title {
+            font-size: 1.2em;
+        }
+
+        .instructions {
+            font-size: 1em;
+        }
+
+        .form-group {
+        }
+
+        .upload-form {
+            margin-bottom: 1%;
+            padding-bottom: 1%;
+
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #22e40c;
+        {#color: white;#} border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #21b300;
+        }
+    </style>
+{% endblock %}

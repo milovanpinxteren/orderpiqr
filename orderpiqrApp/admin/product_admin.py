@@ -1,10 +1,7 @@
 import openpyxl
 from django.contrib import admin
-from django.contrib.auth.models import Group
 import csv
-
 from django.core.exceptions import ValidationError
-
 from orderpiqrApp.models import Product, UserProfile
 from django.contrib import messages
 from django import forms
