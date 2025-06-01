@@ -18,145 +18,96 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: .\orderpiqrApp\models.py:8 .\orderpiqrApp\models.py:50
-#, fuzzy
-#| msgid "Name:"
 msgid "Name"
-msgstr "Name:"
+msgstr "Name"
 
-#: .\orderpiqrApp\models.py:9 .\orderpiqrApp\models.py:34
-#: .\orderpiqrApp\models.py:51
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
-#: .\orderpiqrApp\models.py:12 .\orderpiqrApp\models.py:20
-#: .\orderpiqrApp\models.py:36 .\orderpiqrApp\models.py:52
-#: .\orderpiqrApp\models.py:66
 msgid "Customer"
-msgstr ""
+msgstr "Kunde"
 
-#: .\orderpiqrApp\models.py:13
 msgid "Customers"
-msgstr ""
+msgstr "Kunden"
 
-#: .\orderpiqrApp\models.py:19 .\orderpiqrApp\models.py:47
-#: .\templates\index.html:25
 msgid "User"
 msgstr "Benutzer"
 
-#: .\orderpiqrApp\models.py:23
 msgid "User Profile"
-msgstr ""
+msgstr "Benutzerprofil"
 
-#: .\orderpiqrApp\models.py:24
 msgid "User Profiles"
-msgstr ""
+msgstr "Benutzerprofile"
 
-#: .\orderpiqrApp\models.py:33 .\templates\index.html:35
 msgid "Product Code"
 msgstr "Produktcode"
 
-#: .\orderpiqrApp\models.py:35
 msgid "Location"
-msgstr ""
+msgstr "Standort"
 
-#: .\orderpiqrApp\models.py:37
 msgid "Active"
-msgstr ""
+msgstr "Aktiv"
 
-#: .\orderpiqrApp\models.py:40 .\orderpiqrApp\models.py:89
-#, fuzzy
-#| msgid "Product Code"
 msgid "Product"
-msgstr "Produktcode"
+msgstr "Produkt"
 
-#: .\orderpiqrApp\models.py:41
-#, fuzzy
-#| msgid "Product Code"
 msgid "Products"
-msgstr "Produktcode"
+msgstr "Produkte"
 
-#: .\orderpiqrApp\models.py:49
 msgid "Device Fingerprint"
-msgstr ""
+msgstr "Geräte-Fingerabdruck"
 
-#: .\orderpiqrApp\models.py:53
-#, fuzzy
-#| msgid "Login"
 msgid "Last Login"
-msgstr "Anmelden"
+msgstr "Letzter Login"
 
-#: .\orderpiqrApp\models.py:54
 msgid "Lists Picked"
-msgstr ""
+msgstr "Gepickte Listen"
 
-#: .\orderpiqrApp\models.py:57 .\orderpiqrApp\models.py:68
 msgid "Device"
-msgstr ""
+msgstr "Gerät"
 
-#: .\orderpiqrApp\models.py:58
 msgid "Devices"
-msgstr ""
+msgstr "Geräte"
 
-#: .\orderpiqrApp\models.py:67
-#, fuzzy
-#| msgid "Product Code"
 msgid "Picklist Code"
-msgstr "Produktcode"
+msgstr "Picklisten-Code"
 
-#: .\orderpiqrApp\models.py:69
 msgid "Created At"
-msgstr ""
+msgstr "Erstellt am"
 
-#: .\orderpiqrApp\models.py:70
 msgid "Updated At"
-msgstr ""
+msgstr "Aktualisiert am"
 
-#: .\orderpiqrApp\models.py:71
-#, fuzzy
-#| msgid "Pick Order"
 msgid "Pick Time"
-msgstr "Reihenfolge"
+msgstr "Pick-Zeit"
 
-#: .\orderpiqrApp\models.py:72 .\orderpiqrApp\models.py:92
 msgid "Time Taken"
-msgstr ""
+msgstr "Benötigte Zeit"
 
-#: .\orderpiqrApp\models.py:73 .\orderpiqrApp\models.py:93
 msgid "Successful"
-msgstr ""
+msgstr "Erfolgreich"
 
-#: .\orderpiqrApp\models.py:74 .\orderpiqrApp\models.py:94
 msgid "Notes"
-msgstr ""
+msgstr "Notizen"
 
-#: .\orderpiqrApp\models.py:77 .\orderpiqrApp\models.py:90
 msgid "Pick List"
-msgstr ""
+msgstr "Pickliste"
 
-#: .\orderpiqrApp\models.py:78
 msgid "Pick Lists"
-msgstr ""
+msgstr "Picklisten"
 
-#: .\orderpiqrApp\models.py:91
 msgid "Quantity"
-msgstr ""
+msgstr "Menge"
 
-#: .\orderpiqrApp\models.py:97
-#, fuzzy
-#| msgid "Product Code"
 msgid "Product Pick"
-msgstr "Produktcode"
+msgstr "Produkt-Pick"
 
-#: .\orderpiqrApp\models.py:98
-#, fuzzy
-#| msgid "Product Code"
 msgid "Product Picks"
-msgstr "Produktcode"
+msgstr "Produkt-Picks"
 
-#: .\orderpiqrApp\models.py:101
-#, python-format
 msgid "Pick of %(product)s in PickList %(picklist_id)s"
-msgstr ""
+msgstr "Pick von %(product)s in Pickliste %(picklist_id)s"
+
 
 #: .\templates\admin\orderpiqrApp\product\change_list.html:5
 msgid "Upload Product CSV/XLSX"

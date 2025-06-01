@@ -1,6 +1,9 @@
 {% extends "admin/base_site.html" %}
 {% load static i18n %}
-
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="icon" type="image/png" href="{% static 'orderpiqrApp/img/favicon.png' %}">
+{% endblock %}
 {% block extrastyle %}
     <link rel="stylesheet" type="text/css" href="{% static 'orderpiqrApp/css/custom_admin.css' %}">
 {% endblock %}

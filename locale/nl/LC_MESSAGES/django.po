@@ -41,136 +41,84 @@ msgstr "Klanten"
 
 #: .\orderpiqrApp\models.py:19 .\orderpiqrApp\models.py:47
 #: .\templates\index.html:25
-msgid "User"
-msgstr "Gebruiker"
-
-#: .\orderpiqrApp\models.py:23
 msgid "User Profile"
-msgstr ""
+msgstr "Gebruikersprofiel"
 
-#: .\orderpiqrApp\models.py:24
 msgid "User Profiles"
-msgstr ""
+msgstr "Gebruikersprofielen"
 
-#: .\orderpiqrApp\models.py:33 .\templates\index.html:35
-msgid "Product Code"
-msgstr "Productcode"
-
-#: .\orderpiqrApp\models.py:35
 msgid "Location"
-msgstr ""
+msgstr "Locatie"
 
-#: .\orderpiqrApp\models.py:37
 msgid "Active"
-msgstr ""
+msgstr "Actief"
 
-#: .\orderpiqrApp\models.py:40 .\orderpiqrApp\models.py:89
-#, fuzzy
-#| msgid "Product Code"
 msgid "Product"
-msgstr "Productcode"
+msgstr "Product"
 
-#: .\orderpiqrApp\models.py:41
-#, fuzzy
-#| msgid "Product Code"
 msgid "Products"
-msgstr "Productcode"
+msgstr "Producten"
 
-#: .\orderpiqrApp\models.py:49
 msgid "Device Fingerprint"
-msgstr ""
+msgstr "Apparaatvingerafdruk"
 
-#: .\orderpiqrApp\models.py:53
-#, fuzzy
-#| msgid "Login"
 msgid "Last Login"
-msgstr "Login"
+msgstr "Laatste login"
 
-#: .\orderpiqrApp\models.py:54
 msgid "Lists Picked"
-msgstr ""
+msgstr "Lijsten gepickt"
 
-#: .\orderpiqrApp\models.py:57 .\orderpiqrApp\models.py:68
 msgid "Device"
-msgstr ""
+msgstr "Apparaat"
 
-#: .\orderpiqrApp\models.py:58
 msgid "Devices"
-msgstr ""
+msgstr "Apparaten"
 
-#: .\orderpiqrApp\models.py:67
-#, fuzzy
-#| msgid "Product Code"
 msgid "Picklist Code"
-msgstr "Productcode"
+msgstr "Picklijstcode"
 
-#: .\orderpiqrApp\models.py:69
 msgid "Created At"
-msgstr ""
+msgstr "Aangemaakt op"
 
-#: .\orderpiqrApp\models.py:70
 msgid "Updated At"
-msgstr ""
+msgstr "Bijgewerkt op"
 
-#: .\orderpiqrApp\models.py:71
-#, fuzzy
-#| msgid "Pick Order"
 msgid "Pick Time"
-msgstr "Volgorde/locatie"
+msgstr "Picktijd"
 
-#: .\orderpiqrApp\models.py:72 .\orderpiqrApp\models.py:92
 msgid "Time Taken"
-msgstr ""
+msgstr "Benodigde tijd"
 
-#: .\orderpiqrApp\models.py:73 .\orderpiqrApp\models.py:93
 msgid "Successful"
-msgstr ""
+msgstr "Succesvol"
 
-#: .\orderpiqrApp\models.py:74 .\orderpiqrApp\models.py:94
 msgid "Notes"
-msgstr ""
+msgstr "Notities"
 
-#: .\orderpiqrApp\models.py:77 .\orderpiqrApp\models.py:90
 msgid "Pick List"
-msgstr ""
+msgstr "Picklijst"
 
-#: .\orderpiqrApp\models.py:78
 msgid "Pick Lists"
-msgstr ""
+msgstr "Picklijsten"
 
-#: .\orderpiqrApp\models.py:91
 msgid "Quantity"
-msgstr ""
+msgstr "Aantal"
 
-#: .\orderpiqrApp\models.py:97
-#, fuzzy
-#| msgid "Product Code"
 msgid "Product Pick"
-msgstr "Productcode"
+msgstr "Gepickt Product"
 
-#: .\orderpiqrApp\models.py:98
-#, fuzzy
-#| msgid "Product Code"
 msgid "Product Picks"
-msgstr "Productcode"
+msgstr "Gepickte Producten"
 
-#: .\orderpiqrApp\models.py:101
-#, python-format
 msgid "Pick of %(product)s in PickList %(picklist_id)s"
-msgstr ""
+msgstr "Pick van %(product)s in picklijst %(picklist_id)s"
 
-#: .\templates\admin\orderpiqrApp\product\change_list.html:5
-msgid "Upload Product CSV/XLSX"
-msgstr "Upload Producten via CSV/XLSX"
-
-#: .\templates\admin\orderpiqrApp\product\change_list.html:7
 msgid "Please upload a CSV or XLSX file that includes the following columns:"
-msgstr ""
+msgstr "Upload een CSV- of XLSX-bestand dat de volgende kolommen bevat:"
 
-#: .\templates\admin\orderpiqrApp\product\change_list.html:9
-msgid ""
-"Or manually add a product using the button at the top right of the page."
-msgstr ""
+msgid "Or manually add a product using the button at the top right of the page."
+msgstr "Of voeg handmatig een product toe met de knop rechtsboven op de pagina."
+
 
 #: .\templates\admin\orderpiqrApp\product\change_list.html:17
 msgid "Upload File"
