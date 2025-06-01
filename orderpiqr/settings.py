@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'orderpiqrApp',
     'statici18n',
+    'loginas',
 ]
 
 MIDDLEWARE = [
