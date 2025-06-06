@@ -34,7 +34,7 @@ initializeScanner((scannedCode) => {
 
     // Set the flag to indicate that scanning is in progress
     isProcessingScan = true;
-
+    console.log("scanned code", scannedCode);
     if (isPicklist(scannedCode)) {
         currentPicklist = handlePicklist(scannedCode, currentPicklist, productData);
         setTimeout(() => {

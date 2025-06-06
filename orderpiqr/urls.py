@@ -20,6 +20,7 @@ from django.conf.urls.i18n import i18n_patterns
 from django.views.i18n import JavaScriptCatalog
 
 from orderpiqr.views import *
+from orderpiqrApp.views import scan_picklist
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),  # Enables the language switcher post endpoint
@@ -29,6 +30,8 @@ urlpatterns = [
     path('name-entry/', name_entry, name='name_entry'),  # Add this URL for name entry
     path('admin/loginas/', include('loginas.urls')),
     path('admin/download_batch_qr_pdf/<str:file_name>/', download_batch_qr_pdf, name='download_batch_qr_pdf'),
+
+    path('orderpiqr/scan-picklist', scan_picklist, name='scan-picklist'),
 
 ]
 

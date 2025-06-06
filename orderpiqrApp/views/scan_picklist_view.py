@@ -1,12 +1,10 @@
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 import json
 
 from orderpiqrApp.models import Device, PickList, Product, ProductPick
 
 
-@csrf_exempt  # Temporarily exempt CSRF for simplicity (you can later make this more secure)
 def scan_picklist(request):
     if request.method == 'POST':
         try:
@@ -40,7 +38,7 @@ def scan_picklist(request):
                 )
 
             # Return a success response with details
-            return JsonResponse({'status': 'success', 'message': 'Picklist processed successfully'})
+            return JsonResponse({'status': 'ok', 'message': 'Picklist processed successfully'})
 
         except Device.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Device not found with given fingerprint'}, status=404)

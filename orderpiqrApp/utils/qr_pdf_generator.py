@@ -26,7 +26,7 @@ class QRPDFGenerator:
             # Generate QR content
             lines = [order.order_code]
             for line in order.lines.all():
-                lines.append(f"{line.product.code}\t{line.quantity}")
+                lines.append(f"{line.quantity}\t{line.product.code}")
             qr_content = "\n".join(lines)
 
             qr = qrcode.make(qr_content)
@@ -48,12 +48,13 @@ class QRPDFGenerator:
             c.drawInlineImage(qr, qr_x, qr_y, width=qr_width, height=qr_height)
 
             # Product Table
-            data = [[_("Code"), _("Name"), _("Location")]]
+            data = [[_("Code"), _("Name"), _("Location"), _("Quantity")]]
             for line in order.lines.all():
                 data.append([
                     line.product.code,
                     line.product.description,
                     line.product.location,
+                    line.quantity
                 ])
 
             table = Table(data, colWidths=[100, 300, 100])

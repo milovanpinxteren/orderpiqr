@@ -38,16 +38,23 @@ export function handlePicklist(code, currentPicklist, productData) {
         const rows = code.split("\n");  // Split the picklist into rows (assuming multi-line)
         // Skip the first row (orderID) and process the remaining rows
         const validRows = rows.slice(1).filter(row => row.trim() !== "");  // Remove empty rows
+        const fieldOrder = determineFieldOrder(validRows[0], productData);
+        if (!fieldOrder) {
+            showNotification(gettext("Could not determine product/quantity structure in picklist."));
+            return;
+        }
         for (let i = 0; i < validRows.length; i++) {
             const row = validRows[i];
             const parts = parsePicklistRow(row);  // Parse each row
-            if (parts) {
-                const [quantity, productCode] = parts;
+            if (parts && parts.length === 2) {
+                const productCode = String(parts[fieldOrder.productIndex]).trim();
+                const quantity = parseInt(parts[fieldOrder.quantityIndex]);
                 // Add the product code multiple times based on quantity
-                for (let i = 0; i < quantity; i++) {
+                for (let j = 0; j < quantity; j++) {
                     currentPicklist.push(productCode);
                 }
             } else {
+                showNotification(gettext("Product row is invalid"));
                 console.log("Skipping invalid row:", row);  // Debug invalid row
             }
         }
@@ -56,16 +63,15 @@ export function handlePicklist(code, currentPicklist, productData) {
             showNotification(gettext("Product data is empty, cannot update list."));
         } else {
             updateScannedList(currentPicklist, productData);
-            // showNotification(`Picklist added`);
             showNotification(gettext("Picklist added"));
         }
         // If you need to save the orderID, you can handle it here separately later
         const orderID = rows[0];  // First row is the orderID
-        // console.log('Order ID:', orderID);  // Debug this
         getDeviceFingerprint()
             .then(deviceFingerprint => {
 
                 console.log('csrfToken', csrfToken)
+                console.log('scam picklist post')
                 // Send the request with picklist and device fingerprint
                 fetch('/orderpiqr/scan-picklist', {  // Update the URL to your endpoint
                     method: 'POST',
@@ -79,7 +85,9 @@ export function handlePicklist(code, currentPicklist, productData) {
                         deviceFingerprint: deviceFingerprint,  // Add fingerprint to the request
                     })
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        console.log("first reponse", response)
+                    })
                     .then(data => {
                         console.log('Picklist sent successfully:', data);
                     })
@@ -102,4 +110,27 @@ export function handlePicklist(code, currentPicklist, productData) {
     // Reset flag if the user cancels the picklist
     isProcessingPicklist = false;
     return currentPicklist;  // Return the unchanged picklist if the user cancels
+}
+
+
+function determineFieldOrder(exampleRow, productData) {
+    const parts = parsePicklistRow(exampleRow);
+    if (!parts || parts.length !== 2) {
+        showNotification(gettext("Invalid QR code structure. Please check the format"));
+        return null;
+    }
+
+    const [first, second] = parts.map(p => String(p).trim());
+    const firstIsProduct = productData.find(item => item.code === first);
+    const secondIsProduct = productData.find(item => item.code === second);
+    if (firstIsProduct && !secondIsProduct) {
+        return {productIndex: 0, quantityIndex: 1};
+    } else if (secondIsProduct && !firstIsProduct) {
+        return {productIndex: 1, quantityIndex: 0};
+    } else if (firstIsProduct && secondIsProduct) {
+        showNotification(gettext("Ambiguous picklist: both fields look like product codes. Please check your format."));
+    } else {
+        showNotification(gettext("Neither field in the picklist row matches a known product code."));
+        return null;  // Ambiguous or invalid
+    }
 }

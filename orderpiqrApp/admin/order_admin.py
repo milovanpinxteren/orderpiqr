@@ -8,18 +8,19 @@ from django.utils.translation import gettext_lazy as _
 from orderpiqrApp.utils.qr_pdf_generator import QRPDFGenerator  # You’ll build this next
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.db import transaction
+
 
 class OrderUploadForm(forms.Form):
     upload_file = forms.FileField()
 
 
-
 class OrderAdmin(admin.ModelAdmin):
     class OrderLineInline(admin.TabularInline):  # or admin.StackedInline
         model = OrderLine
-        extra = 0
-        readonly_fields = ('__str__',)
-        fields = ('__str__',)
+        extra = 1
+        # readonly_fields = ('__str__',)
+        # fields = ('__str__',)
 
         can_delete = False
         show_change_link = False
@@ -43,79 +44,119 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderLineInline]
     actions = [generate_qr_codes]
 
-    def parse_rows(self, rows, header_mapping, customer):
-        overwritten_orders = set()
-        orders_created = 0
-        lines_added = 0
-        order_map = {}
+    def parse_csv(self, file):
+        decoded_file = file.read().decode('utf-8').splitlines()
+        csv_reader = csv.reader(decoded_file)
+        header = next(csv_reader)
+        header_mapping = {col.strip().lower(): index for index, col in enumerate(header)}
 
-        for row in rows:
-            if all(cell is None for cell in row) or not row or all(str(cell).strip() == '' for cell in row):
-                break  # Treat fully empty row (e.g. ['', '', '']) as end of file
+        rows = list(csv_reader)
+        return header_mapping, rows
+
+    def parse_xlsx(self, file):
+        wb = openpyxl.load_workbook(file)
+        sheet = wb.active
+        header = [str(cell.value).strip().lower() if cell.value else '' for cell in sheet[1]]
+        header_mapping = {col: index for index, col in enumerate(header)}
+        rows = list(sheet.iter_rows(min_row=2, values_only=True))
+        return header_mapping, rows
+
+    def validate_order_data(self, rows, header_mapping, customer):
+        required_columns = ['order_code', 'product_code', 'quantity']
+        for column in required_columns:
+            if column not in header_mapping:
+                raise ValidationError(_('Missing required column: "%(column)s"') % {'column': column})
+
+        cleaned_rows = []
+        errors = []
+        product_queryset = Product.objects.filter(customer=customer)
+        product_map = {product.code: product for product in product_queryset}
+
+        for idx, row in enumerate(rows, start=2):
+            if not row or all(cell is None or str(cell).strip() == '' for cell in row):
+                break  # Empty row = end of file
 
             order_code = str(row[header_mapping['order_code']]).strip()
             product_code = str(row[header_mapping['product_code']]).strip()
             quantity = row[header_mapping['quantity']]
 
             if not order_code:
-                raise ValidationError(_("A row is missing an order code. Please ensure all rows have valid data."))
+                errors.append(_('Missing value for "order_code" in row %(row)d') % {'row': idx})
+                continue
 
             try:
                 quantity = int(quantity)
-            except ValueError:
-                raise ValidationError(_("Invalid quantity value for product code '%(code)s'. Must be a number.") % {
-                    "code": product_code
+            except (ValueError, TypeError):
+                raise ValidationError(_('Invalid quantity for product code "%(code)s" in row %(row)d') % {
+                    'code': product_code,
+                    'row': idx
                 })
 
-            try:
-                product = Product.objects.get(code=product_code, customer=customer)
-            except Product.DoesNotExist:
-                raise ValidationError(_("Unknown product code '%(code)s'. Please check your file.") % {
-                    "code": product_code
-                })
+            product = product_map.get(product_code)
+            if not product:
+                errors.append(_('Unknown product code "%(code)s" in row %(row)d') % {
+                    'code': product_code, 'row': idx})
+                continue
 
-            if order_code not in order_map:
-                order_obj, created = Order.objects.get_or_create(order_code=order_code, customer=customer)
-                order_map[order_code] = order_obj
-                orders_created += 1
-                if not created:
-                    OrderLine.objects.filter(order=order_obj).delete()
-                    overwritten_orders.add(order_code)
-            else:
-                order_obj = order_map[order_code]
+            cleaned_rows.append({
+                'order_code': order_code,
+                'product': product,
+                'quantity': quantity,
+            })
 
-            OrderLine.objects.create(order=order_obj, product=product, quantity=quantity)
-            lines_added += 1
+        if errors:
+            raise ValidationError(errors[0])
+
+        return cleaned_rows
+
+
+    def add_orders(self, cleaned_rows, customer):
+        order_map = {}
+        lines_to_create = []
+        orders_created = 0
+        lines_added = 0
+        overwritten_orders = set()
+
+        with transaction.atomic():
+            for item in cleaned_rows:
+                order_code = item['order_code']
+                product = item['product']
+                quantity = item['quantity']
+
+                if order_code not in order_map:
+                    order_obj, created = Order.objects.get_or_create(
+                        order_code=order_code,
+                        customer=customer
+                    )
+                    order_map[order_code] = order_obj
+                    if created:
+                        orders_created += 1
+                    else:
+                        OrderLine.objects.filter(order=order_obj).delete()
+                        overwritten_orders.add(order_code)
+                else:
+                    order_obj = order_map[order_code]
+
+                lines_to_create.append(OrderLine(
+                    order=order_obj,
+                    product=product,
+                    quantity=quantity,
+                ))
+                lines_added += 1
+
+            OrderLine.objects.bulk_create(lines_to_create)
 
         return orders_created, lines_added, overwritten_orders
 
     def process_csv_file(self, file, customer):
-        decoded_file = file.read().decode('utf-8').splitlines()
-        csv_reader = csv.reader(decoded_file)
-        header = next(csv_reader)
-        header_mapping = {col.strip().lower(): index for index, col in enumerate(header)}
-
-        required_columns = ['order_code', 'product_code', 'quantity']
-        for column in required_columns:
-            if column not in header_mapping:
-                raise ValidationError(f'Missing required column: {column}')
-
-        return self.parse_rows(csv_reader, header_mapping, customer)
+        header_mapping, rows = self.parse_csv(file)
+        cleaned_rows = self.validate_order_data(rows, header_mapping, customer)
+        return self.add_orders(cleaned_rows, customer)
 
     def process_xlsx_file(self, file, customer):
-        wb = openpyxl.load_workbook(file)
-        sheet = wb.active
-        header = [cell.value.lower() for cell in sheet[1]]
-
-        required_columns = ['order_code', 'product_code', 'quantity']
-        for column in required_columns:
-            if column not in header:
-                raise ValidationError(f'Missing required column: {column}')
-
-        header_mapping = {col: index for index, col in enumerate(header)}
-        rows = list(sheet.iter_rows(min_row=2, values_only=True))
-
-        return self.parse_rows(rows, header_mapping, customer)
+        header_mapping, rows = self.parse_xlsx(file)
+        cleaned_rows = self.validate_order_data(rows, header_mapping, customer)
+        return self.add_orders(cleaned_rows, customer)
 
     def upload_file(self, request, queryset):
         if 'upload_file' in request.FILES:
@@ -176,7 +217,6 @@ class OrderAdmin(admin.ModelAdmin):
         if request.user.groups.filter(name='companyadmin').exists():
             return ['customer']
         return super().get_readonly_fields(request, obj)
-
 
 
 admin.site.register(Order, OrderAdmin)

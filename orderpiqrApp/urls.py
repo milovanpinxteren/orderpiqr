@@ -22,7 +22,7 @@ from orderpiqrApp.views.main_views import *
 
 urlpatterns = [
     path('', index, name='index'),
-    path('scan-picklist', scan_picklist, name='scan-picklist'),
+    # path('scan-picklist', scan_picklist, name='scan-picklist'),
 
 
 ]
