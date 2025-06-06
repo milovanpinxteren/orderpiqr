@@ -9,7 +9,7 @@ class ProductPickInline(admin.TabularInline):
     fields = ('product', 'quantity', 'time_taken', 'successful')
 
 class PickListAdmin(admin.ModelAdmin):
-    list_display = ('picklist_id', 'device', 'pick_time', 'time_taken', 'successful')
+    list_display = ('picklist_code', 'device', 'pick_time', 'time_taken', 'successful')
     search_fields = ['device__name', 'pick_time']
     inlines = [ProductPickInline]  # Add ProductPickInline to the admin interface
 

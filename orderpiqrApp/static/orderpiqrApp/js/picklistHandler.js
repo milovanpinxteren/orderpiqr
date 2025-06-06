@@ -59,7 +59,6 @@ export function handlePicklist(code, currentPicklist, productData) {
             }
         }
         if (!productData || Object.keys(productData).length === 0) {
-            // console.log("Product data is empty, cannot update list.");
             showNotification(gettext("Product data is empty, cannot update list."));
         } else {
             updateScannedList(currentPicklist, productData);
@@ -69,9 +68,6 @@ export function handlePicklist(code, currentPicklist, productData) {
         const orderID = rows[0];  // First row is the orderID
         getDeviceFingerprint()
             .then(deviceFingerprint => {
-
-                console.log('csrfToken', csrfToken)
-                console.log('scam picklist post')
                 // Send the request with picklist and device fingerprint
                 fetch('/orderpiqr/scan-picklist', {  // Update the URL to your endpoint
                     method: 'POST',
@@ -104,12 +100,12 @@ export function handlePicklist(code, currentPicklist, productData) {
         // Reset flag after processing the picklist
         isProcessingPicklist = false;
 
-        return currentPicklist;  // Return the updated picklist
+        return {currentPicklist, orderID};  // Return the updated picklist
     }
 
     // Reset flag if the user cancels the picklist
     isProcessingPicklist = false;
-    return currentPicklist;  // Return the unchanged picklist if the user cancels
+    return {currentPicklist, orderID};  // Return the unchanged picklist if the user cancels
 }
 
 

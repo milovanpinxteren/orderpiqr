@@ -1,7 +1,6 @@
-// import { handleProductCode } from './camera_page.js';  // Import handleProductCode
 import {updateScannedList} from './domUpdater.js';
 import {showNotification} from './notifications.js';
-import {currentPicklist, productData} from './camera_page.js';  // Import currentPicklist and productData
+import {currentPicklist, productData, notifyPicklistCompleted} from './camera_page.js';  // Import currentPicklist and productData
 const gettext = window.gettext;
 
 
@@ -45,10 +44,15 @@ function handleManualOverride(code) {
     if (product) {
         // showNotification(`Manual override: ${product.description} confirmed`);
         showNotification(gettext("Manual override: %(product)s confirmed").replace("%(product)s", product.description));
-
+        if (currentPicklist.length === 0) {
+            notifyPicklistCompleted(currentOrderID, csrfToken);  // <- you'll need to make csrfToken available
+        }
 
     } else {
         // showNotification(`Manual override: ${code} confirmed`);
         showNotification(gettext("Manual override: %(code)s confirmed").replace("%(code)s", code));
-            }
+        if (currentPicklist.length === 0) {
+            notifyPicklistCompleted(currentOrderID, csrfToken);  // <- you'll need to make csrfToken available
+        }
+    }
 }
