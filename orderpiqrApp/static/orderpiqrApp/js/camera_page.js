@@ -11,7 +11,7 @@ const gettext = window.gettext;
 export let productData = window.productData || {};  // Fallback in case the data is not injected
 export let currentPicklist = []; // Array to store the current picklist
 export let isOrderImportant = true
-let currentOrderID = null;
+export let currentOrderID = null;
 
 // Toggle button for order importance
 const toggleButton = document.getElementById('toggle-order-btn');

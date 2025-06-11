@@ -16,26 +16,25 @@ def scan_picklist(request):
 
             # Fetch the device using the fingerprint
             device = Device.objects.get(device_fingerprint=device_fingerprint)
+            local_time = timezone.localtime(timezone.now())
 
             pick_list, created = PickList.objects.update_or_create(
                 picklist_code=order_id,
                 customer=device.customer,
                 defaults={
                     'device': device,
-                    'updated_at': timezone.now(),
+                    'updated_at': local_time,
+                    'pick_started': True
                 }
             )
-            # Optional: only set created_at if it's a new object
-            if created:
-                pick_list.created_at = timezone.now()
+            if not created:  # if overwritten
+                new_note = f"Added by device {device.name} at {local_time.strftime("%Y-%m-%d %H:%M")}"
+                pick_list.notes = (pick_list.notes or "") + "\n" + new_note
                 pick_list.save()
-
+                ProductPick.objects.filter(picklist=pick_list).delete()
             # Loop through each product in the picklist and create ProductPick entries
             for product_code in picklist:
-                # Retrieve the Product based on the product code
                 product = Product.objects.get(customer=device.customer, code=product_code)
-
-                # Create a ProductPick entry for each product in the picklist
                 ProductPick.objects.create(
                     product=product,
                     picklist=pick_list,
@@ -66,15 +65,16 @@ def complete_picklist(request):
             order_id = data.get('orderID', None)  # Assuming orderID is passed in the request
             # Fetch the device using the fingerprint
             device = Device.objects.get(device_fingerprint=device_fingerprint)
-
-            pick_list = PickList.objects.get(
-                picklist_code=order_id,
-                customer=device.customer,
-                device=device,
-            )
-            pick_list.successful = True
-            pick_list.updated_at = timezone.now()
-            pick_list.save()
+            picklist = PickList.objects.filter(picklist_code=order_id, customer=device.customer,
+                                               device=device).first()
+            if picklist:
+                now = timezone.localtime(timezone.now())  # now in local time
+                pick_time = timezone.localtime(picklist.pick_time)  # ensure pick_time is also local
+                picklist.time_taken = now - pick_time
+                picklist.successful = True  # or set based on some logic
+                picklist.save()
+            else:
+                print('No picklist found, contact support')
 
             return JsonResponse({'status': 'ok', 'message': 'Picklist processed successfully'})
 

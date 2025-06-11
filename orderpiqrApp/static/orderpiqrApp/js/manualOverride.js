@@ -1,6 +1,6 @@
 import {updateScannedList} from './domUpdater.js';
 import {showNotification} from './notifications.js';
-import {currentPicklist, productData, notifyPicklistCompleted} from './camera_page.js';  // Import currentPicklist and productData
+import {currentPicklist, productData, notifyPicklistCompleted, currentOrderID} from './camera_page.js';  // Import currentPicklist and productData
 const gettext = window.gettext;
 
 
