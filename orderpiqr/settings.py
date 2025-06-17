@@ -12,7 +12,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import environ
 
+env = environ.Env()
+environ.Env.read_env()  # Read environment variables from the .env file
+
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,9 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-p-75o+wln8vp7kf^2!8un_!_&p9_-^e4%m01-pu0^jd69$q)xz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=True)
 
-ALLOWED_HOSTS = ['.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', 'app.orderpiqr.nl']
 
 LOGIN_URL = '/login/'  # Adjust this URL to match your login view or URL pattern
 LOGIN_REDIRECT_URL = '/'  # You can set this to any page you'd like as a fallback
@@ -80,13 +85,7 @@ WSGI_APPLICATION = 'orderpiqr.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-import environ
 
-env = environ.Env()
-environ.Env.read_env()  # Read environment variables from the .env file
-
-import os
-import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.config(
