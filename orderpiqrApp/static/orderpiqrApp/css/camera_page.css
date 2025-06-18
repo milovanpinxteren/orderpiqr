@@ -11,7 +11,7 @@ body {
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;  /* ✅ center username vertically */
+    align-items: center; /* ✅ center username vertically */
     padding: 6px 6px;
     background-color: #ffffff;
     border-bottom: 1px solid #e0e0e0;
@@ -22,7 +22,7 @@ body {
     display: flex;
     align-items: center;
     gap: 1em;
-    margin-right: auto;  /* ✅ push gearwheel left */
+    margin-right: auto; /* ✅ push gearwheel left */
 }
 
 /* Username centered vertically */
@@ -51,7 +51,7 @@ body {
     display: none;
     position: absolute;
     top: 2.5em;
-    left: 0;  /* ✅ aligned under gearwheel */
+    left: 0; /* ✅ aligned under gearwheel */
     z-index: 100;
     background-color: white;
     border: 1px solid #ccc;
@@ -90,8 +90,7 @@ body {
 }
 
 
-
-h3  {
+h3 {
     margin-top: 0%;
 }
 
@@ -114,19 +113,22 @@ h3  {
 }
 
 .camera-container {
+    height: auto;
+    max-height: 45vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1em;
+    /*padding: 1em;*/
     background-color: #f9f9f9;
     border-radius: 1em;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-height: 50vh;
-    overflow: hidden; /* ✅ Prevent overflow */
+
+    /*overflow: hidden; !* ✅ Prevent overflow *!*/
 }
 
 #reader {
     width: 100%;
+    height: auto;
     max-height: 100%; /* ✅ Stays within .camera-container */
     object-fit: contain; /* ✅ Keeps aspect ratio */
     border-radius: 0.5em;
@@ -139,9 +141,9 @@ h3  {
     margin-top: 1em;
 }
 
-#reader__dashboard_section {
-    padding: 0px 0px 5px 0px;
-}
+/*#reader__dashboard_section {*/
+/*    padding: 0px 0px 5px 0px;*/
+/*}*/
 
 button,
 select {
