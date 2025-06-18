@@ -75,7 +75,7 @@ def name_entry(request):
         if name and device_fingerprint:
             user_profile = UserProfile.objects.get(user=request.user)
             customer = user_profile.customer
-            if not Device.objects.filter(user=request.user, device_fingerprint=device_fingerprint).exists():
+            if not Device.objects.filter(device_fingerprint=device_fingerprint).exists():
                 Device.objects.create(
                     user=request.user,
                     device_fingerprint=device_fingerprint,
