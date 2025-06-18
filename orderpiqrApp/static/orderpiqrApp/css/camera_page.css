@@ -132,6 +132,21 @@ h3 {
     /*max-height: 100%; !* ✅ Stays within .camera-container *!*/
     object-fit: contain; /* ✅ Keeps aspect ratio */
     border-radius: 0.5em;
+    margin: 0 auto;
+    overflow: hidden; /* 🔒 Prevent overflow */
+    position: relative;
+    background-color: white;
+    max-height: 45vh;
+}
+
+#reader video,
+#reader canvas {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;          /* 🔒 Fit within reader box */
+    display: block;
 }
 
 #reader__dashboard_section_csr,
