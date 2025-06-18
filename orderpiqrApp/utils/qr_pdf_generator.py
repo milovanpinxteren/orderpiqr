@@ -9,6 +9,9 @@ from django.conf import settings
 import os
 from django.utils.translation import gettext_lazy as _
 import uuid
+from django.templatetags.static import static
+from django.contrib.staticfiles import finders
+
 
 class QRPDFGenerator:
 
@@ -16,7 +19,7 @@ class QRPDFGenerator:
         output_dir = os.path.join(settings.MEDIA_ROOT, "qr_pdfs")
         os.makedirs(output_dir, exist_ok=True)
 
-        filename = f"qr_batch_orders_{uuid.uuid4().hex}.pdf"
+        filename = f"orderpiqr_orders_{uuid.uuid4().hex}.pdf"
         output_path = os.path.join(output_dir, filename)
 
         page_width, page_height = A4
@@ -24,6 +27,11 @@ class QRPDFGenerator:
 
         for order in orders:
             # Generate QR content
+            margin = 20  # points (≈7mm)
+            c.setStrokeColor(colors.lightgrey)
+            c.setLineWidth(1)
+            c.rect(margin, margin, page_width - 2 * margin, page_height - 2 * margin)
+
             lines = [order.order_code]
             for line in order.lines.all():
                 lines.append(f"{line.quantity}\t{line.product.code}")
@@ -34,13 +42,35 @@ class QRPDFGenerator:
                 qr = qr.get_image()
 
             # Header: Order Code
+            static_relative_path = "orderpiqrApp/img/favicon.png"
+            logo_path = finders.find(static_relative_path)
+
+            if logo_path and os.path.exists(logo_path):
+                logo_width = 40 * mm
+                logo_height = 16 * mm
+                logo_x = 10
+                logo_y = page_height - logo_height - 50  # 20pt top margin
+                c.drawImage(
+                    logo_path,
+                    logo_x,
+                    logo_y,
+                    width=logo_width,
+                    height=logo_height,
+                    preserveAspectRatio=True,
+                    mask='auto'  # ✅ ensures transparent background
+                )
+                header_y = logo_y  # Leave space under logo
+            else:
+                print(f"⚠️ Logo not found at: {static_relative_path}")
+                header_y = page_height - 30
+
+            # Draw Header
             c.setFont("Helvetica-Bold", 28)
             header_text = f"Order: {order.order_code}"
             text_width = c.stringWidth(header_text, "Helvetica-Bold", 28)
             header_x = (page_width - text_width) / 2
-            header_y = page_height - 80
             c.drawString(header_x, header_y, header_text)
-
+            header_y -= 10
             # Centered QR Code
             qr_width = qr_height = 100 * mm
             qr_x = (page_width - qr_width) / 2
@@ -57,9 +87,9 @@ class QRPDFGenerator:
                     line.quantity
                 ])
 
-            table = Table(data, colWidths=[100, 300, 100])
+            table = Table(data, colWidths=[95, 250, 90, 60])
             table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                ('BACKGROUND', (0, 0), (-1, 0), colors.lightgreen),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
                 ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
                 ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
