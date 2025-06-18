@@ -87,7 +87,9 @@ def name_entry(request):
                 )
             else:
                 print("Device already registered for this user.")
-                existing = Device.objects.get(user=request.user, device_fingerprint=device_fingerprint)
+                existing = Device.objects.get(device_fingerprint=device_fingerprint)
+                existing.user = request.user
+                existing.description = 'Fingerprint used for multiple users'
                 existing.last_login = datetime.now()
                 existing.save()
             request.session['device_fingerprint'] = device_fingerprint
