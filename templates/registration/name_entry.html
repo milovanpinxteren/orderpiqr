@@ -13,6 +13,7 @@
 <body>
 <h2>{% trans "Enter Your Name" %}</h2>
 <form method="POST" id="name-form">
+    <img src="{% static 'orderpiqrApp/img/favicon.png' %}" alt="Orderpiqr Logo" class="login-logo">
     {% csrf_token %}
     <label for="name">{% trans "Name:" %}</label>
     <input type="text" id="name" name="name" required>

@@ -13,7 +13,10 @@
 <div class="page-container">
     <div class="form-div">
         <form id="login-form" class="login-form form_main" role="form" method="POST">
-            <p class="heading">{% trans "Orderpiqr Login" %}</p>
+            <p class="heading">
+                <img src="{% static 'orderpiqrApp/img/favicon.png' %}" alt="Orderpiqr Logo" class="login-logo">
+                {% trans "Orderpiqr Login" %}
+            </p>
             {% csrf_token %}
             <div class="login-form-contents">
                 {{ form.as_p }}

@@ -1,6 +1,6 @@
 html[data-theme="light"],
 :root {
-    --primary: #79c8a4;
+    --primary: #118f11;
     --secondary: #419073;
     --accent: #f5dd5d;
     --primary-fg: #fff;
@@ -11,7 +11,7 @@ html[data-theme="light"],
     --body-loud-color: #000;
 
     --header-color: #ffc;
-    --header-branding-color: var(--accent);
+    --header-branding-color: #fff;
     --header-bg: var(--secondary);
     --header-link-color: var(--primary-fg);
 
@@ -119,6 +119,43 @@ html[data-theme="dark"] {
     --close-button-hover-bg: #666666;
 }
 
+html {
+    font-size: 1.245em !important;
+}
+
+#header h1 {
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    gap: 0.75em;  /* space between logo and text */
+}
+
+#header h1 a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+#header h1:before {
+    content: "";
+    display: block;
+    background-image: url("../img/favicon.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    min-width: 55px;
+    min-height: 55px;
+}
+
+#site-name a:link,
+#site-name a:visited {
+    color: white !important;
+}
+
+.module {
+    width: 140%;
+}
+
 /* THEME SWITCH */
 .theme-toggle {
     cursor: pointer;
@@ -188,6 +225,10 @@ html[data-theme="light"] .theme-toggle svg.theme-icon-when-light {
     border: 0;
     color: var(--body-fg);
     background-color: var(--body-bg);
+}
+
+#content-related {
+    display: none;
 }
 
 .language-dropdown {
