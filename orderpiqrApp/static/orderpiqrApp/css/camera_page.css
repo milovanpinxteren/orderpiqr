@@ -127,38 +127,35 @@ h3 {
 }
 
 #reader {
-    width: 90%;
-    height: 100%;
-    /*max-height: 100%; !* ✅ Stays within .camera-container *!*/
-    object-fit: contain; /* ✅ Keeps aspect ratio */
-    border-radius: 0.5em;
-    margin: 0 auto;
-    overflow: hidden; /* 🔒 Prevent overflow */
-    position: relative;
-    background-color: white;
-    max-height: 45vh;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: white;
 }
 
-#reader video,
-#reader canvas {
-    width: 100% !important;
-    height: auto !important;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;          /* 🔒 Fit within reader box */
-    display: block;
+/* Only constrain the scan area, not the whole reader */
+#reader .qr-code-full-region {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-#reader__dashboard_section_csr,
-#reader__dashboard_section_swaplink,
-#reader__camera_selection {
-    font-size: 1em;
-    margin-top: 1em;
+#reader__scan_region {
+  width: 100%;
+  max-height: 45vh;
+  overflow: hidden;
+  position: relative;
 }
 
-/*#reader__dashboard_section {*/
-/*    padding: 0px 0px 5px 0px;*/
-/*}*/
+/* Ensure video + canvas stay contained */
+#reader__scan_region video,
+#reader__scan_region canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
 
 button,
 select {
