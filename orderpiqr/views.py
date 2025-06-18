@@ -75,21 +75,22 @@ def name_entry(request):
         if name and device_fingerprint:
             user_profile = UserProfile.objects.get(user=request.user)
             customer = user_profile.customer
-            device = Device.objects.filter(user=request.user, device_fingerprint=device_fingerprint).first()
-            if device:
-                print('device found, should not happen')
-            else:
+            if not Device.objects.filter(user=request.user, device_fingerprint=device_fingerprint).exists():
                 Device.objects.create(
                     user=request.user,
                     device_fingerprint=device_fingerprint,
                     name=name,
-                    description='',  # You can ask for more details here
-                    customer=customer,  # Assign the customer from the UserProfile
+                    description='',
+                    customer=customer,
                     last_login=datetime.now(),
-                    lists_picked=0  # Initialize with 0 or ask for this information
+                    lists_picked=0
                 )
+            else:
+                print("Device already registered for this user.")
+                existing = Device.objects.get(user=request.user, device_fingerprint=device_fingerprint)
+                existing.last_login = datetime.now()
+                existing.save()
             request.session['device_fingerprint'] = device_fingerprint
-
             return redirect('/')
 
     return render(request, 'registration/name_entry.html')  # Render a form for name input
