@@ -13,22 +13,31 @@
 
 </head>
 <body>
+
 <div class="header">
     <div class="header-left">
-        <a href="{% url 'login' %}" class="btn-login-link">{% trans "Log out" %}</a>
-        {% include 'partials/language_switcher.html' %}
+        <div class="settings-dropdown">
+            <button id="settings-toggle" class="settings-icon">⚙️</button>
+            <div class="settings-menu" id="settings-menu">
+                <div class="settings-top-row">
+                    <div class="language-switcher">{% include 'partials/language_switcher.html' %}</div>
+
+                    <a href="{% url 'login' %}" class="btn-login-link">{% trans "Log out" %}</a>
+                </div>
+
+                <button id="toggle-order-btn" class="btn-toggle">
+                    {% trans "Order Importance" %}: {% trans "Enabled" %}
+                </button>
+            </div>
+        </div>
     </div>
-    <button id="toggle-order-btn" class="btn-toggle">{% trans "Order Importance" %}: {% trans "Enabled" %}</button>
+    <h3 class="username-display">{% trans "User" %}: {{ username }}</h3>
 </div>
 
-
 <div class="container">
-    <h3>{% trans "User" %}: {{ username }}</h3>
-
     <div id="camera-container" class="camera-container">
         <div id="reader" class="scanner"></div>
     </div>
-
     <div id="scanned-list-container" class="scanned-list-container">
         <table id="scanned-list" class="scanned-list">
             <thead>
@@ -53,6 +62,22 @@
 <script type="text/javascript">
     const productData = JSON.parse(document.getElementById("product-data").textContent);
     window.productData = productData;
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleBtn = document.getElementById("settings-toggle");
+        const menu = document.getElementById("settings-menu");
+
+        toggleBtn.addEventListener("click", function () {
+            menu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (e) {
+            if (!toggleBtn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.remove("active");
+            }
+        });
+    });
 </script>
 
 <!-- Ensure the script is loaded here -->

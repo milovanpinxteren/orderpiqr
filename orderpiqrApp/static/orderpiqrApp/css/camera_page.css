@@ -1,23 +1,94 @@
 /* Basic layout */
 body {
-    font-family: Arial, sans-serif;
+    font-family: Roboto, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f6f9;
 }
 
+
+/* Align the header items properly */
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    padding: 1px 10px;
+    align-items: center;  /* ✅ center username vertically */
+    padding: 6px 6px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .header-left {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    margin-right: auto;  /* ✅ push gearwheel left */
 }
+
+/* Username centered vertically */
+.username-display {
+    margin: 0;
+    font-size: 1.1em;
+    padding-right: 10px
+}
+
+/* Settings dropdown positioning */
+.settings-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Gearwheel styling */
+.settings-icon {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+/* Dropdown menu */
+.settings-menu {
+    display: none;
+    position: absolute;
+    top: 2.5em;
+    left: 0;  /* ✅ aligned under gearwheel */
+    z-index: 100;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 0.75em;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+    min-width: 280px;
+}
+
+.settings-menu.active {
+    display: block;
+}
+
+/* Top row in dropdown */
+.settings-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+/* Button and link inside dropdown */
+.settings-menu .btn-toggle {
+    display: block;
+    width: 100%;
+    text-align: left;
+    /*background-color: #f0f0f0;*/
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    cursor: pointer;
+}
+
+.settings-menu .btn-toggle:hover {
+    /*background-color: #e0e0e0;*/
+}
+
 
 
 h3  {
