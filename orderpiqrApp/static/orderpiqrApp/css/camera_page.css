@@ -121,6 +121,7 @@ h3  {
     background-color: #f9f9f9;
     border-radius: 1em;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-height: 55vh;
 }
 
 #reader {
