@@ -16,6 +16,9 @@ body {
     background-color: #ffffff;
     border-bottom: 1px solid #e0e0e0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .header-left {
@@ -103,27 +106,18 @@ h3 {
     align-items: center;
 }
 
-/* Camera Scanner */
+
 .camera-container {
     width: 100%;
-    height: 50%;
+    max-height: 45vh;
+    height: auto;
     margin-bottom: 20px;
     display: flex;
     justify-content: center;
-}
-
-.camera-container {
-    height: auto;
-    max-height: 45vh;
-    display: flex;
-    justify-content: center;
     align-items: center;
-    /*padding: 1em;*/
     background-color: #f9f9f9;
     border-radius: 1em;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
-    /*overflow: hidden; !* ✅ Prevent overflow *!*/
 }
 
 #reader {
