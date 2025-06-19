@@ -181,7 +181,7 @@ class ProductAdmin(admin.ModelAdmin):
         if request.user.groups.filter(name='companyadmin').exists():
             user_profile = UserProfile.objects.get(user=request.user)
             obj.customer = user_profile.customer
-            if Product.objects.filter(code=obj.code, customer=obj.customer).exists():
+            if Product.objects.filter(code=obj.code, customer=obj.customer).exclude(pk=obj.pk).exists():
                 form.add_error(None, _('A product with the code "%(code)s" already exists for this customer.') % {
                     'code': obj.code,
                 })
