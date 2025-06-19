@@ -9,6 +9,16 @@ body {
     background-color: #f4f6f9;
 }
 
+.screen-success {
+    background-color: #d4edda !important; /* light green */
+    transition: background-color 0.5s ease;
+}
+
+.screen-error {
+    background-color: #f8d7da !important; /* light red */
+    transition: background-color 0.5s ease;
+}
+
 
 /* Align the header items properly */
 .header {

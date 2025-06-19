@@ -36,6 +36,11 @@ initializeScanner((scannedCode) => {
     console.log("scanned code", scannedCode);
     if (isPicklist(scannedCode)) {
         const result = handlePicklist(scannedCode, currentPicklist, productData);
+        if (!result) {
+            console.warn("Picklist processing failed, resetting scan flag");
+            isProcessingScan = false;
+            return;
+        }
         currentPicklist = result.currentPicklist
         currentOrderID = result.orderID
         setTimeout(() => {
@@ -44,9 +49,6 @@ initializeScanner((scannedCode) => {
 
         }, 1000);
         console.log('processing flag to false')
-
-        // isProcessingScan = false;
-
     } else {
         handleProductCode(scannedCode, currentPicklist, productData, isOrderImportant, currentOrderID);
         setTimeout(() => {
@@ -54,8 +56,6 @@ initializeScanner((scannedCode) => {
             isProcessingScan = false; // Reset the flag after the delay
         }, 1000);
     }
-
-    // Reset the flag after processing the scan
 });
 
 
@@ -117,22 +117,21 @@ export function notifyPicklistCompleted(orderID, csrfToken) {
                     deviceFingerprint  // ✅ include fingerprint
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Picklist completed successfully:', data);
-                showNotification(gettext("Picklist completed!"), false);
-            })
-            .catch(error => {
-                console.error('Error completing picklist:', error);
-                showNotification(gettext("Error completing picklist."), true);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Picklist completed successfully:', data);
+                    showNotification(gettext("Picklist completed!"), false);
+                })
+                .catch(error => {
+                    console.error('Error completing picklist:', error);
+                    showNotification(gettext("Error completing picklist."), true);
+                });
         })
         .catch(error => {
             console.error('Error getting device fingerprint:', error);
             showNotification(gettext("Error getting device fingerprint."), true);
         });
 }
-
 
 
 // Fallback if the window.productData is not available
