@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-31 15:06+0200\n"
+"POT-Creation-Date: 2025-06-21 10:29+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,139 +12,351 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\orderpiqrApp\models.py:8 .\orderpiqrApp\models.py:50
+#: .\orderpiqrApp\admin\order_admin.py:28
+msgid "Generate QR PDF for selected Orders"
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:31
+msgid "No orders selected."
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:40
+#, python-format
+msgid "Failed to generate QR batch: %(error)s"
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:68
+#, python-format
+msgid "Missing required column: \"%(column)s\""
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:84
+#, python-format
+msgid "Missing value for \"order_code\" in row %(row)d"
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:90
+#, python-format
+msgid "Invalid quantity for product code \"%(code)s\" in row %(row)d"
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:97
+#, python-format
+msgid "Unknown product code \"%(code)s\" in row %(row)d"
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:175
+#, python-format
+msgid "%(orders)s orders and %(lines)s lines added."
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:182
+#, python-format
+msgid "Overwritten orders: %(codes)s."
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:190
+#, python-format
+msgid "Error processing file: %(msg)s"
+msgstr ""
+
+#: .\orderpiqrApp\admin\product_admin.py:62
+#, python-format
+msgid "Missing value for \"%(field)s\" in row %(row)d"
+msgstr ""
+
+#: .\orderpiqrApp\admin\product_admin.py:69
+#, python-format
+msgid "Invalid number for \"location\" in row %(row)d"
+msgstr ""
+
+#: .\orderpiqrApp\admin\product_admin.py:141
+msgid "Unsupported file format, only .csv and .xlsx are supported"
+msgstr ""
+
+#: .\orderpiqrApp\admin\product_admin.py:143
+#, python-format
+msgid "%(added)d products added, %(overwritten)d products overwritten."
+msgstr ""
+
+#: .\orderpiqrApp\admin\product_admin.py:149
+#, python-format
+msgid "Error processing file: %(error)s"
+msgstr ""
+
+#: .\orderpiqrApp\admin\product_admin.py:152
+msgid "No file uploaded."
+msgstr ""
+
+#: .\orderpiqrApp\admin\product_admin.py:154
+#, fuzzy
+#| msgid "Upload File"
+msgid "Upload CSV or XLSX File"
+msgstr "Prześlij plik"
+
+#: .\orderpiqrApp\admin\product_admin.py:166
+msgid "Invalid form submission."
+msgstr ""
+
+#: .\orderpiqrApp\admin\product_admin.py:185
+#, python-format
+msgid "A product with the code \"%(code)s\" already exists for this customer."
+msgstr ""
+
+#: .\orderpiqrApp\admin\product_admin.py:189
+#, python-format
+msgid ""
+"A product with the code \"%(code)s\" already exists, cannot add duplicate."
+msgstr ""
+
+#: .\orderpiqrApp\admin\product_admin.py:195
+#, python-format
+msgid "The product \"%(description)s\" was added successfully."
+msgstr ""
+
+#: .\orderpiqrApp\admin\product_admin.py:200
+msgid "User is not allowed to save products."
+msgstr ""
+
+#: .\orderpiqrApp\models.py:8 .\orderpiqrApp\models.py:51
+#: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 msgid "Name"
 msgstr "Imię"
 
 #: .\orderpiqrApp\models.py:9 .\orderpiqrApp\models.py:34
-#: .\orderpiqrApp\models.py:51
+#: .\orderpiqrApp\models.py:52
 msgid "Description"
 msgstr "Opis"
 
+#: .\orderpiqrApp\models.py:12 .\orderpiqrApp\models.py:21
+#: .\orderpiqrApp\models.py:36 .\orderpiqrApp\models.py:53
+#: .\orderpiqrApp\models.py:67 .\orderpiqrApp\models.py:99
 msgid "Customer"
 msgstr "Klient"
 
+#: .\orderpiqrApp\models.py:13
 msgid "Customers"
 msgstr "Klienci"
 
+#: .\orderpiqrApp\models.py:20 .\orderpiqrApp\models.py:48
+#: .\templates\index.html:34
 msgid "User"
 msgstr "Użytkownik"
 
+#: .\orderpiqrApp\models.py:24
 msgid "User Profile"
 msgstr "Profil użytkownika"
 
+#: .\orderpiqrApp\models.py:25
 msgid "User Profiles"
 msgstr "Profile użytkowników"
 
+#: .\orderpiqrApp\models.py:33 .\templates\index.html:45
 msgid "Product Code"
 msgstr "Kod produktu"
 
+#: .\orderpiqrApp\models.py:35 .\orderpiqrApp\utils\qr_pdf_generator.py:81
 msgid "Location"
 msgstr "Lokalizacja"
 
+#: .\orderpiqrApp\models.py:37
 msgid "Active"
 msgstr "Aktywny"
 
+#: .\orderpiqrApp\models.py:40 .\orderpiqrApp\models.py:82
+#: .\orderpiqrApp\models.py:128
 msgid "Product"
 msgstr "Produkt"
 
+#: .\orderpiqrApp\models.py:41
 msgid "Products"
 msgstr "Produkty"
 
+#: .\orderpiqrApp\models.py:50
 msgid "Device Fingerprint"
 msgstr "Odcisk palca urządzenia"
 
+#: .\orderpiqrApp\models.py:54
 msgid "Last Login"
 msgstr "Ostatnie logowanie"
 
+#: .\orderpiqrApp\models.py:55
 msgid "Lists Picked"
 msgstr "Zrealizowane listy"
 
+#: .\orderpiqrApp\models.py:58 .\orderpiqrApp\models.py:102
 msgid "Device"
 msgstr "Urządzenie"
 
+#: .\orderpiqrApp\models.py:59
 msgid "Devices"
 msgstr "Urządzenia"
 
-msgid "Picklist Code"
-msgstr "Kod listy kompletacyjnej"
+#: .\orderpiqrApp\models.py:68
+#, fuzzy
+#| msgid "Product Code"
+msgid "Order Code"
+msgstr "Kod produktu"
 
-msgid "Created At"
-msgstr "Utworzono"
-
-msgid "Updated At"
-msgstr "Zaktualizowano"
-
-msgid "Pick Time"
-msgstr "Czas kompletacji"
-
-msgid "Time Taken"
-msgstr "Czas trwania"
-
-msgid "Successful"
-msgstr "Udane"
-
+#: .\orderpiqrApp\models.py:70 .\orderpiqrApp\models.py:109
+#: .\orderpiqrApp\models.py:134
 msgid "Notes"
 msgstr "Notatki"
 
-msgid "Pick List"
-msgstr "Lista kompletacyjna"
+#: .\orderpiqrApp\models.py:73 .\orderpiqrApp\models.py:81
+#, fuzzy
+#| msgid "Pick Order"
+msgid "Order"
+msgstr "Kolejność kompletowania"
 
-msgid "Pick Lists"
-msgstr "Listy kompletacyjne"
+#: .\orderpiqrApp\models.py:74
+#, fuzzy
+#| msgid "Pick Order"
+msgid "Orders"
+msgstr "Kolejność kompletowania"
 
+#: .\orderpiqrApp\models.py:83 .\orderpiqrApp\models.py:131
+#: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 msgid "Quantity"
 msgstr "Ilość"
 
+#: .\orderpiqrApp\models.py:86
+#, fuzzy
+#| msgid "Orderpiqr Login"
+msgid "Order Line"
+msgstr "Logowanie do Orderpiqr"
+
+#: .\orderpiqrApp\models.py:87
+#, fuzzy
+#| msgid "Orderpiqr Login"
+msgid "Order Lines"
+msgstr "Logowanie do Orderpiqr"
+
+#: .\orderpiqrApp\models.py:90
+#, python-format
+msgid "Order %(order)s, Product: %(quantity)s x %(product)s"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:100
+#, fuzzy
+#| msgid "Pick Order"
+msgid "Source Order"
+msgstr "Kolejność kompletowania"
+
+#: .\orderpiqrApp\models.py:101
+msgid "Picklist Code"
+msgstr "Kod listy kompletacyjnej"
+
+#: .\orderpiqrApp\models.py:103
+msgid "Created At"
+msgstr "Utworzono"
+
+#: .\orderpiqrApp\models.py:104
+msgid "Updated At"
+msgstr "Zaktualizowano"
+
+#: .\orderpiqrApp\models.py:105
+#, fuzzy
+#| msgid "Pick Order"
+msgid "Pick Started"
+msgstr "Kolejność kompletowania"
+
+#: .\orderpiqrApp\models.py:106
+msgid "Pick Time"
+msgstr "Czas kompletacji"
+
+#: .\orderpiqrApp\models.py:107 .\orderpiqrApp\models.py:132
+msgid "Time Taken"
+msgstr "Czas trwania"
+
+#: .\orderpiqrApp\models.py:108 .\orderpiqrApp\models.py:133
+msgid "Successful"
+msgstr "Udane"
+
+#: .\orderpiqrApp\models.py:112 .\orderpiqrApp\models.py:130
+msgid "Pick List"
+msgstr "Lista kompletacyjna"
+
+#: .\orderpiqrApp\models.py:113
+msgid "Pick Lists"
+msgstr "Listy kompletacyjne"
+
+#: .\orderpiqrApp\models.py:121
+#, python-format
+msgid "PickList %(id)s for Device %(device)s"
+msgstr ""
+
+#: .\orderpiqrApp\models.py:137
 msgid "Product Pick"
 msgstr "Kompletacja produktu"
 
+#: .\orderpiqrApp\models.py:138
 msgid "Product Picks"
 msgstr "Kompletacje produktów"
 
+#: .\orderpiqrApp\models.py:141
+#, python-format
 msgid "Pick of %(product)s in PickList %(picklist_id)s"
 msgstr "Kompletacja %(product)s na liście %(picklist_id)s"
 
+#: .\orderpiqrApp\utils\qr_pdf_generator.py:81
+msgid "Code"
+msgstr ""
 
-#: .\templates\admin\orderpiqrApp\product\change_list.html:5
-msgid "Upload Product CSV/XLSX"
+#: .\templates\admin\orderpiqrApp\order\change_list.html:5
+#, fuzzy
+#| msgid "Upload Product CSV/XLSX"
+msgid "Upload Order CSV/XLSX"
 msgstr "Prześlij plik produktu CSV/XLSX"
 
+#: .\templates\admin\orderpiqrApp\order\change_list.html:7
 #: .\templates\admin\orderpiqrApp\product\change_list.html:7
 msgid "Please upload a CSV or XLSX file that includes the following columns:"
 msgstr "Proszę przesłać plik CSV lub XLSX zawierający następujące kolumny:"
 
+#: .\templates\admin\orderpiqrApp\order\change_list.html:9
+msgid ""
+"With each row representing a product/pick. The order code is repeated for "
+"each product"
+msgstr ""
+
+#: .\templates\admin\orderpiqrApp\order\change_list.html:10
 #: .\templates\admin\orderpiqrApp\product\change_list.html:9
 msgid ""
 "Or manually add a product using the button at the top right of the page."
 msgstr ""
 "Lub dodaj produkt ręcznie za pomocą przycisku w prawym górnym rogu strony."
 
+#: .\templates\admin\orderpiqrApp\order\change_list.html:18
 #: .\templates\admin\orderpiqrApp\product\change_list.html:17
 msgid "Upload File"
 msgstr "Prześlij plik"
 
-#: .\templates\index.html:11
+#: .\templates\admin\orderpiqrApp\product\change_list.html:5
+msgid "Upload Product CSV/XLSX"
+msgstr "Prześlij plik produktu CSV/XLSX"
+
+#: .\templates\index.html:12
 msgid "Welcome to Orderpiqr!"
 msgstr "Witamy w Orderpiqr!"
 
-#: .\templates\index.html:17
+#: .\templates\index.html:25
 msgid "Log out"
 msgstr "Wyloguj się"
 
-#: .\templates\index.html:20
+#: .\templates\index.html:29
 msgid "Order Importance"
 msgstr "Kolejność produktów"
 
-#: .\templates\index.html:20
+#: .\templates\index.html:29
 msgid "Enabled"
 msgstr "Włączone"
 
-#: .\templates\index.html:36
+#: .\templates\index.html:46
 msgid "Product Name"
 msgstr "Nazwa produktu"
 
-#: .\templates\index.html:37
+#: .\templates\index.html:47
 msgid "Pick Order"
 msgstr "Kolejność kompletowania"
 
@@ -152,23 +364,23 @@ msgstr "Kolejność kompletowania"
 msgid "login"
 msgstr "zaloguj się"
 
-#: .\templates\registration\login.html:16
+#: .\templates\registration\login.html:18
 msgid "Orderpiqr Login"
 msgstr "Logowanie do Orderpiqr"
 
-#: .\templates\registration\login.html:21
+#: .\templates\registration\login.html:24
 msgid "Login"
 msgstr "Zaloguj się"
 
 #: .\templates\registration\name_entry.html:8
-#: .\templates\registration\name_entry.html:13
+#: .\templates\registration\name_entry.html:14
 msgid "Enter Your Name"
 msgstr "Wpisz swoje imię"
 
-#: .\templates\registration\name_entry.html:16
+#: .\templates\registration\name_entry.html:18
 msgid "Name:"
 msgstr "Imię:"
 
-#: .\templates\registration\name_entry.html:18
+#: .\templates\registration\name_entry.html:20
 msgid "Submit"
 msgstr "Zatwierdź"
