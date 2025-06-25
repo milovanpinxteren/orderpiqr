@@ -8,7 +8,7 @@ export function initializeScanner(onScanCallback) {
 
     const qrCodeScanner = new Html5QrcodeScanner("reader", {
         fps: 5,  // Frames per second
-        qrbox: { width: qrBoxSize, height: qrBoxSize },
+        // qrbox: { width: qrBoxSize, height: qrBoxSize },
         // aspectRatio: 1.333334,
         aspectRatio: 1.0,
         readers: ["qr_code_reader", "ean_reader", "upc_reader", "code_128_reader", "data_matrix_reader"]
