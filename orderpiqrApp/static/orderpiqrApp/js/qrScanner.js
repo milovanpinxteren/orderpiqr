@@ -2,7 +2,7 @@
 
 export function initializeScanner(onScanCallback) {
     const width = window.innerWidth;
-    const qrBoxSize = Math.min(width * 0.5, 250); // max 300px, but responsive
+    const qrBoxSize = Math.min(width * 0.6, 350);
     const qrCodeScanner = new Html5QrcodeScanner("reader", {
         fps: 5,  // Frames per second
         qrbox: { width: qrBoxSize, height: qrBoxSize },
@@ -15,3 +15,4 @@ export function initializeScanner(onScanCallback) {
         onScanCallback(scannedCode);
     });
 }
+
