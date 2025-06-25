@@ -223,6 +223,7 @@ h3 {
     max-height: 45vh;
     overflow: hidden;
     position: relative;
+    border-radius: 1em;
 }
 
 /* Ensure video + canvas stay contained */
