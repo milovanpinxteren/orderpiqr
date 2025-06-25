@@ -127,6 +127,35 @@ h3 {
     padding: 10px;
     gap: 0.1rem;
 }
+.camera-container {
+    width: 90vw;
+    max-width: 90vw;
+    margin: 0 auto;
+    padding: 0.5rem;
+    position: relative;
+    background-color: #f9f9f9;
+    border-radius: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;   /* Hide horizontal overflow only */
+    overflow-y: visible;  /* Let height grow */
+    flex-direction: column;
+}
+
+/*.camera-container {*/
+/*    width: 90vw;*/
+/*    max-width: 90vw;*/
+/*    aspect-ratio: 1 / 1; !* This sets the height automatically *!*/
+/*    margin: 0 auto;*/
+/*    position: relative;*/
+/*    background-color: #f9f9f9;*/
+/*    border-radius: 1em;*/
+/*    overflow-y: hidden; !* ensures nothing escapes *!*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*}*/
 
 /*.camera-container {*/
 /*    width: 100%;*/
@@ -138,14 +167,14 @@ h3 {
 /*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
 /*}*/
 
-.camera-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 0.1rem;
-    padding-bottom: 0.1rem;
-}
+/*.camera-container {*/
+/*    width: 100%;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    padding-top: 0.1rem;*/
+/*    padding-bottom: 0.1rem;*/
+/*}*/
 
 /*.camera-container {*/
 /*    !*flex: 0 0 50%;*!*/
@@ -173,11 +202,12 @@ h3 {
 
 #reader {
     width: 90vw;
-    max-width: 90vw;
-    aspect-ratio: 1 / 1;  /* Makes it square */
+    /*max-width: 90vw;*/
+    /*object-fit: contain;*/
+    /*aspect-ratio: 1 / 1; !* Makes it square *!*/
     background-color: white;
     border-radius: 1em;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
 }
 
 
@@ -200,7 +230,7 @@ h3 {
 #reader__scan_region canvas {
     width: 100% !important;
     height: auto !important;
-    max-height: 100%;
+    /*max-height: 100%;*/
     object-fit: contain;
     display: block;
 }
