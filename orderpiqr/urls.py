@@ -21,6 +21,7 @@ from django.views.i18n import JavaScriptCatalog
 
 from orderpiqr.views import *
 from orderpiqrApp.views import scan_picklist, complete_picklist
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),  # Enables the language switcher post endpoint
@@ -31,6 +32,12 @@ urlpatterns = [
     path('admin/download_batch_qr_pdf/<str:file_name>/', download_batch_qr_pdf, name='download_batch_qr_pdf'),
     path('orderpiqr/scan-picklist', scan_picklist, name='scan-picklist'), # Keep this outside of i18n to enable POST
     path('orderpiqr/complete-picklist', complete_picklist, name='scan-picklist'), # Keep this outside of i18n to enable POST
+
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+
+    path('api/', include('api.urls')),  # your actual API
 
 ]
 
