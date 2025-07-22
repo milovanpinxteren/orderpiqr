@@ -27,6 +27,7 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 from django.conf import settings
 from django.urls import re_path
+
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),  # Enables the language switcher post endpoint
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
@@ -34,11 +35,11 @@ urlpatterns = [
     path('name-entry/', name_entry, name='name_entry'),
     path('admin/loginas/', include('loginas.urls')),
     path('admin/download_batch_qr_pdf/<str:file_name>/', download_batch_qr_pdf, name='download_batch_qr_pdf'),
-    path('orderpiqr/scan-picklist', scan_picklist, name='scan-picklist'), # Keep this outside of i18n to enable POST
-    path('orderpiqr/complete-picklist', complete_picklist, name='scan-picklist'), # Keep this outside of i18n to enable POST
+    path('orderpiqr/scan-picklist', scan_picklist, name='scan-picklist'),  # Keep this outside of i18n to enable POST
+    path('orderpiqr/complete-picklist', complete_picklist, name='scan-picklist'),
+    # Keep this outside of i18n to enable POST
     path('offline/', TemplateView.as_view(template_name='offline.html'), name='offline'),
-    re_path(r'^serviceworker\.js$', serve, {'document_root': settings.BASE_DIR, 'path': 'serviceworker.js'}),
-
+    re_path(r'^serviceWorker\.js$', serve, {'document_root': settings.BASE_DIR, 'path': 'serviceWorker.js'}),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
@@ -51,7 +52,6 @@ urlpatterns = [
     path('api/', include('api.urls')),  # your actual API
 
 ]
-
 
 urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
