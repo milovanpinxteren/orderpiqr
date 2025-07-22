@@ -4,7 +4,13 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0d6efd",
+  "theme_color": "#118f11",
+  "description": "Fast, error-free order picking using QR code scanning. Improve warehouse accuracy and speed with OrderPiqr.",
+  "categories": [
+    "productivity",
+    "utilities",
+    "business"
+  ],
   "icons": [
     {
       "src": "/static/icons/icon-192.png",
