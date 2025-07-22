@@ -11,7 +11,7 @@
     <link rel="manifest" href="{% static 'manifest.json' %}">
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register("{% static 'serviceworker.js' %}", {scope: '/'})
+            navigator.serviceWorker.register("{% static 'serviceWorker.js' %}", {scope: '/'})
                 .then(function (reg) {
                     console.log('Service Worker registered:', reg);
                 })
