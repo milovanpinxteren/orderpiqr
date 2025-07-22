@@ -8,6 +8,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.0.0/dist/fp.min.js"></script>
     <script src="{% url 'javascript-catalog' %}"></script>
     <link rel="icon" type="image/png" href="{% static 'orderpiqrApp/img/favicon.png' %}">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/serviceworker.js', {scope: '/'})
+                .then(reg => console.log('Service Worker registered:', reg))
+                .catch(error => console.error('Service Worker registration failed:', error));
+        }
+    </script>
+
 
     <title>{% trans "Welcome to Orderpiqr!" %}</title>
 

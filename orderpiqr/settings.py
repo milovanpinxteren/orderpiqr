@@ -203,8 +203,8 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'OrderPiqr API',
-    'DESCRIPTION': 'API documentation for your Orderpiqr',
-    'VERSION': '1.0.0',
+    'DESCRIPTION': 'API documentation for Orderpiqr',
+    'VERSION': '1.0.1',
 
 }
 
