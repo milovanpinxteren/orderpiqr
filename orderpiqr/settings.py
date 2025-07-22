@@ -206,11 +206,11 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API documentation for Orderpiqr',
     'VERSION': '1.0.1',
     'TAGS': [
-        {'name': 'Products'},
-        {'name': 'Orders'},
-        {'name': 'OrderLines'},
-        {'name': 'PickLists'},
-        {'name': 'ProductPicks'},
+        {'name': 'products'},
+        {'name': 'orders'},
+        {'name': 'orderLines'},
+        {'name': 'pickLists'},
+        {'name': 'productPicks'},
     ]
 
 }
