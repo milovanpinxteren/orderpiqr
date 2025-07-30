@@ -1,63 +1,57 @@
 {% load static i18n %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
-    <title>{% trans "Offline" %}</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Roboto, sans-serif;
-            background-color: #f4f6f9;
-            color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
-        }
 
-        .offline-container {
-            max-width: 90%;
-            padding: 2rem;
-        }
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Roboto, sans-serif;
+        background-color: #f4f6f9;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        text-align: center;
+    }
 
-        .logo {
-            width: 100px;
-            height: auto;
-            margin-bottom: 1rem;
-        }
+    .offline-container {
+        max-width: 90%;
+        padding: 2rem;
+    }
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
+    .logo {
+        width: 100px;
+        height: auto;
+        margin-bottom: 1rem;
+    }
 
-        p {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-        }
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
 
-        .buttons button {
-            background-color: #118f11;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            margin: 0.5rem;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    p {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
 
-        .buttons button:hover {
-            background-color: #118f11;
-        }
-    </style>
-</head>
-<body>
+    .buttons button {
+        background-color: #118f11;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        margin: 0.5rem;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .buttons button:hover {
+        background-color: #118f11;
+    }
+</style>
+
 <div class="offline-container">
 
     <img src="{% static 'icons/icon-192.png' %}" alt="Orderpiqr Logo" class="logo">
@@ -66,9 +60,8 @@
     <div class="buttons">
         <button onclick="location.reload()">{% trans "Retry" %}</button>
         <button onclick="window.history.back()">{% trans "Go Back" %}</button>
-        <button onclick="location.href='/'">{% trans "Try Offline Mode" %}</button>
+        {#        <button onclick="location.href='/'">{% trans "Try Offline Mode" %}</button>#}
 
     </div>
 </div>
-</body>
-</html>
+

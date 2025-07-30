@@ -72,44 +72,44 @@ self.addEventListener('activate', event => {
         )
     );
 });
-self.addEventListener('fetch', event => {
-    console.log('[SW] Fetch request for:', event.request.url);
-
-    if (event.request.mode === 'navigate') {
-        console.log('[SW] Navigation request detected:', event.request.url);
-
-        event.respondWith(
-            fetch(event.request.clone())
-                .then(response => {
-                    console.log('[SW] Fetched from network:', event.request.url);
-                    return response;
-                })
-                .catch(error => {
-                    console.warn('[SW] Network fetch failed:', event.request.url, error);
-                    return caches.match('/offline/');
-                })
-        );
-
-    } else {
-        event.respondWith(
-            fetch(event.request)
-                .then(response => {
-                    console.log('[SW] Fetched asset:', event.request.url);
-                    return response;
-                })
-                .catch(() => {
-                    return caches.match(event.request).then(response => {
-                        if (response) {
-                            console.log('[SW] Served from cache:', event.request.url);
-                            return response;
-                        }
-                        console.log('[SW] Falling back to /offline/ for:', event.request.url);
-                        return caches.match('/offline/');
-                    });
-                })
-        );
-    }
-});
+// self.addEventListener('fetch', event => {
+//     console.log('[SW] Fetch request for:', event.request.url);
+//
+//     if (event.request.mode === 'navigate') {
+//         console.log('[SW] Navigation request detected:', event.request.url);
+//
+//         event.respondWith(
+//             fetch(event.request.clone())
+//                 .then(response => {
+//                     console.log('[SW] Fetched from network:', event.request.url);
+//                     return response;
+//                 })
+//                 .catch(error => {
+//                     console.warn('[SW] Network fetch failed:', event.request.url, error);
+//                     return caches.match('/offline/');
+//                 })
+//         );
+//
+//     } else {
+//         event.respondWith(
+//             fetch(event.request)
+//                 .then(response => {
+//                     console.log('[SW] Fetched asset:', event.request.url);
+//                     return response;
+//                 })
+//                 .catch(() => {
+//                     return caches.match(event.request).then(response => {
+//                         if (response) {
+//                             console.log('[SW] Served from cache:', event.request.url);
+//                             return response;
+//                         }
+//                         console.log('[SW] Falling back to /offline/ for:', event.request.url);
+//                         return caches.match('/offline/');
+//                     });
+//                 })
+//         );
+//     }
+// });
 
 
 // self.addEventListener('fetch', event => {
