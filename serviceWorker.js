@@ -28,13 +28,32 @@ self.addEventListener('install', event => {
 
 
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    fetch(event.request).catch(() => {
-      // If the requested page is not cached, serve the offline fallback
-      return caches.match(event.request).then(response => {
-        return response || caches.match('/offline/');
-      });
-    })
-  );
+  if (event.request.mode === 'navigate') {
+    // Handle navigation (Back button, typing URL, refreshing)
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match('/'))  // fallback to cached homepage
+    );
+  } else {
+    // Handle other requests (static files, scripts, etc.)
+    event.respondWith(
+      fetch(event.request).catch(() =>
+        caches.match(event.request).then(response =>
+          response || caches.match('/offline/')
+        )
+      )
+    );
+  }
 });
+
+
+// self.addEventListener('fetch', event => {
+//   event.respondWith(
+//     fetch(event.request).catch(() => {
+//       // If the requested page is not cached, serve the offline fallback
+//       return caches.match(event.request).then(response => {
+//         return response || caches.match('/offline/');
+//       });
+//     })
+//   );
+// });
 
