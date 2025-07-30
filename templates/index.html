@@ -94,6 +94,8 @@
         // If online, trust the server-rendered version
         productData = JSON.parse(document.getElementById("product-data").textContent);
         window.productData = productData;
+        localStorage.setItem('product_data', JSON.stringify(productData));
+
     } else {
         // If offline, fall back to localStorage
         const cached = localStorage.getItem('product_data');
