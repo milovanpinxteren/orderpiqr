@@ -35,3 +35,6 @@ export function showNotification(message, isError = false) {
         }, 500);  // Wait for fade-out before removing
     }, timeout);  // Show for 5 seconds
 }
+
+window.showNotification = showNotification;
+
