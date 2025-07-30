@@ -8,9 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.0.0/dist/fp.min.js"></script>
     <script src="{% url 'javascript-catalog' %}"></script>
     <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
-{#    <meta name="apple-mobile-web-app-capable" content="yes">#}
-{#    <meta name="apple-mobile-web-app-status-bar-style" content="default">#}
-<link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
+    {#    <meta name="apple-mobile-web-app-capable" content="yes">#}
+    {#    <meta name="apple-mobile-web-app-status-bar-style" content="default">#}
+    <link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
 
     <link rel="manifest" href="{% static 'manifest.json' %}">
     <script>
@@ -71,14 +71,41 @@
 
 <div id="notification-container" class="notification-container"></div>
 
-<div id="product-data" style="display: none;">{{ product_data }}</div>
+{#<div id="product-data" style="display: none;">{{ product_data }}</div>#}
+<script id="product-data" type="application/json">
+  {{ product_data|safe }}
+</script>
+<script>
+    if (navigator.onLine) {
+        const rawProductData = document.getElementById('product-data');
+        if (rawProductData) {
+            const parsed = JSON.parse(rawProductData.textContent);
+            localStorage.setItem('product_data', JSON.stringify(parsed));
+        }
+    }
+</script>
 
 <script type="text/javascript">
     var csrfToken = "{{ csrf_token }}";  // Render CSRF token into JavaScript
 </script>
 <script type="text/javascript">
-    const productData = JSON.parse(document.getElementById("product-data").textContent);
-    window.productData = productData;
+    let productData;
+    if (navigator.onLine) {
+        // If online, trust the server-rendered version
+        productData = JSON.parse(document.getElementById("product-data").textContent);
+        window.productData = productData;
+    } else {
+        // If offline, fall back to localStorage
+        const cached = localStorage.getItem('product_data');
+        if (cached) {
+            productData = JSON.parse(cached);
+            showNotification(gettext("Offline mode: using cached product data"), true);
+        } else {
+            showNotification(gettext("No product data available while offline"), true);
+        }
+    }
+
+
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
