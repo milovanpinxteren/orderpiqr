@@ -3,8 +3,20 @@ const urlsToCache = [
   '/',
   '/offline/',
   '/static/icons/icon-192.png',
-  '/static/icons/icon-512.png'
+  '/static/icons/icon-512.png',
+  '/static/orderpiqrApp/css/camera_page.css',
+  '/static/orderpiqrApp/js/camera_page.js',
+  '/static/orderpiqrApp/js/picklistHandler.js',
+  '/static/orderpiqrApp/js/notifications.js',
+  '/static/orderpiqrApp/js/domUpdater.js',
+  '/static/orderpiqrApp/js/fingerprint.js',
+  '/static/orderpiqrApp/js/qrScanner.js',
+  '/static/orderpiqrApp/js/orderImportance.js',
+  '/static/orderpiqrApp/js/manualOverride.js',
+  'https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.0.0/dist/fp.min.js',
+  'https://unpkg.com/html5-qrcode',
 ];
+
 
 self.addEventListener('install', event => {
   self.skipWaiting();
