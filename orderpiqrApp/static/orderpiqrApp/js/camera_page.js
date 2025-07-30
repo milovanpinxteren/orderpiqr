@@ -8,7 +8,21 @@ import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprin
 
 const gettext = window.gettext;
 // Access the productData object injected into the HTML
-export let productData = window.productData || {};  // Fallback in case the data is not injected
+export let productData;
+const cached = localStorage.getItem('product_data');
+
+if (cached) {
+    productData = JSON.parse(cached);
+    window.productData = productData;
+    if (typeof showNotification === 'function') {
+        showNotification(gettext("Offline mode: using cached product data"), true);
+    }
+} else {
+    console.warn("No product data found!");
+}
+
+
+// export let productData = window.productData || {};  // Fallback in case the data is not injected
 export let currentPicklist = []; // Array to store the current picklist
 export let isOrderImportant = true
 export let currentOrderID = null;
