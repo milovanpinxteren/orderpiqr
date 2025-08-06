@@ -5,8 +5,11 @@ from api.serializers import OrderLineSerializer
 from orderpiqrApp.models import OrderLine
 from rest_framework import filters
 
+from drf_spectacular.utils import extend_schema
 
+@extend_schema(tags=["orderlines"])
 class OrderLineViewSet(viewsets.ModelViewSet):
+    queryset = OrderLine.objects.none()  # ✅ Required for drf-spectacular
     serializer_class = OrderLineSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter]

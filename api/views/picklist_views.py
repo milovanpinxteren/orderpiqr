@@ -5,8 +5,11 @@ from api.serializers import PickListSerializer
 from orderpiqrApp.models import PickList
 from rest_framework import filters
 
+from drf_spectacular.utils import extend_schema
 
+@extend_schema(tags=["picklists"])
 class PickListViewSet(viewsets.ModelViewSet):
+    queryset = PickList.objects.none()  # ✅ Required for drf-spectacular
     serializer_class = PickListSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter]
