@@ -32,7 +32,7 @@ class Product(models.Model):
     product_id = models.AutoField(primary_key=True)
     code = models.CharField(_("Product Code"), max_length=255)
     description = models.TextField(_("Description"))
-    location = models.IntegerField(_("Location"))
+    location = models.CharField(_("Location"), max_length=50)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name=_("Customer"))
     active = models.BooleanField(default=True, verbose_name=_("Active"))
 

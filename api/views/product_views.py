@@ -17,7 +17,7 @@ from drf_spectacular.utils import extend_schema, OpenApiExample
             value={
                 "code": "1234567",
                 "description": "An example product",
-                "location": 1234,
+                "location": "A1-RIJ16-12",
                 "active": True,
                 "customer": 1
             }
