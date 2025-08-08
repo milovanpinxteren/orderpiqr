@@ -63,12 +63,12 @@ class ProductAdmin(admin.ModelAdmin):
                         'field': field,
                         'row': idx,
                     })
-            try:
-                item['location'] = int(item['location'])
-            except ValueError:
-                raise ValidationError(_('Invalid number for "location" in row %(row)d') % {
-                    'row': idx,
-                })
+            # try:
+            #     item['location'] = int(item['location'])
+            # except ValueError:
+            #     raise ValidationError(_('Invalid number for "location" in row %(row)d') % {
+            #         'row': idx,
+            #     })
             cleaned_data.append(item)
         return cleaned_data
 

@@ -8,10 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.0.0/dist/fp.min.js"></script>
     <script src="{% url 'javascript-catalog' %}"></script>
     <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
-    {#    <meta name="apple-mobile-web-app-capable" content="yes">#}
-    {#    <meta name="apple-mobile-web-app-status-bar-style" content="default">#}
     <link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
-
     <link rel="manifest" href="{% static 'manifest.json' %}">
     <script>
         if ('serviceWorker' in navigator) {
@@ -27,10 +24,8 @@
 
 
     <title>{% trans "Welcome to Orderpiqr!" %}</title>
-
 </head>
 <body>
-
 <div class="header">
     <div class="header-left">
         <div class="settings-dropdown">
@@ -38,13 +33,19 @@
             <div class="settings-menu" id="settings-menu">
                 <div class="settings-top-row">
                     <div class="language-switcher">{% include 'partials/language_switcher.html' %}</div>
-
                     <a href="{% url 'login' %}" class="btn-login-link">{% trans "Log out" %}</a>
                 </div>
-
                 <button id="toggle-order-btn" class="btn-toggle">
                     {% trans "Order Importance" %}: {% trans "Enabled" %}
                 </button>
+                <div class="settings-top-row">
+                    <label for="picklist-sorting-select">{% trans "Sort Picklist By" %}</label>
+                    <select id="picklist-sorting-select" class="dropdown">
+                        <option value="original">{% trans "Original order" %}</option>
+                        <option value="location">{% trans "Location" %}</option>
+                        <option value="description">{% trans "Product description" %}</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
@@ -71,7 +72,6 @@
 
 <div id="notification-container" class="notification-container"></div>
 
-{#<div id="product-data" style="display: none;">{{ product_data }}</div>#}
 <script id="product-data" type="application/json">
   {{ product_data|safe }}
 </script>
@@ -106,14 +106,32 @@
             showNotification(gettext("No product data available while offline"), true);
         }
     }
-
-
 </script>
+<script type="application/json" id="app-settings">
+    {{ settings|safe }}
+</script>
+<script>
+    try {
+        const settingsElement = document.getElementById("app-settings");
+        console.log('setinngs element', settingsElement)
+        window.SETTINGS = JSON.parse(settingsElement.textContent);
+        console.log('window.SETTINGS', window.SETTINGS)
+
+    } catch (e) {
+        window.SETTINGS = {};
+        console.error("Failed to parse settings JSON:", e);
+    }
+</script>
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const toggleBtn = document.getElementById("settings-toggle");
         const menu = document.getElementById("settings-menu");
-
+        const sortingSelect = document.getElementById("picklist-sorting-select");
+        if (sortingSelect) {
+            sortingSelect.value = window.SETTINGS?.picklist_sorting ?? "original";
+        }
         toggleBtn.addEventListener("click", function () {
             menu.classList.toggle("active");
         });
@@ -133,11 +151,7 @@
 <script src="{% static 'orderpiqrApp/js/picklistHandler.js' %}" type="module"></script>
 <script src="{% static 'orderpiqrApp/js/domUpdater.js' %}" type="module"></script>
 <script src="{% static 'orderpiqrApp/js/manualOverride.js' %}" type="module"></script>
-
-<!-- The main camera_page.js should also be a module -->
 <script src="{% static 'orderpiqrApp/js/camera_page.js' %}" type="module"></script>
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
-
 </body>
 </html>

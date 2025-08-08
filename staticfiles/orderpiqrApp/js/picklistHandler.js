@@ -63,6 +63,10 @@ export function handlePicklist(code, currentPicklist, productData) {
             if (!productData || Object.keys(productData).length === 0) {
                 showNotification(gettext("Product data is empty, cannot update list."), true);
             } else {
+                console.log('updating picklist')
+                const sortingPreference = window.SETTINGS?.picklist_sorting ?? "original";
+                console.log('sorting preference', sortingPreference)
+                currentPicklist = sortPicklist(currentPicklist, productData, sortingPreference);
                 updateScannedList(currentPicklist, productData);
                 showNotification(gettext("Picklist added"));
             }
@@ -139,4 +143,36 @@ function determineFieldOrder(exampleRow, productData) {
         showNotification(gettext("Neither field in the picklist row matches a known product code."), true);
         return null;  // Ambiguous or invalid
     }
+}
+
+function sortPicklist(productCodes, productData, sortingMode) {
+    const dataMap = {};
+    for (const product of productData) {
+        dataMap[product.code] = product;
+    }
+
+    const enriched = productCodes.map(code => ({
+        code,
+        location: dataMap[code]?.location ?? "",
+        description: dataMap[code]?.description ?? "",
+        index: productCodes.indexOf(code), // preserve original order
+    }));
+
+    switch (sortingMode) {
+        case "location":
+            console.log('sorting preference location')
+            enriched.sort((a, b) => a.location.localeCompare(b.location));
+            break;
+        case "description":
+            console.log('sorting preference description')
+            enriched.sort((a, b) => a.description.localeCompare(b.description));
+            break;
+        case "original":
+            console.log('sorting preference description')
+        default:
+            enriched.sort((a, b) => a.index - b.index);
+            break;
+    }
+
+    return enriched.map(item => item.code);
 }
