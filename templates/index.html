@@ -38,6 +38,14 @@
                 <button id="toggle-order-btn" class="btn-toggle">
                     {% trans "Order Importance" %}: {% trans "Enabled" %}
                 </button>
+                <div class="settings-top-row">
+                    <label for="picklist-sorting-select">{% trans "Sort Picklist By" %}</label>
+                    <select id="picklist-sorting-select" class="dropdown">
+                        <option value="original">{% trans "Original order" %}</option>
+                        <option value="location">{% trans "Location" %}</option>
+                        <option value="description">{% trans "Product description" %}</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
@@ -120,7 +128,10 @@
     document.addEventListener("DOMContentLoaded", function () {
         const toggleBtn = document.getElementById("settings-toggle");
         const menu = document.getElementById("settings-menu");
-
+        const sortingSelect = document.getElementById("picklist-sorting-select");
+        if (sortingSelect) {
+            sortingSelect.value = window.SETTINGS?.picklist_sorting ?? "original";
+        }
         toggleBtn.addEventListener("click", function () {
             menu.classList.toggle("active");
         });
@@ -140,8 +151,6 @@
 <script src="{% static 'orderpiqrApp/js/picklistHandler.js' %}" type="module"></script>
 <script src="{% static 'orderpiqrApp/js/domUpdater.js' %}" type="module"></script>
 <script src="{% static 'orderpiqrApp/js/manualOverride.js' %}" type="module"></script>
-
-<!-- The main camera_page.js should also be a module -->
 <script src="{% static 'orderpiqrApp/js/camera_page.js' %}" type="module"></script>
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </body>

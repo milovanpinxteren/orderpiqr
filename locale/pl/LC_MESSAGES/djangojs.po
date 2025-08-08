@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-31 14:02+0200\n"
+"POT-Creation-Date: 2025-08-08 13:48+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,60 +12,108 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:18
+msgid "Offline mode: using cached product data"
+msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:78
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:96
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:91
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:106
 msgid "Scanned %(product)s"
 msgstr "Zeskanowano: %(product)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:87
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:98
 msgid "Incorrect scan, please try again."
 msgstr "Nieprawidłowy skan, spróbuj ponownie."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:100
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:111
 msgid "Product code not found in the list."
 msgstr "Kod produktu nie został znaleziony na liście."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:105
-msgid "An unexpected error occurred, please try again. If this issue persists, contact support"
-msgstr "Wystąpił nieoczekiwany błąd, spróbuj ponownie. Jeśli problem będzie się powtarzał, skontaktuj się z pomocą techniczną."
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:116
+msgid ""
+"An unexpected error occurred, please try again. If this issue persists, "
+"contact support"
+msgstr ""
+"Wystąpił nieoczekiwany błąd, spróbuj ponownie. Jeśli problem będzie się "
+"powtarzał, skontaktuj się z pomocą techniczną."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:113
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:137
+#, fuzzy
+#| msgid "Picklist added"
+msgid "Picklist completed!"
+msgstr "Lista kompletacyjna dodana"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:141
+#, fuzzy
+#| msgid "Error sending picklist."
+msgid "Error completing picklist."
+msgstr "Błąd podczas wysyłania listy kompletacyjnej."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:146
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:103
+msgid "Error getting device fingerprint."
+msgstr "Błąd podczas pobierania odcisku urządzenia."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:154
 msgid "No product data was found, cannot update list"
 msgstr "Nie znaleziono danych produktu, nie można zaktualizować listy."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:47
+#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:46
 msgid "Manual override: %(product)s confirmed"
 msgstr "Ręczne potwierdzenie: %(product)s zatwierdzony"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:52
+#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:53
 msgid "Manual override: %(code)s confirmed"
 msgstr "Ręczne potwierdzenie: %(code)s zatwierdzony"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\orderImportance.js:12
+#: .\orderpiqrApp\static\orderpiqrApp\js\orderImportance.js:16
 msgid "Order Importance: Enabled"
 msgstr "Kolejność produktów: Włączona"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\orderImportance.js:16
+#: .\orderpiqrApp\static\orderpiqrApp\js\orderImportance.js:22
 msgid "Order Importance: Disabled"
 msgstr "Kolejność produktów: Wyłączona"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:33
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:34
 msgid "New list found, start this list?"
 msgstr "Znaleziono nową listę, rozpocząć ją?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:56
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:44
+msgid "Could not determine product/quantity structure in picklist."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:59
+msgid "Product row is invalid"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:64
 msgid "Product data is empty, cannot update list."
 msgstr "Brak danych produktu, nie można zaktualizować listy."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:60
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:71
 msgid "Picklist added"
 msgstr "Lista kompletacyjna dodana"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:88
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:98
 msgid "Error sending picklist."
 msgstr "Błąd podczas wysyłania listy kompletacyjnej."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:93
-msgid "Error getting device fingerprint."
-msgstr "Błąd podczas pobierania odcisku urządzenia."
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:118
+#, fuzzy
+#| msgid "Error sending picklist."
+msgid "Unexpected error while parsing picklist."
+msgstr "Błąd podczas wysyłania listy kompletacyjnej."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:128
+msgid "Invalid QR code structure. Please check the format"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:140
+msgid ""
+"Ambiguous picklist: both fields look like product codes. Please check your "
+"format."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:143
+msgid "Neither field in the picklist row matches a known product code."
+msgstr ""
