@@ -442,10 +442,8 @@ msgid "Enabled"
 msgstr "Ingeschakeld"
 
 #: .\templates\index.html:42
-#, fuzzy
-#| msgid "Picklist Code"
 msgid "Sort Picklist By"
-msgstr "Picklijstcode"
+msgstr "Sorteer picklijst op: "
 
 #: .\templates\index.html:44
 msgid "Original order"
