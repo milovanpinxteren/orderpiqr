@@ -132,6 +132,15 @@
         if (sortingSelect) {
             sortingSelect.value = window.SETTINGS?.picklist_sorting ?? "original";
         }
+        sortingSelect.addEventListener("change", function () {
+
+            const newValue = sortingSelect.value;
+            console.log('changing pick order value', newValue)
+            window.SETTINGS.picklist_sorting = newValue;
+            console.log("Updated window.SETTINGS.picklist_sorting to", newValue);
+        });
+
+
         toggleBtn.addEventListener("click", function () {
             menu.classList.toggle("active");
         });
