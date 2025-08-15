@@ -19,7 +19,36 @@
 
         {{ block.super }}
     </div>
+    <script>
+        (function () {
+            function getTour() {
+                return (typeof introJs?.tour === "function") ? introJs.tour() : introJs();
+            }
 
+            const state = localStorage.getItem("opqr_tour");
+            if (state === "on_products") {
+                const tour = getTour();
+                tour.setOptions({
+                    steps: [
+                        {intro: "This is your Products page. Add a few items to test the flow."},
+                        {
+                            intro: "Great! Next, let’s go to <b>Picklists</b> to generate a picking list."
+                        }
+                    ],
+                    showProgress: true,
+                    exitOnOverlayClick: false
+                });
+
+                tour.oncomplete(function () {
+                    localStorage.setItem("opqr_tour", "go_picklists");
+                    // auto-open Picklists, or you can just highlight the menu and let them click
+                    window.location.href = "/admin/orderpiqrApp/picklist/"; // adjust to your URL
+                });
+
+                tour.start();
+            }
+        })();
+    </script>
     <style>
         .container {
             padding-left: 1%;

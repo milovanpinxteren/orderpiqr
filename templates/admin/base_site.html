@@ -1,7 +1,183 @@
 {% extends "admin/base_site.html" %}
 {% load static i18n %}
+
 {% block extrahead %}
     {{ block.super }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+    <script src="{% url 'javascript-catalog' %}"></script>
+
+    <script>
+        function getTour() {
+            return (typeof introJs?.tour === "function") ? introJs.tour() : introJs();
+        }
+
+        function findProductsLink() {
+            return (
+                document.querySelector('#nav-sidebar .app-orderpiqrapp .model-product a') ||
+                document.querySelector('#nav-sidebar .model-product a') ||
+                document.querySelector('#content-main .model-product a') ||
+                document.querySelector('a[href$="/orderpiqrApp/product/"]') || // fallback
+                null
+            );
+        }
+    </script>
+
+    <script>
+        // v7/v8 safe
+        function getTour() {
+            return (typeof introJs?.tour === "function") ? introJs.tour() : introJs();
+        }
+
+        // ---- HOMEPAGE (app index) ----
+        function startAdminTour() {
+            localStorage.removeItem("opqr_tour");
+            const tour = getTour();
+
+            const find = (sel) => document.querySelector(sel);
+            const productsLink = document.querySelector('#nav-sidebar .app-orderpiqrapp .model-product a')
+                || document.querySelector('#content-main .model-product a')
+                || document.querySelector('a[href$="/orderpiqrApp/product/"]');
+
+            const ordersLink = document.querySelector('#nav-sidebar .app-orderpiqrapp .model-order a')
+                || document.querySelector('#content-main .model-order a')
+                || document.querySelector('a[href$="/orderpiqrApp/order/"]');
+
+            const orderLinesLink = document.querySelector('#nav-sidebar .app-orderpiqrapp .model-orderline a')
+                || document.querySelector('#content-main .model-orderline a')
+                || document.querySelector('a[href$="/orderpiqrApp/orderline/"]');
+
+            const picklistsLink = document.querySelector('#nav-sidebar .app-orderpiqrapp .model-picklist a')
+                || document.querySelector('#content-main .model-picklist a')
+                || document.querySelector('a[href$="/orderpiqrApp/picklist/"]');
+
+            const devicesLink = document.querySelector('#nav-sidebar .app-orderpiqrapp .model-device a')
+                || document.querySelector('#content-main .model-device a')
+                || document.querySelector('a[href$="/orderpiqrApp/device/"]');
+
+            tour.setOptions({
+                steps: [
+                    {intro: gettext("👋 Quick tour of the essentials.")},
+                    productsLink ? {
+                        element: productsLink,
+                        position: "left",
+                        intro: gettext("Products — Create items to pick with (bar)code, name/description and physical location.")
+                    } : {intro: gettext("Products — Create items to pick with (bar)code, name/description and physical location.")},
+                    ordersLink ? {
+                        element: ordersLink,
+                        position: "left",
+                        intro: gettext("Orders — Create orders manually or via API/import. You can also skip this: scanning a Picklist QR can create a picklist on the fly.")
+                    } : {intro: gettext("Orders — Create orders manually or via API/import. You can also skip this: scanning a Picklist QR can create a picklist on the fly.")},
+                    orderLinesLink ? {
+                        element: orderLinesLink,
+                        position: "left",
+                        intro: gettext("Order Lines — Per-order line items: product, quantity and optional notes.")
+                    } : {intro: gettext("Order Lines — Per-order line items: product, quantity and optional notes.")},
+                    picklistsLink ? {
+                        element: picklistsLink,
+                        position: "left",
+                        intro: gettext("Pick Lists — The actual picking tasks. Generate from Orders, or have them created automatically when a QR is scanned.")
+                    } : {intro: gettext("Pick Lists — The actual picking tasks. Generate from Orders, or have them created automatically when a QR is scanned.")},
+                    devicesLink ? {
+                        element: devicesLink,
+                        position: "left",
+                        intro: gettext("Devices — See who picked what and control access.")
+                    } : {intro: gettext("Devices — See who picked what and control access.")},
+                    productsLink ? {
+                        element: productsLink,
+                        position: "left",
+                        intro: gettext("Ready? Click <b>Products</b> to begin."),
+                    } : {intro: gettext("Open <b>Products</b> to begin.")}
+                ],
+                showProgress: true,
+                exitOnOverlayClick: false
+            });
+
+            // Persist state if they click Products (sidebar or main panel)
+            document.addEventListener('click', function (e) {
+                const a = e.target.closest('a');
+                if (a && a.href && a.href.endsWith('/orderpiqrApp/product/')) {
+                    localStorage.setItem('opqr_tour', 'on_products');
+                }
+            }, true);
+
+            // Also add a “Go to Products” button in the tooltip
+            tour.onafterchange(function () {
+                if (!productsLink) return;
+                const btns = document.querySelector('.introjs-tooltipbuttons');
+                if (btns && !btns.querySelector('.opqr-go-products')) {
+                    const btn = document.createElement('button');
+                    btn.className = 'opqr-go-products introjs-button';
+                    btn.textContent = gettext('Go to Products');
+                    btn.onclick = () => {
+                        localStorage.setItem('opqr_tour', 'on_products');
+                        window.location.href = productsLink.href;
+                    };
+                    btns.appendChild(btn);
+                }
+            });
+
+            tour.start();
+        }
+
+        // ---- PRODUCTS changelist (resume) ----
+        function startProductsTour(columnTips) {
+            if (localStorage.getItem('opqr_tour') !== 'on_products') return;
+            const tour = getTour();
+
+            // Step: explain columns (we’ll fill columnTips later)
+            const steps = [
+                {intro: gettext("This is your Products list. Let's cover the essentials.")},
+            ];
+
+            // Try to attach tooltips to headers dynamically
+            const headers = Array.from(document.querySelectorAll('#changelist table thead th'));
+            headers.forEach((th) => {
+                const label = th.innerText.trim();
+                const tip = columnTips[label];
+                if (tip) steps.push({element: th, position: "bottom", intro: gettext(tip)});
+            });
+
+            // Add / Import / Edit guidance
+            const addBtn = document.querySelector('.object-tools a.addlink');
+            steps.push(
+                addBtn ? {
+                        element: addBtn,
+                        position: "left",
+                        intro: gettext("Click <b>Add</b> to create a new product.")
+                    }
+                    : {intro: gettext("Use the <b>Add</b> button to create a new product.")}
+            );
+
+            const importBtn = document.querySelector('a[href*="import"]') || document.querySelector('button[name="import"]');
+            steps.push(
+                importBtn ? {
+                        element: importBtn,
+                        position: "left",
+                        intro: gettext("Optionally import from Excel/CSV if enabled.")
+                    }
+                    : {intro: gettext("Bulk import via Excel/CSV (if enabled).")}
+            );
+
+            steps.push({intro: gettext("Click any row to edit an item, or use filters/search to find items fast.")});
+
+            // Finish → go to Orders
+            steps.push({intro: gettext("Next up: <b>Orders</b>.")});
+
+            tour.setOptions({steps, showProgress: true, exitOnOverlayClick: false});
+
+            tour.oncomplete(function () {
+                localStorage.setItem('opqr_tour', 'go_orders');
+                window.location.href = '/admin/orderpiqrApp/order/'; // adjust if needed
+            });
+
+            tour.start();
+        }
+    </script>
+
+
+
+
     <link rel="icon" type="image/png" href="{% static 'orderpiqrApp/img/favicon.png' %}">
 {% endblock %}
 {% block extrastyle %}
@@ -11,7 +187,10 @@
 
 {% block branding %}
     <a id="top" href="#container" class="active animate"></a>
-    <h1 id="site-name"><a href="/">Orderpiqr admin</a></h1>
+{#    <h1 id="site-name"><a href="/">Orderpiqr admin</a></h1>#}
+{#    <button onclick="startAdminTour()" style="position: fixed; bottom: 1rem; right: 1rem; z-index: 9999;">#}
+{#        ❓ Help#}
+{#    </button>#}
 
 {% endblock branding %}
 {% block userlinks %}

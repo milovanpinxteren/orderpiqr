@@ -247,6 +247,7 @@ html[data-theme="light"] .theme-toggle svg.theme-icon-when-light {
 }
 
 .dropdown-menu {
+    background-color: white;
     display: none;
     position: absolute;
     right: 0;
