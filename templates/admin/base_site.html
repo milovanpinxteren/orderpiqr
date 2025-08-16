@@ -43,10 +43,6 @@
                 || document.querySelector('#content-main .model-order a')
                 || document.querySelector('a[href$="/orderpiqrApp/order/"]');
 
-            const orderLinesLink = document.querySelector('#nav-sidebar .app-orderpiqrapp .model-orderline a')
-                || document.querySelector('#content-main .model-orderline a')
-                || document.querySelector('a[href$="/orderpiqrApp/orderline/"]');
-
             const picklistsLink = document.querySelector('#nav-sidebar .app-orderpiqrapp .model-picklist a')
                 || document.querySelector('#content-main .model-picklist a')
                 || document.querySelector('a[href$="/orderpiqrApp/picklist/"]');
@@ -68,11 +64,6 @@
                         position: "left",
                         intro: gettext("Orders — Create orders manually or via API/import. You can also skip this: scanning a Picklist QR can create a picklist on the fly.")
                     } : {intro: gettext("Orders — Create orders manually or via API/import. You can also skip this: scanning a Picklist QR can create a picklist on the fly.")},
-                    orderLinesLink ? {
-                        element: orderLinesLink,
-                        position: "left",
-                        intro: gettext("Order Lines — Per-order line items: product, quantity and optional notes.")
-                    } : {intro: gettext("Order Lines — Per-order line items: product, quantity and optional notes.")},
                     picklistsLink ? {
                         element: picklistsLink,
                         position: "left",
@@ -187,10 +178,20 @@
 
 {% block branding %}
     <a id="top" href="#container" class="active animate"></a>
-{#    <h1 id="site-name"><a href="/">Orderpiqr admin</a></h1>#}
-{#    <button onclick="startAdminTour()" style="position: fixed; bottom: 1rem; right: 1rem; z-index: 9999;">#}
-{#        ❓ Help#}
-{#    </button>#}
+    <h1 id="site-name"><a href="/">Orderpiqr admin</a></h1>
+    <button
+            type="button"
+            class="tour-btn"
+            onclick="startAdminTour()"
+            aria-label="{% trans 'Start tour' %}"
+            title="{% trans 'Start tour' %}" data-label="{% trans 'Start tour' %}">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <polygon points="16.24,7.76 14.12,14.12 7.76,16.24 9.88,9.88" fill="currentColor"/>
+        </svg>
+{#        <span class="tour-label">{% trans "Start tour" %}</span>#}
+    </button>
+
 
 {% endblock branding %}
 {% block userlinks %}

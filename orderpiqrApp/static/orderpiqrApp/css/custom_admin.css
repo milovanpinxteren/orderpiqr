@@ -282,3 +282,77 @@ html[data-theme="light"] .theme-toggle svg.theme-icon-when-light {
 .dropdown-item:hover {
     background-color: #79c8a4;
 }
+
+.tour-btn{
+  position: fixed; right: 18px; bottom: 18px;
+  width: 48px; height: 48px; border: 0; border-radius: 50%;
+  background: #79c8a4; color: #fff; font-size: 20px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 22px rgba(0,0,0,.18);
+  cursor: pointer; z-index: 1000;
+  transform: translateY(16px); opacity: 0;
+  animation: tour-in .45s ease-out .15s forwards, tour-nudge 1.2s ease-out .75s 1;
+  transition: transform .15s ease, box-shadow .15s ease, background .2s ease;
+}
+.tour-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(0,0,0,.24);
+  background: #000;
+}
+.tour-btn:active{ transform: translateY(0); box-shadow: 0 8px 18px rgba(0,0,0,.22); }
+.tour-btn:focus-visible{ outline: 2px solid #60a5fa; outline-offset: 3px; }
+
+@keyframes tour-in{
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes tour-nudge{
+  0%{   transform: translateY(0); }
+  35%{  transform: translateY(-4px); }
+  70%{  transform: translateY(0); }
+  100%{ transform: translateY(0); }
+}
+
+/* Respect user preference */
+@media (prefers-reduced-motion: reduce){
+  .tour-btn{ animation: none; transform: none; opacity: 1; }
+}
+
+/* make button flex + expandable width */
+/*.tour-btn{*/
+/*  display: inline-flex;*/
+/*  align-items: center;*/
+/*  gap: 8px;*/
+/*  padding: 0 14px;*/
+/*  width: var(--tour-width, 48px);                 !* collapsed *!*/
+/*  transition: width .25s ease, transform .15s ease, box-shadow .15s ease, background .2s ease;*/
+/*}*/
+
+/*!* keep the icon a fixed size (adjust 24 if you like bigger/smaller) *!*/
+/*.tour-btn > svg{*/
+/*  width: 24px;*/
+/*  height: 24px;*/
+/*  flex: 0 0 24px;           !* don't shrink *!*/
+/*}*/
+
+/*!* hide label until hover/focus; reveal smoothly *!*/
+/*.tour-label{*/
+/*  white-space: nowrap;*/
+/*  overflow: hidden;*/
+/*  max-width: 0;*/
+/*  opacity: 0;*/
+/*  transform: translateX(-4px);*/
+/*  transition: max-width .25s ease, opacity .2s ease, transform .2s ease;*/
+/*}*/
+
+/*!* expand button + show label on hover/focus *!*/
+/*.tour-btn:hover,*/
+/*.tour-btn:focus-visible{*/
+/*  --tour-width: 168px;      !* expanded width *!*/
+/*}*/
+
+/*.tour-btn:hover .tour-label,*/
+/*.tour-btn:focus-visible .tour-label{*/
+/*  max-width: 120px;         !* must be < expanded width minus icon & padding *!*/
+/*  opacity: 1;*/
+/*  transform: none;*/
+/*}*/
