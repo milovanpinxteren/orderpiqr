@@ -19,8 +19,15 @@ class OrderAdmin(admin.ModelAdmin):
     class OrderLineInline(admin.TabularInline):  # or admin.StackedInline
         model = OrderLine
         extra = 1
-        # readonly_fields = ('__str__',)
-        # fields = ('__str__',)
+
+        def formfield_for_foreignkey(self, db_field, request, **kwargs):
+            if db_field.name == "product" and not request.user.is_superuser:
+                try:
+                    customer = UserProfile.objects.get(user=request.user).customer
+                    kwargs["queryset"] = Product.objects.filter(customer=customer, active=True)
+                except UserProfile.DoesNotExist:
+                    kwargs["queryset"] = Product.objects.none()
+            return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
         can_delete = False
         show_change_link = False
@@ -43,6 +50,36 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ['order_code']
     inlines = [OrderLineInline]
     actions = [generate_qr_codes]
+
+    # inside OrderAdmin
+    def get_form(self, request, obj=None, **kwargs):
+        # Hide 'customer' for company admins so the form doesn't require it
+        if request.user.groups.filter(name='companyadmin').exists() and not request.user.is_superuser:
+            kwargs = kwargs.copy()
+            exclude = list(kwargs.get('exclude', ()))
+            if 'customer' not in exclude:
+                exclude.append('customer')
+            kwargs['exclude'] = exclude
+        return super().get_form(request, obj, **kwargs)
+
+    def get_changeform_initial_data(self, request):
+        # Optional: prefill for adds (harmless even if field is excluded)
+        data = super().get_changeform_initial_data(request)
+        if request.user.groups.filter(name='companyadmin').exists() and not request.user.is_superuser:
+            try:
+                data['customer'] = UserProfile.objects.get(user=request.user).customer_id
+            except UserProfile.DoesNotExist:
+                pass
+        return data
+
+    def save_model(self, request, obj, form, change):
+        # Force customer for company admins
+        if not request.user.is_superuser and request.user.groups.filter(name='companyadmin').exists():
+            try:
+                obj.customer = UserProfile.objects.get(user=request.user).customer
+            except UserProfile.DoesNotExist:
+                raise ValidationError(_("Your account is not linked to a customer."))
+        super().save_model(request, obj, form, change)
 
     def parse_csv(self, file):
         decoded_file = file.read().decode('utf-8').splitlines()
@@ -217,6 +254,36 @@ class OrderAdmin(admin.ModelAdmin):
         if request.user.groups.filter(name='companyadmin').exists():
             return ['customer']
         return super().get_readonly_fields(request, obj)
+
+# inside OrderAdmin
+def get_form(self, request, obj=None, **kwargs):
+    # Hide 'customer' for company admins so the form doesn't require it
+    if request.user.groups.filter(name='companyadmin').exists() and not request.user.is_superuser:
+        kwargs = kwargs.copy()
+        exclude = list(kwargs.get('exclude', ()))
+        if 'customer' not in exclude:
+            exclude.append('customer')
+        kwargs['exclude'] = exclude
+    return super().get_form(request, obj, **kwargs)
+
+def get_changeform_initial_data(self, request):
+    # Optional: prefill for adds (harmless even if field is excluded)
+    data = super().get_changeform_initial_data(request)
+    if request.user.groups.filter(name='companyadmin').exists() and not request.user.is_superuser:
+        try:
+            data['customer'] = UserProfile.objects.get(user=request.user).customer_id
+        except UserProfile.DoesNotExist:
+            pass
+    return data
+
+def save_model(self, request, obj, form, change):
+    # Force customer for company admins
+    if not request.user.is_superuser and request.user.groups.filter(name='companyadmin').exists():
+        try:
+            obj.customer = UserProfile.objects.get(user=request.user).customer
+        except UserProfile.DoesNotExist:
+            raise ValidationError(_("Your account is not linked to a customer."))
+    super().save_model(request, obj, form, change)
 
 
 admin.site.register(Order, OrderAdmin)
