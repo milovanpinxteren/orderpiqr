@@ -20,7 +20,7 @@ from django.conf.urls.i18n import i18n_patterns
 from django.views.i18n import JavaScriptCatalog
 
 from orderpiqr.views import *
-from orderpiqrApp.views import scan_picklist, complete_picklist
+from orderpiqrApp.views import scan_picklist, complete_picklist, product_pick
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from django.views.generic import TemplateView
@@ -36,7 +36,8 @@ urlpatterns = [
     path('admin/loginas/', include('loginas.urls')),
     path('admin/download_batch_qr_pdf/<str:file_name>/', download_batch_qr_pdf, name='download_batch_qr_pdf'),
     path('orderpiqr/scan-picklist', scan_picklist, name='scan-picklist'),  # Keep this outside of i18n to enable POST
-    path('orderpiqr/complete-picklist', complete_picklist, name='scan-picklist'),
+    path('orderpiqr/product-pick', product_pick, name='product-pick'),
+    path('orderpiqr/complete-picklist', complete_picklist, name='complete-picklist'),
     # Keep this outside of i18n to enable POST
     path('offline/', TemplateView.as_view(template_name='offline.html'), name='offline'),
     re_path(r'^serviceWorker\.js$', serve, {'document_root': settings.BASE_DIR, 'path': 'serviceWorker.js'}),

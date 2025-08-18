@@ -317,42 +317,46 @@ html[data-theme="light"] .theme-toggle svg.theme-icon-when-light {
   .tour-btn{ animation: none; transform: none; opacity: 1; }
 }
 
-/* make button flex + expandable width */
-/*.tour-btn{*/
-/*  display: inline-flex;*/
-/*  align-items: center;*/
-/*  gap: 8px;*/
-/*  padding: 0 14px;*/
-/*  width: var(--tour-width, 48px);                 !* collapsed *!*/
-/*  transition: width .25s ease, transform .15s ease, box-shadow .15s ease, background .2s ease;*/
-/*}*/
+.tour-btn {
+  position: fixed; right: 18px; bottom: 18px;
+  width: 48px; height: 48px;
+  border: 0; border-radius: 50%;
+  background: #79c8a4; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 22px rgba(0,0,0,.18);
+  cursor: pointer; z-index: 1000;
+  transition: transform .15s ease, box-shadow .15s ease, background .2s ease;
+}
 
-/*!* keep the icon a fixed size (adjust 24 if you like bigger/smaller) *!*/
-/*.tour-btn > svg{*/
-/*  width: 24px;*/
-/*  height: 24px;*/
-/*  flex: 0 0 24px;           !* don't shrink *!*/
-/*}*/
+/* Tooltip */
+.tour-tooltip {
+  position: absolute;
+  right: 60px; /* space between button and tooltip */
+  background: #79c8a4;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 1.1em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+}
 
-/*!* hide label until hover/focus; reveal smoothly *!*/
-/*.tour-label{*/
-/*  white-space: nowrap;*/
-/*  overflow: hidden;*/
-/*  max-width: 0;*/
-/*  opacity: 0;*/
-/*  transform: translateX(-4px);*/
-/*  transition: max-width .25s ease, opacity .2s ease, transform .2s ease;*/
-/*}*/
+/* Small arrow */
+.tour-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: #111;
+}
 
-/*!* expand button + show label on hover/focus *!*/
-/*.tour-btn:hover,*/
-/*.tour-btn:focus-visible{*/
-/*  --tour-width: 168px;      !* expanded width *!*/
-/*}*/
-
-/*.tour-btn:hover .tour-label,*/
-/*.tour-btn:focus-visible .tour-label{*/
-/*  max-width: 120px;         !* must be < expanded width minus icon & padding *!*/
-/*  opacity: 1;*/
-/*  transform: none;*/
-/*}*/
+.tour-btn:hover .tour-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}

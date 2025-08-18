@@ -9,6 +9,10 @@ import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprin
 const gettext = window.gettext;
 // Access the productData object injected into the HTML
 export let productData;
+// top-level (near other state)
+let lastPickTs = null;
+
+
 const cached = localStorage.getItem('product_data');
 
 if (cached) {
@@ -57,6 +61,7 @@ initializeScanner((scannedCode) => {
         }
         currentPicklist = result.currentPicklist
         currentOrderID = result.orderID
+        lastPickTs = Date.now();
         setTimeout(() => {
             console.log('scan picklist done done')
             isProcessingScan = false; // Reset the flag after the delay
@@ -87,6 +92,8 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 // Correct scan, remove the first product from the list
                 currentPicklist.splice(0, 1);
                 updateScannedList(currentPicklist, productData); // Update the table after removing the first product
+                onSuccessfulPick(firstProductCode)
+
                 const product = productData.find(item => item.code === firstProductCode);  // Match code in productData
                 showNotification(gettext("Scanned %(product)s").replace("%(product)s", product.description));
                 console.log('currentPicklist.length', currentPicklist.length)
@@ -103,6 +110,8 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 // Valid scan, remove the product from the list
                 currentPicklist.splice(index, 1);
                 updateScannedList(currentPicklist, productData);  // Update the table after a valid scan
+                onSuccessfulPick(code);
+
                 showNotification(gettext("Scanned %(product)s").replace("%(product)s", productData[code].picknaam));
                 if (currentPicklist.length === 0) {
                     notifyPicklistCompleted(currentOrderID, csrfToken);  // <- you'll need to make csrfToken available
@@ -116,6 +125,50 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
         showNotification(gettext("An unexpected error occurred, please try again. If this issue persists, contact support"), true);
     }
 }
+
+// camera_page.js
+export function onSuccessfulPick(scannedCode) {
+    try {
+        const now = Date.now();
+        const timeTakenMs = lastPickTs ? (now - lastPickTs) : null;
+        lastPickTs = now;
+
+        notifyProductPicked({
+            orderID: currentOrderID,
+            productCode: scannedCode,
+            timeTakenMs,
+            csrfToken
+        }).catch(err => {
+            console.error('product-pick update failed', err);
+            showNotification(gettext("Could not update product pick."), true);
+        });
+    } catch (e) {
+        console.error('onSuccessfulPick error', e);
+    }
+}
+
+
+function notifyProductPicked({orderID, productCode, timeTakenMs, csrfToken}) {
+    return getDeviceFingerprint()
+        .then(deviceFingerprint => {
+            return fetch('/orderpiqr/product-pick', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    orderID,                 // your PickList/Order identifier
+                    productCode,             // e.g. SKU/code string
+                    successful: true,        // this call is only for successful scans
+                    timeTakenMs,             // duration since previous successful pick
+                    deviceFingerprint,
+                    scannedAt: new Date().toISOString()
+                })
+            });
+        });
+}
+
 
 export function notifyPicklistCompleted(orderID, csrfToken) {
     getDeviceFingerprint()
