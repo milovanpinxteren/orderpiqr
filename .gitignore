@@ -1,3 +1,4 @@
 .env
 .venv
 orderpiqr/.env
+/staticfiles/
