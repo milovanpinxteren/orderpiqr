@@ -1,6 +1,6 @@
 import {updateScannedList} from './domUpdater.js';
 import {showNotification} from './notifications.js';
-import {currentPicklist, productData, notifyPicklistCompleted, currentOrderID} from './camera_page.js';  // Import currentPicklist and productData
+import {currentPicklist, productData, notifyPicklistCompleted, currentOrderID, onSuccessfulPick} from './camera_page.js';  // Import currentPicklist and productData
 const gettext = window.gettext;
 
 
@@ -40,6 +40,7 @@ function handleManualOverride(code) {
     clickTimes[code] = []; // Reset the click counter for this product
     updateScannedList(currentPicklist, productData); // Update the table after removing the product
     const product = productData.find(item => item.code === code);  // Match code in productData
+    onSuccessfulPick(code);
     // Show notification for the manual override
     if (product) {
         // showNotification(`Manual override: ${product.description} confirmed`);
