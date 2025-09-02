@@ -1,67 +1,73 @@
 {% load static i18n %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
 
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Roboto, sans-serif;
-        background-color: #f4f6f9;
-        color: #333;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        text-align: center;
-    }
+        body {
+            display: grid;
+            place-items: center; /* centers perfectly */
+            min-height: 100svh; /* mobile-safe viewport */
+            background: #f4f6f9;
+            font-family: Roboto, sans-serif;
+            color: #333;
+            text-align: center;
+        }
 
-    .offline-container {
-        max-width: 90%;
-        padding: 2rem;
-    }
+        .offline-container {
+            max-width: 90%;
+            padding: 2rem;
+        }
 
-    .logo {
-        width: 100px;
-        height: auto;
-        margin-bottom: 1rem;
-    }
+        .logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
 
-    h1 {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
-    }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: .5rem;
+        }
 
-    p {
-        font-size: 1.1rem;
-        margin-bottom: 1.5rem;
-    }
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
 
-    .buttons button {
-        background-color: #118f11;
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        margin: 0.5rem;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
+        .buttons button {
+            background: #118f11;
+            color: #fff;
+            border: 0;
+            padding: .75rem 1.5rem;
+            margin: .5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity .2s ease;
+        }
 
-    .buttons button:hover {
-        background-color: #118f11;
-    }
-</style>
-
+        .buttons button:hover {
+            opacity: .9;
+        }
+    </style>
+</head>
+<body>
 <div class="offline-container">
-
     <img src="{% static 'icons/icon-192.png' %}" alt="Orderpiqr Logo" class="logo">
     <h1>{% trans "You're offline" %}</h1>
     <p>{% trans "Sorry, content is unavailable right now." %}</p>
     <div class="buttons">
         <button onclick="location.reload()">{% trans "Retry" %}</button>
-        <button onclick="window.history.back()">{% trans "Go Back" %}</button>
-        {#        <button onclick="location.href='/'">{% trans "Try Offline Mode" %}</button>#}
-
+        <button onclick="history.back()">{% trans "Go Back" %}</button>
     </div>
 </div>
-
+</body>
+</html>
