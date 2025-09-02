@@ -70,35 +70,16 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
-  const url = new URL(req.url);
-  const isJS = req.destination === 'script' || url.pathname.endsWith('.js');
-
-  if (isJS) {
+  if (req.mode === 'navigate') {
     event.respondWith((async () => {
       try {
-        const fresh = await fetch(req, { cache: 'no-store' });
-        const cache = await caches.open(CACHE_NAME);
-        cache.put(req, fresh.clone());
-        return fresh;
-      } catch (e) {
-        const cached = await caches.match(req);
-        if (cached) return cached;
-        // As a last resort return offline page for navigations
-        if (req.mode === 'navigate') return caches.match('/offline/');
-        throw e;
+        return await fetch(req, { cache: 'no-store' }); // fresh HTML
+      } catch {
+        return caches.match('/offline/');
       }
     })());
     return;
   }
-
-  // default: try network then cache
-  event.respondWith((async () => {
-    try {
-      return await fetch(req);
-    } catch {
-      const cached = await caches.match(req);
-      if (cached) return cached;
-      if (req.mode === 'navigate') return caches.match('/offline/');
-    }
-  })());
+  // (keep your JS network-first branch here if you added it)
 });
+
