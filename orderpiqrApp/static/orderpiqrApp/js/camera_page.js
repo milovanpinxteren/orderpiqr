@@ -12,18 +12,39 @@ export let productData;
 // top-level (near other state)
 let lastPickTs = null;
 
-
-const cached = localStorage.getItem('product_data');
-
-if (cached) {
-    productData = JSON.parse(cached);
-    window.productData = productData;
-    if (typeof showNotification === 'function' && navigator && navigator.onLine === false) {
-        showNotification(gettext("Offline mode: using cached product data"), true);
+if (navigator.onLine) {
+    // ✅ Online: trust server-rendered data
+    const el = document.getElementById("product-data");
+    if (el && el.textContent) {
+        try {
+            productData = JSON.parse(el.textContent);
+            window.productData = productData;
+            localStorage.setItem('product_data', JSON.stringify(productData));
+        } catch (e) {
+            console.error("Failed to parse product data from DOM", e);
+            showNotification(gettext("Could not load product data from server"), true);
+        }
+    } else {
+        console.warn("No server-rendered product data found");
+        showNotification(gettext("No product data found on page"), true);
     }
 } else {
-    console.warn("No product data found!");
+    // 🚨 Offline: fall back to cache
+    const cached = localStorage.getItem('product_data');
+    if (cached) {
+        try {
+            productData = JSON.parse(cached);
+            window.productData = productData;
+            showNotification(gettext("Offline mode: using cached product data"), true);
+        } catch (e) {
+            console.error("Corrupted cached product data", e);
+            showNotification(gettext("Cached product data is not usable"), true);
+        }
+    } else {
+        showNotification(gettext("No product data available while offline"), true);
+    }
 }
+
 
 
 // export let productData = window.productData || {};  // Fallback in case the data is not injected
