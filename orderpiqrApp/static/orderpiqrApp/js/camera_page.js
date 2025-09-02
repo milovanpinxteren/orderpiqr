@@ -18,7 +18,7 @@ const cached = localStorage.getItem('product_data');
 if (cached) {
     productData = JSON.parse(cached);
     window.productData = productData;
-    if (typeof showNotification === 'function') {
+    if (typeof showNotification === 'function' && navigator && navigator.onLine === false) {
         showNotification(gettext("Offline mode: using cached product data"), true);
     }
 } else {
