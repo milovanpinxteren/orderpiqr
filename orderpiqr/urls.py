@@ -28,9 +28,12 @@ from django.views.static import serve
 from django.conf import settings
 from django.urls import re_path
 
+from orderpiqrApp.views.auth.signup_view import signup
+
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),  # Enables the language switcher post endpoint
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
+    path('signup/', signup, name='signup'),
     path('login/', custom_login, name='login'),
     path('name-entry/', name_entry, name='name_entry'),
     path('admin/loginas/', include('loginas.urls')),

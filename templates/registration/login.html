@@ -22,7 +22,12 @@
                 {{ form.as_p }}
             </div>
             <button class="login-button" role="button">{% trans "Login" %}</button>
+            <p class="footer-note">
+                {% trans "New customer?" %}
+                <a href="{% url 'signup' %}">{% trans "Create your account here" %}</a>
+            </p>
         </form>
+
     </div>
 </div>
 

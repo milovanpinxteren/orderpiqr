@@ -128,3 +128,10 @@ body {
         width: 80%;
     }
 }
+
+.footer-note {
+    text-align: center;
+    margin-top: 20px;
+    color: grey;
+    font-size: 0.6em;
+}
