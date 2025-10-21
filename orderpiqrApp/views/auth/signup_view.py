@@ -8,6 +8,12 @@ from django.contrib.auth.models import Group
 from orderpiqrApp.forms.accounts.signup_form import CompanySignupForm
 from orderpiqrApp.models import Customer, UserProfile  # adjust to your actual paths
 from django.utils.translation import gettext as _
+import logging
+from django.db import IntegrityError, DataError, transaction
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
+
+logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
@@ -55,9 +61,30 @@ def signup(request):
                                  )
                 login(request, admin_user)
                 return redirect(reverse("admin:index"))
-            except Exception as e:
-                print(e)
-                form.add_error(None, str(e))
+            except IntegrityError:
+                # Likely duplicate username/email/company
+                form.add_error(None, _("That username or email is already in use. Please choose a different one."))
+                logger.warning("Signup IntegrityError", exc_info=True)
+            except DataError: # Too long / invalid DB value
+                form.add_error(None,
+                               _("Some of the submitted data is invalid or too long. Please review and try again."))
+                logger.warning("Signup DataError", exc_info=True)
+            except ValidationError as e:
+                if hasattr(e, "message_dict"):
+                    for field, msgs in e.message_dict.items():
+                        for m in msgs:
+                            form.add_error(field if field in form.fields else None, m)
+                else:
+                    form.add_error(None, _("Please correct the highlighted errors and try again."))
+                logger.info("Signup ValidationError: %s", e, exc_info=True)
+
+            except (ValueError, KeyError, AttributeError): # Bad/missing values, wrong keys, or attribute access
+                form.add_error(None,
+                               _("Some of the submitted information is missing or invalid. Please check and try again."))
+                logger.warning("Signup input error", exc_info=True)
+            except Exception:
+                form.add_error(None, _("We’re experiencing technical issues. Please try again shortly."))
+                logger.exception("Unexpected error during signup")
     else:
         form = CompanySignupForm()
 
