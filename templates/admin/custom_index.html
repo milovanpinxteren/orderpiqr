@@ -1,0 +1,76 @@
+{% extends "admin/index.html" %}
+{% load i18n %}
+
+{# ——— RIGHT COLUMN: replace everything with just the plot ——— #}
+{% block sidebar %}
+    <div id="content-related">
+        <div id="admin-plot" class="module">
+            <h2>{% trans "Picklists scanned this month" %}</h2>
+            <canvas id="picklistsChart"></canvas>
+        </div>
+    </div>
+{% endblock %}
+
+{# ——— MAIN CONTENT stays as-is; load Chart.js & init ——— #}
+{% block content %}
+    {{ block.super }}
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
+    <script>
+        (async function () {
+            const res = await fetch("{% url 'admin-picklists-this-month' %}", {credentials: 'same-origin'});
+            if (!res.ok) return;
+            const {labels, counts, limit, month_label} = await res.json();
+            // Register the annotation plugin for Chart.js v4
+            Chart.register(window['chartjs-plugin-annotation']);
+            const finalTotal = counts.length ? counts[counts.length - 1] : 0;
+            new Chart(document.getElementById('picklistsChart'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: `{{ _('Cumulative picklists') }} (${month_label})`,
+                        data: counts,
+                        borderColor: '#2c7be5',
+                        fill: false,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {display: false},
+                        annotation: {
+                            annotations: {
+                                planLimit: {
+                                    type: 'line',
+                                    yMin: 50,
+                                    yMax: 50,
+                                    borderColor: 'rgba(255,0,0,0.6)',
+                                    borderWidth: 3,
+                                    borderDash: [6, 4],
+                                    label: {
+                                        display: true,
+                                        content: String('Montly limit'),
+                                        position: 'end',
+                                        backgroundColor: 'rgb(255,255,255)',
+                                        color: '#000'
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            // Show at least 0–60 by default, but auto-expand if cumulative exceeds 50
+                            suggestedMax: Math.max(limit + 10, finalTotal),
+                            ticks: {precision: 0}
+                        }
+                    }
+                }
+            });
+        })();
+    </script>
+{% endblock %}

@@ -6,11 +6,17 @@ from django.contrib.auth.forms import AuthenticationForm
 from orderpiqrApp.models import Device, UserProfile
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext_lazy as _
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, JsonResponse
 from django.conf import settings
 import os
 import threading
 import time
+from django.db.models.functions import TruncDate
+from django.db.models import Count
+from datetime import date, timedelta
+from orderpiqrApp.models import PickList
+from django.utils import timezone
+from calendar import monthrange
 
 
 def index(request):
@@ -113,6 +119,7 @@ def download_batch_qr_pdf(request, file_name):
 
 def delete_file_delayed(path, delay=10):
     """Delete file after a short delay (in seconds)."""
+
     def _delete():
         time.sleep(delay)
         try:
@@ -121,3 +128,43 @@ def delete_file_delayed(path, delay=10):
             print(f"Failed to delete {path}: {e}")
 
     threading.Thread(target=_delete).start()
+
+PLAN_LIMIT = 50
+
+def picklists_this_month_cumulative(request):
+    customer = getattr(getattr(request.user, "userprofile", None), "customer", None)
+    limit_to_customer = bool(customer and not request.user.is_superuser)
+
+    today = timezone.localdate()
+    start = today.replace(day=1)
+    last_day = monthrange(today.year, today.month)[1]
+    end = today.replace(day=last_day)
+
+    filters = {"created_at__date__gte": start, "created_at__date__lte": end}
+    if limit_to_customer:
+        filters["customer"] = customer
+
+    daily = (PickList.objects
+             .filter(**filters)
+             .annotate(day=TruncDate("created_at"))
+             .values("day")
+             .annotate(count=Count("pk"))
+             .order_by("day"))
+
+    # build day list for the whole month
+    days = [start + timedelta(days=i) for i in range((end - start).days + 1)]
+    by_day = {row["day"]: row["count"] for row in daily}
+
+    # cumulative
+    counts = []
+    running = 0
+    for d in days:
+        running += by_day.get(d, 0)
+        counts.append(running)
+
+    return JsonResponse({
+        "labels": [d.isoformat() for d in days],
+        "counts": counts,
+        "limit": PLAN_LIMIT,
+        "month_label": today.strftime("%B %Y"),
+    })

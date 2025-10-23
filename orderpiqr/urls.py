@@ -1,19 +1,3 @@
-"""
-URL configuration for orderpiqr project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
@@ -27,8 +11,12 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 from django.conf import settings
 from django.urls import re_path
-
+from django.contrib.admin.views.decorators import staff_member_required
 from orderpiqrApp.views.auth.signup_view import signup
+
+from django.contrib import admin
+
+admin.site.index_template = "admin/custom_index.html"
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),  # Enables the language switcher post endpoint
@@ -58,6 +46,8 @@ urlpatterns = [
 ]
 
 urlpatterns += i18n_patterns(
+    path("admin/metrics/picklists-this-month.json", staff_member_required(picklists_this_month_cumulative),
+         name="admin-picklists-this-month", ),
     path('admin/', admin.site.urls),
     path('', root_redirect, name='root_redirect'),
     path('orderpiqr/', include('orderpiqrApp.urls')),
