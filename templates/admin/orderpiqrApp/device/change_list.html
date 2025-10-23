@@ -1,10 +1,15 @@
 {% extends "admin/change_list.html" %}
 {% load i18n static %}
 {% block extrahead %}
-  {{ block.super }}
-  <!-- Ensure gettext() works -->
-  <script src="{% url 'javascript-catalog' %}"></script>
+    <style>
+        #content-main {
+            width: 100%;
+        }
+    </style>
+    {{ block.super }}
+    <!-- Ensure gettext() works -->
+    <script src="{% url 'javascript-catalog' %}"></script>
 {% endblock %}
 {% block content %}
-  {{ block.super }}
+    {{ block.super }}
 {% endblock %}
