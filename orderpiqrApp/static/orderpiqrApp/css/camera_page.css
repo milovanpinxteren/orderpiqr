@@ -1,12 +1,13 @@
 /* Basic layout */
 body {
     font-family: Roboto, sans-serif;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     display: flex;
     flex-direction: column;
     height: 100vh;
     background-color: #f4f6f9;
+    /*max-width: 600px;*/
 }
 
 .screen-success {
@@ -128,9 +129,10 @@ h3 {
     padding: 10px;
     gap: 0.1rem;
 }
+
 .camera-container {
     width: 90vw;
-    max-width: 90vw;
+    /*max-width: 90vw;*/
     margin: 0 auto;
     padding: 0.5rem;
     position: relative;
@@ -139,9 +141,11 @@ h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-x: hidden;   /* Hide horizontal overflow only */
-    overflow-y: visible;  /* Let height grow */
+    overflow-x: hidden; /* Hide horizontal overflow only */
+    overflow-y: visible; /* Let height grow */
     flex-direction: column;
+    /*max-width: 570px;*/
+
 }
 
 /*.camera-container {*/
@@ -202,7 +206,7 @@ h3 {
 /*}*/
 
 #reader {
-    width: 90vw;
+    /*width: 90vw;*/
     /*max-width: 90vw;*/
     /*object-fit: contain;*/
     /*aspect-ratio: 1 / 1; !* Makes it square *!*/

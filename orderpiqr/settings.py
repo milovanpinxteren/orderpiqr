@@ -19,6 +19,7 @@ env = environ.Env()
 environ.Env.read_env()  # Read environment variables from the .env file
 
 import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'drf_spectacular',
+    'django_user_agents',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +69,8 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'api.middleware.api_logger.APILoggingMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
+
 ]
 
 ROOT_URLCONF = 'orderpiqr.urls'
@@ -90,7 +94,6 @@ WSGI_APPLICATION = 'orderpiqr.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
 
 
 DATABASES = {
@@ -122,7 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en'  # default language
 USE_I18N = True
-
 
 LANGUAGES = [
     ('nl', 'Nederlands'),
@@ -186,7 +188,6 @@ LOGGING = {
         },
     },
 }
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

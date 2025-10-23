@@ -53,6 +53,10 @@
 </div>
 
 <div class="container">
+    {% if request.user_agent.is_pc %}
+        <p><i>{% trans "This app is best viewed on your phone" %}</i>📱</p>
+    {% endif %}
+
     <div id="camera-container" class="camera-container">
         <div id="reader" class="scanner"></div>
     </div>
