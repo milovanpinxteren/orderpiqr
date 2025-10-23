@@ -1,0 +1,29 @@
+/* orderpiqrApp/static/orderpiqrApp/admin/css/tour.css */
+
+/*!* === General tooltip text === *!*/
+
+.introjs-tooltip {
+    color: black;
+}
+
+.introjs-progressbar {
+  background-color: #4caf50 !important; /* a clean professional green */
+}
+
+
+/* Larger, friendlier final tour box */
+.tour-final-step {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    /*transform: translate(-50%, -50%) !important;*/
+
+    min-width: 600px !important;
+    padding: 28px 30px !important;
+    /*background-color: #ffffff !important;*/
+    color: black !important;
+    /*font-size: 15px !important;*/
+    line-height: 1.4 !important;
+    /*border-radius: 12px !important;*/
+    /*box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;*/
+}

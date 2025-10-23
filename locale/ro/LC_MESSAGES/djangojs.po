@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-08 13:48+0200\n"
+"POT-Creation-Date: 2025-10-23 13:13+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,24 +12,387 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:18
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:27
+msgid "Devices show who scanned and picked. Use this page to track activity."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:32
+msgid "Name — device or scanner name shown to admins."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:37
+msgid "Description — optional notes about the device or location."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:42
+msgid "Last login — when this device last authenticated/was used."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:47
+msgid "Lists picked — how many picklists this device/user completed."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:52
+msgid "Customer — company admins only see their own devices."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:58
+msgid "Add a new device here when granting scanning access."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:63
+msgid "Search devices by name or description."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:69
+msgid "Open a device to view its details."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:76
+msgid ""
+"<h1>🎉 All set! You’ve completed the Orderpiqr tour.</h1><br>        Next "
+"steps:<br>        • <b>Add your products</b> in the admin panel.<br>        "
+"• <b>Create an order</b> and <b>generate a PDF picklist</b> for your team."
+"<br>        • On your phone, visit <a href='https://app.orderpiqr.nl' "
+"target='_blank'>app.orderpiqr.nl</a>         and log in with your order "
+"picker account.<br>        • <b>Scan the QR code</b> on your newly created "
+"picklist.<br>        • Start picking your first order!"
+"<br><br>                <h2>Important information</h2>        We recommend "
+"using <b>Google Chrome</b> for full functionality — you can also         "
+"<b>install the web app</b> directly from your browser for quick access."
+"<br><br>        On your phone, you can adjust settings such as <b>language</"
+"b>, <b>picking order</b>,         and <b>sorting order</b>. If you’d like us "
+"to set up default preferences for you, just let us know.<br><br>        If "
+"you have any questions or would like additional features, email         <a "
+"href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> or schedule a call "
+"via         <a href='https://www.orderpiqr.nl' "
+"target='_blank'>www.orderpiqr.nl</a>.<br><br>        Your first <b>50 "
+"picklists per month are free</b>! After that, you’ll receive a "
+"notification         before any billing begins — no subscriptions, no hidden "
+"costs."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:103
+msgid "Finish"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:44
+msgid ""
+"This is your Orders page. Create or import orders, then generate picklists."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:48
+msgid "Order code — your primary identifier used across imports and PDFs."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:52
+msgid ""
+"Customer — company admins are scoped to their own customer automatically."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:56
+msgid "Created at — when the order was added."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:61
+msgid "Add a single order here. On the order page you can add lines."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:67
+msgid ""
+"Bulk import orders via CSV/XLSX. Required headers: <code>order_code</code>, "
+"<code>product_code</code>, <code>quantity</code>. Unknown product codes are "
+"rejected. Existing orders with the same code are overwritten (their lines "
+"are replaced)."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:73
+msgid "Search by order code (and other fields) to find orders quickly."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:77
+msgid "Use filters (e.g., by date) to narrow the list."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:85
+msgid "Select one or more orders, then choose “%(label)s”."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:88
+msgid ""
+"Select one or more orders, then choose “%(label)s” to generate a batch of QR "
+"PDFs."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:90
+msgid ""
+"Select one or more orders, then choose your action to generate picklists or "
+"QR PDFs."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:95
+msgid "Click Apply to run the action."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:104
+msgid ""
+"After generating, view results in <b>Pick Lists</b>: see who picked, "
+"duration, success, and items not picked."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:108
+msgid "Next, open <b>Pick Lists</b> to review and print PDFs with QR codes."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:116
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:89
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:209
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:86
+msgid "Close"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:137
+msgid "Go to Pick Lists"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:40
+msgid ""
+"These are your Pick Lists — the actual picking tasks. They can be generated "
+"from Orders, or auto-created when scanning a QR that doesn't exist yet."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:45
+msgid "Picklist code — unique ID used in the app/QRs."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:50
+msgid "Device — who/what performed the picking (helps with accountability)."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:55
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:167
+msgid "Pick time — when the pick started."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:60
+msgid "Time taken — how long the pick took (performance metric)."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:65
+msgid ""
+"Successful — overall result. Issues are investigated on the detail page."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:70
+msgid "Search by device name or pick time to find a list quickly."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:76
+msgid ""
+"Open a picklist to review item-level results: which products were picked, "
+"timing, and which items were not picked."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:83
+msgid ""
+"Next: <b>Devices</b> — manage which devices can scan and see who picked what."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:86
+msgid "Next: open <b>Devices</b> to manage scanners and see who picked what."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:115
+msgid "Go to Devices"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:126
+msgid "Open first picklist"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:162
+msgid ""
+"This picklist shows item-level results. Use it to review issues and "
+"performance."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:172
+msgid "Total time taken — duration of this picklist."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:177
+msgid "Overall success — quick status at a glance."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:183
+msgid ""
+"Item-level results (Product Picks). Each row shows what happened per product."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:189
+msgid "Product — what was supposed to be picked."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:194
+msgid "Quantity — units picked for this product."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:199
+msgid "Time taken — how long this item took to pick."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:204
+msgid "Successful — if not checked, this item was not picked successfully."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:207
+msgid ""
+"Tip: items not picked (unsuccessful) help you spot shortages or scanning "
+"mistakes."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:30
+msgid "This is your product catalog. Let's set it up."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:34
+msgid ""
+"Code (SKU). Unique scannable code which is on the product. If no code "
+"exists, you can create one. Used for scanning/imports."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:38
+msgid "Description. Human-readable item name for pickers."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:42
+msgid "Location. Bin/shelf—helps optimize walking route."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:46
+msgid "Customer. Auto-filled for company admins"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:49
+msgid "Add a single product here."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:55
+msgid ""
+"Bulk import via CSV/XLSX. Required headers: <code>code</code>, "
+"<code>description</code>, <code>location</code>. Existing products with the "
+"same code are updated; new ones are added."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:58
+msgid ""
+"You can also enable a CSV/XLSX upload on this page. When present, it adds or "
+"overwrites by product code for the current customer."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:63
+msgid "Search by code or description to find items quickly."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:67
+msgid "Click a row to edit a product. Duplicates are prevented per customer."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:75
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:79
+msgid ""
+"All set here. Continue to <b>Orders</b> to generate an order. Make sure you "
+"have created/imported products before you do."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:113
+msgid "Go to Orders"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:121
+msgid "Skip to Pick Lists"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:36
+msgid ""
+"👋 Quick tour of the essentials. If you prefer talking to an employee, you "
+"can schedule a meeting or contact us at www.orderpiqr.nl"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:39
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:40
+msgid ""
+"Products — Create items to pick with (bar)code, name/description and "
+"physical location."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:43
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:44
+msgid ""
+"Orders — Create orders manually or via API/import. (Scanning a Picklist QR "
+"can also create a picklist on the fly.)"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:47
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:48
+msgid ""
+"Pick Lists — The actual picking tasks. Generate from Orders, or have them "
+"created automatically when a QR is scanned."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:51
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:52
+msgid "Devices — See who picked what and control access."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:54
+msgid "Ready? Click <b>Products</b> to begin."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:55
+msgid "Open <b>Products</b> to begin."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:75
+msgid "Go to Products"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:25
+msgid "Could not load product data from server"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:29
+#, fuzzy
+#| msgid "No product data was found, cannot update list"
+msgid "No product data found on page"
+msgstr "Nu au fost găsite date despre produse, nu se poate actualiza lista."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:38
 msgid "Offline mode: using cached product data"
 msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:91
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:106
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:41
+msgid "Cached product data is not usable"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:44
+msgid "No product data available while offline"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:119
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:136
 msgid "Scanned %(product)s"
 msgstr "Scanat: %(product)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:98
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:126
 msgid "Incorrect scan, please try again."
 msgstr "Scanare incorectă, te rugăm să încerci din nou."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:111
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:141
 msgid "Product code not found in the list."
 msgstr "Codul produsului nu a fost găsit în listă."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:116
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:146
 msgid ""
 "An unexpected error occurred, please try again. If this issue persists, "
 "contact support"
@@ -37,40 +400,44 @@ msgstr ""
 "A apărut o eroare neașteptată. Te rugăm să încerci din nou. Dacă problema "
 "persistă, contactează suportul tehnic."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:137
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:164
+msgid "Could not update product pick."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:211
 #, fuzzy
 #| msgid "Picklist added"
 msgid "Picklist completed!"
 msgstr "Listă de preluare adăugată"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:141
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:215
 #, fuzzy
 #| msgid "Error sending picklist."
 msgid "Error completing picklist."
 msgstr "Eroare la trimiterea listei de preluare."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:146
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:220
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:103
 msgid "Error getting device fingerprint."
 msgstr "Eroare la obținerea amprentei dispozitivului."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:154
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:228
 msgid "No product data was found, cannot update list"
 msgstr "Nu au fost găsite date despre produse, nu se poate actualiza lista."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:46
+#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:47
 msgid "Manual override: %(product)s confirmed"
 msgstr "Suprascriere manuală: %(product)s confirmat(ă)"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:53
+#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:54
 msgid "Manual override: %(code)s confirmed"
 msgstr "Suprascriere manuală: %(code)s confirmat(ă)"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\orderImportance.js:16
+#: .\orderpiqrApp\static\orderpiqrApp\js\orderImportance.js:14
 msgid "Order Importance: Enabled"
 msgstr "Importanța ordinii: Activată"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\orderImportance.js:22
+#: .\orderpiqrApp\static\orderpiqrApp\js\orderImportance.js:18
 msgid "Order Importance: Disabled"
 msgstr "Importanța ordinii: Dezactivată"
 

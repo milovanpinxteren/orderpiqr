@@ -43,7 +43,7 @@
     });
     if (thCustomer) steps.push({
         element: thCustomer, position: "bottom",
-        intro: gettext("Customer. Auto-filled for company admins; superusers see all.")
+        intro: gettext("Customer. Auto-filled for company admins")
     });
 
     if (addBtn) steps.push({element: addBtn, position: "left", intro: gettext("Add a single product here.")});
@@ -72,11 +72,11 @@
         steps.push({
             element: ordersLink,
             position: "left",
-            intro: gettext("All set here. Continue to <b>Orders</b> to generate picklists next, or skip straight to Pick Lists (QR scan can also create them on the fly).")
+            intro: gettext("All set here. Continue to <b>Orders</b> to generate an order. Make sure you have created/imported products before you do.")
         });
     } else {
         steps.push({
-            intro: gettext("All set here. Continue to <b>Orders</b> to generate picklists next, or skip straight to Pick Lists (QR scan can also create them on the fly).")
+            intro: gettext("All set here. Continue to <b>Orders</b> to generate an order. Make sure you have created/imported products before you do.")
         });
     }
     tour.setOptions({

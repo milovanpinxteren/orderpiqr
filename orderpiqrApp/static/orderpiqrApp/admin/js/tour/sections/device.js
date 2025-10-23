@@ -24,7 +24,7 @@
     const searchInput = el('#searchbar') || el('input[name="q"]');
     const firstRowLink = el('#result_list tbody tr:first-child th a');
 
-    steps.push({intro: gettext("Devices control who can scan and pick. Use this page to manage access and track activity.")});
+    steps.push({intro: gettext("Devices show who scanned and picked. Use this page to track activity.")});
 
     if (thName) steps.push({
         element: thName,
@@ -66,12 +66,35 @@
     if (firstRowLink) {
         steps.push({
             element: firstRowLink, position: "right",
-            intro: gettext("Open a device to view or update its details.")
+            intro: gettext("Open a device to view its details.")
         });
     }
 
     // Final: conclude the tour
-    steps.push({intro: gettext("All set! You’ve completed the tour. You can now manage devices, picklists, orders, and products confidently.")});
+    steps.push({
+        intro: gettext(
+            "<h1>🎉 All set! You’ve completed the Orderpiqr tour.</h1><br>\
+        Next steps:<br>\
+        • <b>Add your products</b> in the admin panel.<br>\
+        • <b>Create an order</b> and <b>generate a PDF picklist</b> for your team.<br>\
+        • On your phone, visit <a href='https://app.orderpiqr.nl' target='_blank'>app.orderpiqr.nl</a> \
+        and log in with your order picker account.<br>\
+        • <b>Scan the QR code</b> on your newly created picklist.<br>\
+        • Start picking your first order!<br><br>\
+        \
+        <h2>Important information</h2>\
+        We recommend using <b>Google Chrome</b> for full functionality — you can also \
+        <b>install the web app</b> directly from your browser for quick access.<br><br>\
+        On your phone, you can adjust settings such as <b>language</b>, <b>picking order</b>, \
+        and <b>sorting order</b>. If you’d like us to set up default preferences for you, just let us know.<br><br>\
+        If you have any questions or would like additional features, email \
+        <a href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> or schedule a call via \
+        <a href='https://www.orderpiqr.nl' target='_blank'>www.orderpiqr.nl</a>.<br><br>\
+        Your first <b>50 picklists per month are free</b>! After that, you’ll receive a notification \
+        before any billing begins — no subscriptions, no hidden costs."
+        ),
+        tooltipClass: "tour-final-step"
+    });
 
     tour.setOptions({
         steps,
