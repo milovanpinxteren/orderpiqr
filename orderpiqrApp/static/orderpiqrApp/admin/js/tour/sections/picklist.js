@@ -18,7 +18,7 @@
     // -----------------------------
     // A) Pick Lists — CHANGELIST
     // -----------------------------
-    if (onPicklistList && state === 'go_picklists') {
+    if (onPicklistList && state === 'go_picklists' && localStorage.getItem('opqr_tour_dismissed') !== 'true') {
         document.addEventListener('DOMContentLoaded', function () {
             const tour = getTour();
             const steps = [];
@@ -140,7 +140,7 @@
     // -----------------------------
     // B) Pick List — DETAIL (change form)
     // -----------------------------
-    if (onPicklistDetail && state === 'on_picklist_detail') {
+    if (onPicklistDetail && state === 'on_picklist_detail' && localStorage.getItem('opqr_tour_dismissed') !== 'true') {
         document.addEventListener('DOMContentLoaded', function () {
             const tour = getTour();
             const steps = [];
@@ -209,10 +209,10 @@
             tour.setOptions({steps, showProgress: true, exitOnOverlayClick: false, doneLabel: _("Close")});
 
             // Keep context after finishing detail; do not nuke main flow flags
-            tour.oncomplete(function () {
-                // If you want to return to list with a hint, set:
-                // localStorage.setItem('opqr_tour', 'go_picklists');
+            tour.onexit(function () {
+                localStorage.setItem('opqr_tour_dismissed', 'true');
             });
+
 
             tour.start();
         });

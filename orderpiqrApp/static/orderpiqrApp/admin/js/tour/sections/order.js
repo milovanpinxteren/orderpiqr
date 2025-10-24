@@ -8,7 +8,10 @@
     }
 
     // Only run when arriving from Products → Orders
-    if (localStorage.getItem('opqr_tour') !== 'go_orders') return;
+    if (
+        localStorage.getItem('opqr_tour') !== 'go_orders' ||
+        localStorage.getItem('opqr_tour_dismissed') === 'true'
+    ) return;
 
     const tour = getTour();
     const steps = [];
@@ -143,9 +146,8 @@
     });
 
     // Do not auto-redirect on complete/exit
-    tour.oncomplete(function () {
-    });
     tour.onexit(function () {
+        localStorage.setItem("opqr_tour_dismissed", "true");
     });
 
     tour.start();

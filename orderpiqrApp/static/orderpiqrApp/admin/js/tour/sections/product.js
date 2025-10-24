@@ -8,7 +8,10 @@
     }
 
     // Only run when arriving from the homepage step
-    if (localStorage.getItem('opqr_tour') !== 'on_products') return;
+    if (
+        localStorage.getItem('opqr_tour') !== 'on_products' ||
+        localStorage.getItem('opqr_tour_dismissed') === 'true'
+    ) return;
 
     const tour = getTour();
     const steps = [];
@@ -135,7 +138,8 @@
     // No auto-redirect on complete/exit
     tour.oncomplete(function () { /* intentionally empty */
     });
-    tour.onexit(function () { /* intentionally empty */
+    tour.onexit(function () {
+        localStorage.setItem("opqr_tour_dismissed", "true");
     });
 
     tour.start();

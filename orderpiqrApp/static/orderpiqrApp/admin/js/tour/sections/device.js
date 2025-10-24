@@ -8,7 +8,11 @@
     }
 
     // Only run when arriving from Pick Lists → Devices
-    if (localStorage.getItem('opqr_tour') !== 'go_devices') return;
+    if (
+        localStorage.getItem('opqr_tour') !== 'go_devices' ||
+        localStorage.getItem('opqr_tour_dismissed') === 'true'
+    ) return;
+
 
     const tour = getTour();
     const steps = [];
@@ -107,6 +111,7 @@
     function endTour() {
         // Clear only our state key; keep anything else in localStorage intact
         try {
+            localStorage.setItem('opqr_tour_dismissed', 'true');
             localStorage.removeItem('opqr_tour');
         } catch (e) {
         }
