@@ -208,9 +208,17 @@
 
             tour.setOptions({steps, showProgress: true, exitOnOverlayClick: false, doneLabel: _("Close")});
 
-            // Keep context after finishing detail; do not nuke main flow flags
-            tour.onexit(function () {
-                localStorage.setItem('opqr_tour_dismissed', 'true');
+            let finishedNormally = false;
+
+            tour.oncomplete(() => {
+                finishedNormally = true;               // finished this section normally
+                localStorage.setItem('opqr_tour_dismissed', 'false');
+            });
+
+            tour.onexit(() => {
+                if (!finishedNormally) {
+                    localStorage.setItem('opqr_tour_dismissed', 'true'); // user clicked ✕
+                }
             });
 
 

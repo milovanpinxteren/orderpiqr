@@ -135,12 +135,19 @@
         if (doneBtn) doneBtn.style.display = 'none';
     });
 
-    // No auto-redirect on complete/exit
-    tour.oncomplete(function () { /* intentionally empty */
+    let finishedNormally = false;
+
+    tour.oncomplete(() => {
+        finishedNormally = true;               // finished this section normally
+        localStorage.setItem('opqr_tour_dismissed', 'false');
     });
-    tour.onexit(function () {
-        localStorage.setItem("opqr_tour_dismissed", "true");
+
+    tour.onexit(() => {
+        if (!finishedNormally) {
+            localStorage.setItem('opqr_tour_dismissed', 'true'); // user clicked ✕
+        }
     });
+
 
     tour.start();
 })();
