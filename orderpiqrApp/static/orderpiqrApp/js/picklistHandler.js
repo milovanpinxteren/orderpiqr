@@ -36,6 +36,9 @@ export function handlePicklist(code, currentPicklist, productData) {
         if (confirmStart) {
             isProcessingPicklist = true;  // Set flag to true to indicate processing has started
             currentPicklist = []; // Reset the picklist
+            const originalCounts = {};
+
+
             const rows = code.split("\n");  // Split the picklist into rows (assuming multi-line)
             // Skip the first row (orderID) and process the remaining rows
             const validRows = rows.slice(1).filter(row => row.trim() !== "");  // Remove empty rows
@@ -67,6 +70,12 @@ export function handlePicklist(code, currentPicklist, productData) {
                 const sortingPreference = window.SETTINGS?.picklist_sorting ?? "original";
                 console.log('sorting preference', sortingPreference)
                 currentPicklist = sortPicklist(currentPicklist, productData, sortingPreference);
+
+                // Calculate original counts per product code
+                for (const code of currentPicklist) {
+                    originalCounts[code] = (originalCounts[code] || 0) + 1;
+                }
+                isProcessingPicklist = false;
                 updateScannedList(currentPicklist, productData);
                 showNotification(gettext("Picklist added"));
             }
@@ -105,13 +114,15 @@ export function handlePicklist(code, currentPicklist, productData) {
 
             // Reset flag after processing the picklist
             isProcessingPicklist = false;
+            console.log('JVVBL;MKPLK')
 
-            return {currentPicklist, orderID};  // Return the updated picklist
+            return {currentPicklist, orderID, originalCounts};  // Return the updated picklist
         }
 
+        console.log('AFDSDFASDFSAFSDA')
         // Reset flag if the user cancels the picklist
         isProcessingPicklist = false;
-        return {currentPicklist, orderID};  // Return the unchanged picklist if the user cancels
+        return {currentPicklist, orderID, originalCounts: {}};  // Return the unchanged picklist if the user cancels
 
     } catch (err) {
         console.error("Error in handlePicklist:", err);

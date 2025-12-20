@@ -1,5 +1,5 @@
 // camera_page.js
-import {initializeScanner} from './qrScanner.js';
+import {initializeScanner, pauseScanner, resumeScanner} from './qrScanner.js';
 import {showNotification} from './notifications.js';
 import {toggleOrderImportance, updateOrderImportanceButton} from './orderImportance.js';
 import {handlePicklist} from './picklistHandler.js';
@@ -46,7 +46,6 @@ if (navigator.onLine) {
 }
 
 
-
 // export let productData = window.productData || {};  // Fallback in case the data is not injected
 export let currentPicklist = []; // Array to store the current picklist
 export let isOrderImportant = true
@@ -62,7 +61,7 @@ toggleButton.addEventListener('click', function () {
 });
 
 let isProcessingScan = false;  // Flag to ensure only one scan is processed at a time
-
+let originalProductCounts = {}
 // Initialize the QR code scanner
 initializeScanner((scannedCode) => {
     if (isProcessingScan) {
@@ -82,6 +81,8 @@ initializeScanner((scannedCode) => {
         }
         currentPicklist = result.currentPicklist
         currentOrderID = result.orderID
+        originalProductCounts = result.originalCounts;  // Add this line
+
         lastPickTs = Date.now();
         setTimeout(() => {
             console.log('scan picklist done done')
@@ -118,6 +119,15 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 const product = productData.find(item => item.code === firstProductCode);  // Match code in productData
                 showNotification(gettext("Scanned %(product)s").replace("%(product)s", product.description));
                 console.log('currentPicklist.length', currentPicklist.length)
+// Check if same product still exists in remaining picklist
+                const remainingCount = currentPicklist.filter(c => c === firstProductCode).length;
+                if (remainingCount > 0) {
+                    const totalCount = originalProductCounts[firstProductCode] || remainingCount + 1;
+                    pauseScanner();
+                    showConfirmationOverlay(product.description, remainingCount, totalCount);
+                }
+
+
                 if (currentPicklist.length === 0) {
                     notifyPicklistCompleted(currentOrderID, csrfToken);  // <- you'll need to make csrfToken available
                 }
@@ -133,7 +143,17 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 updateScannedList(currentPicklist, productData);  // Update the table after a valid scan
                 onSuccessfulPick(code);
 
-                showNotification(gettext("Scanned %(product)s").replace("%(product)s", productData[code].picknaam));
+                const product = productData.find(item => item.code === code);
+                showNotification(gettext("Scanned %(product)s").replace("%(product)s", product.description));
+
+// Check if same product still exists in remaining picklist
+                const remainingCount = currentPicklist.filter(c => c === code).length;
+                if (remainingCount > 0) {
+                    const totalCount = originalProductCounts[code] || remainingCount + 1;
+                    pauseScanner();
+                    showConfirmationOverlay(product.description, remainingCount, totalCount);
+                }
+
                 if (currentPicklist.length === 0) {
                     notifyPicklistCompleted(currentOrderID, csrfToken);  // <- you'll need to make csrfToken available
                 }
@@ -227,4 +247,29 @@ if (Object.keys(productData).length === 0) {
     console.error('No product data found!');
     showNotification(gettext("No product data was found, cannot update list"), true);
 
+}
+
+
+// Overlay elements
+const overlay = document.getElementById('scan-confirmation-overlay');
+const overlayProductName = document.getElementById('overlay-product-name');
+const overlayRemainingCount = document.getElementById('overlay-remaining-count');
+
+// Event listener for full overlay tap
+overlay.addEventListener('click', function () {
+    hideConfirmationOverlay();
+    isProcessingScan = false;
+    resumeScanner();
+});
+
+function showConfirmationOverlay(productDescription, remainingCount, totalCount) {
+    overlayProductName.textContent = productDescription;
+    overlayRemainingCount.innerHTML = gettext("<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining")
+        .replace("%(remaining)s", remainingCount)
+        .replace("%(total)s", totalCount);
+    overlay.classList.remove('hidden');
+}
+
+function hideConfirmationOverlay() {
+    overlay.classList.add('hidden');
 }

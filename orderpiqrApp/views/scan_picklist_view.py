@@ -1,62 +1,127 @@
 from datetime import timedelta
 
+from django.db import IntegrityError, transaction
 from django.http import JsonResponse
 from django.utils import timezone
 import json
+from django.views.decorators.http import require_POST
+from orderpiqrApp.models import Device, PickList, Product, ProductPick, UserProfile
 
-from orderpiqrApp.models import Device, PickList, Product, ProductPick
 
-
+@require_POST
 def scan_picklist(request):
-    if request.method == 'POST':
+    # Parse JSON
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
+
+    picklist = data.get('picklist', [])
+    device_fingerprint = data.get('deviceFingerprint', '')
+    order_id = data.get('orderID', None)
+
+    # Validate required fields
+    if not order_id:
+        return JsonResponse({'status': 'error', 'message': 'orderID is required'}, status=400)
+
+    if not device_fingerprint:
+        return JsonResponse({'status': 'error', 'message': 'deviceFingerprint is required'}, status=400)
+
+    if not picklist:
+        return JsonResponse({'status': 'error', 'message': 'picklist is empty'}, status=400)
+
+    local_time = timezone.localtime(timezone.now())
+
+    # Fetch or create device
+    try:
+        device = Device.objects.get(device_fingerprint=device_fingerprint)
+    except Device.DoesNotExist:
+        if not request.user.is_authenticated:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Device not found and user not authenticated'
+            }, status=401)
+
         try:
-            # Parse the incoming JSON request
-            data = json.loads(request.body)
-            picklist = data.get('picklist', [])
-            device_fingerprint = data.get('deviceFingerprint', '')
-            order_id = data.get('orderID', None)  # Assuming orderID is passed in the request
+            user_profile = UserProfile.objects.get(user=request.user)
+        except UserProfile.DoesNotExist:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'User has no customer profile'
+            }, status=400)
 
-            # Fetch the device using the fingerprint
-            device = Device.objects.get(device_fingerprint=device_fingerprint)
-            local_time = timezone.localtime(timezone.now())
+        device = Device.objects.create(
+            user=request.user,
+            device_fingerprint=device_fingerprint,
+            name=f"Auto-created device ({local_time.strftime('%Y-%m-%d %H:%M')})",
+            description=f"Automatically created for user {request.user.username}",
+            customer=user_profile.customer,
+            last_login=local_time,
+            lists_picked=0
+        )
 
-            pick_list, created = PickList.objects.update_or_create(
-                picklist_code=order_id,
-                customer=device.customer,
-                defaults={
-                    'device': device,
-                    'updated_at': local_time,
-                    'pick_started': True
-                }
-            )
-            if not created:  # if overwritten
-                new_note = f"Added by device {device.name} at {local_time.strftime("%Y-%m-%d %H:%M")}"
+    # Process picklist in a transaction
+    try:
+        with transaction.atomic():
+            try:
+                pick_list = PickList.objects.select_for_update().get(
+                    picklist_code=order_id,
+                    customer=device.customer
+                )
+                pick_list.device = device
+                pick_list.updated_at = local_time
+                pick_list.pick_started = True
+                new_note = f"Restarted by device {device.name} at {local_time.strftime('%Y-%m-%d %H:%M')}"
                 pick_list.notes = (pick_list.notes or "") + "\n" + new_note
                 pick_list.save()
+
                 ProductPick.objects.filter(picklist=pick_list).delete()
-            # Loop through each product in the picklist and create ProductPick entries
+                created = False
+
+            except PickList.DoesNotExist:
+                pick_list = PickList.objects.create(
+                    picklist_code=order_id,
+                    customer=device.customer,
+                    device=device,
+                    updated_at=local_time,
+                    pick_started=True
+                )
+                created = True
+
+            # Original product handling
             for product_code in picklist:
-                product = Product.objects.get(customer=device.customer, code=product_code)
+                product = Product.objects.filter(customer=device.customer, code=product_code).first()
+                if not product:
+                    raise Product.DoesNotExist()
                 ProductPick.objects.create(
                     product=product,
                     picklist=pick_list,
                     quantity=1,
                 )
 
-            # Return a success response with details
-            return JsonResponse({'status': 'ok', 'message': 'Picklist processed successfully'})
+    except Product.DoesNotExist:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Product not found for one of the product codes'
+        }, status=404)
+    except IntegrityError as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': f'Database integrity error: {str(e)}'
+        }, status=409)
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': f'Unexpected error: {str(e)}'
+        }, status=500)
 
-        except Device.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Device not found with given fingerprint'}, status=404)
-        except Product.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Product not found for one of the product codes'},
-                                status=404)
-        except Exception as e:
-
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-
-    return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
-
+    return JsonResponse({
+        'status': 'ok',
+        'message': 'Picklist processed successfully',
+        'created': created,
+        'picklist_id': pick_list.picklist_id,
+        'product_count': len(picklist)
+    })
 
 
 def product_pick(request):
@@ -80,7 +145,9 @@ def product_pick(request):
         return JsonResponse({"status": "error", "message": "PickList not found for device/customer"}, status=404)
 
     try:
-        product = Product.objects.get(code=product_code)
+        product = Product.objects.filter(customer=device.customer, code=product_code).first()
+        if not product:
+            raise Product.DoesNotExist()
     except Product.DoesNotExist:
         return JsonResponse({"status": "error", "message": "Product not found"}, status=404)
 

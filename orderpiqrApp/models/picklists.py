@@ -23,6 +23,8 @@ class PickList(models.Model):
     class Meta:
         verbose_name = _("Pick List")
         verbose_name_plural = _("Pick Lists")
+        unique_together = ['picklist_code', 'customer']
+
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

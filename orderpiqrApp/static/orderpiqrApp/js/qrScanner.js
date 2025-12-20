@@ -1,18 +1,19 @@
 // qrScanner.js
 
+let scannerInstance = null;
+
 export function initializeScanner(onScanCallback) {
     const width = window.innerWidth;
-    // console.log('WIDHT',width);
-    // const qrBoxSize = Math.min(width * 0.6, 350);
-    const qrBoxSize = Math.floor(width * 0.6);  // 80% of width, up to max
+    const qrBoxSize = Math.floor(width * 0.6);
 
     const qrCodeScanner = new Html5QrcodeScanner("reader", {
-        fps: 5,  // Frames per second
-        // qrbox: { width: qrBoxSize, height: qrBoxSize },
-        // aspectRatio: 1.333334,
+        fps: 5,
         aspectRatio: 1.0,
         readers: ["qr_code_reader", "ean_reader", "upc_reader", "code_128_reader", "data_matrix_reader"]
     });
+
+    // Store instance at module level
+    scannerInstance = qrCodeScanner;
 
     qrCodeScanner.render((scanResult) => {
         const scannedCode = scanResult;
@@ -20,3 +21,25 @@ export function initializeScanner(onScanCallback) {
     });
 }
 
+export function pauseScanner() {
+    if (scannerInstance) {
+        try {
+            // pause(true) freezes the video feed
+            scannerInstance.pause(true);
+            console.log("Scanner paused");
+        } catch (e) {
+            console.error("Error pausing scanner:", e);
+        }
+    }
+}
+
+export function resumeScanner() {
+    if (scannerInstance) {
+        try {
+            scannerInstance.resume();
+            console.log("Scanner resumed");
+        } catch (e) {
+            console.error("Error resuming scanner:", e);
+        }
+    }
+}

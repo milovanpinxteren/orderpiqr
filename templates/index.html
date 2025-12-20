@@ -22,7 +22,6 @@
         }
     </script>
 
-
     <title>{% trans "Welcome to Orderpiqr!" %}</title>
 </head>
 <body>
@@ -76,6 +75,8 @@
 
 <div id="notification-container" class="notification-container"></div>
 
+
+{% include 'partials/scan_confirmation_overlay.html' %}
 <script id="product-data" type="application/json">
   {{ product_data|safe }}
 </script>
