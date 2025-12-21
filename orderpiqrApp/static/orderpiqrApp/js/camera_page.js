@@ -108,6 +108,7 @@ function isPicklist(code) {
 // Function to handle scanned product codes
 export function handleProductCode(code, currentPicklist, productData, isOrderImportant, currentOrderID) {
     try {
+        code = String(code).trim();
         if (isOrderImportant) {
             const firstProductCode = currentPicklist[0];
             if (code === firstProductCode) {
