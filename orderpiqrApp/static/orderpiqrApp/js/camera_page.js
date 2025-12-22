@@ -1,7 +1,7 @@
 // camera_page.js
 import {initializeScanner, pauseScanner, resumeScanner} from './qrScanner.js';
 import {showNotification} from './notifications.js';
-import {toggleOrderImportance, updateOrderImportanceButton} from './orderImportance.js';
+import {toggleOrderImportance, updateOrderImportanceButton, getIsOrderImportant} from './orderImportance.js';
 import {handlePicklist} from './picklistHandler.js';
 import {updateScannedList} from './domUpdater.js';
 import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprint function
@@ -48,7 +48,6 @@ if (navigator.onLine) {
 
 // export let productData = window.productData || {};  // Fallback in case the data is not injected
 export let currentPicklist = []; // Array to store the current picklist
-export let isOrderImportant = true
 export let currentOrderID = null;
 
 // Toggle button for order importance
@@ -56,8 +55,8 @@ const toggleButton = document.getElementById('toggle-order-btn');
 
 // Event listener for toggling order importance
 toggleButton.addEventListener('click', function () {
-    isOrderImportant = toggleOrderImportance(); // Toggle the order importance state
-    updateOrderImportanceButton(toggleButton); // Update button appearance
+    toggleOrderImportance();
+    updateOrderImportanceButton(toggleButton);
 });
 
 let isProcessingScan = false;  // Flag to ensure only one scan is processed at a time
@@ -91,7 +90,7 @@ initializeScanner((scannedCode) => {
         }, 1000);
         console.log('processing flag to false')
     } else {
-        handleProductCode(scannedCode, currentPicklist, productData, isOrderImportant, currentOrderID);
+        handleProductCode(scannedCode, currentPicklist, productData, getIsOrderImportant(), currentOrderID);
         setTimeout(() => {
             console.log('handle done')
             isProcessingScan = false; // Reset the flag after the delay
