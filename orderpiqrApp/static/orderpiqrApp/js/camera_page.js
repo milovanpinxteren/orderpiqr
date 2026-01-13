@@ -2,7 +2,7 @@
 import {initializeScanner, pauseScanner, resumeScanner} from './qrScanner.js';
 import {showNotification} from './notifications.js';
 import {toggleOrderImportance, updateOrderImportanceButton, getIsOrderImportant} from './orderImportance.js';
-import {handlePicklist} from './picklistHandler.js';
+import {handlePicklist, sortPicklist} from './picklistHandler.js';
 import {updateScannedList} from './domUpdater.js';
 import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprint function
 
@@ -49,6 +49,7 @@ if (navigator.onLine) {
 // export let productData = window.productData || {};  // Fallback in case the data is not injected
 export let currentPicklist = []; // Array to store the current picklist
 export let currentOrderID = null;
+let originalPicklistOrder = []; // Store the original order for re-sorting
 
 // Toggle button for order importance
 const toggleButton = document.getElementById('toggle-order-btn');
@@ -81,6 +82,8 @@ initializeScanner((scannedCode) => {
         currentPicklist = result.currentPicklist
         currentOrderID = result.orderID
         originalProductCounts = result.originalCounts;  // Add this line
+        originalPicklistOrder = result.originalOrder || [...currentPicklist]; // Store original order
+        updatePicklistCodeDisplay(currentOrderID);
 
         lastPickTs = Date.now();
         setTimeout(() => {
@@ -273,3 +276,29 @@ function showConfirmationOverlay(productDescription, remainingCount, totalCount)
 function hideConfirmationOverlay() {
     overlay.classList.add('hidden');
 }
+
+function updatePicklistCodeDisplay(orderID) {
+    const display = document.getElementById('picklist-code-display');
+    const valueSpan = document.getElementById('picklist-code-value');
+    if (display && valueSpan && orderID) {
+        valueSpan.textContent = orderID;
+        display.style.display = 'block';
+    }
+}
+
+// Re-sort the current picklist with a new sorting mode
+export function resortCurrentPicklist(sortingMode) {
+    if (currentPicklist.length === 0) {
+        return; // Nothing to sort
+    }
+    const sorted = sortPicklist(currentPicklist, productData, sortingMode, originalPicklistOrder);
+    // Update the array in place to maintain reference
+    currentPicklist.length = 0;
+    currentPicklist.push(...sorted);
+    updateScannedList(currentPicklist, productData);
+}
+
+// Listen for sort change events from the dropdown
+document.addEventListener('picklist-sort-change', function (e) {
+    resortCurrentPicklist(e.detail.sortingMode);
+});

@@ -37,6 +37,7 @@ export function handlePicklist(code, currentPicklist, productData) {
             isProcessingPicklist = true;  // Set flag to true to indicate processing has started
             currentPicklist = []; // Reset the picklist
             const originalCounts = {};
+            let originalOrder = [];
 
 
             const rows = code.split("\n");  // Split the picklist into rows (assuming multi-line)
@@ -66,15 +67,17 @@ export function handlePicklist(code, currentPicklist, productData) {
             if (!productData || Object.keys(productData).length === 0) {
                 showNotification(gettext("Product data is empty, cannot update list."), true);
             } else {
-                console.log('updating picklist')
-                const sortingPreference = window.SETTINGS?.picklist_sorting ?? "original";
-                console.log('sorting preference', sortingPreference)
-                currentPicklist = sortPicklist(currentPicklist, productData, sortingPreference);
+                // Store the original order before sorting
+                originalOrder = [...currentPicklist];
 
-                // Calculate original counts per product code
+                // Calculate original counts per product code (before sorting)
                 for (const code of currentPicklist) {
                     originalCounts[code] = (originalCounts[code] || 0) + 1;
                 }
+
+                const sortingPreference = window.SETTINGS?.picklist_sorting ?? "original";
+                currentPicklist = sortPicklist(currentPicklist, productData, sortingPreference, originalOrder);
+
                 isProcessingPicklist = false;
                 updateScannedList(currentPicklist, productData);
                 showNotification(gettext("Picklist added"));
@@ -96,11 +99,9 @@ export function handlePicklist(code, currentPicklist, productData) {
                             deviceFingerprint: deviceFingerprint,  // Add fingerprint to the request
                         })
                     })
-                        .then(response => {
-                            console.log("first reponse", response)
-                        })
+                        .then(response => response.json())
                         .then(data => {
-                            console.log('Picklist sent successfully:', data);
+                            // Picklist sent successfully
                         })
                         .catch(error => {
                             console.error('Error sending picklist:', error);
@@ -114,15 +115,13 @@ export function handlePicklist(code, currentPicklist, productData) {
 
             // Reset flag after processing the picklist
             isProcessingPicklist = false;
-            console.log('JVVBL;MKPLK')
 
-            return {currentPicklist, orderID, originalCounts};  // Return the updated picklist
+            return {currentPicklist, orderID, originalCounts, originalOrder};  // Return the updated picklist
         }
 
-        console.log('AFDSDFASDFSAFSDA')
         // Reset flag if the user cancels the picklist
         isProcessingPicklist = false;
-        return {currentPicklist, orderID, originalCounts: {}};  // Return the unchanged picklist if the user cancels
+        return {currentPicklist, orderID, originalCounts: {}, originalOrder: []};  // Return the unchanged picklist if the user cancels
 
     } catch (err) {
         console.error("Error in handlePicklist:", err);
@@ -156,32 +155,69 @@ function determineFieldOrder(exampleRow, productData) {
     }
 }
 
-function sortPicklist(productCodes, productData, sortingMode) {
+// Natural sort comparator - handles mixed strings and numbers correctly
+// e.g., "A2" < "A10", "12" < "100"
+function naturalCompare(a, b) {
+    const aStr = String(a);
+    const bStr = String(b);
+
+    // Split into chunks of digits and non-digits, filtering out empty strings
+    const aParts = aStr.split(/(\d+)/).filter(part => part !== "");
+    const bParts = bStr.split(/(\d+)/).filter(part => part !== "");
+
+    const maxLen = Math.max(aParts.length, bParts.length);
+
+    for (let i = 0; i < maxLen; i++) {
+        // If one array is shorter, it comes first
+        if (i >= aParts.length) return -1;
+        if (i >= bParts.length) return 1;
+
+        const aPart = aParts[i];
+        const bPart = bParts[i];
+
+        // Check if both parts are purely numeric
+        const aIsNum = /^\d+$/.test(aPart);
+        const bIsNum = /^\d+$/.test(bPart);
+
+        if (aIsNum && bIsNum) {
+            // Compare as numbers
+            const aNum = parseInt(aPart, 10);
+            const bNum = parseInt(bPart, 10);
+            if (aNum !== bNum) return aNum - bNum;
+        } else {
+            // Compare as strings (case-insensitive)
+            const cmp = aPart.localeCompare(bPart, undefined, {sensitivity: 'base'});
+            if (cmp !== 0) return cmp;
+        }
+    }
+    return 0;
+}
+
+export function sortPicklist(productCodes, productData, sortingMode, originalOrder = null) {
     const dataMap = {};
     for (const product of productData) {
         dataMap[product.code] = product;
     }
+    // Use provided originalOrder, or fall back to current order
+    const orderReference = originalOrder || productCodes;
 
-    const enriched = productCodes.map(code => ({
+    const enriched = productCodes.map((code, idx) => ({
         code,
         location: dataMap[code]?.location ?? "",
         description: dataMap[code]?.description ?? "",
-        index: productCodes.indexOf(code), // preserve original order
+        originalIndex: originalOrder ? originalOrder.indexOf(code) : idx,
     }));
 
     switch (sortingMode) {
         case "location":
-            console.log('sorting preference location')
-            enriched.sort((a, b) => a.location.localeCompare(b.location));
+            enriched.sort((a, b) => naturalCompare(a.location, b.location));
             break;
         case "description":
-            console.log('sorting preference description')
-            enriched.sort((a, b) => a.description.localeCompare(b.description));
+            enriched.sort((a, b) => naturalCompare(a.description, b.description));
             break;
         case "original":
-            console.log('sorting preference description')
         default:
-            enriched.sort((a, b) => a.index - b.index);
+            enriched.sort((a, b) => a.originalIndex - b.originalIndex);
             break;
     }
 

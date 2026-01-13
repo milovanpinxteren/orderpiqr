@@ -49,6 +49,15 @@ body {
     padding-right: 10px
 }
 
+/* Picklist code display */
+.picklist-code-display {
+    margin: 0;
+    font-size: 0.95em;
+    color: #555;
+    text-align: center;
+    width: 100%;
+}
+
 /* Settings dropdown positioning */
 .settings-dropdown {
     position: relative;
@@ -325,7 +334,6 @@ header h3 {
     width: 100%;
     max-width: 800px;
     overflow-x: auto;
-    margin-top: 1rem;
 }
 
 .scanned-list {

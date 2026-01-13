@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'orderpiqrApp/css/camera_page.css' %}">
-    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.0.0/dist/fp.min.js"></script>
     <script src="{% url 'javascript-catalog' %}"></script>
     <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
     <link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
@@ -60,12 +59,14 @@
         <div id="reader" class="scanner"></div>
     </div>
     <div id="scanned-list-container" class="scanned-list-container">
+        <h4 id="picklist-code-display" class="picklist-code-display" style="display: none;">{% trans "Picklist" %}:
+            <span id="picklist-code-value"></span></h4>
         <table id="scanned-list" class="scanned-list">
             <thead>
             <tr>
                 <th>{% trans "Product Code" %}</th>
                 <th>{% trans "Product Name" %}</th>
-                <th>{% trans "Pick Order" %}</th>
+                <th>{% trans "Location" %}</th>
             </tr>
             </thead>
             <tbody></tbody>
@@ -138,11 +139,13 @@
             sortingSelect.value = window.SETTINGS?.picklist_sorting ?? "original";
         }
         sortingSelect.addEventListener("change", function () {
-
             const newValue = sortingSelect.value;
             console.log('changing pick order value', newValue)
             window.SETTINGS.picklist_sorting = newValue;
             console.log("Updated window.SETTINGS.picklist_sorting to", newValue);
+
+            // Dispatch custom event to trigger re-sort in camera_page.js module
+            document.dispatchEvent(new CustomEvent('picklist-sort-change', {detail: {sortingMode: newValue}}));
         });
 
 

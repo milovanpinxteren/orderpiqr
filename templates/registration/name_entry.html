@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'orderpiqrApp/css/name_entry.css' %}"/>
     <title>{% trans "Enter Your Name" %}</title>
-    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.0.0/dist/fp.min.js"></script>
     <link rel="icon" type="image/png" href="{% static 'orderpiqrApp/img/favicon.png' %}">
 
 </head>
@@ -20,19 +19,26 @@
     <button type="submit">{% trans "Submit" %}</button>
 </form>
 <script type="text/javascript">
-    FingerprintJS.load().then(fingerprintJS => {
-        fingerprintJS.get().then(result => {
-            const deviceFingerprint = result.visitorId;
-            // Add the fingerprint to the form before submission
-            const form = document.getElementById('name-form');
-            const fingerprintInput = document.createElement('input');
-            fingerprintInput.type = 'hidden';
-            fingerprintInput.name = 'device_fingerprint';  // The name of the hidden field
-            fingerprintInput.value = deviceFingerprint;
-            // Append the fingerprint to the form
-            form.appendChild(fingerprintInput);
-        });
-    });
+    (function() {
+        const STORAGE_KEY = 'orderpiqr_device_id';
+        let deviceId = localStorage.getItem(STORAGE_KEY);
+        if (!deviceId) {
+            deviceId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+                ? crypto.randomUUID()
+                : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            localStorage.setItem(STORAGE_KEY, deviceId);
+        }
+        const form = document.getElementById('name-form');
+        const fingerprintInput = document.createElement('input');
+        fingerprintInput.type = 'hidden';
+        fingerprintInput.name = 'device_fingerprint';
+        fingerprintInput.value = deviceId;
+        form.appendChild(fingerprintInput);
+    })();
 </script>
 </body>
 </html>
