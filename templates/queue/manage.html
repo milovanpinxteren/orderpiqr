@@ -1,0 +1,220 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'orderpiqrApp/css/queue_manage.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <title>{% trans "Manage Queue" %} - {{ customer.company_name }}</title>
+</head>
+<body>
+    <div class="manage-header">
+        <div class="header-left">
+            <a href="{% url 'admin:index' %}" class="back-link">← {% trans "Admin" %}</a>
+        </div>
+        <h1>{% trans "Queue Management" %}</h1>
+        <span class="customer-name">{{ customer.company_name }}</span>
+    </div>
+
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% else %}
+
+    <div class="manage-container">
+        <div class="panel queue-panel">
+            <div class="panel-header">
+                <h2>{% trans "Current Queue" %}</h2>
+                <span class="order-count">{{ queue_orders.count }} {% trans "orders" %}</span>
+            </div>
+            <div class="panel-content"
+                 id="queue-list"
+                 hx-get="{% url 'queue_manage_partial' %}"
+                 hx-trigger="refresh-queue from:body"
+                 hx-swap="innerHTML">
+                {% include 'queue/_manage_queue_list.html' %}
+            </div>
+        </div>
+
+        <div class="panel available-panel">
+            <div class="panel-header">
+                <h2>{% trans "Available Orders" %}</h2>
+                <span class="order-count">{{ available_orders.count }} {% trans "orders" %}</span>
+            </div>
+            <div class="panel-content" id="available-list">
+                {% if available_orders %}
+                <div class="order-list">
+                    {% for order in available_orders %}
+                    <div class="order-item available" data-order-id="{{ order.order_id }}">
+                        <div class="order-info">
+                            <span class="order-code">{{ order.order_code }}</span>
+                            <span class="item-count">{{ order.item_count }} {% trans "items" %}</span>
+                        </div>
+                        <button class="btn-add" onclick="addToQueue({{ order.order_id }})">
+                            {% trans "Add to Queue" %}
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-list">
+                    <p>{% trans "No available orders" %}</p>
+                    <p class="hint">{% trans "Create orders in the admin to add them here" %}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="panel completed-panel">
+            <div class="panel-header">
+                <h2>{% trans "Recently Completed" %}</h2>
+            </div>
+            <div class="panel-content" id="completed-list">
+                {% if completed_orders %}
+                <div class="order-list">
+                    {% for order in completed_orders %}
+                    <div class="order-item completed">
+                        <div class="order-info">
+                            <span class="order-code">{{ order.order_code }}</span>
+                            <span class="item-count">{{ order.item_count }} {% trans "items" %}</span>
+                        </div>
+                        <span class="completed-time">
+                            {{ order.completed_at|timesince }} {% trans "ago" %}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-list">
+                    <p>{% trans "No completed orders" %}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+
+    <div id="notification-container" class="notification-container"></div>
+
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+
+        // Initialize Sortable for drag-and-drop reordering
+        document.addEventListener('DOMContentLoaded', function() {
+            initSortable();
+        });
+
+        // Reinitialize after HTMX swap
+        document.body.addEventListener('htmx:afterSwap', function(event) {
+            if (event.detail.target.id === 'queue-list') {
+                initSortable();
+            }
+        });
+
+        function initSortable() {
+            const queueList = document.querySelector('#queue-list .queue-order-list');
+            if (queueList) {
+                new Sortable(queueList, {
+                    animation: 150,
+                    handle: '.drag-handle',
+                    onEnd: function(evt) {
+                        saveQueueOrder();
+                    }
+                });
+            }
+        }
+
+        function saveQueueOrder() {
+            const items = document.querySelectorAll('#queue-list .queue-item');
+            const orderIds = Array.from(items).map(item => parseInt(item.dataset.orderId));
+
+            fetch("{% url 'queue_reorder' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ order_ids: orderIds })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    showNotification('{% trans "Queue order saved" %}', false);
+                } else {
+                    showNotification(data.message, true);
+                }
+            });
+        }
+
+        function addToQueue(orderId) {
+            fetch(`{% url 'queue_add_order' order_id=0 %}`.replace('0', orderId), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    showNotification('{% trans "Order added to queue" %}', false);
+                    location.reload();
+                } else {
+                    showNotification(data.message, true);
+                }
+            });
+        }
+
+        function removeFromQueue(orderId) {
+            fetch(`{% url 'queue_remove_order' order_id=0 %}`.replace('0', orderId), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    showNotification('{% trans "Order removed from queue" %}', false);
+                    location.reload();
+                } else {
+                    showNotification(data.message, true);
+                }
+            });
+        }
+
+        function moveOrder(orderId, direction) {
+            fetch(`{% url 'queue_move_order' order_id=0 direction='up' %}`.replace('0', orderId).replace('up', direction), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    htmx.trigger(document.body, 'refresh-queue');
+                } else {
+                    showNotification(data.message, true);
+                }
+            });
+        }
+
+        function showNotification(message, isError) {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = 'notification' + (isError ? ' error' : '');
+            notification.textContent = message;
+            container.appendChild(notification);
+
+            setTimeout(() => notification.classList.add('show'), 10);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

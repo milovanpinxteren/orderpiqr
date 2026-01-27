@@ -292,6 +292,22 @@ button:hover {
     text-decoration: underline;
 }
 
+.btn-queue-link {
+    display: block;
+    /*width: 100%;*/
+    text-align: center;
+    padding: 0.5em 1em;
+    background-color: #118f11;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.5em;
+    margin-top: 0.5em;
+}
+
+.btn-queue-link:hover {
+    background-color: #0d7a0d;
+}
+
 header h3 {
     margin-right: auto; /* Ensures the username stays on the left */
 }

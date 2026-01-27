@@ -1,0 +1,69 @@
+{% load i18n qr_tags %}
+
+{% if orders %}
+<div class="order-cards">
+    {% for order in orders %}
+    <div class="order-card {% if order.status == 'completed' %}completed{% elif order.status == 'in_progress' %}in-progress{% endif %}"
+         data-order-id="{{ order.order_id }}">
+        <div class="order-header">
+            <span class="order-code">{{ order.order_code }}</span>
+            {% if order.queue_position %}
+            <span class="queue-position">#{{ order.queue_position }}</span>
+            {% endif %}
+        </div>
+
+        {% if order.status == 'queued' %}
+        <div class="qr-container">
+            {% qr_code_base64 order as qr_src %}
+            <img src="{{ qr_src }}" alt="QR Code for {{ order.order_code }}" class="qr-code">
+        </div>
+        {% endif %}
+
+        <div class="order-details">
+            <div class="detail-row">
+                <span class="label">{% trans "Items" %}:</span>
+                <span class="value">{{ order.item_count }}</span>
+            </div>
+            {% if order.lines.all %}
+            <div class="order-items">
+                <ul class="item-list">
+                    {% for line in order.lines.all %}
+                    <li class="item-entry">
+                        <span class="item-qty">{{ line.quantity }}x</span>
+                        <span class="item-desc">{{ line.product.description }}</span>
+                        {% if line.product.location %}
+                        <span class="item-loc">({{ line.product.location }})</span>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            {% if order.notes %}
+            <div class="detail-row notes">
+                <span class="label">{% trans "Notes" %}:</span>
+                <span class="value">{{ order.notes|truncatewords:20 }}</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="order-status status-{{ order.status }}">
+            {% if order.status == 'queued' %}
+                <span class="status-indicator queued"></span>
+                {% trans "Queued" %}
+            {% elif order.status == 'in_progress' %}
+                <span class="status-indicator in-progress"></span>
+                {% trans "In Progress" %}
+            {% elif order.status == 'completed' %}
+                <span class="status-indicator completed"></span>
+                {% trans "Completed" %}
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-queue">
+    <p>{% trans "No orders in queue" %}</p>
+</div>
+{% endif %}

@@ -302,3 +302,95 @@ export function resortCurrentPicklist(sortingMode) {
 document.addEventListener('picklist-sort-change', function (e) {
     resortCurrentPicklist(e.detail.sortingMode);
 });
+
+// Check for claimed order from queue on page load
+function loadClaimedOrder() {
+    console.log('[Queue] Checking for claimed order...');
+
+    // First, check for server-provided data (from URL parameter)
+    let data = null;
+    const serverDataEl = document.getElementById('claimed-order-data');
+    if (serverDataEl) {
+        try {
+            data = JSON.parse(serverDataEl.textContent);
+            console.log('[Queue] Found server-provided order data:', data);
+        } catch (e) {
+            console.error('[Queue] Error parsing server data:', e);
+        }
+    }
+
+    // Fallback to sessionStorage
+    if (!data) {
+        const claimedOrderData = sessionStorage.getItem('claimed_order');
+        console.log('[Queue] sessionStorage claimed_order:', claimedOrderData);
+        if (claimedOrderData) {
+            try {
+                data = JSON.parse(claimedOrderData);
+                console.log('[Queue] Parsed sessionStorage data:', data);
+                // Clear the sessionStorage immediately to prevent re-loading on refresh
+                sessionStorage.removeItem('claimed_order');
+            } catch (e) {
+                console.error('[Queue] Error parsing sessionStorage:', e);
+            }
+        }
+    }
+
+    if (data && data.order_code && data.picklist && data.picklist.length > 0) {
+        console.log('[Queue] Loading order:', data.order_code, 'with', data.picklist.length, 'items');
+        console.log('[Queue] Product data available:', productData ? productData.length : 0, 'products');
+
+        if (!productData || productData.length === 0) {
+            console.error('[Queue] Cannot load order: productData is empty or undefined');
+            showNotification(gettext("Cannot load order: product data not available"), true);
+            return;
+        }
+
+        // Initialize the picklist from the claimed order
+        currentPicklist.length = 0;
+        const originalCounts = {};
+
+        for (const code of data.picklist) {
+            currentPicklist.push(code);
+            originalCounts[code] = (originalCounts[code] || 0) + 1;
+        }
+        console.log('[Queue] currentPicklist populated:', currentPicklist);
+
+        currentOrderID = data.order_code;
+        originalPicklistOrder = [...currentPicklist];
+
+        // Apply sorting preference
+        const sortingPreference = window.SETTINGS?.picklist_sorting ?? "original";
+        console.log('[Queue] Sorting preference:', sortingPreference);
+        const sorted = sortPicklist(currentPicklist, productData, sortingPreference, originalPicklistOrder);
+        currentPicklist.length = 0;
+        currentPicklist.push(...sorted);
+        console.log('[Queue] After sorting:', currentPicklist);
+
+        // Update the display
+        console.log('[Queue] Calling updateScannedList...');
+        updateScannedList(currentPicklist, productData);
+        updatePicklistCodeDisplay(currentOrderID);
+
+        // Store original counts for overlay display
+        // Update the module-level variable
+        Object.keys(originalProductCounts).forEach(key => delete originalProductCounts[key]);
+        Object.assign(originalProductCounts, originalCounts);
+
+        // Set the last pick timestamp
+        lastPickTs = Date.now();
+
+        showNotification(gettext("Order loaded from queue"), false);
+        console.log('[Queue] Order loaded successfully');
+    } else {
+        console.log('[Queue] No claimed order found or invalid data');
+    }
+}
+
+// Wait for DOM to be fully ready before loading claimed order
+// ES modules are deferred but may still run before all elements are rendered
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadClaimedOrder);
+} else {
+    // DOM is already ready
+    loadClaimedOrder();
+}

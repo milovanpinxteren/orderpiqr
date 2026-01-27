@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.utils import timezone
 import json
 from django.views.decorators.http import require_POST
-from orderpiqrApp.models import Device, PickList, Product, ProductPick, UserProfile
+from orderpiqrApp.models import Device, Order, PickList, Product, ProductPick, UserProfile
 
 
 @require_POST
@@ -63,6 +63,29 @@ def scan_picklist(request):
     # Process picklist in a transaction
     try:
         with transaction.atomic():
+            # Check if there's a queued Order for this order_id
+            order = Order.objects.select_for_update().filter(
+                order_code=order_id,
+                customer=device.customer
+            ).first()
+
+            # If order exists and is queued, lock it
+            if order:
+                if order.status == 'in_progress':
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': 'This order is already being picked by another device'
+                    }, status=409)
+                elif order.status == 'completed':
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': 'This order has already been completed'
+                    }, status=409)
+                elif order.status == 'queued':
+                    # Lock the order by setting status to in_progress
+                    order.status = 'in_progress'
+                    order.save(update_fields=['status'])
+
             try:
                 pick_list = PickList.objects.select_for_update().get(
                     picklist_code=order_id,
@@ -84,7 +107,8 @@ def scan_picklist(request):
                     customer=device.customer,
                     device=device,
                     updated_at=local_time,
-                    pick_started=True
+                    pick_started=True,
+                    order=order  # Link to order if it exists
                 )
                 created = True
 
@@ -202,6 +226,12 @@ def complete_picklist(request):
                 picklist.time_taken = now - pick_time
                 picklist.successful = True  # or set based on some logic
                 picklist.save()
+
+                # Mark the linked order as completed if it exists
+                if picklist.order:
+                    picklist.order.status = 'completed'
+                    picklist.order.completed_at = now
+                    picklist.order.save(update_fields=['status', 'completed_at'])
             else:
                 print('No picklist found, contact support')
 

@@ -1,0 +1,141 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'orderpiqrApp/css/queue_picker.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <title>{% trans "Pick Queue" %}</title>
+</head>
+<body>
+    <div class="picker-header">
+        <div class="header-left">
+            <a href="{% url 'index' %}" class="back-link">← {% trans "Scanner" %}</a>
+        </div>
+        <h1>{% trans "Order Queue" %}</h1>
+        <div class="header-right">
+            {% if device %}
+            <span class="device-name">{{ device.name }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="picker-container"
+         hx-get="{% url 'queue_picker_partial' %}"
+         hx-trigger="every 2s"
+         hx-swap="innerHTML">
+        {% include 'queue/_picker_orders.html' %}
+    </div>
+
+    <div id="notification-container" class="notification-container"></div>
+
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+
+        // Get device fingerprint
+        function getDeviceFingerprint() {
+            const STORAGE_KEY = 'orderpiqr_device_id';
+            let deviceId = localStorage.getItem(STORAGE_KEY);
+            if (!deviceId) {
+                deviceId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+                    ? crypto.randomUUID()
+                    : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                        const r = Math.random() * 16 | 0;
+                        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                        return v.toString(16);
+                    });
+                localStorage.setItem(STORAGE_KEY, deviceId);
+            }
+            return deviceId;
+        }
+
+        function claimOrder(orderId, button) {
+            console.log('[Queue Picker] claimOrder called with orderId:', orderId);
+            alert('Claiming order: ' + orderId);  // Temporary alert for debugging
+
+            try {
+                button.disabled = true;
+                button.textContent = '{% trans "Claiming..." %}';
+
+                const deviceFingerprint = getDeviceFingerprint();
+                console.log('[Queue Picker] Device fingerprint:', deviceFingerprint);
+
+                const url = '{% url "queue_claim_order" order_id=0 %}'.replace('0', orderId);
+                console.log('[Queue Picker] Fetch URL:', url);
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({
+                        deviceFingerprint: deviceFingerprint
+                    })
+                })
+                .then(response => {
+                    console.log('[Queue Picker] Response status:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('[Queue Picker] Response data:', data);
+                    if (data.status === 'ok') {
+                        showNotification('{% trans "Order claimed! Redirecting..." %}', false);
+
+                        // Store the order data for the picking interface
+                        const orderData = {
+                            order_code: data.order_code,
+                            picklist: data.picklist
+                        };
+                        console.log('[Queue Picker] Storing in sessionStorage:', orderData);
+                        sessionStorage.setItem('claimed_order', JSON.stringify(orderData));
+                        console.log('[Queue Picker] Verified storage:', sessionStorage.getItem('claimed_order'));
+
+                        setTimeout(() => {
+                            // Redirect with order code as URL parameter
+                            const redirectUrl = '{% url "index" %}?order=' + encodeURIComponent(data.order_code);
+                            console.log('[Queue Picker] Redirecting to:', redirectUrl);
+                            window.location.href = redirectUrl;
+                        }, 500);
+                    } else {
+                        console.log('[Queue Picker] Error response:', data.message);
+                        showNotification(data.message, true);
+                        button.disabled = false;
+                        button.textContent = '{% trans "Start Picking" %}';
+                    }
+                })
+                .catch(error => {
+                    console.error('[Queue Picker] Fetch error:', error);
+                    showNotification('{% trans "Error claiming order" %}', true);
+                    button.disabled = false;
+                    button.textContent = '{% trans "Start Picking" %}';
+                });
+            } catch (e) {
+                console.error('[Queue Picker] Exception in claimOrder:', e);
+                alert('Error: ' + e.message);
+            }
+        }
+
+        function showNotification(message, isError) {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = 'notification' + (isError ? ' error' : '');
+            notification.textContent = message;
+            container.appendChild(notification);
+
+            setTimeout(() => notification.classList.add('show'), 10);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
