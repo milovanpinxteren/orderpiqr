@@ -1,0 +1,37 @@
+{% load i18n %}
+
+{% if queue_orders %}
+<div class="queue-order-list">
+    {% for order in queue_orders %}
+    <div class="queue-item {% if order.status == 'in_progress' %}in-progress{% endif %}"
+         data-order-id="{{ order.order_id }}">
+        <div class="drag-handle" title="{% trans 'Drag to reorder' %}">⠿</div>
+        <div class="queue-position">{{ order.queue_position }}</div>
+        <div class="order-info">
+            <span class="order-code">{{ order.order_code }}</span>
+            <span class="item-count">{{ order.item_count }} {% trans "items" %}</span>
+            {% if order.notes %}
+            <span class="order-notes" title="{{ order.notes }}">📝</span>
+            {% endif %}
+        </div>
+        <div class="order-status">
+            {% if order.status == 'in_progress' %}
+            <span class="status-badge in-progress">{% trans "In Progress" %}</span>
+            {% else %}
+            <span class="status-badge queued">{% trans "Queued" %}</span>
+            {% endif %}
+        </div>
+        <div class="order-actions">
+            <button class="btn-move" onclick="moveOrder({{ order.order_id }}, 'up')" title="{% trans 'Move up' %}">▲</button>
+            <button class="btn-move" onclick="moveOrder({{ order.order_id }}, 'down')" title="{% trans 'Move down' %}">▼</button>
+            <button class="btn-remove" onclick="removeFromQueue({{ order.order_id }})" title="{% trans 'Remove from queue' %}">✕</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-list">
+    <p>{% trans "Queue is empty" %}</p>
+    <p class="hint">{% trans "Add orders from the available list" %}</p>
+</div>
+{% endif %}

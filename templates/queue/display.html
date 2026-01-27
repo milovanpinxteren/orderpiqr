@@ -1,0 +1,29 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'orderpiqrApp/css/queue_display.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <title>{% trans "Order Queue" %} - {{ customer.company_name }}</title>
+</head>
+<body>
+    <div class="queue-header">
+        <h1>{% trans "Order Queue" %}</h1>
+        <span class="customer-name">{{ customer.company_name }}</span>
+    </div>
+
+    <div class="queue-container"
+         hx-get="{% url 'queue_display_partial' %}"
+         hx-trigger="every 2s"
+         hx-swap="innerHTML">
+        {% include 'queue/_order_cards.html' %}
+    </div>
+
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+</body>
+</html>

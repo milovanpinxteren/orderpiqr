@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.utils.safestring import mark_safe
 
 from orderpiqr.views import name_entry
-from orderpiqrApp.models import Product, Device, SettingDefinition, CustomerSettingValue
+from orderpiqrApp.models import Product, Device, SettingDefinition, CustomerSettingValue, Order
 import json
 
 def index(request):
@@ -16,9 +16,38 @@ def index(request):
     product_data = product_data.values('product_id', 'code', 'description', 'location')
     settings = get_customer_settings(customer)
 
-    context = {'product_data': str(list(product_data)).replace("'", '"'), 'username': device.name,
-               'settings': mark_safe(json.dumps(settings)),
-               }
+    # Check if there's an order to load from the queue
+    claimed_order_data = None
+    order_code = request.GET.get('order')
+    print(f"[Queue Debug] order_code from GET: {order_code}")
+    if order_code:
+        order = Order.objects.filter(
+            order_code=order_code,
+            customer=customer,
+            status='in_progress'
+        ).first()
+        print(f"[Queue Debug] Found order: {order}")
+        if order:
+            # Build picklist from order lines
+            picklist = []
+            lines = order.lines.select_related('product').all()
+            print(f"[Queue Debug] Order has {lines.count()} lines")
+            for line in lines:
+                print(f"[Queue Debug] Line: {line.quantity}x {line.product.code}")
+                for _ in range(line.quantity):
+                    picklist.append(line.product.code)
+            claimed_order_data = {
+                'order_code': order.order_code,
+                'picklist': picklist
+            }
+            print(f"[Queue Debug] claimed_order_data: {claimed_order_data}")
+
+    context = {
+        'product_data': json.dumps(list(product_data)),
+        'username': device.name,
+        'settings': mark_safe(json.dumps(settings)),
+        'claimed_order': mark_safe(json.dumps(claimed_order_data)) if claimed_order_data else None,
+    }
     return render(request, 'index.html', context)
 
 

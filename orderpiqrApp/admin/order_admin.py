@@ -46,10 +46,49 @@ class OrderAdmin(admin.ModelAdmin):
         except Exception as e:
             self.message_user(request, _("Failed to generate QR batch: %(error)s") % {"error": e}, level=messages.ERROR)
 
-    list_display = ('order_code', 'customer', 'created_at')
+    @admin.action(description=_("Add selected orders to queue"))
+    def add_to_queue(self, request, queryset):
+        from django.db.models import Max
+        added = 0
+        skipped = 0
+
+        # Get current max queue position
+        max_pos = Order.objects.filter(
+            status__in=['queued', 'in_progress']
+        ).aggregate(max_pos=Max('queue_position'))['max_pos'] or 0
+
+        for order in queryset:
+            if order.status == 'draft':
+                max_pos += 1
+                order.status = 'queued'
+                order.queue_position = max_pos
+                order.save(update_fields=['status', 'queue_position'])
+                added += 1
+            else:
+                skipped += 1
+
+        if added:
+            self.message_user(request, _("%(count)s order(s) added to queue.") % {"count": added}, level=messages.SUCCESS)
+        if skipped:
+            self.message_user(request, _("%(count)s order(s) skipped (not in draft status).") % {"count": skipped}, level=messages.WARNING)
+
+    @admin.action(description=_("Remove selected orders from queue"))
+    def remove_from_queue(self, request, queryset):
+        removed = 0
+        for order in queryset.filter(status__in=['queued', 'in_progress']):
+            order.status = 'draft'
+            order.queue_position = None
+            order.save(update_fields=['status', 'queue_position'])
+            removed += 1
+
+        if removed:
+            self.message_user(request, _("%(count)s order(s) removed from queue.") % {"count": removed}, level=messages.SUCCESS)
+
+    list_display = ('order_code', 'customer', 'status', 'queue_position', 'created_at')
+    list_filter = ['status', 'customer']
     search_fields = ['order_code']
     inlines = [OrderLineInline]
-    actions = [generate_qr_codes]
+    actions = [generate_qr_codes, add_to_queue, remove_from_queue]
 
     # inside OrderAdmin
     def get_form(self, request, obj=None, **kwargs):

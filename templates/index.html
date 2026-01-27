@@ -33,6 +33,7 @@
                     <div class="language-switcher">{% include 'partials/language_switcher.html' %}</div>
                     <a href="{% url 'login' %}" class="btn-login-link">{% trans "Log out" %}</a>
                 </div>
+                <a href="{% url 'queue_picker' %}" class="btn-queue-link">{% trans "Order Queue" %}</a>
                 <button id="toggle-order-btn" class="btn-toggle">
                     {% trans "Order Importance" %}: {% trans "Enabled" %}
                 </button>
@@ -94,6 +95,21 @@
 <script type="text/javascript">
     var csrfToken = "{{ csrf_token }}";  // Render CSRF token into JavaScript
 </script>
+{% if claimed_order %}
+<script type="application/json" id="claimed-order-data">
+{{ claimed_order }}
+</script>
+<script>
+    console.log('[Index HTML] claimed_order data is present in template');
+    console.log('[Index HTML] Raw content:', document.getElementById('claimed-order-data').textContent);
+</script>
+{% else %}
+<script>
+    console.log('[Index HTML] No claimed_order data in template');
+    console.log('[Index HTML] URL:', window.location.href);
+    console.log('[Index HTML] Search params:', window.location.search);
+</script>
+{% endif %}
 <script type="text/javascript">
     let productData;
     if (navigator.onLine) {

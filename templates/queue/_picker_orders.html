@@ -1,0 +1,57 @@
+{% load i18n %}
+
+{% if orders %}
+<div class="order-list">
+    {% for order in orders %}
+    <div class="order-item {% if order.status == 'completed' %}completed{% elif order.status == 'in_progress' %}in-progress{% endif %}"
+         data-order-id="{{ order.order_id }}">
+        <div class="order-info">
+            <div class="order-main">
+                <span class="order-code">{{ order.order_code }}</span>
+                {% if order.queue_position %}
+                <span class="queue-position">#{{ order.queue_position }}</span>
+                {% endif %}
+            </div>
+            <div class="order-meta">
+                <span class="item-count">{{ order.item_count }} {% trans "items" %}</span>
+                {% if order.notes %}
+                <span class="order-notes" title="{{ order.notes }}">📝</span>
+                {% endif %}
+            </div>
+            {% if order.lines.all %}
+            <div class="order-items-preview">
+                <ul class="item-list-compact">
+                    {% for line in order.lines.all %}
+                    <li>{{ line.quantity }}x {{ line.product.description|truncatewords:5 }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="order-action">
+            {% if order.status == 'queued' %}
+            <!-- Debug: order_id={{ order.order_id }}, status={{ order.status }} -->
+            <button class="btn-start" onclick="console.log('Button clicked for order {{ order.order_id }}'); claimOrder({{ order.order_id }}, this)">
+                {% trans "Start Picking" %}
+            </button>
+            {% elif order.status == 'in_progress' %}
+            <span class="status-badge in-progress">
+                {% trans "In Progress" %}
+            </span>
+            {% elif order.status == 'completed' %}
+            <span class="status-badge completed">
+                {% trans "Completed" %}
+            </span>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-queue">
+    <div class="empty-icon">📦</div>
+    <p>{% trans "No orders in queue" %}</p>
+    <p class="empty-subtitle">{% trans "New orders will appear here automatically" %}</p>
+</div>
+{% endif %}
