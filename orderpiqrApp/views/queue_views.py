@@ -1,6 +1,5 @@
 from datetime import timedelta
 
-from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Count, Max
@@ -10,6 +9,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from orderpiqrApp.models import Order, Device, UserProfile, PickList, ProductPick
+from orderpiqrApp.utils.decorators import company_admin_required
 
 
 def get_queue_orders(customer, include_lines=False):
@@ -278,7 +278,7 @@ def get_customer_for_staff(request):
         return None
 
 
-@staff_member_required
+@company_admin_required
 def queue_manage(request):
     """
     Admin view to manage the order queue.
@@ -307,7 +307,7 @@ def queue_manage(request):
     return render(request, 'queue/manage.html', context)
 
 
-@staff_member_required
+@company_admin_required
 def queue_manage_partial(request):
     """HTMX partial for queue management - refreshes queue list."""
     customer = get_customer_for_staff(request)
@@ -322,7 +322,7 @@ def queue_manage_partial(request):
     return render(request, 'queue/_manage_queue_list.html', {'queue_orders': queue_orders})
 
 
-@staff_member_required
+@company_admin_required
 @require_POST
 def queue_add_order(request, order_id):
     """Add an order to the queue."""
@@ -362,7 +362,7 @@ def queue_add_order(request, order_id):
         return JsonResponse({'status': 'error', 'message': 'Order not found'}, status=404)
 
 
-@staff_member_required
+@company_admin_required
 @require_POST
 def queue_remove_order(request, order_id):
     """Remove an order from the queue (back to draft)."""
@@ -396,7 +396,7 @@ def queue_remove_order(request, order_id):
         return JsonResponse({'status': 'error', 'message': 'Order not found'}, status=404)
 
 
-@staff_member_required
+@company_admin_required
 @require_POST
 def queue_reorder(request):
     """Reorder the queue based on provided order IDs."""
@@ -436,7 +436,7 @@ def queue_reorder(request):
         }, status=500)
 
 
-@staff_member_required
+@company_admin_required
 @require_POST
 def queue_move_order(request, order_id, direction):
     """Move an order up or down in the queue."""

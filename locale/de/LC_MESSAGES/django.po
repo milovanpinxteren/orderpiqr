@@ -589,3 +589,127 @@ msgstr "Haben Sie bereits ein Konto?"
 #: .\templates\registration\signup.html:96
 msgid "Log in"
 msgstr "Anmelden"
+
+#: Queue related translations
+msgid "Order Queue"
+msgstr "Auftragswarteschlange"
+
+msgid "Pick Queue"
+msgstr "Kommissionierwarteschlange"
+
+msgid "Scanner"
+msgstr "Scanner"
+
+msgid "items"
+msgstr "Artikel"
+
+msgid "Start Picking"
+msgstr "Kommissionierung starten"
+
+msgid "In Progress"
+msgstr "In Bearbeitung"
+
+msgid "Completed"
+msgstr "Abgeschlossen"
+
+msgid "No orders in queue"
+msgstr "Keine Aufträge in der Warteschlange"
+
+msgid "New orders will appear here automatically"
+msgstr "Neue Aufträge erscheinen hier automatisch"
+
+msgid "Items"
+msgstr "Artikel"
+
+msgid "Queued"
+msgstr "In Warteschlange"
+
+msgid "Admin"
+msgstr "Verwaltung"
+
+msgid "Queue Management"
+msgstr "Warteschlangenverwaltung"
+
+msgid "Display View"
+msgstr "Anzeigeansicht"
+
+msgid "Picker View"
+msgstr "Kommissioniereransicht"
+
+msgid "Open tablet display view"
+msgstr "Tablet-Anzeigeansicht öffnen"
+
+msgid "Open mobile picker view"
+msgstr "Mobile Kommissioniereransicht öffnen"
+
+msgid "Current Queue"
+msgstr "Aktuelle Warteschlange"
+
+msgid "orders"
+msgstr "Aufträge"
+
+msgid "Available Orders"
+msgstr "Verfügbare Aufträge"
+
+msgid "Add to Queue"
+msgstr "Zur Warteschlange hinzufügen"
+
+msgid "No available orders"
+msgstr "Keine verfügbaren Aufträge"
+
+msgid "Create orders in the admin to add them here"
+msgstr "Erstellen Sie Aufträge in der Verwaltung, um sie hier hinzuzufügen"
+
+msgid "Recently Completed"
+msgstr "Kürzlich abgeschlossen"
+
+msgid "No completed orders"
+msgstr "Keine abgeschlossenen Aufträge"
+
+msgid "ago"
+msgstr "vor"
+
+msgid "Remove"
+msgstr "Entfernen"
+
+msgid "Open Queue Manager"
+msgstr "Warteschlangenmanager öffnen"
+
+msgid "Manage the picking queue - add orders, reorder, and monitor progress"
+msgstr "Kommissionierwarteschlange verwalten - Aufträge hinzufügen, neu ordnen und Fortschritt überwachen"
+
+msgid "Draft"
+msgstr "Entwurf"
+
+msgid "Cancelled"
+msgstr "Storniert"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Queue Position"
+msgstr "Warteschlangenposition"
+
+msgid "Position in the picking queue. Lower numbers are picked first."
+msgstr "Position in der Kommissionierwarteschlange. Niedrigere Nummern werden zuerst kommissioniert."
+
+msgid "Completed At"
+msgstr "Abgeschlossen am"
+
+msgid "Add selected orders to queue"
+msgstr "Ausgewählte Aufträge zur Warteschlange hinzufügen"
+
+msgid "Remove selected orders from queue"
+msgstr "Ausgewählte Aufträge aus der Warteschlange entfernen"
+
+#, python-format
+msgid "%(count)s order(s) added to queue."
+msgstr "%(count)s Auftrag/Aufträge zur Warteschlange hinzugefügt."
+
+#, python-format
+msgid "%(count)s order(s) skipped (not in draft status)."
+msgstr "%(count)s Auftrag/Aufträge übersprungen (nicht im Entwurfsstatus)."
+
+#, python-format
+msgid "%(count)s order(s) removed from queue."
+msgstr "%(count)s Auftrag/Aufträge aus der Warteschlange entfernt."

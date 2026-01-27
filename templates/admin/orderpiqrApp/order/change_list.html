@@ -5,8 +5,46 @@
         #content-main {
             width: 100%;
         }
+        .queue-link-banner {
+            background: linear-gradient(135deg, #118f11 0%, #0d7a0d 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(17, 143, 17, 0.3);
+        }
+        .queue-link-banner .banner-text {
+            font-size: 1rem;
+        }
+        .queue-link-banner .banner-text strong {
+            font-size: 1.1rem;
+        }
+        .queue-link-banner .btn-queue {
+            background-color: white;
+            color: #118f11;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .queue-link-banner .btn-queue:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-1px);
+        }
     </style>
     <div class="container">
+        <div class="queue-link-banner">
+            <div class="banner-text">
+                <strong>{% trans "Queue Management" %}</strong><br>
+                {% trans "Manage the picking queue - add orders, reorder, and monitor progress" %}
+            </div>
+            <a href="{% url 'queue_manage' %}" class="btn-queue">{% trans "Open Queue Manager" %} &rarr;</a>
+        </div>
+
         <h2 class="page-title">{% trans "Upload Order CSV/XLSX" %}</h2>
         <p class="instructions">
             {% trans "Please upload a CSV or XLSX file that includes the following columns:" %}

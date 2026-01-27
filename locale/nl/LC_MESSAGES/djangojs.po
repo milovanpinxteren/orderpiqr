@@ -484,3 +484,41 @@ msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Geen van beide velden in de picklijsregel komt overeen met een bekende "
 "productcode."
+
+#: Queue related JavaScript translations
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+msgid "Order loaded from queue"
+msgstr "Order geladen vanuit wachtrij"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+msgid "Cannot load order: product data not available"
+msgstr "Kan order niet laden: productgegevens niet beschikbaar"
+
+#: .\templates\queue\picker.html
+msgid "Claiming..."
+msgstr "Claimend..."
+
+#: .\templates\queue\picker.html
+msgid "Order claimed! Redirecting..."
+msgstr "Order geclaimd! Doorsturen..."
+
+#: .\templates\queue\picker.html
+msgid "Error claiming order"
+msgstr "Fout bij claimen van order"
+
+#: .\templates\queue\manage.html
+msgid "Queue order saved"
+msgstr "Wachtrijvolgorde opgeslagen"
+
+#: .\templates\queue\manage.html
+msgid "Order added to queue"
+msgstr "Order toegevoegd aan wachtrij"
+
+#: .\templates\queue\manage.html
+msgid "Order removed from queue"
+msgstr "Order verwijderd uit wachtrij"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+#, python-format
+msgid "<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining"
+msgstr "<strong>%(remaining)s</strong> van <strong>%(total)s</strong> over"
