@@ -598,7 +598,129 @@ msgid "Already have an account?"
 msgstr ""
 
 #: .\templates\registration\signup.html:96
-#, fuzzy
-#| msgid "Log out"
 msgid "Log in"
-msgstr "Se déconnecter"
+msgstr "Se connecter"
+
+#: Queue related translations
+msgid "Order Queue"
+msgstr "File d'attente des commandes"
+
+msgid "Pick Queue"
+msgstr "File d'attente de préparation"
+
+msgid "Scanner"
+msgstr "Scanner"
+
+msgid "items"
+msgstr "articles"
+
+msgid "Start Picking"
+msgstr "Commencer la préparation"
+
+msgid "In Progress"
+msgstr "En cours"
+
+msgid "Completed"
+msgstr "Terminé"
+
+msgid "No orders in queue"
+msgstr "Aucune commande dans la file"
+
+msgid "New orders will appear here automatically"
+msgstr "Les nouvelles commandes apparaîtront ici automatiquement"
+
+msgid "Items"
+msgstr "Articles"
+
+msgid "Queued"
+msgstr "En file d'attente"
+
+msgid "Admin"
+msgstr "Administration"
+
+msgid "Queue Management"
+msgstr "Gestion de la file d'attente"
+
+msgid "Display View"
+msgstr "Vue affichage"
+
+msgid "Picker View"
+msgstr "Vue préparateur"
+
+msgid "Open tablet display view"
+msgstr "Ouvrir la vue tablette"
+
+msgid "Open mobile picker view"
+msgstr "Ouvrir la vue mobile préparateur"
+
+msgid "Current Queue"
+msgstr "File actuelle"
+
+msgid "orders"
+msgstr "commandes"
+
+msgid "Available Orders"
+msgstr "Commandes disponibles"
+
+msgid "Add to Queue"
+msgstr "Ajouter à la file"
+
+msgid "No available orders"
+msgstr "Aucune commande disponible"
+
+msgid "Create orders in the admin to add them here"
+msgstr "Créez des commandes dans l'administration pour les ajouter ici"
+
+msgid "Recently Completed"
+msgstr "Récemment terminées"
+
+msgid "No completed orders"
+msgstr "Aucune commande terminée"
+
+msgid "ago"
+msgstr "il y a"
+
+msgid "Remove"
+msgstr "Supprimer"
+
+msgid "Open Queue Manager"
+msgstr "Ouvrir le gestionnaire de file"
+
+msgid "Manage the picking queue - add orders, reorder, and monitor progress"
+msgstr "Gérer la file de préparation - ajouter des commandes, réordonner et suivre la progression"
+
+msgid "Draft"
+msgstr "Brouillon"
+
+msgid "Cancelled"
+msgstr "Annulé"
+
+msgid "Status"
+msgstr "Statut"
+
+msgid "Queue Position"
+msgstr "Position dans la file"
+
+msgid "Position in the picking queue. Lower numbers are picked first."
+msgstr "Position dans la file de préparation. Les numéros les plus bas sont traités en premier."
+
+msgid "Completed At"
+msgstr "Terminé le"
+
+msgid "Add selected orders to queue"
+msgstr "Ajouter les commandes sélectionnées à la file"
+
+msgid "Remove selected orders from queue"
+msgstr "Retirer les commandes sélectionnées de la file"
+
+#, python-format
+msgid "%(count)s order(s) added to queue."
+msgstr "%(count)s commande(s) ajoutée(s) à la file."
+
+#, python-format
+msgid "%(count)s order(s) skipped (not in draft status)."
+msgstr "%(count)s commande(s) ignorée(s) (pas en statut brouillon)."
+
+#, python-format
+msgid "%(count)s order(s) removed from queue."
+msgstr "%(count)s commande(s) retirée(s) de la file."

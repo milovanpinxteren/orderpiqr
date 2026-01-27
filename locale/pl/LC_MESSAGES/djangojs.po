@@ -483,4 +483,33 @@ msgstr ""
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:143
 msgid "Neither field in the picklist row matches a known product code."
-msgstr ""
+msgstr "Żadne pole w wierszu listy kompletacji nie odpowiada znanemu kodowi produktu."
+
+#: Queue related JavaScript translations
+msgid "Order loaded from queue"
+msgstr "Zamówienie załadowane z kolejki"
+
+msgid "Cannot load order: product data not available"
+msgstr "Nie można załadować zamówienia: dane produktu niedostępne"
+
+msgid "Claiming..."
+msgstr "Rezerwowanie..."
+
+msgid "Order claimed! Redirecting..."
+msgstr "Zamówienie zarezerwowane! Przekierowanie..."
+
+msgid "Error claiming order"
+msgstr "Błąd podczas rezerwacji zamówienia"
+
+msgid "Queue order saved"
+msgstr "Kolejność kolejki zapisana"
+
+msgid "Order added to queue"
+msgstr "Zamówienie dodane do kolejki"
+
+msgid "Order removed from queue"
+msgstr "Zamówienie usunięte z kolejki"
+
+#, python-format
+msgid "<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining"
+msgstr "<strong>%(remaining)s</strong> z <strong>%(total)s</strong> pozostało"

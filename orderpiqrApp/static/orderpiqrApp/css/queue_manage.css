@@ -48,11 +48,37 @@ body {
     flex: 2;
 }
 
-.customer-name {
+.header-right {
     flex: 1;
-    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.customer-name {
     font-size: 1rem;
     color: #666;
+}
+
+.view-links {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.view-link {
+    font-size: 0.8rem;
+    color: #118f11;
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #118f11;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.view-link:hover {
+    background-color: #118f11;
+    color: white;
 }
 
 /* Container - 3 column layout */
@@ -380,8 +406,16 @@ body {
         font-size: 1.2rem;
     }
 
+    .header-right {
+        align-items: center;
+    }
+
     .customer-name {
         text-align: center;
+    }
+
+    .view-links {
+        justify-content: center;
     }
 
     .manage-container {

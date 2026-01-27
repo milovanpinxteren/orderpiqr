@@ -402,3 +402,32 @@ msgstr "Mehrdeutige Pickliste: Beide Felder sehen wie Produktcodes aus. Bitte pr
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:143
 msgid "Neither field in the picklist row matches a known product code."
 msgstr "Keines der Felder in der Picklistenzeile entspricht einem bekannten Produktcode."
+
+#: Queue related JavaScript translations
+msgid "Order loaded from queue"
+msgstr "Auftrag aus Warteschlange geladen"
+
+msgid "Cannot load order: product data not available"
+msgstr "Auftrag kann nicht geladen werden: Produktdaten nicht verfügbar"
+
+msgid "Claiming..."
+msgstr "Wird beansprucht..."
+
+msgid "Order claimed! Redirecting..."
+msgstr "Auftrag beansprucht! Weiterleitung..."
+
+msgid "Error claiming order"
+msgstr "Fehler beim Beanspruchen des Auftrags"
+
+msgid "Queue order saved"
+msgstr "Warteschlangenreihenfolge gespeichert"
+
+msgid "Order added to queue"
+msgstr "Auftrag zur Warteschlange hinzugefügt"
+
+msgid "Order removed from queue"
+msgstr "Auftrag aus Warteschlange entfernt"
+
+#, python-format
+msgid "<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining"
+msgstr "<strong>%(remaining)s</strong> von <strong>%(total)s</strong> übrig"

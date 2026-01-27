@@ -16,7 +16,17 @@
             <a href="{% url 'admin:index' %}" class="back-link">← {% trans "Admin" %}</a>
         </div>
         <h1>{% trans "Queue Management" %}</h1>
-        <span class="customer-name">{{ customer.company_name }}</span>
+        <div class="header-right">
+            <span class="customer-name">{{ customer.company_name }}</span>
+            <div class="view-links">
+                <a href="{% url 'queue_display' %}" class="view-link" target="_blank" title="{% trans 'Open tablet display view' %}">
+                    {% trans "Display View" %}
+                </a>
+                <a href="{% url 'queue_picker' %}" class="view-link" target="_blank" title="{% trans 'Open mobile picker view' %}">
+                    {% trans "Picker View" %}
+                </a>
+            </div>
+        </div>
     </div>
 
     {% if error %}

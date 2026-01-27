@@ -595,7 +595,129 @@ msgid "Already have an account?"
 msgstr ""
 
 #: .\templates\registration\signup.html:96
-#, fuzzy
-#| msgid "Log out"
 msgid "Log in"
-msgstr "Wyloguj się"
+msgstr "Zaloguj się"
+
+#: Queue related translations
+msgid "Order Queue"
+msgstr "Kolejka zamówień"
+
+msgid "Pick Queue"
+msgstr "Kolejka kompletacji"
+
+msgid "Scanner"
+msgstr "Skaner"
+
+msgid "items"
+msgstr "pozycji"
+
+msgid "Start Picking"
+msgstr "Rozpocznij kompletację"
+
+msgid "In Progress"
+msgstr "W trakcie"
+
+msgid "Completed"
+msgstr "Zakończone"
+
+msgid "No orders in queue"
+msgstr "Brak zamówień w kolejce"
+
+msgid "New orders will appear here automatically"
+msgstr "Nowe zamówienia pojawią się tutaj automatycznie"
+
+msgid "Items"
+msgstr "Pozycje"
+
+msgid "Queued"
+msgstr "W kolejce"
+
+msgid "Admin"
+msgstr "Administracja"
+
+msgid "Queue Management"
+msgstr "Zarządzanie kolejką"
+
+msgid "Display View"
+msgstr "Widok wyświetlacza"
+
+msgid "Picker View"
+msgstr "Widok kompletującego"
+
+msgid "Open tablet display view"
+msgstr "Otwórz widok tabletu"
+
+msgid "Open mobile picker view"
+msgstr "Otwórz widok mobilny kompletującego"
+
+msgid "Current Queue"
+msgstr "Aktualna kolejka"
+
+msgid "orders"
+msgstr "zamówień"
+
+msgid "Available Orders"
+msgstr "Dostępne zamówienia"
+
+msgid "Add to Queue"
+msgstr "Dodaj do kolejki"
+
+msgid "No available orders"
+msgstr "Brak dostępnych zamówień"
+
+msgid "Create orders in the admin to add them here"
+msgstr "Utwórz zamówienia w administracji, aby je tutaj dodać"
+
+msgid "Recently Completed"
+msgstr "Ostatnio zakończone"
+
+msgid "No completed orders"
+msgstr "Brak zakończonych zamówień"
+
+msgid "ago"
+msgstr "temu"
+
+msgid "Remove"
+msgstr "Usuń"
+
+msgid "Open Queue Manager"
+msgstr "Otwórz menedżer kolejki"
+
+msgid "Manage the picking queue - add orders, reorder, and monitor progress"
+msgstr "Zarządzaj kolejką kompletacji - dodawaj zamówienia, zmieniaj kolejność i śledź postęp"
+
+msgid "Draft"
+msgstr "Szkic"
+
+msgid "Cancelled"
+msgstr "Anulowane"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Queue Position"
+msgstr "Pozycja w kolejce"
+
+msgid "Position in the picking queue. Lower numbers are picked first."
+msgstr "Pozycja w kolejce kompletacji. Niższe numery są kompletowane jako pierwsze."
+
+msgid "Completed At"
+msgstr "Zakończono"
+
+msgid "Add selected orders to queue"
+msgstr "Dodaj wybrane zamówienia do kolejki"
+
+msgid "Remove selected orders from queue"
+msgstr "Usuń wybrane zamówienia z kolejki"
+
+#, python-format
+msgid "%(count)s order(s) added to queue."
+msgstr "%(count)s zamówień dodano do kolejki."
+
+#, python-format
+msgid "%(count)s order(s) skipped (not in draft status)."
+msgstr "%(count)s zamówień pominięto (nie w statusie szkicu)."
+
+#, python-format
+msgid "%(count)s order(s) removed from queue."
+msgstr "%(count)s zamówień usunięto z kolejki."

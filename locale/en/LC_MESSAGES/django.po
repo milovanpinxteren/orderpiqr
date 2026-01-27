@@ -577,4 +577,128 @@ msgstr ""
 
 #: .\templates\registration\signup.html:96
 msgid "Log in"
-msgstr ""
+msgstr "Log in"
+
+#: Queue related translations
+msgid "Order Queue"
+msgstr "Order Queue"
+
+msgid "Pick Queue"
+msgstr "Pick Queue"
+
+msgid "Scanner"
+msgstr "Scanner"
+
+msgid "items"
+msgstr "items"
+
+msgid "Start Picking"
+msgstr "Start Picking"
+
+msgid "In Progress"
+msgstr "In Progress"
+
+msgid "Completed"
+msgstr "Completed"
+
+msgid "No orders in queue"
+msgstr "No orders in queue"
+
+msgid "New orders will appear here automatically"
+msgstr "New orders will appear here automatically"
+
+msgid "Items"
+msgstr "Items"
+
+msgid "Queued"
+msgstr "Queued"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Queue Management"
+msgstr "Queue Management"
+
+msgid "Display View"
+msgstr "Display View"
+
+msgid "Picker View"
+msgstr "Picker View"
+
+msgid "Open tablet display view"
+msgstr "Open tablet display view"
+
+msgid "Open mobile picker view"
+msgstr "Open mobile picker view"
+
+msgid "Current Queue"
+msgstr "Current Queue"
+
+msgid "orders"
+msgstr "orders"
+
+msgid "Available Orders"
+msgstr "Available Orders"
+
+msgid "Add to Queue"
+msgstr "Add to Queue"
+
+msgid "No available orders"
+msgstr "No available orders"
+
+msgid "Create orders in the admin to add them here"
+msgstr "Create orders in the admin to add them here"
+
+msgid "Recently Completed"
+msgstr "Recently Completed"
+
+msgid "No completed orders"
+msgstr "No completed orders"
+
+msgid "ago"
+msgstr "ago"
+
+msgid "Remove"
+msgstr "Remove"
+
+msgid "Open Queue Manager"
+msgstr "Open Queue Manager"
+
+msgid "Manage the picking queue - add orders, reorder, and monitor progress"
+msgstr "Manage the picking queue - add orders, reorder, and monitor progress"
+
+msgid "Draft"
+msgstr "Draft"
+
+msgid "Cancelled"
+msgstr "Cancelled"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Queue Position"
+msgstr "Queue Position"
+
+msgid "Position in the picking queue. Lower numbers are picked first."
+msgstr "Position in the picking queue. Lower numbers are picked first."
+
+msgid "Completed At"
+msgstr "Completed At"
+
+msgid "Add selected orders to queue"
+msgstr "Add selected orders to queue"
+
+msgid "Remove selected orders from queue"
+msgstr "Remove selected orders from queue"
+
+#, python-format
+msgid "%(count)s order(s) added to queue."
+msgstr "%(count)s order(s) added to queue."
+
+#, python-format
+msgid "%(count)s order(s) skipped (not in draft status)."
+msgstr "%(count)s order(s) skipped (not in draft status)."
+
+#, python-format
+msgid "%(count)s order(s) removed from queue."
+msgstr "%(count)s order(s) removed from queue."

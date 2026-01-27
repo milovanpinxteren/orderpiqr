@@ -587,3 +587,158 @@ msgstr "Heeft u al een account?"
 #: .\templates\registration\signup.html:96
 msgid "Log in"
 msgstr "Log in"
+
+#: Queue related translations
+#: .\templates\queue\display.html
+msgid "Order Queue"
+msgstr "Orderwachtrij"
+
+#: .\templates\queue\picker.html
+msgid "Pick Queue"
+msgstr "Pickwachtrij"
+
+#: .\templates\queue\picker.html
+msgid "Scanner"
+msgstr "Scanner"
+
+#: .\templates\queue\_picker_orders.html
+msgid "items"
+msgstr "items"
+
+#: .\templates\queue\_picker_orders.html
+msgid "Start Picking"
+msgstr "Start met picken"
+
+#: .\templates\queue\_picker_orders.html
+msgid "In Progress"
+msgstr "Bezig"
+
+#: .\templates\queue\_picker_orders.html
+msgid "Completed"
+msgstr "Voltooid"
+
+#: .\templates\queue\_picker_orders.html
+msgid "No orders in queue"
+msgstr "Geen orders in de wachtrij"
+
+#: .\templates\queue\_picker_orders.html
+msgid "New orders will appear here automatically"
+msgstr "Nieuwe orders verschijnen hier automatisch"
+
+#: .\templates\queue\_order_cards.html
+msgid "Items"
+msgstr "Items"
+
+#: .\templates\queue\_order_cards.html
+msgid "Queued"
+msgstr "In wachtrij"
+
+#: .\templates\queue\manage.html
+msgid "Admin"
+msgstr "Beheer"
+
+#: .\templates\queue\manage.html
+msgid "Queue Management"
+msgstr "Wachtrijbeheer"
+
+#: .\templates\queue\manage.html
+msgid "Display View"
+msgstr "Weergave"
+
+#: .\templates\queue\manage.html
+msgid "Picker View"
+msgstr "Picker weergave"
+
+#: .\templates\queue\manage.html
+msgid "Open tablet display view"
+msgstr "Open tablet weergave"
+
+#: .\templates\queue\manage.html
+msgid "Open mobile picker view"
+msgstr "Open mobiele picker weergave"
+
+#: .\templates\queue\manage.html
+msgid "Current Queue"
+msgstr "Huidige wachtrij"
+
+#: .\templates\queue\manage.html
+msgid "orders"
+msgstr "orders"
+
+#: .\templates\queue\manage.html
+msgid "Available Orders"
+msgstr "Beschikbare orders"
+
+#: .\templates\queue\manage.html
+msgid "Add to Queue"
+msgstr "Toevoegen aan wachtrij"
+
+#: .\templates\queue\manage.html
+msgid "No available orders"
+msgstr "Geen beschikbare orders"
+
+#: .\templates\queue\manage.html
+msgid "Create orders in the admin to add them here"
+msgstr "Maak orders aan in het beheer om ze hier toe te voegen"
+
+#: .\templates\queue\manage.html
+msgid "Recently Completed"
+msgstr "Recent voltooid"
+
+#: .\templates\queue\manage.html
+msgid "No completed orders"
+msgstr "Geen voltooide orders"
+
+#: .\templates\queue\manage.html
+msgid "ago"
+msgstr "geleden"
+
+#: .\templates\queue\_manage_queue_list.html
+msgid "Remove"
+msgstr "Verwijderen"
+
+#: .\templates\admin\orderpiqrApp\order\change_list.html
+msgid "Open Queue Manager"
+msgstr "Open wachtrijbeheer"
+
+#: .\templates\admin\orderpiqrApp\order\change_list.html
+msgid "Manage the picking queue - add orders, reorder, and monitor progress"
+msgstr "Beheer de pickwachtrij - voeg orders toe, sorteer en volg de voortgang"
+
+#: Order model status choices
+msgid "Draft"
+msgstr "Concept"
+
+msgid "Cancelled"
+msgstr "Geannuleerd"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Queue Position"
+msgstr "Wachtrijpositie"
+
+msgid "Position in the picking queue. Lower numbers are picked first."
+msgstr "Positie in de pickwachtrij. Lagere nummers worden eerst gepickt."
+
+msgid "Completed At"
+msgstr "Voltooid op"
+
+#: Order admin actions
+msgid "Add selected orders to queue"
+msgstr "Voeg geselecteerde orders toe aan wachtrij"
+
+msgid "Remove selected orders from queue"
+msgstr "Verwijder geselecteerde orders uit wachtrij"
+
+#, python-format
+msgid "%(count)s order(s) added to queue."
+msgstr "%(count)s order(s) toegevoegd aan wachtrij."
+
+#, python-format
+msgid "%(count)s order(s) skipped (not in draft status)."
+msgstr "%(count)s order(s) overgeslagen (niet in concept status)."
+
+#, python-format
+msgid "%(count)s order(s) removed from queue."
+msgstr "%(count)s order(s) verwijderd uit wachtrij."

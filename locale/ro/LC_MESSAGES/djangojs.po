@@ -483,4 +483,33 @@ msgstr ""
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:143
 msgid "Neither field in the picklist row matches a known product code."
-msgstr ""
+msgstr "Niciun câmp din rândul listei de ridicare nu corespunde unui cod de produs cunoscut."
+
+#: Queue related JavaScript translations
+msgid "Order loaded from queue"
+msgstr "Comandă încărcată din coadă"
+
+msgid "Cannot load order: product data not available"
+msgstr "Nu se poate încărca comanda: datele produsului nu sunt disponibile"
+
+msgid "Claiming..."
+msgstr "Se revendică..."
+
+msgid "Order claimed! Redirecting..."
+msgstr "Comandă revendicată! Redirecționare..."
+
+msgid "Error claiming order"
+msgstr "Eroare la revendicarea comenzii"
+
+msgid "Queue order saved"
+msgstr "Ordinea cozii salvată"
+
+msgid "Order added to queue"
+msgstr "Comandă adăugată în coadă"
+
+msgid "Order removed from queue"
+msgstr "Comandă eliminată din coadă"
+
+#, python-format
+msgid "<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining"
+msgstr "<strong>%(remaining)s</strong> din <strong>%(total)s</strong> rămase"

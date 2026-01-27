@@ -598,7 +598,129 @@ msgid "Already have an account?"
 msgstr ""
 
 #: .\templates\registration\signup.html:96
-#, fuzzy
-#| msgid "Log out"
 msgid "Log in"
-msgstr "Deconectare"
+msgstr "Autentificare"
+
+#: Queue related translations
+msgid "Order Queue"
+msgstr "Coadă comenzi"
+
+msgid "Pick Queue"
+msgstr "Coadă ridicare"
+
+msgid "Scanner"
+msgstr "Scanner"
+
+msgid "items"
+msgstr "articole"
+
+msgid "Start Picking"
+msgstr "Începe ridicarea"
+
+msgid "In Progress"
+msgstr "În curs"
+
+msgid "Completed"
+msgstr "Finalizat"
+
+msgid "No orders in queue"
+msgstr "Nicio comandă în coadă"
+
+msgid "New orders will appear here automatically"
+msgstr "Comenzile noi vor apărea aici automat"
+
+msgid "Items"
+msgstr "Articole"
+
+msgid "Queued"
+msgstr "În coadă"
+
+msgid "Admin"
+msgstr "Administrare"
+
+msgid "Queue Management"
+msgstr "Gestionare coadă"
+
+msgid "Display View"
+msgstr "Vizualizare afișaj"
+
+msgid "Picker View"
+msgstr "Vizualizare ridicător"
+
+msgid "Open tablet display view"
+msgstr "Deschide vizualizarea tabletă"
+
+msgid "Open mobile picker view"
+msgstr "Deschide vizualizarea mobilă"
+
+msgid "Current Queue"
+msgstr "Coadă curentă"
+
+msgid "orders"
+msgstr "comenzi"
+
+msgid "Available Orders"
+msgstr "Comenzi disponibile"
+
+msgid "Add to Queue"
+msgstr "Adaugă în coadă"
+
+msgid "No available orders"
+msgstr "Nicio comandă disponibilă"
+
+msgid "Create orders in the admin to add them here"
+msgstr "Creați comenzi în administrare pentru a le adăuga aici"
+
+msgid "Recently Completed"
+msgstr "Finalizate recent"
+
+msgid "No completed orders"
+msgstr "Nicio comandă finalizată"
+
+msgid "ago"
+msgstr "în urmă"
+
+msgid "Remove"
+msgstr "Elimină"
+
+msgid "Open Queue Manager"
+msgstr "Deschide managerul cozii"
+
+msgid "Manage the picking queue - add orders, reorder, and monitor progress"
+msgstr "Gestionați coada de ridicare - adăugați comenzi, reordonați și monitorizați progresul"
+
+msgid "Draft"
+msgstr "Schiță"
+
+msgid "Cancelled"
+msgstr "Anulat"
+
+msgid "Status"
+msgstr "Stare"
+
+msgid "Queue Position"
+msgstr "Poziție în coadă"
+
+msgid "Position in the picking queue. Lower numbers are picked first."
+msgstr "Poziția în coada de ridicare. Numerele mai mici sunt ridicate primele."
+
+msgid "Completed At"
+msgstr "Finalizat la"
+
+msgid "Add selected orders to queue"
+msgstr "Adaugă comenzile selectate în coadă"
+
+msgid "Remove selected orders from queue"
+msgstr "Elimină comenzile selectate din coadă"
+
+#, python-format
+msgid "%(count)s order(s) added to queue."
+msgstr "%(count)s comandă(comenzi) adăugată(e) în coadă."
+
+#, python-format
+msgid "%(count)s order(s) skipped (not in draft status)."
+msgstr "%(count)s comandă(comenzi) omisă(e) (nu este în stare de schiță)."
+
+#, python-format
+msgid "%(count)s order(s) removed from queue."
+msgstr "%(count)s comandă(comenzi) eliminată(e) din coadă."
