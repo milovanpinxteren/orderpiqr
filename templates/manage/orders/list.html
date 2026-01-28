@@ -1,0 +1,370 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Orders" %}{% endblock %}
+{% block page_title %}{% trans "Orders" %}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% trans "Manage your customer orders" %}</p>{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'manage_orders_import' %}" class="btn btn-secondary">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4m14-7l-5-5-5 5m5-5v12"/>
+    </svg>
+    {% trans "Import" %}
+</a>
+<a href="{% url 'manage_order_create' %}" class="btn btn-primary">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14m-7-7h14"/>
+    </svg>
+    {% trans "Create Order" %}
+</a>
+{% endblock %}
+
+{% block content %}
+<!-- Search & Filters -->
+<div class="search-filters">
+    <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input type="text" class="form-control" id="search-input"
+               placeholder="{% trans 'Search orders...' %}"
+               value="{{ search|default:'' }}"
+               onkeyup="handleSearch(event)">
+    </div>
+    <div class="filter-group">
+        <select class="form-control" id="status-filter" onchange="applyFilters()">
+            <option value="">{% trans "All Status" %}</option>
+            <option value="draft" {% if status_filter == 'draft' %}selected{% endif %}>{% trans "Draft" %}</option>
+            <option value="queued" {% if status_filter == 'queued' %}selected{% endif %}>{% trans "Queued" %}</option>
+            <option value="in_progress" {% if status_filter == 'in_progress' %}selected{% endif %}>{% trans "In Progress" %}</option>
+            <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>{% trans "Completed" %}</option>
+            <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>{% trans "Cancelled" %}</option>
+        </select>
+        <select class="form-control" id="order-filter" onchange="applyFilters()">
+            <option value="-created_at" {% if ordering == '-created_at' %}selected{% endif %}>{% trans "Newest First" %}</option>
+            <option value="created_at" {% if ordering == 'created_at' %}selected{% endif %}>{% trans "Oldest First" %}</option>
+            <option value="order_code" {% if ordering == 'order_code' %}selected{% endif %}>{% trans "Code A-Z" %}</option>
+            <option value="-order_code" {% if ordering == '-order_code' %}selected{% endif %}>{% trans "Code Z-A" %}</option>
+        </select>
+    </div>
+</div>
+
+<!-- Orders Table -->
+<div class="card">
+    <div class="card-body p-0">
+        {% if orders %}
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{% trans "Order Code" %}</th>
+                        <th>{% trans "Items" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th>{% trans "Created" %}</th>
+                        <th class="text-right">{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>
+                            <strong>{{ order.order_code }}</strong>
+                            {% if order.notes %}
+                            <span class="order-notes-indicator" title="{{ order.notes }}">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                                </svg>
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="badge badge-secondary">{{ order.item_count|default:0 }}</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-{% if order.status == 'completed' %}success{% elif order.status == 'in_progress' %}warning{% elif order.status == 'queued' %}info{% elif order.status == 'cancelled' %}danger{% else %}secondary{% endif %}">
+                                {{ order.get_status_display }}
+                            </span>
+                        </td>
+                        <td class="text-muted">{{ order.created_at|timesince }} {% trans "ago" %}</td>
+                        <td>
+                            <div class="table-actions">
+                                {% if order.status == 'draft' %}
+                                <button class="btn btn-sm btn-success" onclick="addToQueue({{ order.order_id }})"
+                                        title="{% trans 'Add to Queue' %}">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 5v14m-7-7h14"/>
+                                    </svg>
+                                </button>
+                                {% endif %}
+                                <a href="{% url 'manage_order_edit' order.order_id %}"
+                                   class="btn btn-sm btn-secondary" title="{% trans 'Edit' %}">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                                        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                    </svg>
+                                </a>
+                                {% if order.status == 'draft' %}
+                                <button type="button" class="btn btn-sm btn-danger"
+                                        onclick="confirmDelete({{ order.order_id }}, '{{ order.order_code }}')"
+                                        title="{% trans 'Delete' %}">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="3 6 5 6 21 6"/>
+                                        <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                    </svg>
+                                </button>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if paginator.num_pages > 1 %}
+        <div class="pagination">
+            {% if orders.has_previous %}
+            <a href="?page=1{% if search %}&search={{ search }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if ordering %}&order={{ ordering }}{% endif %}"
+               class="pagination-btn">&laquo;</a>
+            <a href="?page={{ orders.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if ordering %}&order={{ ordering }}{% endif %}"
+               class="pagination-btn">&lsaquo;</a>
+            {% endif %}
+
+            <span class="pagination-info">
+                {% trans "Page" %} {{ orders.number }} {% trans "of" %} {{ paginator.num_pages }}
+            </span>
+
+            {% if orders.has_next %}
+            <a href="?page={{ orders.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if ordering %}&order={{ ordering }}{% endif %}"
+               class="pagination-btn">&rsaquo;</a>
+            <a href="?page={{ paginator.num_pages }}{% if search %}&search={{ search }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if ordering %}&order={{ ordering }}{% endif %}"
+               class="pagination-btn">&raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="empty-state">
+            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+                <rect x="9" y="3" width="6" height="4" rx="1"/>
+            </svg>
+            {% if search or status_filter %}
+            <h3>{% trans "No orders found" %}</h3>
+            <p>{% trans "Try adjusting your search or filter criteria." %}</p>
+            <a href="{% url 'manage_orders' %}" class="btn btn-secondary">{% trans "Clear Filters" %}</a>
+            {% else %}
+            <h3>{% trans "No orders yet" %}</h3>
+            <p>{% trans "Get started by creating your first order or importing from a CSV file." %}</p>
+            <div class="d-flex gap-sm justify-center">
+                <a href="{% url 'manage_order_create' %}" class="btn btn-primary">{% trans "Create Order" %}</a>
+                <a href="{% url 'manage_orders_import' %}" class="btn btn-secondary">{% trans "Import CSV" %}</a>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="delete-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>{% trans "Delete Order" %}</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>{% trans "Are you sure you want to delete order" %} <strong id="delete-order-code"></strong>?</p>
+            <p class="text-danger">{% trans "This action cannot be undone." %}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">{% trans "Cancel" %}</button>
+            <button class="btn btn-danger" id="confirm-delete-btn">{% trans "Delete" %}</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.justify-center { justify-content: center; }
+
+.order-notes-indicator {
+    color: var(--text-muted);
+    cursor: help;
+    vertical-align: middle;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-fast);
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 400px;
+    width: 90%;
+    transform: translateY(-20px);
+    transition: transform var(--transition-fast);
+}
+
+.modal-overlay.show .modal {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    line-height: 1;
+}
+
+.modal-body {
+    padding: var(--spacing-lg);
+}
+
+.modal-body p {
+    margin: 0 0 var(--spacing-sm);
+}
+
+.modal-footer {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+}
+
+.pagination-info {
+    padding: 0 var(--spacing-md);
+    color: var(--text-secondary);
+}
+
+.p-0 { padding: 0 !important; }
+</style>
+
+<script>
+let deleteOrderId = null;
+
+function handleSearch(event) {
+    if (event.key === 'Enter') {
+        applyFilters();
+    }
+}
+
+function applyFilters() {
+    const search = document.getElementById('search-input').value;
+    const status = document.getElementById('status-filter').value;
+    const order = document.getElementById('order-filter').value;
+
+    let url = '{% url "manage_orders" %}?';
+    if (search) url += 'search=' + encodeURIComponent(search) + '&';
+    if (status) url += 'status=' + status + '&';
+    if (order) url += 'order=' + order + '&';
+
+    window.location.href = url.slice(0, -1);
+}
+
+function addToQueue(orderId) {
+    fetch(`/api/queue/add/${orderId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            showNotification('{% trans "Order added to queue" %}', 'success');
+            setTimeout(() => location.reload(), 500);
+        } else {
+            showNotification(data.message || '{% trans "Error adding to queue" %}', 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('{% trans "An error occurred" %}', 'error');
+    });
+}
+
+function confirmDelete(orderId, orderCode) {
+    deleteOrderId = orderId;
+    document.getElementById('delete-order-code').textContent = orderCode;
+    document.getElementById('delete-modal').classList.add('show');
+}
+
+function closeModal() {
+    document.getElementById('delete-modal').classList.remove('show');
+    deleteOrderId = null;
+}
+
+document.getElementById('confirm-delete-btn').addEventListener('click', function() {
+    if (deleteOrderId) {
+        fetch('{% url "manage_order_delete" order_id=0 %}'.replace('0', deleteOrderId), {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                showNotification(data.message, 'success');
+                setTimeout(() => location.reload(), 500);
+            } else {
+                showNotification(data.message, 'error');
+            }
+            closeModal();
+        })
+        .catch(error => {
+            showNotification('{% trans "An error occurred" %}', 'error');
+            closeModal();
+        });
+    }
+});
+
+// Close modal on escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+});
+
+// Close modal on overlay click
+document.getElementById('delete-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+</script>
+{% endblock %}
