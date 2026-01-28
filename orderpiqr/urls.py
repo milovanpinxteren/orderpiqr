@@ -84,3 +84,9 @@ urlpatterns += i18n_patterns(
     path('', root_redirect, name='root_redirect'),
     path('orderpiqr/', include('orderpiqrApp.urls')),
 )
+
+# Custom error handlers
+handler400 = 'orderpiqr.views.error_400'
+handler403 = 'orderpiqr.views.error_403'
+handler404 = 'orderpiqr.views.error_404'
+handler500 = 'orderpiqr.views.error_500'

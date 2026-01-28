@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 17:38+0100\n"
+"POT-Creation-Date: 2026-01-28 18:34+0100\n"
 "PO-Revision-Date: 2025-08-08 14:00+0200\n"
 "Last-Translator: Milo van Pinxteren <milo@example.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -13,129 +13,101 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\orderpiqrApp\admin\order_admin.py:35
 msgid "Generate QR PDF for selected Orders"
 msgstr "Genereer QR-PDF voor geselecteerde bestellingen"
 
-#: .\orderpiqrApp\admin\order_admin.py:38
 msgid "No orders selected."
 msgstr "Geen bestellingen geselecteerd."
 
-#: .\orderpiqrApp\admin\order_admin.py:47
 #, python-format
 msgid "Failed to generate QR batch: %(error)s"
 msgstr "Maken van QR-batch mislukt: %(error)s"
 
-#: .\orderpiqrApp\admin\order_admin.py:49
 msgid "Add selected orders to queue"
 msgstr "Voeg geselecteerde orders toe aan wachtrij"
 
-#: .\orderpiqrApp\admin\order_admin.py:71
 #, python-format
 msgid "%(count)s order(s) added to queue."
 msgstr "%(count)s order(s) toegevoegd aan wachtrij."
 
-#: .\orderpiqrApp\admin\order_admin.py:73
 #, python-format
 msgid "%(count)s order(s) skipped (not in draft status)."
 msgstr "%(count)s order(s) overgeslagen (niet in concept status)."
 
-#: .\orderpiqrApp\admin\order_admin.py:75
 msgid "Remove selected orders from queue"
 msgstr "Verwijder geselecteerde orders uit wachtrij"
 
-#: .\orderpiqrApp\admin\order_admin.py:85
 #, python-format
 msgid "%(count)s order(s) removed from queue."
 msgstr "%(count)s order(s) verwijderd uit wachtrij."
 
-#: .\orderpiqrApp\admin\order_admin.py:120
-#: .\orderpiqrApp\admin\order_admin.py:324
 msgid "Your account is not linked to a customer."
 msgstr "Uw account is niet gekoppeld aan een klant."
 
-#: .\orderpiqrApp\admin\order_admin.py:144
 #, python-format
 msgid "Missing required column: \"%(column)s\""
 msgstr "Vereiste kolom ontbreekt: \"%(column)s\""
 
-#: .\orderpiqrApp\admin\order_admin.py:160
 #, python-format
 msgid "Missing value for \"order_code\" in row %(row)d"
 msgstr "Ontbrekende waarde voor \"order_code\" in rij %(row)d"
 
-#: .\orderpiqrApp\admin\order_admin.py:166
 #, python-format
 msgid "Invalid quantity for product code \"%(code)s\" in row %(row)d"
 msgstr "Ongeldige hoeveelheid voor productcode \"%(code)s\" in rij %(row)d"
 
-#: .\orderpiqrApp\admin\order_admin.py:173
 #, python-format
 msgid "Unknown product code \"%(code)s\" in row %(row)d"
 msgstr "Onbekende productcode \"%(code)s\" in rij %(row)d"
 
-#: .\orderpiqrApp\admin\order_admin.py:251
 #, python-format
 msgid "%(orders)s orders and %(lines)s lines added."
 msgstr "%(orders)s bestellingen en %(lines)s regels toegevoegd."
 
-#: .\orderpiqrApp\admin\order_admin.py:258
 #, python-format
 msgid "Overwritten orders: %(codes)s."
 msgstr "Overschreven bestellingen: %(codes)s."
 
-#: .\orderpiqrApp\admin\order_admin.py:266
 #, python-format
 msgid "Error processing file: %(msg)s"
 msgstr "Fout bij verwerken van bestand: %(msg)s"
 
-#: .\orderpiqrApp\admin\preferences_admin.py:14
 msgid "General Info"
 msgstr "Algemene informatie"
 
-#: .\orderpiqrApp\admin\preferences_admin.py:17
 msgid "Advanced"
 msgstr "Geavanceerd"
 
-#: .\orderpiqrApp\admin\product_admin.py:62
 #, python-format
 msgid "Missing value for \"%(field)s\" in row %(row)d"
 msgstr "Ontbrekende waarde voor \"%(field)s\" in rij %(row)d"
 
-#: .\orderpiqrApp\admin\product_admin.py:141
 msgid "Unsupported file format, only .csv and .xlsx are supported"
 msgstr ""
 "Niet-ondersteund bestandsformaat; alleen .csv en .xlsx worden ondersteund"
 
-#: .\orderpiqrApp\admin\product_admin.py:143
 #, python-format
 msgid "%(added)d products added, %(overwritten)d products overwritten."
 msgstr ""
 "%(added)d producten toegevoegd, %(overwritten)d producten overschreven."
 
-#: .\orderpiqrApp\admin\product_admin.py:149
 #, python-format
 msgid "Error processing file: %(error)s"
 msgstr "Fout bij verwerken van bestand: %(error)s"
 
-#: .\orderpiqrApp\admin\product_admin.py:152
 msgid "No file uploaded."
 msgstr "Geen bestand geüpload."
 
-#: .\orderpiqrApp\admin\product_admin.py:154
 msgid "Upload CSV or XLSX File"
 msgstr "Upload CSV- of XLSX-bestand"
 
-#: .\orderpiqrApp\admin\product_admin.py:166
 msgid "Invalid form submission."
 msgstr "Ongeldige formulierverzending."
 
-#: .\orderpiqrApp\admin\product_admin.py:185
 #, python-format
 msgid "A product with the code \"%(code)s\" already exists for this customer."
 msgstr "Een product met de code \"%(code)s\" bestaat al voor deze klant."
 
-#: .\orderpiqrApp\admin\product_admin.py:189
 #, python-format
 msgid ""
 "A product with the code \"%(code)s\" already exists, cannot add duplicate."
@@ -143,1999 +115,1466 @@ msgstr ""
 "Een product met de code \"%(code)s\" bestaat al; dubbele invoer niet "
 "mogelijk."
 
-#: .\orderpiqrApp\admin\product_admin.py:195
 #, python-format
 msgid "The product \"%(description)s\" was added successfully."
 msgstr "Het product \"%(description)s\" is succesvol toegevoegd."
 
-#: .\orderpiqrApp\admin\product_admin.py:200
 msgid "User is not allowed to save products."
 msgstr "Gebruiker mag geen producten opslaan."
 
-#: .\orderpiqrApp\models\customers.py:8 .\orderpiqrApp\models\devices.py:12
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 msgid "Name"
 msgstr "Naam"
 
-#: .\orderpiqrApp\models\customers.py:9 .\orderpiqrApp\models\devices.py:13
-#: .\orderpiqrApp\models\products.py:10
-#: .\templates\manage\orders\import.html:59
-#: .\templates\manage\products\form.html:28
-#: .\templates\manage\products\import.html:59
-#: .\templates\manage\products\list.html:68 .\templates\manage\profile.html:101
 msgid "Description"
 msgstr "Omschrijving"
 
-#: .\orderpiqrApp\models\customers.py:12 .\orderpiqrApp\models\customers.py:21
-#: .\orderpiqrApp\models\devices.py:14 .\orderpiqrApp\models\orders.py:18
-#: .\orderpiqrApp\models\picklists.py:11
-#: .\orderpiqrApp\models\preferences.py:68 .\orderpiqrApp\models\products.py:12
 msgid "Customer"
 msgstr "Klant"
 
-#: .\orderpiqrApp\models\customers.py:13
 msgid "Customers"
 msgstr "Klanten"
 
-#: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:9
-#: .\templates\index.html:51 .\templates\manage\devices\list.html:37
-#: .\templates\manage\profile.html:115
 msgid "User"
 msgstr "Gebruiker"
 
-#: .\orderpiqrApp\models\customers.py:24
 msgid "User Profile"
 msgstr "Gebruikersprofiel"
 
-#: .\orderpiqrApp\models\customers.py:25
 msgid "User Profiles"
 msgstr "Gebruikersprofielen"
 
-#: .\orderpiqrApp\models\devices.py:11
 msgid "Device Fingerprint"
 msgstr "Apparaatvingerafdruk"
 
-#: .\orderpiqrApp\models\devices.py:15 .\templates\manage\profile.html:124
 msgid "Last Login"
 msgstr "Laatste login"
 
-#: .\orderpiqrApp\models\devices.py:16
 msgid "Lists Picked"
 msgstr "Lijsten gepickt"
 
-#: .\orderpiqrApp\models\devices.py:19 .\orderpiqrApp\models\picklists.py:14
-#: .\templates\manage\picklists\detail.html:42
-#: .\templates\manage\picklists\list.html:32
 msgid "Device"
 msgstr "Apparaat"
 
-#: .\orderpiqrApp\models\devices.py:20 .\templates\manage\base.html:104
-#: .\templates\manage\devices\list.html:4
-#: .\templates\manage\devices\list.html:5
 msgid "Devices"
 msgstr "Apparaten"
 
-#: .\orderpiqrApp\models\orders.py:10 .\templates\manage\orders\list.html:39
 msgid "Draft"
 msgstr "Concept"
 
-#: .\orderpiqrApp\models\orders.py:11 .\templates\manage\orders\list.html:40
-#: .\templates\manage\queue\_queue_list.html:26
-#: .\templates\queue\_manage_queue_list.html:21
-#: .\templates\queue\_order_cards.html:53
 msgid "Queued"
 msgstr "In wachtrij"
 
-#: .\orderpiqrApp\models\orders.py:12 .\templates\manage\orders\list.html:41
-#: .\templates\manage\picklists\detail.html:34
-#: .\templates\manage\picklists\list.html:15
-#: .\templates\manage\picklists\list.html:74
-#: .\templates\manage\queue\_queue_list.html:24
-#: .\templates\queue\_manage_queue_list.html:19
-#: .\templates\queue\_order_cards.html:56
-#: .\templates\queue\_picker_orders.html:40
 msgid "In Progress"
 msgstr "Bezig"
 
-#: .\orderpiqrApp\models\orders.py:13 .\templates\manage\orders\list.html:42
-#: .\templates\manage\picklists\detail.html:30
-#: .\templates\manage\picklists\list.html:16
-#: .\templates\manage\picklists\list.html:70
-#: .\templates\queue\_order_cards.html:59
-#: .\templates\queue\_picker_orders.html:44
 msgid "Completed"
 msgstr "Voltooid"
 
-#: .\orderpiqrApp\models\orders.py:14 .\templates\manage\orders\list.html:43
 msgid "Cancelled"
 msgstr "Geannuleerd"
 
-#: .\orderpiqrApp\models\orders.py:19 .\templates\manage\orders\form.html:20
-#: .\templates\manage\orders\list.html:62
 msgid "Order Code"
 msgstr "Ordercode"
 
-#: .\orderpiqrApp\models\orders.py:21 .\orderpiqrApp\models\picklists.py:21
-#: .\orderpiqrApp\models\picklists.py:51 .\templates\manage\orders\form.html:41
-#: .\templates\manage\orders\import.html:100
-#: .\templates\manage\picklists\detail.html:80
-#: .\templates\queue\_order_cards.html:44
 msgid "Notes"
 msgstr "Notities"
 
-#: .\orderpiqrApp\models\orders.py:23 .\templates\manage\dashboard.html:192
-#: .\templates\manage\orders\list.html:64
-#: .\templates\manage\picklists\detail.html:102
-#: .\templates\manage\picklists\list.html:34
-#: .\templates\manage\products\form.html:45
-#: .\templates\manage\products\list.html:71
 msgid "Status"
 msgstr "Status"
 
-#: .\orderpiqrApp\models\orders.py:29
 msgid "Queue Position"
 msgstr "Wachtrijpositie"
 
-#: .\orderpiqrApp\models\orders.py:32
 msgid "Position in the picking queue. Lower numbers are picked first."
 msgstr "Positie in de pickwachtrij. Lagere nummers worden eerst gepickt."
 
-#: .\orderpiqrApp\models\orders.py:35
 msgid "Completed At"
 msgstr "Voltooid op"
 
-#: .\orderpiqrApp\models\orders.py:41 .\orderpiqrApp\models\orders.py:50
-#: .\templates\manage\dashboard.html:191
-#: .\templates\manage\picklists\detail.html:9
-#: .\templates\manage\picklists\list.html:31
 msgid "Order"
 msgstr "Bestelling"
 
-#: .\orderpiqrApp\models\orders.py:42 .\templates\manage\base.html:73
-#: .\templates\manage\base.html:80 .\templates\manage\orders\list.html:4
-#: .\templates\manage\orders\list.html:5
-#: .\templates\manage\products\list.html:70
 msgid "Orders"
 msgstr "Bestellingen"
 
-#: .\orderpiqrApp\models\orders.py:51 .\orderpiqrApp\models\picklists.py:45
-#: .\orderpiqrApp\models\products.py:16 .\templates\manage\orders\form.html:60
-#: .\templates\manage\orders\form.html:357
-#: .\templates\manage\picklists\detail.html:99
 msgid "Product"
 msgstr "Product"
 
-#: .\orderpiqrApp\models\orders.py:52 .\orderpiqrApp\models\picklists.py:48
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81
-#: .\templates\manage\orders\form.html:366
-#: .\templates\manage\picklists\detail.html:101
 msgid "Quantity"
 msgstr "Aantal"
 
-#: .\orderpiqrApp\models\orders.py:55
 msgid "Order Line"
 msgstr "Bestelregel"
 
-#: .\orderpiqrApp\models\orders.py:56 .\templates\manage\orders\form.html:50
 msgid "Order Lines"
 msgstr "Bestelregels"
 
-#: .\orderpiqrApp\models\orders.py:59
 #, python-format
 msgid "Order %(order)s, Product: %(quantity)s x %(product)s"
 msgstr "Bestelling %(order)s, Product: %(quantity)s × %(product)s"
 
-#: .\orderpiqrApp\models\picklists.py:12
 msgid "Source Order"
 msgstr "Bronbestelling"
 
-#: .\orderpiqrApp\models\picklists.py:13
 msgid "Picklist Code"
 msgstr "Picklijstcode"
 
-#: .\orderpiqrApp\models\picklists.py:15
 msgid "Created At"
 msgstr "Aangemaakt op"
 
-#: .\orderpiqrApp\models\picklists.py:16
 msgid "Updated At"
 msgstr "Bijgewerkt op"
 
-#: .\orderpiqrApp\models\picklists.py:17
 msgid "Pick Started"
 msgstr "Pick gestart"
 
-#: .\orderpiqrApp\models\picklists.py:18
-#: .\templates\manage\picklists\detail.html:67
 msgid "Pick Time"
 msgstr "Picktijd"
 
-#: .\orderpiqrApp\models\picklists.py:19 .\orderpiqrApp\models\picklists.py:49
 msgid "Time Taken"
 msgstr "Benodigde tijd"
 
-#: .\orderpiqrApp\models\picklists.py:20 .\orderpiqrApp\models\picklists.py:50
 msgid "Successful"
 msgstr "Succesvol"
 
-#: .\orderpiqrApp\models\picklists.py:24 .\orderpiqrApp\models\picklists.py:47
 msgid "Pick List"
 msgstr "Picklijst"
 
-#: .\orderpiqrApp\models\picklists.py:25 .\templates\manage\base.html:97
-#: .\templates\manage\picklists\list.html:4
-#: .\templates\manage\picklists\list.html:5
 msgid "Pick Lists"
 msgstr "Picklijsten"
 
-#: .\orderpiqrApp\models\picklists.py:35
 #, python-format
 msgid "PickList %(id)s for Device %(device)s"
 msgstr "Picklijst %(id)s voor apparaat %(device)s"
 
-#: .\orderpiqrApp\models\picklists.py:54
 msgid "Product Pick"
 msgstr "Gepickt product"
 
-#: .\orderpiqrApp\models\picklists.py:55
-#: .\templates\manage\picklists\detail.html:90
 msgid "Product Picks"
 msgstr "Gepickte producten"
 
-#: .\orderpiqrApp\models\picklists.py:58
 #, python-format
 msgid "Pick of %(product)s in PickList %(picklist_id)s"
 msgstr "Pick van %(product)s in picklijst %(picklist_id)s"
 
-#: .\orderpiqrApp\models\preferences.py:9
 msgid "String"
 msgstr "Tekenreeks"
 
-#: .\orderpiqrApp\models\preferences.py:10
 msgid "Boolean"
 msgstr "Ja/Nee"
 
-#: .\orderpiqrApp\models\preferences.py:11
 msgid "Integer"
 msgstr "Geheel getal"
 
-#: .\orderpiqrApp\models\preferences.py:12
 msgid "Float"
 msgstr "Kommagetal"
 
-#: .\orderpiqrApp\models\preferences.py:13
 msgid "Date"
 msgstr "Datum"
 
-#: .\orderpiqrApp\models\preferences.py:14
 msgid "DateTime"
 msgstr "Datum en tijd"
 
-#: .\orderpiqrApp\models\preferences.py:15
 msgid "Color (HEX)"
 msgstr "Kleur (HEX)"
 
-#: .\orderpiqrApp\models\preferences.py:16
 msgid "URL"
 msgstr "URL"
 
-#: .\orderpiqrApp\models\preferences.py:17
 msgid "Image"
 msgstr "Afbeelding"
 
-#: .\orderpiqrApp\models\preferences.py:18
 msgid "JSON"
 msgstr "JSON"
 
-#: .\orderpiqrApp\models\preferences.py:20
 msgid "Key"
 msgstr "Sleutel"
 
-#: .\orderpiqrApp\models\preferences.py:21
 msgid "Internal name for this setting (e.g. 'language', 'sort_by_location')."
 msgstr ""
 "Interne naam voor deze instelling (bijv. 'language', 'sort_by_location')."
 
-#: .\orderpiqrApp\models\preferences.py:22
 msgid "Label"
 msgstr "Label"
 
-#: .\orderpiqrApp\models\preferences.py:23
 msgid "Human-readable label shown in admin or forms (e.g. 'Language')."
 msgstr ""
 "Menselijk leesbaar label voor weergave in admin of formulieren (bijv. "
 "'Taal')."
 
-#: .\orderpiqrApp\models\preferences.py:24
 msgid "Help text"
 msgstr "Helptekst"
 
-#: .\orderpiqrApp\models\preferences.py:25
 msgid "Additional description or guidance for this setting."
 msgstr "Extra beschrijving of toelichting voor deze instelling."
 
-#: .\orderpiqrApp\models\preferences.py:27
 msgid "Type"
 msgstr "Type"
 
-#: .\orderpiqrApp\models\preferences.py:28
 msgid "The type of this setting (e.g. boolean, integer, string)."
 msgstr "Het type instelling (bijv. Ja/Nee, getal, tekst)."
 
-#: .\orderpiqrApp\models\preferences.py:29
 msgid "Default value"
 msgstr "Standaardwaarde"
 
-#: .\orderpiqrApp\models\preferences.py:30
 msgid "Used if customer-specific value is not set."
 msgstr "Wordt gebruikt als er geen klant-specifieke waarde is ingesteld."
 
-#: .\orderpiqrApp\models\preferences.py:31
 msgid "Options"
 msgstr "Opties"
 
-#: .\orderpiqrApp\models\preferences.py:32
 msgid ""
 "For 'choice' type settings: list of {value, label} options. E.g. "
 "[{\"value\": \"original\", \"label\": \"Original order\"}]"
-msgstr "Voor 'keuze' type instellingen: lijst van {value, label} opties. Bijv. [{\"value\": \"original\", \"label\": \"Originele volgorde\"}]"
+msgstr ""
+"Voor 'keuze' type instellingen: lijst van {value, label} opties. Bijv. "
+"[{\"value\": \"original\", \"label\": \"Originele volgorde\"}]"
 
-#: .\orderpiqrApp\models\preferences.py:70
 msgid "Setting"
 msgstr "Instelling"
 
-#: .\orderpiqrApp\models\preferences.py:71
 msgid "Value"
 msgstr "Waarde"
 
-#: .\orderpiqrApp\models\preferences.py:71
 msgid "The value set for this customer."
 msgstr "De ingestelde waarde voor deze klant."
 
-#: .\orderpiqrApp\models\preferences.py:75
 msgid "Customer setting value"
 msgstr "Klantinstellingswaarde"
 
-#: .\orderpiqrApp\models\preferences.py:76
 msgid "Customer setting values"
 msgstr "Klantinstellingswaarden"
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:68
-#: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Productcode"
 
-#: .\orderpiqrApp\models\products.py:11
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:44
-#: .\templates\index.html:70 .\templates\manage\orders\form.html:62
-#: .\templates\manage\picklists\detail.html:100
-#: .\templates\manage\products\form.html:37
-#: .\templates\manage\products\list.html:69
 msgid "Location"
 msgstr "Locatie"
 
-#: .\orderpiqrApp\models\products.py:13
-#: .\templates\manage\products\form.html:52
-#: .\templates\manage\products\list.html:45
-#: .\templates\manage\products\list.html:92
 msgid "Active"
 msgstr "Actief"
 
-#: .\orderpiqrApp\models\products.py:17 .\templates\manage\base.html:68
-#: .\templates\manage\dashboard.html:22 .\templates\manage\products\list.html:4
-#: .\templates\manage\products\list.html:5
 msgid "Products"
 msgstr "Producten"
 
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81
-#: .\templates\manage\products\list.html:67
 msgid "Code"
 msgstr "Code"
 
-#: .\orderpiqrApp\views\auth\signup_view.py:59
 msgid ""
 "Your company and users were created. Welcome! Start by adding your products, "
 "then create orders and manage your queue."
-msgstr "Uw bedrijf en gebruikers zijn aangemaakt. Welkom! Begin met het toevoegen van uw producten, maak vervolgens orders aan en beheer uw wachtrij."
+msgstr ""
+"Uw bedrijf en gebruikers zijn aangemaakt. Welkom! Begin met het toevoegen "
+"van uw producten, maak vervolgens orders aan en beheer uw wachtrij."
 
-#: .\orderpiqrApp\views\auth\signup_view.py:66
 msgid ""
 "That username or email is already in use. Please choose a different one."
 msgstr "Die gebruikersnaam of e-mail is al in gebruik. Kies een andere."
 
-#: .\orderpiqrApp\views\auth\signup_view.py:70
 msgid ""
 "Some of the submitted data is invalid or too long. Please review and try "
 "again."
-msgstr "Sommige ingevoerde gegevens zijn ongeldig of te lang. Controleer en probeer opnieuw."
+msgstr ""
+"Sommige ingevoerde gegevens zijn ongeldig of te lang. Controleer en probeer "
+"opnieuw."
 
-#: .\orderpiqrApp\views\auth\signup_view.py:78
 msgid "Please correct the highlighted errors and try again."
 msgstr "Corrigeer de gemarkeerde fouten en probeer opnieuw."
 
-#: .\orderpiqrApp\views\auth\signup_view.py:83
 msgid ""
 "Some of the submitted information is missing or invalid. Please check and "
 "try again."
-msgstr "Sommige informatie ontbreekt of is ongeldig. Controleer en probeer opnieuw."
+msgstr ""
+"Sommige informatie ontbreekt of is ongeldig. Controleer en probeer opnieuw."
 
-#: .\orderpiqrApp\views\auth\signup_view.py:86
-msgid "We're experiencing technical issues. Please try again shortly."
+#, fuzzy
+#| msgid "We're experiencing technical issues. Please try again shortly."
+msgid "We’re experiencing technical issues. Please try again shortly."
 msgstr "We ondervinden technische problemen. Probeer het later opnieuw."
 
-#: .\orderpiqrApp\views\manage_views.py:54
 msgid "No customer profile found for your account."
 msgstr "Geen klantprofiel gevonden voor uw account."
 
-#: .\orderpiqrApp\views\manage_views.py:187
-#: .\orderpiqrApp\views\manage_views.py:233
 msgid "Product code is required."
 msgstr "Productcode is verplicht."
 
-#: .\orderpiqrApp\views\manage_views.py:189
-#: .\orderpiqrApp\views\manage_views.py:235
 msgid "A product with this code already exists."
 msgstr "Een product met deze code bestaat al."
 
-#: .\orderpiqrApp\views\manage_views.py:191
-#: .\orderpiqrApp\views\manage_views.py:237
 msgid "Description is required."
 msgstr "Omschrijving is verplicht."
 
-#: .\orderpiqrApp\views\manage_views.py:206
 #, python-brace-format
 msgid "Product '{code}' created successfully."
 msgstr "Product '{code}' succesvol aangemaakt."
 
-#: .\orderpiqrApp\views\manage_views.py:251
 #, python-brace-format
 msgid "Product '{code}' updated successfully."
 msgstr "Product '{code}' succesvol bijgewerkt."
 
-#: .\orderpiqrApp\views\manage_views.py:263
-#: .\orderpiqrApp\views\manage_views.py:554
 msgid "No customer found."
 msgstr "Geen klant gevonden."
 
-#: .\orderpiqrApp\views\manage_views.py:270
 #, python-brace-format
 msgid "Product '{code}' deleted."
 msgstr "Product '{code}' verwijderd."
 
-#: .\orderpiqrApp\views\manage_views.py:272
-#: .\orderpiqrApp\views\manage_views.py:563
 msgid "Invalid request method."
 msgstr "Ongeldige aanvraagmethode."
 
-#: .\orderpiqrApp\views\manage_views.py:287
-#: .\orderpiqrApp\views\manage_views.py:578
 msgid "Please select a CSV file."
 msgstr "Selecteer een CSV-bestand."
 
-#: .\orderpiqrApp\views\manage_views.py:291
-#: .\orderpiqrApp\views\manage_views.py:582
 msgid "Please upload a valid CSV file."
 msgstr "Upload een geldig CSV-bestand."
 
-#: .\orderpiqrApp\views\manage_views.py:328
 #, python-brace-format
 msgid ""
 "Import completed: {created} created, {updated} updated, {errors} errors."
-msgstr "Import voltooid: {created} aangemaakt, {updated} bijgewerkt, {errors} fouten."
+msgstr ""
+"Import voltooid: {created} aangemaakt, {updated} bijgewerkt, {errors} fouten."
 
-#: .\orderpiqrApp\views\manage_views.py:334
-#: .\orderpiqrApp\views\manage_views.py:647
 #, python-brace-format
 msgid "Error processing CSV: {error}"
 msgstr "Fout bij verwerken van CSV: {error}"
 
-#: .\orderpiqrApp\views\manage_views.py:437
-#: .\orderpiqrApp\views\manage_views.py:511
 msgid "Order code is required."
 msgstr "Ordercode is verplicht."
 
-#: .\orderpiqrApp\views\manage_views.py:439
-#: .\orderpiqrApp\views\manage_views.py:513
 msgid "An order with this code already exists."
 msgstr "Een order met deze code bestaat al."
 
-#: .\orderpiqrApp\views\manage_views.py:442
-#: .\orderpiqrApp\views\manage_views.py:516
 msgid "At least one product is required."
 msgstr "Minimaal één product is verplicht."
 
-#: .\orderpiqrApp\views\manage_views.py:478
 #, python-brace-format
 msgid "Order '{code}' created successfully."
 msgstr "Order '{code}' succesvol aangemaakt."
 
-#: .\orderpiqrApp\views\manage_views.py:542
 #, python-brace-format
 msgid "Order '{code}' updated successfully."
 msgstr "Order '{code}' succesvol bijgewerkt."
 
-#: .\orderpiqrApp\views\manage_views.py:561
 #, python-brace-format
 msgid "Order '{code}' deleted."
 msgstr "Order '{code}' verwijderd."
 
-#: .\orderpiqrApp\views\manage_views.py:641
 #, python-brace-format
 msgid ""
 "Import completed: {orders} orders created with {lines} lines, {errors} "
 "errors."
-msgstr "Import voltooid: {orders} orders aangemaakt met {lines} regels, {errors} fouten."
+msgstr ""
+"Import voltooid: {orders} orders aangemaakt met {lines} regels, {errors} "
+"fouten."
 
-#: .\orderpiqrApp\views\manage_views.py:774
 msgid "First name is required."
 msgstr "Voornaam is verplicht."
 
-#: .\orderpiqrApp\views\manage_views.py:776
 msgid "Email is required."
 msgstr "E-mail is verplicht."
 
-#: .\orderpiqrApp\views\manage_views.py:786
 msgid "Profile updated successfully."
 msgstr "Profiel succesvol bijgewerkt."
 
-#: .\orderpiqrApp\views\manage_views.py:795
 msgid "Current password is incorrect."
 msgstr "Huidig wachtwoord is onjuist."
 
-#: .\orderpiqrApp\views\manage_views.py:797
 msgid "New password must be at least 8 characters."
 msgstr "Nieuw wachtwoord moet minimaal 8 tekens zijn."
 
-#: .\orderpiqrApp\views\manage_views.py:799
 msgid "New passwords do not match."
 msgstr "Nieuwe wachtwoorden komen niet overeen."
 
-#: .\orderpiqrApp\views\manage_views.py:808
 msgid "Password changed successfully."
 msgstr "Wachtwoord succesvol gewijzigd."
 
-#: .\orderpiqrApp\views\manage_views.py:883
 msgid "Settings saved successfully."
 msgstr "Instellingen succesvol opgeslagen."
 
-#: .\orderpiqrApp\views\manage_views.py:897
 msgid "You have been logged out successfully."
 msgstr "U bent succesvol uitgelogd."
 
-#: .\templates\admin\base_site.html:36 .\templates\admin\base_site.html:37
-#: .\templates\admin\base_site.html:42
+msgid "Bad Request"
+msgstr "Ongeldige aanvraag"
+
+msgid ""
+"The server could not understand your request. This might be due to invalid "
+"data or a malformed request."
+msgstr ""
+"De server kon uw verzoek niet verwerken. Dit kan komen door ongeldige "
+"gegevens of een onjuist geformuleerd verzoek."
+
+msgid "Access Denied"
+msgstr "Toegang geweigerd"
+
+msgid ""
+"You don't have permission to access this page. Please make sure you're "
+"logged in with the correct account."
+msgstr ""
+"U heeft geen toegang tot deze pagina. Controleer of u bent ingelogd met "
+"het juiste account."
+
+msgid "Sign In"
+msgstr "Inloggen"
+
+msgid "Go to Homepage"
+msgstr "Naar startpagina"
+
+msgid "Page Not Found"
+msgstr "Pagina niet gevonden"
+
+msgid ""
+"The page you're looking for doesn't exist or has been moved. Please check "
+"the URL or navigate back to the homepage."
+msgstr ""
+"De pagina die u zoekt bestaat niet of is verplaatst. Controleer de URL "
+"of ga terug naar de startpagina."
+
+msgid "Server Error"
+msgstr "Serverfout"
+
+msgid ""
+"Something went wrong on our end. Our team has been notified and we're "
+"working to fix the issue. Please try again in a few minutes."
+msgstr ""
+"Er is iets misgegaan aan onze kant. Ons team is op de hoogte gebracht en "
+"we werken aan een oplossing. Probeer het over enkele minuten opnieuw."
+
+msgid "Try Again"
+msgstr "Opnieuw proberen"
+
 msgid "Start tour"
 msgstr "Start rondleiding"
 
-#: .\templates\admin\custom_index.html:8
 msgid "Picklists scanned this month"
 msgstr "Picklijsten gescand deze maand"
 
-#: .\templates\admin\custom_index.html:34
 msgid "Cumulative picklists"
 msgstr "Cumulatieve picklijsten"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:42
-#: .\templates\manage\queue\list.html:4 .\templates\manage\queue\list.html:5
-#: .\templates\queue\manage.html:18
 msgid "Queue Management"
 msgstr "Wachtrijbeheer"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:43
 msgid "Manage the picking queue - add orders, reorder, and monitor progress"
 msgstr "Beheer de pickwachtrij - voeg orders toe, sorteer en volg de voortgang"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:45
 msgid "Open Queue Manager"
 msgstr "Open wachtrijbeheer"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:48
 msgid "Upload Order CSV/XLSX"
 msgstr ""
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:50
-#: .\templates\admin\orderpiqrApp\product\change_list.html:12
 msgid "Please upload a CSV or XLSX file that includes the following columns:"
 msgstr "Upload een CSV- of XLSX-bestand dat de volgende kolommen bevat:"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:52
 msgid ""
 "With each row representing a product/pick. The order code is repeated for "
 "each product"
 msgstr ""
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:53
-#: .\templates\admin\orderpiqrApp\product\change_list.html:14
 msgid ""
 "Or manually add a product using the button at the top right of the page."
 msgstr ""
 "Of voeg handmatig een product toe met de knop rechtsboven op de pagina."
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:61
-#: .\templates\admin\orderpiqrApp\product\change_list.html:22
 msgid "Upload File"
 msgstr "Upload bestand"
 
-#: .\templates\admin\orderpiqrApp\product\change_list.html:10
 msgid "Upload Product CSV/XLSX"
 msgstr ""
 
-#: .\templates\index.html:24
-msgid "Welcome to Orderpiqr!"
-msgstr "Welkom bij Orderpiqr"
-
-#: .\templates\index.html:34 .\templates\manage\base.html:194
-msgid "Log out"
-msgstr "Log uit"
-
-#: .\templates\index.html:36 .\templates\queue\display.html:10
-#: .\templates\queue\display.html:14 .\templates\queue\picker.html:18
-msgid "Order Queue"
-msgstr "Orderwachtrij"
-
-#: .\templates\index.html:38
-msgid "Order Importance"
-msgstr "Vaste scanvolgorde"
-
-#: .\templates\index.html:38
-msgid "Enabled"
-msgstr "Ingeschakeld"
-
-#: .\templates\index.html:41
-msgid "Sort Picklist By"
-msgstr "Sorteer picklijst op: "
-
-#: .\templates\index.html:43
-msgid "Original order"
-msgstr "Orginele volgorde"
-
-#: .\templates\index.html:45 .\templates\manage\products\import.html:71
-msgid "Product description"
-msgstr "Productomschrijving"
-
-#: .\templates\index.html:56
-msgid "This app is best viewed on your phone"
-msgstr "Deze app is het beste te bekijken op uw telefoon"
-
-#: .\templates\index.html:63 .\templates\manage\picklists\detail.html:4
-#: .\templates\manage\picklists\detail.html:5
-#: .\templates\manage\picklists\list.html:30
-msgid "Picklist"
-msgstr "Picklijst"
-
-#: .\templates\index.html:69
-msgid "Product Name"
-msgstr "Productnaam"
-
-#: .\templates\manage\base.html:8 .\templates\manage\base.html:58
-#: .\templates\manage\base.html:151 .\templates\manage\dashboard.html:4
-#: .\templates\manage\dashboard.html:5
-msgid "Dashboard"
-msgstr "Dashboard"
-
-#: .\templates\manage\base.html:41
-msgid "Close menu"
-msgstr "Menu sluiten"
-
-#: .\templates\manage\base.html:50
-msgid "Main"
-msgstr "Hoofd"
-
-#: .\templates\manage\base.html:63
-msgid "Inventory"
-msgstr "Voorraad"
-
-#: .\templates\manage\base.html:87
-msgid "Queue"
-msgstr "Wachtrij"
-
-#: .\templates\manage\base.html:92
-msgid "Operations"
-msgstr "Operaties"
-
-#: .\templates\manage\base.html:109 .\templates\manage\base.html:115
-#: .\templates\manage\base.html:192 .\templates\manage\settings.html:4
-#: .\templates\manage\settings.html:5
-msgid "Settings"
-msgstr "Instellingen"
-
-#: .\templates\manage\base.html:122 .\templates\manage\base.html:191
-#: .\templates\manage\profile.html:4 .\templates\manage\profile.html:5
-msgid "Profile"
-msgstr "Profiel"
-
-#: .\templates\manage\base.html:144
-msgid "Open menu"
-msgstr "Menu openen"
-
-#: .\templates\manage\dashboard.html:6 .\templates\registration\login.html:10
-msgid "Welcome back"
-msgstr "Welkom terug"
-
-#: .\templates\manage\dashboard.html:13 .\templates\manage\dashboard.html:89
-#: .\templates\manage\products\form.html:4
-#: .\templates\manage\products\form.html:5
-#: .\templates\manage\products\list.html:25
-#: .\templates\manage\products\list.html:158
-msgid "Add Product"
-msgstr "Product toevoegen"
-
-#: .\templates\manage\dashboard.html:30
-msgid "active"
-msgstr "actief"
-
-#: .\templates\manage\dashboard.html:35
-msgid "Orders Today"
-msgstr "Orders vandaag"
-
-#: .\templates\manage\dashboard.html:44
-msgid "this week"
-msgstr "deze week"
-
-#: .\templates\manage\dashboard.html:49
-msgid "In Queue"
-msgstr "In wachtrij"
-
-#: .\templates\manage\dashboard.html:57
-msgid "draft"
-msgstr "concept"
-
-#: .\templates\manage\dashboard.html:62
-msgid "Completed Today"
-msgstr "Voltooid vandaag"
-
-#: .\templates\manage\dashboard.html:71
-msgid "active picklists"
-msgstr "actieve picklijsten"
-
-#: .\templates\manage\dashboard.html:78
-msgid "Quick Actions"
-msgstr "Snelle acties"
-
-#: .\templates\manage\dashboard.html:90 .\templates\manage\products\form.html:8
-msgid "Create a new product in your inventory"
-msgstr "Maak een nieuw product in uw voorraad"
-
-#: .\templates\manage\dashboard.html:92 .\templates\manage\dashboard.html:107
-#: .\templates\manage\dashboard.html:121
-msgid "Step"
-msgstr "Stap"
-
-#: .\templates\manage\dashboard.html:104 .\templates\manage\dashboard.html:216
-#: .\templates\manage\orders\form.html:4 .\templates\manage\orders\form.html:5
-#: .\templates\manage\orders\form.html:128
-#: .\templates\manage\orders\list.html:19
-#: .\templates\manage\orders\list.html:163
-#: .\templates\manage\queue\list.html:85
-msgid "Create Order"
-msgstr "Order aanmaken"
-
-#: .\templates\manage\dashboard.html:105 .\templates\manage\orders\form.html:8
-msgid "Add a new order with products"
-msgstr "Voeg een nieuwe order met producten toe"
-
-#: .\templates\manage\dashboard.html:118 .\templates\queue\manage.html:11
-msgid "Manage Queue"
-msgstr "Wachtrij beheren"
-
-#: .\templates\manage\dashboard.html:119
-msgid "Add orders to the picking queue"
-msgstr "Voeg orders toe aan de pickwachtrij"
-
-#: .\templates\manage\dashboard.html:130
-msgid "Open Views"
-msgstr "Open weergaves"
-
-#: .\templates\manage\dashboard.html:143
-msgid "Queue Display"
-msgstr "Wachtrij weergave"
-
-#: .\templates\manage\dashboard.html:144
-msgid ""
-"Full-screen view for warehouse screens. Shows QR codes for pickers to scan."
-msgstr "Volledig scherm voor magazijnschermen. Toont QR-codes voor pickers om te scannen."
-
-#: .\templates\manage\dashboard.html:163 .\templates\manage\queue\list.html:25
-#: .\templates\queue\manage.html:26
-msgid "Picker View"
-msgstr "Picker weergave"
-
-#: .\templates\manage\dashboard.html:164
-msgid ""
-"Mobile-friendly view for order pickers. Share the picker login with your "
-"team."
-msgstr "Mobiel-vriendelijke weergave voor orderpickers. Deel de picker login met uw team."
-
-#: .\templates\manage\dashboard.html:182
-msgid "Recent Orders"
-msgstr "Recente orders"
-
-#: .\templates\manage\dashboard.html:183 .\templates\manage\dashboard.html:226
-msgid "View All"
-msgstr "Bekijk alles"
-
-#: .\templates\manage\dashboard.html:193 .\templates\manage\orders\list.html:65
-#: .\templates\manage\picklists\detail.html:62
-#: .\templates\manage\picklists\list.html:35
-msgid "Created"
-msgstr "Aangemaakt"
-
-#: .\templates\manage\dashboard.html:207
-#: .\templates\manage\devices\list.html:50
-#: .\templates\manage\orders\list.html:90
-#: .\templates\manage\picklists\list.html:79
-#: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:94
-msgid "ago"
-msgstr "geleden"
-
-#: .\templates\manage\dashboard.html:215
-msgid "No orders yet. Create your first order!"
-msgstr "Nog geen orders. Maak uw eerste order aan!"
-
-#: .\templates\manage\dashboard.html:225
-msgid "Device Status"
-msgstr "Apparaat status"
-
-#: .\templates\manage\dashboard.html:232
-msgid "Total Devices"
-msgstr "Totaal apparaten"
-
-#: .\templates\manage\dashboard.html:236
-msgid "Active Now"
-msgstr "Nu actief"
-
-#: .\templates\manage\dashboard.html:241
-msgid "No devices registered yet."
-msgstr "Nog geen apparaten geregistreerd."
-
-#: .\templates\manage\dashboard.html:242
-msgid ""
-"Devices are automatically registered when pickers scan their first QR code."
-msgstr "Apparaten worden automatisch geregistreerd wanneer pickers hun eerste QR-code scannen."
-
-#: .\templates\manage\dashboard.html:252
-msgid "Orders This Week"
-msgstr "Orders deze week"
-
-#: .\templates\manage\devices\list.html:6
-msgid "View registered picking devices"
-msgstr "Bekijk geregistreerde pick-apparaten"
-
-#: .\templates\manage\devices\list.html:24
-msgid "Online"
-msgstr "Online"
-
-#: .\templates\manage\devices\list.html:27
-msgid "Offline"
-msgstr "Offline"
-
-#: .\templates\manage\devices\list.html:42
-#: .\templates\manage\picklists\detail.html:57
-#: .\templates\manage\picklists\list.html:65
-msgid "Unassigned"
-msgstr "Niet toegewezen"
-
-#: .\templates\manage\devices\list.html:47
-msgid "Last Seen"
-msgstr "Laatst gezien"
-
-#: .\templates\manage\devices\list.html:52
-msgid "Never"
-msgstr "Nooit"
-
-#: .\templates\manage\devices\list.html:57
-msgid "Registered"
-msgstr "Geregistreerd"
-
-#: .\templates\manage\devices\list.html:73
-msgid "No devices registered"
-msgstr "Geen apparaten geregistreerd"
-
-#: .\templates\manage\devices\list.html:74
-msgid "Devices are automatically registered when pickers access the system."
-msgstr "Apparaten worden automatisch geregistreerd wanneer pickers het systeem openen."
-
-#: .\templates\manage\devices\list.html:81
-msgid "How it works"
-msgstr "Hoe het werkt"
-
-#: .\templates\manage\devices\list.html:83
-msgid "A picker opens the queue on their mobile device"
-msgstr "Een picker opent de wachtrij op zijn mobiele apparaat"
-
-#: .\templates\manage\devices\list.html:84
-msgid "They enter their name to identify themselves"
-msgstr "Ze voeren hun naam in om zichzelf te identificeren"
-
-#: .\templates\manage\devices\list.html:85
-msgid "The device is automatically registered"
-msgstr "Het apparaat wordt automatisch geregistreerd"
-
-#: .\templates\manage\devices\list.html:86
-msgid "They can then claim orders from the queue"
-msgstr "Ze kunnen dan orders claimen uit de wachtrij"
-
-#: .\templates\manage\orders\form.html:4 .\templates\manage\orders\form.html:5
-msgid "Edit Order"
-msgstr "Order bewerken"
-
-#: .\templates\manage\orders\form.html:9
-msgid "Update order details"
-msgstr "Order details bijwerken"
-
-#: .\templates\manage\orders\form.html:23
-msgid "e.g., ORD-2024-001"
-msgstr "bijv. ORD-2024-001"
-
-#: .\templates\manage\orders\form.html:33
-msgid "Add to queue immediately"
-msgstr "Direct aan wachtrij toevoegen"
-
-#: .\templates\manage\orders\form.html:43
-msgid "Optional notes for this order"
-msgstr "Optionele notities voor deze order"
-
-#: .\templates\manage\orders\form.html:55
-msgid "Add Line"
-msgstr "Regel toevoegen"
-
-#: .\templates\manage\orders\form.html:61
-msgid "Qty"
-msgstr "Aantal"
-
-#: .\templates\manage\orders\form.html:75
-msgid "Search product..."
-msgstr "Zoek product..."
-
-#: .\templates\manage\orders\form.html:102
-#: .\templates\manage\orders\form.html:409
-msgid "Search product by code or description..."
-msgstr "Zoek product op code of omschrijving..."
-
-#: .\templates\manage\orders\form.html:126
-#: .\templates\manage\orders\import.html:34
-#: .\templates\manage\orders\list.html:184
-#: .\templates\manage\products\form.html:61
-#: .\templates\manage\products\import.html:34
-#: .\templates\manage\products\list.html:179
-msgid "Cancel"
-msgstr "Annuleren"
-
-#: .\templates\manage\orders\form.html:128
-#: .\templates\manage\products\form.html:63 .\templates\manage\profile.html:47
-msgid "Save Changes"
-msgstr "Wijzigingen opslaan"
-
-#: .\templates\manage\orders\form.html:439
-msgid "An order must have at least one product"
-msgstr "Een order moet minimaal één product bevatten"
-
-#: .\templates\manage\orders\form.html:463
-#: .\templates\manage\products\list.html:151
-msgid "No products found"
-msgstr "Geen producten gevonden"
-
-#: .\templates\manage\orders\form.html:619
-msgid "Please select a product for all order lines"
-msgstr "Selecteer een product voor alle orderregels"
-
-#: .\templates\manage\orders\import.html:4
-#: .\templates\manage\orders\import.html:5
-#: .\templates\manage\orders\import.html:39
-msgid "Import Orders"
-msgstr "Orders importeren"
-
-#: .\templates\manage\orders\import.html:6
-msgid "Upload a CSV file to import orders"
-msgstr "Upload een CSV-bestand om orders te importeren"
-
-#: .\templates\manage\orders\import.html:12
-#: .\templates\manage\products\import.html:12
-msgid "Upload CSV File"
-msgstr "CSV-bestand uploaden"
-
-#: .\templates\manage\orders\import.html:18
-#: .\templates\manage\products\import.html:18
-msgid "Select CSV File"
-msgstr "Selecteer CSV-bestand"
-
-#: .\templates\manage\orders\import.html:27
-#: .\templates\manage\products\import.html:27
-msgid "Drag and drop your CSV file here, or click to select"
-msgstr "Sleep uw CSV-bestand hierheen of klik om te selecteren"
-
-#: .\templates\manage\orders\import.html:28
-#: .\templates\manage\orders\import.html:235
-#: .\templates\manage\products\import.html:28
-#: .\templates\manage\products\import.html:216
-msgid "Maximum file size: 5MB"
-msgstr "Maximale bestandsgrootte: 5MB"
-
-#: .\templates\manage\orders\import.html:48
-#: .\templates\manage\products\import.html:48
-msgid "CSV Format"
-msgstr "CSV-formaat"
-
-#: .\templates\manage\orders\import.html:51
-#: .\templates\manage\products\import.html:51
-msgid "Your CSV file should have the following columns:"
-msgstr "Uw CSV-bestand moet de volgende kolommen bevatten:"
-
-#: .\templates\manage\orders\import.html:57
-#: .\templates\manage\products\import.html:57
-msgid "Column"
-msgstr "Kolom"
-
-#: .\templates\manage\orders\import.html:58
-#: .\templates\manage\products\import.html:58
-msgid "Required"
-msgstr "Verplicht"
-
-#: .\templates\manage\orders\import.html:65
-#: .\templates\manage\orders\import.html:70
-#: .\templates\manage\products\import.html:65
-#: .\templates\manage\products\import.html:70
-msgid "Yes"
-msgstr "Ja"
-
-#: .\templates\manage\orders\import.html:66
-msgid "Unique order identifier"
-msgstr "Unieke order-identificatie"
-
-#: .\templates\manage\orders\import.html:71
-msgid "Product code (must exist in your inventory)"
-msgstr "Productcode (moet bestaan in uw voorraad)"
-
-#: .\templates\manage\orders\import.html:75
-#: .\templates\manage\orders\import.html:80
-#: .\templates\manage\products\import.html:75
-#: .\templates\manage\products\import.html:80
-msgid "No"
-msgstr "Nee"
-
-#: .\templates\manage\orders\import.html:76
-msgid "Quantity (default: 1)"
-msgstr "Aantal (standaard: 1)"
-
-#: .\templates\manage\orders\import.html:81
-msgid "Order notes (only from first line)"
-msgstr "Order notities (alleen van eerste regel)"
-
-#: .\templates\manage\orders\import.html:87
-#: .\templates\manage\products\import.html:87
-msgid "Example CSV"
-msgstr "Voorbeeld CSV"
-
-#: .\templates\manage\orders\import.html:102
-msgid "Multiple rows with the same order_code will be combined into one order"
-msgstr "Meerdere rijen met dezelfde order_code worden gecombineerd tot één order"
-
-#: .\templates\manage\orders\import.html:103
-msgid "Product codes must already exist in your inventory"
-msgstr "Productcodes moeten al bestaan in uw voorraad"
-
-#: .\templates\manage\orders\import.html:104
-msgid "Orders with duplicate codes will be skipped"
-msgstr "Orders met dubbele codes worden overgeslagen"
-
-#: .\templates\manage\orders\import.html:105
-msgid "Imported orders will have 'draft' status"
-msgstr "Geïmporteerde orders krijgen de status 'concept'"
-
-#: .\templates\manage\orders\list.html:6
-msgid "Manage your customer orders"
-msgstr "Beheer uw klantorders"
-
-#: .\templates\manage\orders\list.html:13
-#: .\templates\manage\products\list.html:19
-msgid "Import"
-msgstr "Importeren"
-
-#: .\templates\manage\orders\list.html:32
-msgid "Search orders..."
-msgstr "Zoek orders..."
-
-#: .\templates\manage\orders\list.html:38
-#: .\templates\manage\picklists\list.html:13
-#: .\templates\manage\products\list.html:44
-msgid "All Status"
-msgstr "Alle statussen"
-
-#: .\templates\manage\orders\list.html:46
-#: .\templates\manage\products\list.html:53
-msgid "Newest First"
-msgstr "Nieuwste eerst"
-
-#: .\templates\manage\orders\list.html:47
-#: .\templates\manage\products\list.html:54
-msgid "Oldest First"
-msgstr "Oudste eerst"
-
-#: .\templates\manage\orders\list.html:48
-#: .\templates\manage\products\list.html:49
-msgid "Code A-Z"
-msgstr "Code A-Z"
-
-#: .\templates\manage\orders\list.html:49
-#: .\templates\manage\products\list.html:50
-msgid "Code Z-A"
-msgstr "Code Z-A"
-
-#: .\templates\manage\orders\list.html:63
-#: .\templates\queue\_order_cards.html:24
-msgid "Items"
-msgstr "Items"
-
-#: .\templates\manage\orders\list.html:66
-#: .\templates\manage\picklists\list.html:36
-#: .\templates\manage\products\list.html:72
-msgid "Actions"
-msgstr "Acties"
-
-#: .\templates\manage\orders\list.html:95 .\templates\queue\manage.html:66
-msgid "Add to Queue"
-msgstr "Toevoegen aan wachtrij"
-
-#: .\templates\manage\orders\list.html:102
-#: .\templates\manage\products\list.html:100
-msgid "Edit"
-msgstr "Bewerken"
-
-#: .\templates\manage\orders\list.html:111
-#: .\templates\manage\orders\list.html:185
-#: .\templates\manage\products\list.html:108
-#: .\templates\manage\products\list.html:180
-msgid "Delete"
-msgstr "Verwijderen"
-
-#: .\templates\manage\orders\list.html:137
-#: .\templates\manage\picklists\list.html:106
-#: .\templates\manage\products\list.html:133
-msgid "Page"
-msgstr "Pagina"
-
-#: .\templates\manage\orders\list.html:137
-#: .\templates\manage\picklists\list.html:106
-#: .\templates\manage\products\list.html:133
-msgid "of"
-msgstr "van"
-
-#: .\templates\manage\orders\list.html:156
-msgid "No orders found"
-msgstr "Geen orders gevonden"
-
-#: .\templates\manage\orders\list.html:157
-#: .\templates\manage\products\list.html:152
-msgid "Try adjusting your search or filter criteria."
-msgstr "Probeer uw zoekopdracht of filtercriteria aan te passen."
-
-#: .\templates\manage\orders\list.html:158
-#: .\templates\manage\products\list.html:153
-msgid "Clear Filters"
-msgstr "Filters wissen"
-
-#: .\templates\manage\orders\list.html:160
-msgid "No orders yet"
-msgstr "Nog geen orders"
-
-#: .\templates\manage\orders\list.html:161
-msgid "Get started by creating your first order or importing from a CSV file."
-msgstr "Begin met het aanmaken van uw eerste order of importeer vanuit een CSV-bestand."
-
-#: .\templates\manage\orders\list.html:164
-#: .\templates\manage\products\list.html:159
-msgid "Import CSV"
-msgstr "CSV importeren"
-
-#: .\templates\manage\orders\list.html:176
-msgid "Delete Order"
-msgstr "Order verwijderen"
-
-#: .\templates\manage\orders\list.html:180
-msgid "Are you sure you want to delete order"
-msgstr "Weet u zeker dat u order wilt verwijderen"
-
-#: .\templates\manage\orders\list.html:181
-#: .\templates\manage\products\list.html:176
-msgid "This action cannot be undone."
-msgstr "Deze actie kan niet ongedaan worden gemaakt."
-
-#: .\templates\manage\orders\list.html:313
-#: .\templates\manage\queue\list.html:414 .\templates\queue\manage.html:172
-msgid "Order added to queue"
-msgstr "Order toegevoegd aan wachtrij"
-
-#: .\templates\manage\orders\list.html:316
-msgid "Error adding to queue"
-msgstr "Fout bij toevoegen aan wachtrij"
-
-#: .\templates\manage\orders\list.html:320
-#: .\templates\manage\orders\list.html:354
-#: .\templates\manage\products\list.html:321
-msgid "An error occurred"
-msgstr "Er is een fout opgetreden"
-
-#: .\templates\manage\picklists\detail.html:19
-msgid "Back to List"
-msgstr "Terug naar lijst"
-
-#: .\templates\manage\picklists\detail.html:28
-msgid "Picklist Information"
-msgstr "Picklijst informatie"
-
-#: .\templates\manage\picklists\detail.html:32
-#: .\templates\manage\picklists\detail.html:127
-#: .\templates\manage\picklists\list.html:17
-#: .\templates\manage\picklists\list.html:72
-msgid "Failed"
-msgstr "Mislukt"
-
-#: .\templates\manage\picklists\detail.html:36
-#: .\templates\manage\picklists\detail.html:129
-#: .\templates\manage\picklists\list.html:14
-#: .\templates\manage\picklists\list.html:76
-msgid "Pending"
-msgstr "In afwachting"
-
-#: .\templates\manage\picklists\detail.html:52
-#: .\templates\manage\picklists\list.html:33
-msgid "Picker"
-msgstr "Picker"
-
-#: .\templates\manage\picklists\detail.html:73
-#: .\templates\manage\picklists\detail.html:103
-msgid "Duration"
-msgstr "Duur"
-
-#: .\templates\manage\picklists\detail.html:91
-#: .\templates\manage\queue\_queue_list.html:12
-#: .\templates\manage\queue\list.html:63 .\templates\manage\queue\list.html:103
-#: .\templates\queue\_manage_queue_list.html:12
-#: .\templates\queue\_picker_orders.html:16 .\templates\queue\manage.html:63
-#: .\templates\queue\manage.html:91
-msgid "items"
-msgstr "items"
-
-#: .\templates\manage\picklists\detail.html:125
-msgid "Picked"
-msgstr "Gepickt"
-
-#: .\templates\manage\picklists\detail.html:146
-msgid "No products in this picklist."
-msgstr "Geen producten in deze picklijst."
-
-#: .\templates\manage\picklists\list.html:6
-msgid "View picking operations"
-msgstr "Bekijk pick-operaties"
-
-#: .\templates\manage\picklists\list.html:83
-msgid "View Details"
-msgstr "Details bekijken"
-
-#: .\templates\manage\picklists\list.html:121
-msgid "No pick lists yet"
-msgstr "Nog geen picklijsten"
-
-#: .\templates\manage\picklists\list.html:122
-msgid ""
-"Pick lists are created automatically when pickers claim orders from the "
-"queue."
-msgstr "Picklijsten worden automatisch aangemaakt wanneer pickers orders uit de wachtrij claimen."
-
-#: .\templates\manage\picklists\list.html:123
-msgid "Go to Queue"
-msgstr "Ga naar wachtrij"
-
-#: .\templates\manage\products\form.html:4
-#: .\templates\manage\products\form.html:5
-msgid "Edit Product"
-msgstr "Product bewerken"
-
-#: .\templates\manage\products\form.html:9
-msgid "Update product details"
-msgstr "Product details bijwerken"
-
-#: .\templates\manage\products\form.html:22
-msgid "e.g., SKU-001"
-msgstr "bijv. SKU-001"
-
-#: .\templates\manage\products\form.html:24
-msgid "A unique identifier for this product"
-msgstr "Een unieke identificatie voor dit product"
-
-#: .\templates\manage\products\form.html:31
-msgid "e.g., Blue Widget - Large"
-msgstr "bijv. Blauwe Widget - Groot"
-
-#: .\templates\manage\products\form.html:33
-msgid "A short description of the product"
-msgstr "Een korte beschrijving van het product"
-
-#: .\templates\manage\products\form.html:40
-msgid "e.g., Aisle 3, Shelf B"
-msgstr "bijv. Gang 3, Schap B"
-
-#: .\templates\manage\products\form.html:41
-msgid "Where this product is stored in your warehouse"
-msgstr "Waar dit product is opgeslagen in uw magazijn"
-
-#: .\templates\manage\products\form.html:54
-msgid "Inactive products won't appear in new orders"
-msgstr "Inactieve producten verschijnen niet in nieuwe orders"
-
-#: .\templates\manage\products\form.html:63
-msgid "Create Product"
-msgstr "Product aanmaken"
-
-#: .\templates\manage\products\import.html:4
-#: .\templates\manage\products\import.html:5
-#: .\templates\manage\products\import.html:39
-msgid "Import Products"
-msgstr "Producten importeren"
-
-#: .\templates\manage\products\import.html:6
-msgid "Upload a CSV file to import products"
-msgstr "Upload een CSV-bestand om producten te importeren"
-
-#: .\templates\manage\products\import.html:66
-msgid "Unique product code"
-msgstr "Unieke productcode"
-
-#: .\templates\manage\products\import.html:76
-msgid "Warehouse location"
-msgstr "Magazijnlocatie"
-
-#: .\templates\manage\products\import.html:81
-msgid "true/false (default: true)"
-msgstr "true/false (standaard: true)"
-
-#: .\templates\manage\products\import.html:99
-msgid "Note"
-msgstr "Let op"
-
-#: .\templates\manage\products\import.html:100
-msgid ""
-"If a product with the same code already exists, it will be updated with the "
-"new values."
-msgstr "Als een product met dezelfde code al bestaat, wordt het bijgewerkt met de nieuwe waarden."
-
-#: .\templates\manage\products\list.html:6
-msgid "Manage your product inventory"
-msgstr "Beheer uw productvoorraad"
-
-#: .\templates\manage\products\list.html:13
-msgid "Export"
-msgstr "Exporteren"
-
-#: .\templates\manage\products\list.html:38
-msgid "Search products..."
-msgstr "Zoek producten..."
-
-#: .\templates\manage\products\list.html:46
-#: .\templates\manage\products\list.html:94
-msgid "Inactive"
-msgstr "Inactief"
-
-#: .\templates\manage\products\list.html:51
-msgid "Description A-Z"
-msgstr "Omschrijving A-Z"
-
-#: .\templates\manage\products\list.html:52
-msgid "Location A-Z"
-msgstr "Locatie A-Z"
-
-#: .\templates\manage\products\list.html:155
-msgid "No products yet"
-msgstr "Nog geen producten"
-
-#: .\templates\manage\products\list.html:156
-msgid "Get started by adding your first product or importing from a CSV file."
-msgstr "Begin met het toevoegen van uw eerste product of importeer vanuit een CSV-bestand."
-
-#: .\templates\manage\products\list.html:171
-msgid "Delete Product"
-msgstr "Product verwijderen"
-
-#: .\templates\manage\products\list.html:175
-msgid "Are you sure you want to delete product"
-msgstr "Weet u zeker dat u product wilt verwijderen"
-
-#: .\templates\manage\profile.html:6
-msgid "Manage your account settings"
-msgstr "Beheer uw accountinstellingen"
-
-#: .\templates\manage\profile.html:14
-msgid "Account Information"
-msgstr "Accountinformatie"
-
-#: .\templates\manage\profile.html:22 .\templates\registration\login.html:35
-#: .\templates\registration\signup.html:95
-#: .\templates\registration\signup.html:168
-msgid "Username"
-msgstr "Gebruikersnaam"
-
-#: .\templates\manage\profile.html:24
-msgid "Username cannot be changed."
-msgstr "Gebruikersnaam kan niet worden gewijzigd."
-
-#: .\templates\manage\profile.html:29
-msgid "First Name"
-msgstr "Voornaam"
-
-#: .\templates\manage\profile.html:34
-msgid "Last Name"
-msgstr "Achternaam"
-
-#: .\templates\manage\profile.html:41 .\templates\registration\signup.html:108
-#: .\templates\registration\signup.html:181
-msgid "Email"
-msgstr "E-mail"
-
-#: .\templates\manage\profile.html:56 .\templates\manage\profile.html:82
-msgid "Change Password"
-msgstr "Wachtwoord wijzigen"
-
-#: .\templates\manage\profile.html:64
-msgid "Current Password"
-msgstr "Huidig wachtwoord"
-
-#: .\templates\manage\profile.html:69
-#: .\templates\registration\password_reset_confirm.html:33
-msgid "New Password"
-msgstr "Nieuw wachtwoord"
-
-#: .\templates\manage\profile.html:72
-msgid "Minimum 8 characters."
-msgstr "Minimaal 8 tekens."
-
-#: .\templates\manage\profile.html:76
-#: .\templates\registration\password_reset_confirm.html:45
-msgid "Confirm New Password"
-msgstr "Bevestig nieuw wachtwoord"
-
-#: .\templates\manage\profile.html:91 .\templates\registration\signup.html:67
-msgid "Company Information"
-msgstr "Bedrijfsinformatie"
-
-#: .\templates\manage\profile.html:96
-msgid "Company"
-msgstr "Bedrijf"
-
-#: .\templates\manage\profile.html:106
-msgid "Role"
-msgstr "Rol"
-
-#: .\templates\manage\profile.html:109
-msgid "Administrator"
-msgstr "Beheerder"
-
-#: .\templates\manage\profile.html:111
-msgid "Staff"
-msgstr "Medewerker"
-
-#: .\templates\manage\profile.html:113
-msgid "Company Admin"
-msgstr "Bedrijfsbeheerder"
-
-#: .\templates\manage\profile.html:120
-msgid "Member Since"
-msgstr "Lid sinds"
-
-#: .\templates\manage\queue\_queue_list.html:8
-#: .\templates\queue\_manage_queue_list.html:8
-msgid "Drag to reorder"
-msgstr "Sleep om te herordenen"
-
-#: .\templates\manage\queue\_queue_list.html:30
-#: .\templates\queue\_manage_queue_list.html:25
-msgid "Move up"
-msgstr "Omhoog"
-
-#: .\templates\manage\queue\_queue_list.html:31
-#: .\templates\queue\_manage_queue_list.html:26
-msgid "Move down"
-msgstr "Omlaag"
-
-#: .\templates\manage\queue\_queue_list.html:32
-#: .\templates\queue\_manage_queue_list.html:27
-msgid "Remove from queue"
-msgstr "Uit wachtrij verwijderen"
-
-#: .\templates\manage\queue\_queue_list.html:42
-#: .\templates\queue\_manage_queue_list.html:34
-msgid "Queue is empty"
-msgstr "Wachtrij is leeg"
-
-#: .\templates\manage\queue\_queue_list.html:43
-#: .\templates\queue\_manage_queue_list.html:35
-msgid "Add orders from the available list"
-msgstr "Voeg orders toe uit de beschikbare lijst"
-
-#: .\templates\manage\queue\list.html:6
-msgid "Manage and reorder your order queue"
-msgstr "Beheer en herorden uw orderwachtrij"
-
-#: .\templates\manage\queue\list.html:18 .\templates\queue\manage.html:23
-msgid "Display View"
-msgstr "Weergave"
-
-#: .\templates\manage\queue\list.html:38 .\templates\queue\manage.html:39
-msgid "Current Queue"
-msgstr "Huidige wachtrij"
-
-#: .\templates\manage\queue\list.html:39 .\templates\manage\queue\list.html:54
-#: .\templates\queue\manage.html:40 .\templates\queue\manage.html:54
-msgid "orders"
-msgstr "orders"
-
-#: .\templates\manage\queue\list.html:53 .\templates\queue\manage.html:53
-msgid "Available Orders"
-msgstr "Beschikbare orders"
-
-#: .\templates\manage\queue\list.html:77
-msgid "Add"
-msgstr "Toevoegen"
-
-#: .\templates\manage\queue\list.html:84
-msgid "No draft orders available"
-msgstr "Geen conceptorders beschikbaar"
-
-#: .\templates\manage\queue\list.html:94 .\templates\queue\manage.html:82
-msgid "Recently Completed"
-msgstr "Recent voltooid"
-
-#: .\templates\manage\queue\list.html:113
-msgid "No completed orders yet"
-msgstr "Nog geen voltooide orders"
-
-#: .\templates\manage\queue\list.html:397 .\templates\queue\manage.html:155
-msgid "Queue order saved"
-msgstr "Wachtrijvolgorde opgeslagen"
-
-#: .\templates\manage\queue\list.html:432 .\templates\queue\manage.html:190
-msgid "Order removed from queue"
-msgstr "Order uit wachtrij verwijderd"
-
-#: .\templates\manage\settings.html:6
-msgid "Configure your company preferences"
-msgstr "Configureer uw bedrijfsvoorkeuren"
-
-#: .\templates\manage\settings.html:13
-msgid "Company Settings"
-msgstr "Bedrijfsinstellingen"
-
-#: .\templates\manage\settings.html:58 .\templates\manage\settings.html:69
-msgid "No settings configured"
-msgstr "Geen instellingen geconfigureerd"
-
-#: .\templates\manage\settings.html:59 .\templates\manage\settings.html:70
-msgid "There are no configurable settings available yet."
-msgstr "Er zijn nog geen configureerbare instellingen beschikbaar."
-
-#: .\templates\manage\settings.html:77
-msgid "Save Settings"
-msgstr "Instellingen opslaan"
-
-#: .\templates\offline.html:65
-msgid "You're offline"
-msgstr "Je ben offline"
-
-#: .\templates\offline.html:66
-msgid "Sorry, content is unavailable right now."
-msgstr "Deze app is niet beschikbaar zonder internetverbinding"
-
-#: .\templates\offline.html:68
-msgid "Retry"
-msgstr "Probeer opnieuw"
-
-#: .\templates\offline.html:69
 msgid "Go Back"
 msgstr "Ga terug"
 
-#: .\templates\partials\scan_confirmation_overlay.html:9
+msgid ""
+"If this problem persists, please contact <a "
+"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
+msgstr ""
+"Als dit probleem aanhoudt, neem dan contact op met <a "
+"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
+
+msgid "Welcome to Orderpiqr!"
+msgstr "Welkom bij Orderpiqr"
+
+msgid "Log out"
+msgstr "Log uit"
+
+msgid "Order Queue"
+msgstr "Orderwachtrij"
+
+msgid "Order Importance"
+msgstr "Vaste scanvolgorde"
+
+msgid "Enabled"
+msgstr "Ingeschakeld"
+
+msgid "Sort Picklist By"
+msgstr "Sorteer picklijst op: "
+
+msgid "Original order"
+msgstr "Orginele volgorde"
+
+msgid "Product description"
+msgstr "Productomschrijving"
+
+msgid "This app is best viewed on your phone"
+msgstr "Deze app is het beste te bekijken op uw telefoon"
+
+msgid "Picklist"
+msgstr "Picklijst"
+
+msgid "Product Name"
+msgstr "Productnaam"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Close menu"
+msgstr "Menu sluiten"
+
+msgid "Main"
+msgstr "Hoofd"
+
+msgid "Inventory"
+msgstr "Voorraad"
+
+msgid "Queue"
+msgstr "Wachtrij"
+
+msgid "Operations"
+msgstr "Operaties"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Profile"
+msgstr "Profiel"
+
+msgid "Open menu"
+msgstr "Menu openen"
+
+msgid "Welcome back"
+msgstr "Welkom terug"
+
+msgid "Add Product"
+msgstr "Product toevoegen"
+
+msgid "active"
+msgstr "actief"
+
+msgid "Orders Today"
+msgstr "Orders vandaag"
+
+msgid "this week"
+msgstr "deze week"
+
+msgid "In Queue"
+msgstr "In wachtrij"
+
+msgid "draft"
+msgstr "concept"
+
+msgid "Completed Today"
+msgstr "Voltooid vandaag"
+
+msgid "active picklists"
+msgstr "actieve picklijsten"
+
+msgid "Quick Actions"
+msgstr "Snelle acties"
+
+msgid "Create a new product in your inventory"
+msgstr "Maak een nieuw product in uw voorraad"
+
+msgid "Step"
+msgstr "Stap"
+
+msgid "Create Order"
+msgstr "Order aanmaken"
+
+msgid "Add a new order with products"
+msgstr "Voeg een nieuwe order met producten toe"
+
+msgid "Manage Queue"
+msgstr "Wachtrij beheren"
+
+msgid "Add orders to the picking queue"
+msgstr "Voeg orders toe aan de pickwachtrij"
+
+msgid "Open Views"
+msgstr "Open weergaves"
+
+msgid "Queue Display"
+msgstr "Wachtrij weergave"
+
+msgid ""
+"Full-screen view for warehouse screens. Shows QR codes for pickers to scan."
+msgstr ""
+"Volledig scherm voor magazijnschermen. Toont QR-codes voor pickers om te "
+"scannen."
+
+msgid "Picker View"
+msgstr "Picker weergave"
+
+msgid ""
+"Mobile-friendly view for order pickers. Share the picker login with your "
+"team."
+msgstr ""
+"Mobiel-vriendelijke weergave voor orderpickers. Deel de picker login met uw "
+"team."
+
+msgid "Recent Orders"
+msgstr "Recente orders"
+
+msgid "View All"
+msgstr "Bekijk alles"
+
+msgid "Created"
+msgstr "Aangemaakt"
+
+msgid "ago"
+msgstr "geleden"
+
+msgid "No orders yet. Create your first order!"
+msgstr "Nog geen orders. Maak uw eerste order aan!"
+
+msgid "Device Status"
+msgstr "Apparaat status"
+
+msgid "Total Devices"
+msgstr "Totaal apparaten"
+
+msgid "Active Now"
+msgstr "Nu actief"
+
+msgid "No devices registered yet."
+msgstr "Nog geen apparaten geregistreerd."
+
+msgid ""
+"Devices are automatically registered when pickers scan their first QR code."
+msgstr ""
+"Apparaten worden automatisch geregistreerd wanneer pickers hun eerste QR-"
+"code scannen."
+
+msgid "Orders This Week"
+msgstr "Orders deze week"
+
+msgid "View registered picking devices"
+msgstr "Bekijk geregistreerde pick-apparaten"
+
+msgid "Online"
+msgstr "Online"
+
+msgid "Offline"
+msgstr "Offline"
+
+msgid "Unassigned"
+msgstr "Niet toegewezen"
+
+msgid "Last Seen"
+msgstr "Laatst gezien"
+
+msgid "Never"
+msgstr "Nooit"
+
+msgid "Registered"
+msgstr "Geregistreerd"
+
+msgid "No devices registered"
+msgstr "Geen apparaten geregistreerd"
+
+msgid "Devices are automatically registered when pickers access the system."
+msgstr ""
+"Apparaten worden automatisch geregistreerd wanneer pickers het systeem "
+"openen."
+
+msgid "How it works"
+msgstr "Hoe het werkt"
+
+msgid "A picker opens the queue on their mobile device"
+msgstr "Een picker opent de wachtrij op zijn mobiele apparaat"
+
+msgid "They enter their name to identify themselves"
+msgstr "Ze voeren hun naam in om zichzelf te identificeren"
+
+msgid "The device is automatically registered"
+msgstr "Het apparaat wordt automatisch geregistreerd"
+
+msgid "They can then claim orders from the queue"
+msgstr "Ze kunnen dan orders claimen uit de wachtrij"
+
+msgid "Edit Order"
+msgstr "Order bewerken"
+
+msgid "Update order details"
+msgstr "Order details bijwerken"
+
+msgid "e.g., ORD-2024-001"
+msgstr "bijv. ORD-2024-001"
+
+msgid "Add to queue immediately"
+msgstr "Direct aan wachtrij toevoegen"
+
+msgid "Optional notes for this order"
+msgstr "Optionele notities voor deze order"
+
+msgid "Add Line"
+msgstr "Regel toevoegen"
+
+msgid "Qty"
+msgstr "Aantal"
+
+msgid "Search product..."
+msgstr "Zoek product..."
+
+msgid "Search product by code or description..."
+msgstr "Zoek product op code of omschrijving..."
+
+msgid "Cancel"
+msgstr "Annuleren"
+
+msgid "Save Changes"
+msgstr "Wijzigingen opslaan"
+
+msgid "An order must have at least one product"
+msgstr "Een order moet minimaal één product bevatten"
+
+msgid "No products found"
+msgstr "Geen producten gevonden"
+
+msgid "Please select a product for all order lines"
+msgstr "Selecteer een product voor alle orderregels"
+
+msgid "Import Orders"
+msgstr "Orders importeren"
+
+msgid "Upload a CSV file to import orders"
+msgstr "Upload een CSV-bestand om orders te importeren"
+
+msgid "Upload CSV File"
+msgstr "CSV-bestand uploaden"
+
+msgid "Select CSV File"
+msgstr "Selecteer CSV-bestand"
+
+msgid "Drag and drop your CSV file here, or click to select"
+msgstr "Sleep uw CSV-bestand hierheen of klik om te selecteren"
+
+msgid "Maximum file size: 5MB"
+msgstr "Maximale bestandsgrootte: 5MB"
+
+msgid "CSV Format"
+msgstr "CSV-formaat"
+
+msgid "Your CSV file should have the following columns:"
+msgstr "Uw CSV-bestand moet de volgende kolommen bevatten:"
+
+msgid "Column"
+msgstr "Kolom"
+
+msgid "Required"
+msgstr "Verplicht"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "Unique order identifier"
+msgstr "Unieke order-identificatie"
+
+msgid "Product code (must exist in your inventory)"
+msgstr "Productcode (moet bestaan in uw voorraad)"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "Quantity (default: 1)"
+msgstr "Aantal (standaard: 1)"
+
+msgid "Order notes (only from first line)"
+msgstr "Order notities (alleen van eerste regel)"
+
+msgid "Example CSV"
+msgstr "Voorbeeld CSV"
+
+msgid "Multiple rows with the same order_code will be combined into one order"
+msgstr ""
+"Meerdere rijen met dezelfde order_code worden gecombineerd tot één order"
+
+msgid "Product codes must already exist in your inventory"
+msgstr "Productcodes moeten al bestaan in uw voorraad"
+
+msgid "Orders with duplicate codes will be skipped"
+msgstr "Orders met dubbele codes worden overgeslagen"
+
+msgid "Imported orders will have 'draft' status"
+msgstr "Geïmporteerde orders krijgen de status 'concept'"
+
+msgid "Manage your customer orders"
+msgstr "Beheer uw klantorders"
+
+msgid "Import"
+msgstr "Importeren"
+
+msgid "Search orders..."
+msgstr "Zoek orders..."
+
+msgid "All Status"
+msgstr "Alle statussen"
+
+msgid "Newest First"
+msgstr "Nieuwste eerst"
+
+msgid "Oldest First"
+msgstr "Oudste eerst"
+
+msgid "Code A-Z"
+msgstr "Code A-Z"
+
+msgid "Code Z-A"
+msgstr "Code Z-A"
+
+msgid "Items"
+msgstr "Items"
+
+msgid "Actions"
+msgstr "Acties"
+
+msgid "Add to Queue"
+msgstr "Toevoegen aan wachtrij"
+
+msgid "Edit"
+msgstr "Bewerken"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Page"
+msgstr "Pagina"
+
+msgid "of"
+msgstr "van"
+
+msgid "No orders found"
+msgstr "Geen orders gevonden"
+
+msgid "Try adjusting your search or filter criteria."
+msgstr "Probeer uw zoekopdracht of filtercriteria aan te passen."
+
+msgid "Clear Filters"
+msgstr "Filters wissen"
+
+msgid "No orders yet"
+msgstr "Nog geen orders"
+
+msgid "Get started by creating your first order or importing from a CSV file."
+msgstr ""
+"Begin met het aanmaken van uw eerste order of importeer vanuit een CSV-"
+"bestand."
+
+msgid "Import CSV"
+msgstr "CSV importeren"
+
+msgid "Delete Order"
+msgstr "Order verwijderen"
+
+msgid "Are you sure you want to delete order"
+msgstr "Weet u zeker dat u order wilt verwijderen"
+
+msgid "This action cannot be undone."
+msgstr "Deze actie kan niet ongedaan worden gemaakt."
+
+msgid "Order added to queue"
+msgstr "Order toegevoegd aan wachtrij"
+
+msgid "Error adding to queue"
+msgstr "Fout bij toevoegen aan wachtrij"
+
+msgid "An error occurred"
+msgstr "Er is een fout opgetreden"
+
+msgid "Back to List"
+msgstr "Terug naar lijst"
+
+msgid "Picklist Information"
+msgstr "Picklijst informatie"
+
+msgid "Failed"
+msgstr "Mislukt"
+
+msgid "Pending"
+msgstr "In afwachting"
+
+msgid "Picker"
+msgstr "Picker"
+
+msgid "Duration"
+msgstr "Duur"
+
+msgid "items"
+msgstr "items"
+
+msgid "Picked"
+msgstr "Gepickt"
+
+msgid "No products in this picklist."
+msgstr "Geen producten in deze picklijst."
+
+msgid "View picking operations"
+msgstr "Bekijk pick-operaties"
+
+msgid "View Details"
+msgstr "Details bekijken"
+
+msgid "No pick lists yet"
+msgstr "Nog geen picklijsten"
+
+msgid ""
+"Pick lists are created automatically when pickers claim orders from the "
+"queue."
+msgstr ""
+"Picklijsten worden automatisch aangemaakt wanneer pickers orders uit de "
+"wachtrij claimen."
+
+msgid "Go to Queue"
+msgstr "Ga naar wachtrij"
+
+msgid "Edit Product"
+msgstr "Product bewerken"
+
+msgid "Update product details"
+msgstr "Product details bijwerken"
+
+msgid "e.g., SKU-001"
+msgstr "bijv. SKU-001"
+
+msgid "A unique identifier for this product"
+msgstr "Een unieke identificatie voor dit product"
+
+msgid "e.g., Blue Widget - Large"
+msgstr "bijv. Blauwe Widget - Groot"
+
+msgid "A short description of the product"
+msgstr "Een korte beschrijving van het product"
+
+msgid "e.g., Aisle 3, Shelf B"
+msgstr "bijv. Gang 3, Schap B"
+
+msgid "Where this product is stored in your warehouse"
+msgstr "Waar dit product is opgeslagen in uw magazijn"
+
+msgid "Inactive products won't appear in new orders"
+msgstr "Inactieve producten verschijnen niet in nieuwe orders"
+
+msgid "Create Product"
+msgstr "Product aanmaken"
+
+msgid "Import Products"
+msgstr "Producten importeren"
+
+msgid "Upload a CSV file to import products"
+msgstr "Upload een CSV-bestand om producten te importeren"
+
+msgid "Unique product code"
+msgstr "Unieke productcode"
+
+msgid "Warehouse location"
+msgstr "Magazijnlocatie"
+
+msgid "true/false (default: true)"
+msgstr "true/false (standaard: true)"
+
+msgid "Note"
+msgstr "Let op"
+
+msgid ""
+"If a product with the same code already exists, it will be updated with the "
+"new values."
+msgstr ""
+"Als een product met dezelfde code al bestaat, wordt het bijgewerkt met de "
+"nieuwe waarden."
+
+msgid "Manage your product inventory"
+msgstr "Beheer uw productvoorraad"
+
+msgid "Export"
+msgstr "Exporteren"
+
+msgid "Search products..."
+msgstr "Zoek producten..."
+
+msgid "Inactive"
+msgstr "Inactief"
+
+msgid "Description A-Z"
+msgstr "Omschrijving A-Z"
+
+msgid "Location A-Z"
+msgstr "Locatie A-Z"
+
+msgid "No products yet"
+msgstr "Nog geen producten"
+
+msgid "Get started by adding your first product or importing from a CSV file."
+msgstr ""
+"Begin met het toevoegen van uw eerste product of importeer vanuit een CSV-"
+"bestand."
+
+msgid "Delete Product"
+msgstr "Product verwijderen"
+
+msgid "Are you sure you want to delete product"
+msgstr "Weet u zeker dat u product wilt verwijderen"
+
+msgid "Manage your account settings"
+msgstr "Beheer uw accountinstellingen"
+
+msgid "Account Information"
+msgstr "Accountinformatie"
+
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+msgid "Username cannot be changed."
+msgstr "Gebruikersnaam kan niet worden gewijzigd."
+
+msgid "First Name"
+msgstr "Voornaam"
+
+msgid "Last Name"
+msgstr "Achternaam"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Change Password"
+msgstr "Wachtwoord wijzigen"
+
+msgid "Current Password"
+msgstr "Huidig wachtwoord"
+
+msgid "New Password"
+msgstr "Nieuw wachtwoord"
+
+msgid "Minimum 8 characters."
+msgstr "Minimaal 8 tekens."
+
+msgid "Confirm New Password"
+msgstr "Bevestig nieuw wachtwoord"
+
+msgid "Company Information"
+msgstr "Bedrijfsinformatie"
+
+msgid "Company"
+msgstr "Bedrijf"
+
+msgid "Role"
+msgstr "Rol"
+
+msgid "Administrator"
+msgstr "Beheerder"
+
+msgid "Staff"
+msgstr "Medewerker"
+
+msgid "Company Admin"
+msgstr "Bedrijfsbeheerder"
+
+msgid "Member Since"
+msgstr "Lid sinds"
+
+msgid "Drag to reorder"
+msgstr "Sleep om te herordenen"
+
+msgid "Move up"
+msgstr "Omhoog"
+
+msgid "Move down"
+msgstr "Omlaag"
+
+msgid "Remove from queue"
+msgstr "Uit wachtrij verwijderen"
+
+msgid "Queue is empty"
+msgstr "Wachtrij is leeg"
+
+msgid "Add orders from the available list"
+msgstr "Voeg orders toe uit de beschikbare lijst"
+
+msgid "Manage and reorder your order queue"
+msgstr "Beheer en herorden uw orderwachtrij"
+
+msgid "Display View"
+msgstr "Weergave"
+
+msgid "Current Queue"
+msgstr "Huidige wachtrij"
+
+msgid "orders"
+msgstr "orders"
+
+msgid "Available Orders"
+msgstr "Beschikbare orders"
+
+msgid "Add"
+msgstr "Toevoegen"
+
+msgid "No draft orders available"
+msgstr "Geen conceptorders beschikbaar"
+
+msgid "Recently Completed"
+msgstr "Recent voltooid"
+
+msgid "No completed orders yet"
+msgstr "Nog geen voltooide orders"
+
+msgid "Queue order saved"
+msgstr "Wachtrijvolgorde opgeslagen"
+
+msgid "Order removed from queue"
+msgstr "Order uit wachtrij verwijderd"
+
+msgid "Configure your company preferences"
+msgstr "Configureer uw bedrijfsvoorkeuren"
+
+msgid "Company Settings"
+msgstr "Bedrijfsinstellingen"
+
+msgid "No settings configured"
+msgstr "Geen instellingen geconfigureerd"
+
+msgid "There are no configurable settings available yet."
+msgstr "Er zijn nog geen configureerbare instellingen beschikbaar."
+
+msgid "Save Settings"
+msgstr "Instellingen opslaan"
+
+msgid "You're offline"
+msgstr "Je ben offline"
+
+msgid "Sorry, content is unavailable right now."
+msgstr "Deze app is niet beschikbaar zonder internetverbinding"
+
+msgid "Retry"
+msgstr "Probeer opnieuw"
+
 msgid "Tap to scan next item"
 msgstr "Tik om volgend item te scannen"
 
-#: .\templates\queue\_order_cards.html:67
-#: .\templates\queue\_picker_orders.html:54
 msgid "No orders in queue"
 msgstr "Geen orders in de wachtrij"
 
-#: .\templates\queue\_picker_orders.html:36 .\templates\queue\picker.html:111
-#: .\templates\queue\picker.html:118
 msgid "Start Picking"
 msgstr "Start met picken"
 
-#: .\templates\queue\_picker_orders.html:55
 msgid "New orders will appear here automatically"
 msgstr "Nieuwe orders verschijnen hier automatisch"
 
-#: .\templates\queue\manage.html:16
 msgid "Admin"
 msgstr "Beheer"
 
-#: .\templates\queue\manage.html:22
 msgid "Open tablet display view"
 msgstr "Open tablet weergave"
 
-#: .\templates\queue\manage.html:25
 msgid "Open mobile picker view"
 msgstr "Open mobiele picker weergave"
 
-#: .\templates\queue\manage.html:73
 msgid "No available orders"
 msgstr "Geen beschikbare orders"
 
-#: .\templates\queue\manage.html:74
 msgid "Create orders in the admin to add them here"
 msgstr "Maak orders aan in het beheer om ze hier toe te voegen"
 
-#: .\templates\queue\manage.html:101
 msgid "No completed orders"
 msgstr "Geen voltooide orders"
 
-#: .\templates\queue\picker.html:11
 msgid "Pick Queue"
 msgstr "Pickwachtrij"
 
-#: .\templates\queue\picker.html:16
 msgid "Scanner"
 msgstr "Scanner"
 
-#: .\templates\queue\picker.html:65
 msgid "Claiming..."
 msgstr "Claimen..."
 
-#: .\templates\queue\picker.html:90
 msgid "Order claimed! Redirecting..."
 msgstr "Order geclaimd! Doorverwijzen..."
 
-#: .\templates\queue\picker.html:116
 msgid "Error claiming order"
 msgstr "Fout bij claimen order"
 
-#: .\templates\registration\login.html:4
 msgid "Login"
 msgstr "Login"
 
-#: .\templates\registration\login.html:11
 msgid "Sign in to your OrderPiqR account"
 msgstr "Log in op uw OrderPiqR-account"
 
-#: .\templates\registration\login.html:41
 msgid "Enter your username"
 msgstr "Voer uw gebruikersnaam in"
 
-#: .\templates\registration\login.html:50
-#: .\templates\registration\signup.html:124
-#: .\templates\registration\signup.html:197
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: .\templates\registration\login.html:55
 msgid "Enter your password"
 msgstr "Voer uw wachtwoord in"
 
-#: .\templates\registration\login.html:65
 msgid "Remember me"
 msgstr "Onthoud mij"
 
-#: .\templates\registration\login.html:67
 msgid "Forgot password?"
 msgstr "Wachtwoord vergeten?"
 
-#: .\templates\registration\login.html:72
-#: .\templates\registration\signup.html:233
 msgid "Sign in"
 msgstr "Inloggen"
 
-#: .\templates\registration\login.html:79
 msgid "New to OrderPiqR?"
 msgstr "Nieuw bij OrderPiqR?"
 
-#: .\templates\registration\login.html:80
 msgid "Create your account"
 msgstr "Maak uw account aan"
 
-#: .\templates\registration\name_entry.html:4
 msgid "Enter Your Name"
 msgstr "Vul uw naam in"
 
-#: .\templates\registration\name_entry.html:10
 msgid "Welcome!"
 msgstr "Welkom!"
 
-#: .\templates\registration\name_entry.html:11
 msgid "Please enter your name to register this device"
 msgstr "Voer uw naam in om dit apparaat te registreren"
 
-#: .\templates\registration\name_entry.html:19
 msgid "Your Name"
 msgstr "Uw naam"
 
-#: .\templates\registration\name_entry.html:24
 msgid "Enter your name"
 msgstr "Voer uw naam in"
 
-#: .\templates\registration\name_entry.html:27
 msgid "This name will be shown when you pick orders"
 msgstr "Deze naam wordt getoond wanneer u orders pickt"
 
-#: .\templates\registration\name_entry.html:32
 msgid "Continue"
 msgstr "Doorgaan"
 
-#: .\templates\registration\name_entry.html:43
 msgid "This device will be registered for order picking"
 msgstr "Dit apparaat wordt geregistreerd voor het picken van orders"
 
-#: .\templates\registration\password_reset.html:4
-#: .\templates\registration\password_reset_confirm.html:56
 msgid "Reset Password"
 msgstr "Wachtwoord resetten"
 
-#: .\templates\registration\password_reset.html:10
 msgid "Reset your password"
 msgstr "Reset uw wachtwoord"
 
-#: .\templates\registration\password_reset.html:11
 msgid ""
 "Enter your email address and we'll send you a link to reset your password"
-msgstr "Voer uw e-mailadres in en we sturen u een link om uw wachtwoord te resetten"
+msgstr ""
+"Voer uw e-mailadres in en we sturen u een link om uw wachtwoord te resetten"
 
-#: .\templates\registration\password_reset.html:32
 msgid "Email Address"
 msgstr "E-mailadres"
 
-#: .\templates\registration\password_reset.html:37
 msgid "Enter your email address"
 msgstr "Voer uw e-mailadres in"
 
-#: .\templates\registration\password_reset.html:44
 msgid "Send Reset Link"
 msgstr "Verstuur resetlink"
 
-#: .\templates\registration\password_reset.html:51
-#: .\templates\registration\password_reset_confirm.html:73
-#: .\templates\registration\password_reset_done.html:30
 msgid "Back to login"
 msgstr "Terug naar login"
 
-#: .\templates\registration\password_reset_complete.html:4
 msgid "Password Reset Complete"
 msgstr "Wachtwoord reset voltooid"
 
-#: .\templates\registration\password_reset_complete.html:15
 msgid "Password reset complete!"
 msgstr "Wachtwoord reset voltooid!"
 
-#: .\templates\registration\password_reset_complete.html:16
 msgid "Your password has been successfully changed"
 msgstr "Uw wachtwoord is succesvol gewijzigd"
 
-#: .\templates\registration\password_reset_complete.html:21
 msgid "You can now use your new password to log in to your account."
 msgstr "U kunt nu uw nieuwe wachtwoord gebruiken om in te loggen."
 
-#: .\templates\registration\password_reset_complete.html:24
 msgid "Go to Login"
 msgstr "Ga naar login"
 
-#: .\templates\registration\password_reset_confirm.html:4
 msgid "Set New Password"
 msgstr "Nieuw wachtwoord instellen"
 
-#: .\templates\registration\password_reset_confirm.html:10
 msgid "Set new password"
 msgstr "Stel nieuw wachtwoord in"
 
-#: .\templates\registration\password_reset_confirm.html:11
 msgid "Enter your new password below"
 msgstr "Voer hieronder uw nieuwe wachtwoord in"
 
-#: .\templates\registration\password_reset_confirm.html:38
 msgid "Enter new password"
 msgstr "Voer nieuw wachtwoord in"
 
-#: .\templates\registration\password_reset_confirm.html:41
 msgid "Minimum 8 characters"
 msgstr "Minimaal 8 tekens"
 
-#: .\templates\registration\password_reset_confirm.html:50
 msgid "Confirm new password"
 msgstr "Bevestig nieuw wachtwoord"
 
-#: .\templates\registration\password_reset_confirm.html:62
 msgid ""
 "This password reset link is invalid or has expired. Please request a new one."
-msgstr "Deze wachtwoord reset link is ongeldig of verlopen. Vraag een nieuwe aan."
+msgstr ""
+"Deze wachtwoord reset link is ongeldig of verlopen. Vraag een nieuwe aan."
 
-#: .\templates\registration\password_reset_confirm.html:66
 msgid "Request New Link"
 msgstr "Vraag nieuwe link aan"
 
-#: .\templates\registration\password_reset_done.html:4
 msgid "Password Reset Sent"
 msgstr "Wachtwoord reset verzonden"
 
-#: .\templates\registration\password_reset_done.html:15
 msgid "Check your email"
 msgstr "Controleer uw e-mail"
 
-#: .\templates\registration\password_reset_done.html:16
 msgid "We've sent you instructions to reset your password"
 msgstr "We hebben u instructies gestuurd om uw wachtwoord te resetten"
 
-#: .\templates\registration\password_reset_done.html:21
 msgid ""
 "If an account exists with the email address you entered, you will receive a "
 "password reset link shortly."
-msgstr "Als er een account bestaat met het ingevoerde e-mailadres, ontvangt u binnenkort een wachtwoord reset link."
+msgstr ""
+"Als er een account bestaat met het ingevoerde e-mailadres, ontvangt u "
+"binnenkort een wachtwoord reset link."
 
-#: .\templates\registration\password_reset_done.html:24
 msgid "Didn't receive the email? Check your spam folder or"
 msgstr "Geen e-mail ontvangen? Controleer uw spam map of"
 
-#: .\templates\registration\password_reset_done.html:25
 msgid "try again"
 msgstr "probeer opnieuw"
 
-#: .\templates\registration\password_reset_email.html:2
 msgid "Hello,"
 msgstr "Hallo,"
 
-#: .\templates\registration\password_reset_email.html:4
 msgid ""
 "You're receiving this email because you requested a password reset for your "
 "OrderPiqR account."
-msgstr "U ontvangt deze e-mail omdat u een wachtwoord reset heeft aangevraagd voor uw OrderPiqR-account."
+msgstr ""
+"U ontvangt deze e-mail omdat u een wachtwoord reset heeft aangevraagd voor "
+"uw OrderPiqR-account."
 
-#: .\templates\registration\password_reset_email.html:6
 msgid "Please click the link below to set a new password:"
 msgstr "Klik op de onderstaande link om een nieuw wachtwoord in te stellen:"
 
-#: .\templates\registration\password_reset_email.html:10
 msgid "This link will expire in 24 hours."
 msgstr "Deze link verloopt over 24 uur."
 
-#: .\templates\registration\password_reset_email.html:12
 msgid ""
 "If you didn't request this password reset, you can safely ignore this email. "
 "Your password will not be changed."
-msgstr "Als u deze wachtwoord reset niet heeft aangevraagd, kunt u deze e-mail veilig negeren. Uw wachtwoord wordt niet gewijzigd."
+msgstr ""
+"Als u deze wachtwoord reset niet heeft aangevraagd, kunt u deze e-mail "
+"veilig negeren. Uw wachtwoord wordt niet gewijzigd."
 
-#: .\templates\registration\password_reset_email.html:14
 msgid "Best regards,"
 msgstr "Met vriendelijke groet,"
 
-#: .\templates\registration\password_reset_email.html:15
 msgid "The OrderPiqR Team"
 msgstr "Het OrderPiqR Team"
 
-#: .\templates\registration\password_reset_subject.txt:1
 msgid "Reset your OrderPiqR password"
 msgstr "Reset uw OrderPiqR wachtwoord"
 
-#: .\templates\registration\signup.html:4
 msgid "Sign Up"
 msgstr "Registreren"
 
-#: .\templates\registration\signup.html:11
 msgid "Create your workspace"
 msgstr "Maak uw werkruimte aan"
 
-#: .\templates\registration\signup.html:12
 msgid "Get started with OrderPiqR in just a few minutes"
 msgstr "Begin met OrderPiqR in slechts enkele minuten"
 
-#: .\templates\registration\signup.html:17
 msgid "How OrderPiqR works"
 msgstr "Hoe OrderPiqR werkt"
 
-#: .\templates\registration\signup.html:27
 msgid "Admin Account"
 msgstr "Admin account"
 
-#: .\templates\registration\signup.html:28
 msgid ""
 "For managers: add products, create orders, manage the queue, and track "
 "progress."
-msgstr "Voor managers: voeg producten toe, maak orders, beheer de wachtrij en volg de voortgang."
+msgstr ""
+"Voor managers: voeg producten toe, maak orders, beheer de wachtrij en volg "
+"de voortgang."
 
-#: .\templates\registration\signup.html:41
 msgid "Picker Account"
 msgstr "Picker account"
 
-#: .\templates\registration\signup.html:42
 msgid ""
 "One shared login for all warehouse staff. Each picker enters their name on "
 "first use - their device is then remembered."
-msgstr "Eén gedeelde login voor alle magazijnmedewerkers. Elke picker voert zijn naam in bij eerste gebruik - zijn apparaat wordt dan onthouden."
+msgstr ""
+"Eén gedeelde login voor alle magazijnmedewerkers. Elke picker voert zijn "
+"naam in bij eerste gebruik - zijn apparaat wordt dan onthouden."
 
-#: .\templates\registration\signup.html:47
 msgid ""
 "You only need these two accounts. When pickers log in on a new device, they "
 "enter their name once and the device is automatically linked to them."
-msgstr "U heeft slechts deze twee accounts nodig. Wanneer pickers inloggen op een nieuw apparaat, voeren ze hun naam eenmaal in en wordt het apparaat automatisch aan hen gekoppeld."
+msgstr ""
+"U heeft slechts deze twee accounts nodig. Wanneer pickers inloggen op een "
+"nieuw apparaat, voeren ze hun naam eenmaal in en wordt het apparaat "
+"automatisch aan hen gekoppeld."
 
-#: .\templates\registration\signup.html:71
 msgid "Company Name"
 msgstr "Bedrijfsnaam"
 
-#: .\templates\registration\signup.html:77
 msgid "Enter your company name"
 msgstr "Voer uw bedrijfsnaam in"
 
-#: .\templates\registration\signup.html:89
 msgid "Administrator Account"
 msgstr "Beheerder account"
 
-#: .\templates\registration\signup.html:91
 msgid ""
 "Your personal login for the management dashboard. Use this to add products, "
 "create orders, manage the queue, and configure settings."
-msgstr "Uw persoonlijke login voor het beheerdashboard. Gebruik dit om producten toe te voegen, orders te maken, de wachtrij te beheren en instellingen te configureren."
+msgstr ""
+"Uw persoonlijke login voor het beheerdashboard. Gebruik dit om producten toe "
+"te voegen, orders te maken, de wachtrij te beheren en instellingen te "
+"configureren."
 
-#: .\templates\registration\signup.html:101
 msgid "admin"
 msgstr "admin"
 
-#: .\templates\registration\signup.html:114
 msgid "admin@company.com"
 msgstr "admin@bedrijf.nl"
 
-#: .\templates\registration\signup.html:129
-#: .\templates\registration\signup.html:202
 msgid "Create a password"
 msgstr "Maak een wachtwoord"
 
-#: .\templates\registration\signup.html:136
-#: .\templates\registration\signup.html:209
 msgid "Confirm Password"
 msgstr "Bevestig wachtwoord"
 
-#: .\templates\registration\signup.html:141
-#: .\templates\registration\signup.html:214
 msgid "Confirm password"
 msgstr "Bevestig wachtwoord"
 
-#: .\templates\registration\signup.html:154
 msgid "Shared Picker Account"
 msgstr "Gedeeld picker account"
 
-#: .\templates\registration\signup.html:157
 msgid "This is a shared login for all your warehouse pickers."
 msgstr "Dit is een gedeelde login voor al uw magazijnpickers."
 
-#: .\templates\registration\signup.html:159
 msgid "Share these credentials with your team"
 msgstr "Deel deze inloggegevens met uw team"
 
-#: .\templates\registration\signup.html:160
 msgid "When a picker logs in for the first time, they enter their name"
 msgstr "Wanneer een picker voor het eerst inlogt, voert hij zijn naam in"
 
-#: .\templates\registration\signup.html:161
 msgid "Their device is then remembered - no need to enter their name again"
-msgstr "Hun apparaat wordt dan onthouden - geen noodzaak om hun naam opnieuw in te voeren"
+msgstr ""
+"Hun apparaat wordt dan onthouden - geen noodzaak om hun naam opnieuw in te "
+"voeren"
 
-#: .\templates\registration\signup.html:162
 msgid "You can see which picker is using which device in the dashboard"
 msgstr "U kunt zien welke picker welk apparaat gebruikt in het dashboard"
 
-#: .\templates\registration\signup.html:174
 msgid "picker"
 msgstr "picker"
 
-#: .\templates\registration\signup.html:187
 msgid "picker@company.com"
 msgstr "picker@bedrijf.nl"
 
-#: .\templates\registration\signup.html:225
 msgid "Create Company & Accounts"
 msgstr "Bedrijf en accounts aanmaken"
 
-#: .\templates\registration\signup.html:232
 msgid "Already have an account?"
 msgstr "Heeft u al een account?"
 
