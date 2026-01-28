@@ -1,0 +1,42 @@
+{% extends "errors/base_error.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Server Error" %}{% endblock %}
+
+{% block icon_bg %}#fee2e2{% endblock %}
+{% block icon_color %}#dc2626{% endblock %}
+
+{% block icon %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+    <line x1="6" y1="6" x2="6.01" y2="6"/>
+    <line x1="6" y1="18" x2="6.01" y2="18"/>
+    <path d="M12 6h4"/>
+    <path d="M12 18h4"/>
+</svg>
+{% endblock %}
+
+{% block error_code %}500{% endblock %}
+{% block error_title %}{% trans "Server Error" %}{% endblock %}
+
+{% block error_message %}
+{% trans "Something went wrong on our end. Our team has been notified and we're working to fix the issue. Please try again in a few minutes." %}
+{% endblock %}
+
+{% block error_actions %}
+<button onclick="location.reload()" class="btn btn-primary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="23 4 23 10 17 10"/>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+    </svg>
+    {% trans "Try Again" %}
+</button>
+<a href="/" class="btn btn-secondary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    {% trans "Go to Homepage" %}
+</a>
+{% endblock %}

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 17:38+0100\n"
+"POT-Creation-Date: 2026-01-28 18:34+0100\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,461 +12,312 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\orderpiqrApp\admin\order_admin.py:35
 msgid "Generate QR PDF for selected Orders"
 msgstr "Generează PDF QR pentru comenzile selectate"
 
-#: .\orderpiqrApp\admin\order_admin.py:38
 msgid "No orders selected."
 msgstr "Nicio comandă selectată."
 
-#: .\orderpiqrApp\admin\order_admin.py:47
 #, python-format
 msgid "Failed to generate QR batch: %(error)s"
 msgstr "Eșec la generarea lotului QR: %(error)s"
 
-#: .\orderpiqrApp\admin\order_admin.py:49
 msgid "Add selected orders to queue"
 msgstr "Adaugă comenzile selectate în coadă"
 
-#: .\orderpiqrApp\admin\order_admin.py:71
 #, python-format
 msgid "%(count)s order(s) added to queue."
 msgstr "%(count)s comandă(comenzi) adăugată(e) în coadă."
 
-#: .\orderpiqrApp\admin\order_admin.py:73
 #, python-format
 msgid "%(count)s order(s) skipped (not in draft status)."
 msgstr "%(count)s comandă(comenzi) omisă(e) (nu este în stare de schiță)."
 
-#: .\orderpiqrApp\admin\order_admin.py:75
 msgid "Remove selected orders from queue"
 msgstr "Elimină comenzile selectate din coadă"
 
-#: .\orderpiqrApp\admin\order_admin.py:85
 #, python-format
 msgid "%(count)s order(s) removed from queue."
 msgstr "%(count)s comandă(comenzi) eliminată(e) din coadă."
 
-#: .\orderpiqrApp\admin\order_admin.py:120
-#: .\orderpiqrApp\admin\order_admin.py:324
 msgid "Your account is not linked to a customer."
 msgstr "Contul dumneavoastră nu este asociat cu un client."
 
-#: .\orderpiqrApp\admin\order_admin.py:144
 #, python-format
 msgid "Missing required column: \"%(column)s\""
 msgstr "Coloană obligatorie lipsă: \"%(column)s\""
 
-#: .\orderpiqrApp\admin\order_admin.py:160
 #, python-format
 msgid "Missing value for \"order_code\" in row %(row)d"
 msgstr "Valoare lipsă pentru \"order_code\" la rândul %(row)d"
 
-#: .\orderpiqrApp\admin\order_admin.py:166
 #, python-format
 msgid "Invalid quantity for product code \"%(code)s\" in row %(row)d"
-msgstr "Cantitate invalidă pentru codul produsului \"%(code)s\" la rândul %(row)d"
+msgstr ""
+"Cantitate invalidă pentru codul produsului \"%(code)s\" la rândul %(row)d"
 
-#: .\orderpiqrApp\admin\order_admin.py:173
 #, python-format
 msgid "Unknown product code \"%(code)s\" in row %(row)d"
 msgstr "Cod produs necunoscut \"%(code)s\" la rândul %(row)d"
 
-#: .\orderpiqrApp\admin\order_admin.py:251
 #, python-format
 msgid "%(orders)s orders and %(lines)s lines added."
 msgstr "%(orders)s comenzi și %(lines)s linii adăugate."
 
-#: .\orderpiqrApp\admin\order_admin.py:258
 #, python-format
 msgid "Overwritten orders: %(codes)s."
 msgstr "Comenzi suprascrise: %(codes)s."
 
-#: .\orderpiqrApp\admin\order_admin.py:266
 #, python-format
 msgid "Error processing file: %(msg)s"
 msgstr "Eroare la procesarea fișierului: %(msg)s"
 
-#: .\orderpiqrApp\admin\preferences_admin.py:14
 msgid "General Info"
 msgstr "Informații generale"
 
-#: .\orderpiqrApp\admin\preferences_admin.py:17
 msgid "Advanced"
 msgstr "Avansat"
 
-#: .\orderpiqrApp\admin\product_admin.py:62
 #, python-format
 msgid "Missing value for \"%(field)s\" in row %(row)d"
 msgstr "Valoare lipsă pentru \"%(field)s\" la rândul %(row)d"
 
-#: .\orderpiqrApp\admin\product_admin.py:141
 msgid "Unsupported file format, only .csv and .xlsx are supported"
 msgstr "Format de fișier nesuportat, doar .csv și .xlsx sunt suportate"
 
-#: .\orderpiqrApp\admin\product_admin.py:143
 #, python-format
 msgid "%(added)d products added, %(overwritten)d products overwritten."
 msgstr "%(added)d produse adăugate, %(overwritten)d produse suprascrise."
 
-#: .\orderpiqrApp\admin\product_admin.py:149
 #, python-format
 msgid "Error processing file: %(error)s"
 msgstr "Eroare la procesarea fișierului: %(error)s"
 
-#: .\orderpiqrApp\admin\product_admin.py:152
 msgid "No file uploaded."
 msgstr "Niciun fișier încărcat."
 
-#: .\orderpiqrApp\admin\product_admin.py:154
 msgid "Upload CSV or XLSX File"
 msgstr "Încarcă fișier CSV sau XLSX"
 
-#: .\orderpiqrApp\admin\product_admin.py:166
 msgid "Invalid form submission."
 msgstr "Trimitere formular invalidă."
 
-#: .\orderpiqrApp\admin\product_admin.py:185
 #, python-format
 msgid "A product with the code \"%(code)s\" already exists for this customer."
 msgstr "Un produs cu codul \"%(code)s\" există deja pentru acest client."
 
-#: .\orderpiqrApp\admin\product_admin.py:189
 #, python-format
 msgid ""
 "A product with the code \"%(code)s\" already exists, cannot add duplicate."
-msgstr "Un produs cu codul \"%(code)s\" există deja, nu se poate adăuga duplicat."
+msgstr ""
+"Un produs cu codul \"%(code)s\" există deja, nu se poate adăuga duplicat."
 
-#: .\orderpiqrApp\admin\product_admin.py:195
 #, python-format
 msgid "The product \"%(description)s\" was added successfully."
 msgstr "Produsul \"%(description)s\" a fost adăugat cu succes."
 
-#: .\orderpiqrApp\admin\product_admin.py:200
 msgid "User is not allowed to save products."
 msgstr "Utilizatorul nu are permisiunea să salveze produse."
 
-#: .\orderpiqrApp\models\customers.py:8 .\orderpiqrApp\models\devices.py:12
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 msgid "Name"
 msgstr "Nume"
 
-#: .\orderpiqrApp\models\customers.py:9 .\orderpiqrApp\models\devices.py:13
-#: .\orderpiqrApp\models\products.py:10
-#: .\templates\manage\orders\import.html:59
-#: .\templates\manage\products\form.html:28
-#: .\templates\manage\products\import.html:59
-#: .\templates\manage\products\list.html:68 .\templates\manage\profile.html:101
 msgid "Description"
 msgstr "Descriere"
 
-#: .\orderpiqrApp\models\customers.py:12 .\orderpiqrApp\models\customers.py:21
-#: .\orderpiqrApp\models\devices.py:14 .\orderpiqrApp\models\orders.py:18
-#: .\orderpiqrApp\models\picklists.py:11
-#: .\orderpiqrApp\models\preferences.py:68 .\orderpiqrApp\models\products.py:12
 msgid "Customer"
 msgstr "Client"
 
-#: .\orderpiqrApp\models\customers.py:13
 msgid "Customers"
 msgstr "Clienți"
 
-#: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:9
-#: .\templates\index.html:51 .\templates\manage\devices\list.html:37
-#: .\templates\manage\profile.html:115
 msgid "User"
 msgstr "Utilizator"
 
-#: .\orderpiqrApp\models\customers.py:24
 msgid "User Profile"
 msgstr "Profil utilizator"
 
-#: .\orderpiqrApp\models\customers.py:25
 msgid "User Profiles"
 msgstr "Profiluri utilizator"
 
-#: .\orderpiqrApp\models\devices.py:11
 msgid "Device Fingerprint"
 msgstr "Amprentă dispozitiv"
 
-#: .\orderpiqrApp\models\devices.py:15 .\templates\manage\profile.html:124
 msgid "Last Login"
 msgstr "Ultima autentificare"
 
-#: .\orderpiqrApp\models\devices.py:16
 msgid "Lists Picked"
 msgstr "Liste selectate"
 
-#: .\orderpiqrApp\models\devices.py:19 .\orderpiqrApp\models\picklists.py:14
-#: .\templates\manage\picklists\detail.html:42
-#: .\templates\manage\picklists\list.html:32
 msgid "Device"
 msgstr "Dispozitiv"
 
-#: .\orderpiqrApp\models\devices.py:20 .\templates\manage\base.html:104
-#: .\templates\manage\devices\list.html:4
-#: .\templates\manage\devices\list.html:5
 msgid "Devices"
 msgstr "Dispozitive"
 
-#: .\orderpiqrApp\models\orders.py:10 .\templates\manage\orders\list.html:39
 msgid "Draft"
 msgstr "Schiță"
 
-#: .\orderpiqrApp\models\orders.py:11 .\templates\manage\orders\list.html:40
-#: .\templates\manage\queue\_queue_list.html:26
-#: .\templates\queue\_manage_queue_list.html:21
-#: .\templates\queue\_order_cards.html:53
 msgid "Queued"
 msgstr "În coadă"
 
-#: .\orderpiqrApp\models\orders.py:12 .\templates\manage\orders\list.html:41
-#: .\templates\manage\picklists\detail.html:34
-#: .\templates\manage\picklists\list.html:15
-#: .\templates\manage\picklists\list.html:74
-#: .\templates\manage\queue\_queue_list.html:24
-#: .\templates\queue\_manage_queue_list.html:19
-#: .\templates\queue\_order_cards.html:56
-#: .\templates\queue\_picker_orders.html:40
 msgid "In Progress"
 msgstr "În curs"
 
-#: .\orderpiqrApp\models\orders.py:13 .\templates\manage\orders\list.html:42
-#: .\templates\manage\picklists\detail.html:30
-#: .\templates\manage\picklists\list.html:16
-#: .\templates\manage\picklists\list.html:70
-#: .\templates\queue\_order_cards.html:59
-#: .\templates\queue\_picker_orders.html:44
 msgid "Completed"
 msgstr "Finalizat"
 
-#: .\orderpiqrApp\models\orders.py:14 .\templates\manage\orders\list.html:43
 msgid "Cancelled"
 msgstr "Anulat"
 
-#: .\orderpiqrApp\models\orders.py:19 .\templates\manage\orders\form.html:20
-#: .\templates\manage\orders\list.html:62
 msgid "Order Code"
 msgstr "Cod comandă"
 
-#: .\orderpiqrApp\models\orders.py:21 .\orderpiqrApp\models\picklists.py:21
-#: .\orderpiqrApp\models\picklists.py:51 .\templates\manage\orders\form.html:41
-#: .\templates\manage\orders\import.html:100
-#: .\templates\manage\picklists\detail.html:80
-#: .\templates\queue\_order_cards.html:44
 msgid "Notes"
 msgstr "Note"
 
-#: .\orderpiqrApp\models\orders.py:23 .\templates\manage\dashboard.html:192
-#: .\templates\manage\orders\list.html:64
-#: .\templates\manage\picklists\detail.html:102
-#: .\templates\manage\picklists\list.html:34
-#: .\templates\manage\products\form.html:45
-#: .\templates\manage\products\list.html:71
 msgid "Status"
 msgstr "Stare"
 
-#: .\orderpiqrApp\models\orders.py:29
 msgid "Queue Position"
 msgstr "Poziție în coadă"
 
-#: .\orderpiqrApp\models\orders.py:32
 msgid "Position in the picking queue. Lower numbers are picked first."
 msgstr "Poziția în coada de ridicare. Numerele mai mici sunt ridicate primele."
 
-#: .\orderpiqrApp\models\orders.py:35
 msgid "Completed At"
 msgstr "Finalizat la"
 
-#: .\orderpiqrApp\models\orders.py:41 .\orderpiqrApp\models\orders.py:50
-#: .\templates\manage\dashboard.html:191
-#: .\templates\manage\picklists\detail.html:9
-#: .\templates\manage\picklists\list.html:31
 msgid "Order"
 msgstr "Comandă"
 
-#: .\orderpiqrApp\models\orders.py:42 .\templates\manage\base.html:73
-#: .\templates\manage\base.html:80 .\templates\manage\orders\list.html:4
-#: .\templates\manage\orders\list.html:5
-#: .\templates\manage\products\list.html:70
 msgid "Orders"
 msgstr "Comenzi"
 
-#: .\orderpiqrApp\models\orders.py:51 .\orderpiqrApp\models\picklists.py:45
-#: .\orderpiqrApp\models\products.py:16 .\templates\manage\orders\form.html:60
-#: .\templates\manage\orders\form.html:357
-#: .\templates\manage\picklists\detail.html:99
 msgid "Product"
 msgstr "Produs"
 
-#: .\orderpiqrApp\models\orders.py:52 .\orderpiqrApp\models\picklists.py:48
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81
-#: .\templates\manage\orders\form.html:366
-#: .\templates\manage\picklists\detail.html:101
 msgid "Quantity"
 msgstr "Cantitate"
 
-#: .\orderpiqrApp\models\orders.py:55
 msgid "Order Line"
 msgstr "Linie comandă"
 
-#: .\orderpiqrApp\models\orders.py:56 .\templates\manage\orders\form.html:50
 msgid "Order Lines"
 msgstr "Linii comandă"
 
-#: .\orderpiqrApp\models\orders.py:59
 #, python-format
 msgid "Order %(order)s, Product: %(quantity)s x %(product)s"
 msgstr "Comanda %(order)s, Produs: %(quantity)s x %(product)s"
 
-#: .\orderpiqrApp\models\picklists.py:12
 msgid "Source Order"
 msgstr "Comandă sursă"
 
-#: .\orderpiqrApp\models\picklists.py:13
 msgid "Picklist Code"
 msgstr "Cod listă de preluare"
 
-#: .\orderpiqrApp\models\picklists.py:15
 msgid "Created At"
 msgstr "Creat la"
 
-#: .\orderpiqrApp\models\picklists.py:16
 msgid "Updated At"
 msgstr "Actualizat la"
 
-#: .\orderpiqrApp\models\picklists.py:17
 msgid "Pick Started"
 msgstr "Preluare începută"
 
-#: .\orderpiqrApp\models\picklists.py:18
-#: .\templates\manage\picklists\detail.html:67
 msgid "Pick Time"
 msgstr "Timp preluare"
 
-#: .\orderpiqrApp\models\picklists.py:19 .\orderpiqrApp\models\picklists.py:49
 msgid "Time Taken"
 msgstr "Durată"
 
-#: .\orderpiqrApp\models\picklists.py:20 .\orderpiqrApp\models\picklists.py:50
 msgid "Successful"
 msgstr "Reușit"
 
-#: .\orderpiqrApp\models\picklists.py:24 .\orderpiqrApp\models\picklists.py:47
 msgid "Pick List"
 msgstr "Listă de preluare"
 
-#: .\orderpiqrApp\models\picklists.py:25 .\templates\manage\base.html:97
-#: .\templates\manage\picklists\list.html:4
-#: .\templates\manage\picklists\list.html:5
 msgid "Pick Lists"
 msgstr "Liste de preluare"
 
-#: .\orderpiqrApp\models\picklists.py:35
 #, python-format
 msgid "PickList %(id)s for Device %(device)s"
 msgstr "Listă de preluare %(id)s pentru dispozitivul %(device)s"
 
-#: .\orderpiqrApp\models\picklists.py:54
 msgid "Product Pick"
 msgstr "Preluare produs"
 
-#: .\orderpiqrApp\models\picklists.py:55
-#: .\templates\manage\picklists\detail.html:90
 msgid "Product Picks"
 msgstr "Preluări produs"
 
-#: .\orderpiqrApp\models\picklists.py:58
 #, python-format
 msgid "Pick of %(product)s in PickList %(picklist_id)s"
 msgstr "Preluare a %(product)s în lista %(picklist_id)s"
 
-#: .\orderpiqrApp\models\preferences.py:9
 msgid "String"
 msgstr "Text"
 
-#: .\orderpiqrApp\models\preferences.py:10
 msgid "Boolean"
 msgstr "Boolean"
 
-#: .\orderpiqrApp\models\preferences.py:11
 msgid "Integer"
 msgstr "Număr întreg"
 
-#: .\orderpiqrApp\models\preferences.py:12
 msgid "Float"
 msgstr "Număr zecimal"
 
-#: .\orderpiqrApp\models\preferences.py:13
 msgid "Date"
 msgstr "Dată"
 
-#: .\orderpiqrApp\models\preferences.py:14
 msgid "DateTime"
 msgstr "Dată și oră"
 
-#: .\orderpiqrApp\models\preferences.py:15
 msgid "Color (HEX)"
 msgstr "Culoare (HEX)"
 
-#: .\orderpiqrApp\models\preferences.py:16
 msgid "URL"
 msgstr "URL"
 
-#: .\orderpiqrApp\models\preferences.py:17
 msgid "Image"
 msgstr "Imagine"
 
-#: .\orderpiqrApp\models\preferences.py:18
 msgid "JSON"
 msgstr "JSON"
 
-#: .\orderpiqrApp\models\preferences.py:20
 msgid "Key"
 msgstr "Cheie"
 
-#: .\orderpiqrApp\models\preferences.py:21
 msgid "Internal name for this setting (e.g. 'language', 'sort_by_location')."
-msgstr "Nume intern pentru această setare (ex. 'language', 'sort_by_location')."
+msgstr ""
+"Nume intern pentru această setare (ex. 'language', 'sort_by_location')."
 
-#: .\orderpiqrApp\models\preferences.py:22
 msgid "Label"
 msgstr "Etichetă"
 
-#: .\orderpiqrApp\models\preferences.py:23
 msgid "Human-readable label shown in admin or forms (e.g. 'Language')."
 msgstr "Etichetă lizibilă afișată în administrare sau formulare (ex. 'Limbă')."
 
-#: .\orderpiqrApp\models\preferences.py:24
 msgid "Help text"
 msgstr "Text de ajutor"
 
-#: .\orderpiqrApp\models\preferences.py:25
 msgid "Additional description or guidance for this setting."
 msgstr "Descriere sau îndrumări suplimentare pentru această setare."
 
-#: .\orderpiqrApp\models\preferences.py:27
 msgid "Type"
 msgstr "Tip"
 
-#: .\orderpiqrApp\models\preferences.py:28
 msgid "The type of this setting (e.g. boolean, integer, string)."
 msgstr "Tipul acestei setări (ex. boolean, număr întreg, text)."
 
-#: .\orderpiqrApp\models\preferences.py:29
 msgid "Default value"
 msgstr "Valoare implicită"
 
-#: .\orderpiqrApp\models\preferences.py:30
 msgid "Used if customer-specific value is not set."
 msgstr "Folosit dacă valoarea specifică clientului nu este setată."
 
-#: .\orderpiqrApp\models\preferences.py:31
 msgid "Options"
 msgstr "Opțiuni"
 
-#: .\orderpiqrApp\models\preferences.py:32
 msgid ""
 "For 'choice' type settings: list of {value, label} options. E.g. "
 "[{\"value\": \"original\", \"label\": \"Original order\"}]"
@@ -474,964 +325,712 @@ msgstr ""
 "Pentru setările de tip 'alegere': listă de opțiuni {value, label}. Ex. "
 "[{\"value\": \"original\", \"label\": \"Ordine originală\"}]"
 
-#: .\orderpiqrApp\models\preferences.py:70
 msgid "Setting"
 msgstr "Setare"
 
-#: .\orderpiqrApp\models\preferences.py:71
 msgid "Value"
 msgstr "Valoare"
 
-#: .\orderpiqrApp\models\preferences.py:71
 msgid "The value set for this customer."
 msgstr "Valoarea setată pentru acest client."
 
-#: .\orderpiqrApp\models\preferences.py:75
 msgid "Customer setting value"
 msgstr "Valoare setare client"
 
-#: .\orderpiqrApp\models\preferences.py:76
 msgid "Customer setting values"
 msgstr "Valori setări client"
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:68
-#: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Cod produs"
 
-#: .\orderpiqrApp\models\products.py:11
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:44
-#: .\templates\index.html:70 .\templates\manage\orders\form.html:62
-#: .\templates\manage\picklists\detail.html:100
-#: .\templates\manage\products\form.html:37
-#: .\templates\manage\products\list.html:69
 msgid "Location"
 msgstr "Locație"
 
-#: .\orderpiqrApp\models\products.py:13
-#: .\templates\manage\products\form.html:52
-#: .\templates\manage\products\list.html:45
-#: .\templates\manage\products\list.html:92
 msgid "Active"
 msgstr "Activ"
 
-#: .\orderpiqrApp\models\products.py:17 .\templates\manage\base.html:68
-#: .\templates\manage\dashboard.html:22 .\templates\manage\products\list.html:4
-#: .\templates\manage\products\list.html:5
 msgid "Products"
 msgstr "Produse"
 
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81
-#: .\templates\manage\products\list.html:67
 msgid "Code"
 msgstr "Cod"
 
-#: .\orderpiqrApp\views\auth\signup_view.py:59
 msgid ""
 "Your company and users were created. Welcome! Start by adding your products, "
 "then create orders and manage your queue."
 msgstr ""
-"Compania și utilizatorii dumneavoastră au fost creați. Bun venit! Începeți prin a adăuga produsele, "
-"apoi creați comenzi și gestionați coada."
+"Compania și utilizatorii dumneavoastră au fost creați. Bun venit! Începeți "
+"prin a adăuga produsele, apoi creați comenzi și gestionați coada."
 
-#: .\orderpiqrApp\views\auth\signup_view.py:66
 msgid ""
 "That username or email is already in use. Please choose a different one."
 msgstr ""
-"Acest nume de utilizator sau email este deja folosit. Vă rugăm să alegeți altul."
+"Acest nume de utilizator sau email este deja folosit. Vă rugăm să alegeți "
+"altul."
 
-#: .\orderpiqrApp\views\auth\signup_view.py:70
 msgid ""
 "Some of the submitted data is invalid or too long. Please review and try "
 "again."
 msgstr ""
-"Unele date trimise sunt invalide sau prea lungi. Vă rugăm să revizuiți și să încercați "
-"din nou."
+"Unele date trimise sunt invalide sau prea lungi. Vă rugăm să revizuiți și să "
+"încercați din nou."
 
-#: .\orderpiqrApp\views\auth\signup_view.py:78
 msgid "Please correct the highlighted errors and try again."
 msgstr "Vă rugăm să corectați erorile evidențiate și să încercați din nou."
 
-#: .\orderpiqrApp\views\auth\signup_view.py:83
 msgid ""
 "Some of the submitted information is missing or invalid. Please check and "
 "try again."
 msgstr ""
-"Unele informații trimise lipsesc sau sunt invalide. Vă rugăm să verificați și "
-"să încercați din nou."
+"Unele informații trimise lipsesc sau sunt invalide. Vă rugăm să verificați "
+"și să încercați din nou."
 
-#: .\orderpiqrApp\views\auth\signup_view.py:86
-msgid "We're experiencing technical issues. Please try again shortly."
+#, fuzzy
+#| msgid "We're experiencing technical issues. Please try again shortly."
+msgid "We’re experiencing technical issues. Please try again shortly."
 msgstr "Întâmpinăm probleme tehnice. Vă rugăm să încercați din nou în curând."
 
-#: .\orderpiqrApp\views\manage_views.py:54
 msgid "No customer profile found for your account."
 msgstr "Niciun profil de client găsit pentru contul dumneavoastră."
 
-#: .\orderpiqrApp\views\manage_views.py:187
-#: .\orderpiqrApp\views\manage_views.py:233
 msgid "Product code is required."
 msgstr "Codul produsului este obligatoriu."
 
-#: .\orderpiqrApp\views\manage_views.py:189
-#: .\orderpiqrApp\views\manage_views.py:235
 msgid "A product with this code already exists."
 msgstr "Un produs cu acest cod există deja."
 
-#: .\orderpiqrApp\views\manage_views.py:191
-#: .\orderpiqrApp\views\manage_views.py:237
 msgid "Description is required."
 msgstr "Descrierea este obligatorie."
 
-#: .\orderpiqrApp\views\manage_views.py:206
 #, python-brace-format
 msgid "Product '{code}' created successfully."
 msgstr "Produsul '{code}' a fost creat cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:251
 #, python-brace-format
 msgid "Product '{code}' updated successfully."
 msgstr "Produsul '{code}' a fost actualizat cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:263
-#: .\orderpiqrApp\views\manage_views.py:554
 msgid "No customer found."
 msgstr "Niciun client găsit."
 
-#: .\orderpiqrApp\views\manage_views.py:270
 #, python-brace-format
 msgid "Product '{code}' deleted."
 msgstr "Produsul '{code}' a fost șters."
 
-#: .\orderpiqrApp\views\manage_views.py:272
-#: .\orderpiqrApp\views\manage_views.py:563
 msgid "Invalid request method."
 msgstr "Metodă de cerere invalidă."
 
-#: .\orderpiqrApp\views\manage_views.py:287
-#: .\orderpiqrApp\views\manage_views.py:578
 msgid "Please select a CSV file."
 msgstr "Vă rugăm să selectați un fișier CSV."
 
-#: .\orderpiqrApp\views\manage_views.py:291
-#: .\orderpiqrApp\views\manage_views.py:582
 msgid "Please upload a valid CSV file."
 msgstr "Vă rugăm să încărcați un fișier CSV valid."
 
-#: .\orderpiqrApp\views\manage_views.py:328
 #, python-brace-format
 msgid ""
 "Import completed: {created} created, {updated} updated, {errors} errors."
 msgstr ""
 "Import finalizat: {created} create, {updated} actualizate, {errors} erori."
 
-#: .\orderpiqrApp\views\manage_views.py:334
-#: .\orderpiqrApp\views\manage_views.py:647
 #, python-brace-format
 msgid "Error processing CSV: {error}"
 msgstr "Eroare la procesarea CSV: {error}"
 
-#: .\orderpiqrApp\views\manage_views.py:437
-#: .\orderpiqrApp\views\manage_views.py:511
 msgid "Order code is required."
 msgstr "Codul comenzii este obligatoriu."
 
-#: .\orderpiqrApp\views\manage_views.py:439
-#: .\orderpiqrApp\views\manage_views.py:513
 msgid "An order with this code already exists."
 msgstr "O comandă cu acest cod există deja."
 
-#: .\orderpiqrApp\views\manage_views.py:442
-#: .\orderpiqrApp\views\manage_views.py:516
 msgid "At least one product is required."
 msgstr "Cel puțin un produs este obligatoriu."
 
-#: .\orderpiqrApp\views\manage_views.py:478
 #, python-brace-format
 msgid "Order '{code}' created successfully."
 msgstr "Comanda '{code}' a fost creată cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:542
 #, python-brace-format
 msgid "Order '{code}' updated successfully."
 msgstr "Comanda '{code}' a fost actualizată cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:561
 #, python-brace-format
 msgid "Order '{code}' deleted."
 msgstr "Comanda '{code}' a fost ștearsă."
 
-#: .\orderpiqrApp\views\manage_views.py:641
 #, python-brace-format
 msgid ""
 "Import completed: {orders} orders created with {lines} lines, {errors} "
 "errors."
 msgstr ""
-"Import finalizat: {orders} comenzi create cu {lines} linii, {errors} "
-"erori."
+"Import finalizat: {orders} comenzi create cu {lines} linii, {errors} erori."
 
-#: .\orderpiqrApp\views\manage_views.py:774
 msgid "First name is required."
 msgstr "Prenumele este obligatoriu."
 
-#: .\orderpiqrApp\views\manage_views.py:776
 msgid "Email is required."
 msgstr "Email-ul este obligatoriu."
 
-#: .\orderpiqrApp\views\manage_views.py:786
 msgid "Profile updated successfully."
 msgstr "Profilul a fost actualizat cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:795
 msgid "Current password is incorrect."
 msgstr "Parola curentă este incorectă."
 
-#: .\orderpiqrApp\views\manage_views.py:797
 msgid "New password must be at least 8 characters."
 msgstr "Noua parolă trebuie să aibă cel puțin 8 caractere."
 
-#: .\orderpiqrApp\views\manage_views.py:799
 msgid "New passwords do not match."
 msgstr "Noile parole nu se potrivesc."
 
-#: .\orderpiqrApp\views\manage_views.py:808
 msgid "Password changed successfully."
 msgstr "Parola a fost schimbată cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:883
 msgid "Settings saved successfully."
 msgstr "Setările au fost salvate cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:897
 msgid "You have been logged out successfully."
 msgstr "Ați fost deconectat cu succes."
 
-#: .\templates\admin\base_site.html:36 .\templates\admin\base_site.html:37
-#: .\templates\admin\base_site.html:42
+msgid "Bad Request"
+msgstr "Cerere invalidă"
+
+msgid ""
+"The server could not understand your request. This might be due to invalid "
+"data or a malformed request."
+msgstr ""
+"Serverul nu a putut procesa cererea dumneavoastră. Acest lucru poate fi "
+"cauzat de date invalide sau o cerere malformată."
+
+msgid "Access Denied"
+msgstr "Acces interzis"
+
+msgid ""
+"You don't have permission to access this page. Please make sure you're "
+"logged in with the correct account."
+msgstr ""
+"Nu aveți permisiunea de a accesa această pagină. Vă rugăm să vă asigurați "
+"că sunteți conectat cu contul corect."
+
+msgid "Sign In"
+msgstr "Autentificare"
+
+msgid "Go to Homepage"
+msgstr "Mergi la pagina principală"
+
+msgid "Page Not Found"
+msgstr "Pagină negăsită"
+
+msgid ""
+"The page you're looking for doesn't exist or has been moved. Please check "
+"the URL or navigate back to the homepage."
+msgstr ""
+"Pagina pe care o căutați nu există sau a fost mutată. Vă rugăm să verificați "
+"URL-ul sau să reveniți la pagina principală."
+
+msgid "Server Error"
+msgstr "Eroare de server"
+
+msgid ""
+"Something went wrong on our end. Our team has been notified and we're "
+"working to fix the issue. Please try again in a few minutes."
+msgstr ""
+"Ceva nu a funcționat corect de partea noastră. Echipa noastră a fost "
+"notificată și lucrăm la rezolvarea problemei. Vă rugăm să încercați din nou "
+"în câteva minute."
+
+msgid "Try Again"
+msgstr "Încercați din nou"
+
 msgid "Start tour"
 msgstr "Începe turul"
 
-#: .\templates\admin\custom_index.html:8
 msgid "Picklists scanned this month"
 msgstr "Liste de preluare scanate în această lună"
 
-#: .\templates\admin\custom_index.html:34
 msgid "Cumulative picklists"
 msgstr "Liste de preluare cumulative"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:42
-#: .\templates\manage\queue\list.html:4 .\templates\manage\queue\list.html:5
-#: .\templates\queue\manage.html:18
 msgid "Queue Management"
 msgstr "Gestionare coadă"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:43
 msgid "Manage the picking queue - add orders, reorder, and monitor progress"
 msgstr ""
 "Gestionați coada de ridicare - adăugați comenzi, reordonați și monitorizați "
 "progresul"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:45
 msgid "Open Queue Manager"
 msgstr "Deschide managerul cozii"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:48
 msgid "Upload Order CSV/XLSX"
 msgstr "Încarcă fișierul comandă CSV/XLSX"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:50
-#: .\templates\admin\orderpiqrApp\product\change_list.html:12
 msgid "Please upload a CSV or XLSX file that includes the following columns:"
 msgstr ""
 "Vă rugăm să încărcați un fișier CSV sau XLSX care conține următoarele "
 "coloane:"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:52
 msgid ""
 "With each row representing a product/pick. The order code is repeated for "
 "each product"
 msgstr ""
-"Cu fiecare rând reprezentând un produs/preluare. Codul comenzii este repetat pentru "
-"fiecare produs"
+"Cu fiecare rând reprezentând un produs/preluare. Codul comenzii este repetat "
+"pentru fiecare produs"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:53
-#: .\templates\admin\orderpiqrApp\product\change_list.html:14
 msgid ""
 "Or manually add a product using the button at the top right of the page."
 msgstr ""
 "Sau adăugați manual un produs folosind butonul din colțul din dreapta sus al "
 "paginii."
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:61
-#: .\templates\admin\orderpiqrApp\product\change_list.html:22
 msgid "Upload File"
 msgstr "Încarcă fișierul"
 
-#: .\templates\admin\orderpiqrApp\product\change_list.html:10
 msgid "Upload Product CSV/XLSX"
 msgstr "Încarcă fișierul produs CSV/XLSX"
 
-#: .\templates\index.html:24
+msgid "Go Back"
+msgstr "Înapoi"
+
+msgid ""
+"If this problem persists, please contact <a "
+"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
+msgstr ""
+"Dacă această problemă persistă, vă rugăm să contactați <a "
+"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
+
 msgid "Welcome to Orderpiqr!"
 msgstr "Bun venit la Orderpiqr!"
 
-#: .\templates\index.html:34 .\templates\manage\base.html:194
 msgid "Log out"
 msgstr "Deconectare"
 
-#: .\templates\index.html:36 .\templates\queue\display.html:10
-#: .\templates\queue\display.html:14 .\templates\queue\picker.html:18
 msgid "Order Queue"
 msgstr "Coadă comenzi"
 
-#: .\templates\index.html:38
 msgid "Order Importance"
 msgstr "Importanța comenzii"
 
-#: .\templates\index.html:38
 msgid "Enabled"
 msgstr "Activat"
 
-#: .\templates\index.html:41
 msgid "Sort Picklist By"
 msgstr "Sortează lista de preluare după"
 
-#: .\templates\index.html:43
 msgid "Original order"
 msgstr "Ordine originală"
 
-#: .\templates\index.html:45 .\templates\manage\products\import.html:71
 msgid "Product description"
 msgstr "Descriere produs"
 
-#: .\templates\index.html:56
 msgid "This app is best viewed on your phone"
 msgstr "Această aplicație este optimizată pentru vizualizare pe telefon"
 
-#: .\templates\index.html:63 .\templates\manage\picklists\detail.html:4
-#: .\templates\manage\picklists\detail.html:5
-#: .\templates\manage\picklists\list.html:30
 msgid "Picklist"
 msgstr "Listă de preluare"
 
-#: .\templates\index.html:69
 msgid "Product Name"
 msgstr "Nume produs"
 
-#: .\templates\manage\base.html:8 .\templates\manage\base.html:58
-#: .\templates\manage\base.html:151 .\templates\manage\dashboard.html:4
-#: .\templates\manage\dashboard.html:5
 msgid "Dashboard"
 msgstr "Tablou de bord"
 
-#: .\templates\manage\base.html:41
 msgid "Close menu"
 msgstr "Închide meniul"
 
-#: .\templates\manage\base.html:50
 msgid "Main"
 msgstr "Principal"
 
-#: .\templates\manage\base.html:63
 msgid "Inventory"
 msgstr "Inventar"
 
-#: .\templates\manage\base.html:87
 msgid "Queue"
 msgstr "Coadă"
 
-#: .\templates\manage\base.html:92
 msgid "Operations"
 msgstr "Operațiuni"
 
-#: .\templates\manage\base.html:109 .\templates\manage\base.html:115
-#: .\templates\manage\base.html:192 .\templates\manage\settings.html:4
-#: .\templates\manage\settings.html:5
 msgid "Settings"
 msgstr "Setări"
 
-#: .\templates\manage\base.html:122 .\templates\manage\base.html:191
-#: .\templates\manage\profile.html:4 .\templates\manage\profile.html:5
 msgid "Profile"
 msgstr "Profil"
 
-#: .\templates\manage\base.html:144
 msgid "Open menu"
 msgstr "Deschide meniul"
 
-#: .\templates\manage\dashboard.html:6 .\templates\registration\login.html:10
 msgid "Welcome back"
 msgstr "Bine ați revenit"
 
-#: .\templates\manage\dashboard.html:13 .\templates\manage\dashboard.html:89
-#: .\templates\manage\products\form.html:4
-#: .\templates\manage\products\form.html:5
-#: .\templates\manage\products\list.html:25
-#: .\templates\manage\products\list.html:158
 msgid "Add Product"
 msgstr "Adaugă produs"
 
-#: .\templates\manage\dashboard.html:30
 msgid "active"
 msgstr "activ"
 
-#: .\templates\manage\dashboard.html:35
 msgid "Orders Today"
 msgstr "Comenzi astăzi"
 
-#: .\templates\manage\dashboard.html:44
 msgid "this week"
 msgstr "săptămâna aceasta"
 
-#: .\templates\manage\dashboard.html:49
 msgid "In Queue"
 msgstr "În coadă"
 
-#: .\templates\manage\dashboard.html:57
 msgid "draft"
 msgstr "schiță"
 
-#: .\templates\manage\dashboard.html:62
 msgid "Completed Today"
 msgstr "Finalizate astăzi"
 
-#: .\templates\manage\dashboard.html:71
 msgid "active picklists"
 msgstr "liste de preluare active"
 
-#: .\templates\manage\dashboard.html:78
 msgid "Quick Actions"
 msgstr "Acțiuni rapide"
 
-#: .\templates\manage\dashboard.html:90 .\templates\manage\products\form.html:8
 msgid "Create a new product in your inventory"
 msgstr "Creează un produs nou în inventar"
 
-#: .\templates\manage\dashboard.html:92 .\templates\manage\dashboard.html:107
-#: .\templates\manage\dashboard.html:121
 msgid "Step"
 msgstr "Pas"
 
-#: .\templates\manage\dashboard.html:104 .\templates\manage\dashboard.html:216
-#: .\templates\manage\orders\form.html:4 .\templates\manage\orders\form.html:5
-#: .\templates\manage\orders\form.html:128
-#: .\templates\manage\orders\list.html:19
-#: .\templates\manage\orders\list.html:163
-#: .\templates\manage\queue\list.html:85
 msgid "Create Order"
 msgstr "Creează comandă"
 
-#: .\templates\manage\dashboard.html:105 .\templates\manage\orders\form.html:8
 msgid "Add a new order with products"
 msgstr "Adaugă o comandă nouă cu produse"
 
-#: .\templates\manage\dashboard.html:118 .\templates\queue\manage.html:11
 msgid "Manage Queue"
 msgstr "Gestionează coada"
 
-#: .\templates\manage\dashboard.html:119
 msgid "Add orders to the picking queue"
 msgstr "Adaugă comenzi în coada de preluare"
 
-#: .\templates\manage\dashboard.html:130
 msgid "Open Views"
 msgstr "Vizualizări deschise"
 
-#: .\templates\manage\dashboard.html:143
 msgid "Queue Display"
 msgstr "Afișaj coadă"
 
-#: .\templates\manage\dashboard.html:144
 msgid ""
 "Full-screen view for warehouse screens. Shows QR codes for pickers to scan."
 msgstr ""
-"Vizualizare pe ecran complet pentru ecranele din depozit. Afișează coduri QR pentru scanare."
+"Vizualizare pe ecran complet pentru ecranele din depozit. Afișează coduri QR "
+"pentru scanare."
 
-#: .\templates\manage\dashboard.html:163 .\templates\manage\queue\list.html:25
-#: .\templates\queue\manage.html:26
 msgid "Picker View"
 msgstr "Vizualizare ridicător"
 
-#: .\templates\manage\dashboard.html:164
 msgid ""
 "Mobile-friendly view for order pickers. Share the picker login with your "
 "team."
 msgstr ""
-"Vizualizare optimizată pentru mobil pentru operatori depozit. Distribuiți autentificarea operatorilor "
-"echipei dumneavoastră."
+"Vizualizare optimizată pentru mobil pentru operatori depozit. Distribuiți "
+"autentificarea operatorilor echipei dumneavoastră."
 
-#: .\templates\manage\dashboard.html:182
 msgid "Recent Orders"
 msgstr "Comenzi recente"
 
-#: .\templates\manage\dashboard.html:183 .\templates\manage\dashboard.html:226
 msgid "View All"
 msgstr "Vezi toate"
 
-#: .\templates\manage\dashboard.html:193 .\templates\manage\orders\list.html:65
-#: .\templates\manage\picklists\detail.html:62
-#: .\templates\manage\picklists\list.html:35
 msgid "Created"
 msgstr "Creat"
 
-#: .\templates\manage\dashboard.html:207
-#: .\templates\manage\devices\list.html:50
-#: .\templates\manage\orders\list.html:90
-#: .\templates\manage\picklists\list.html:79
-#: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:94
 msgid "ago"
 msgstr "în urmă"
 
-#: .\templates\manage\dashboard.html:215
 msgid "No orders yet. Create your first order!"
 msgstr "Încă nu există comenzi. Creați prima comandă!"
 
-#: .\templates\manage\dashboard.html:225
 msgid "Device Status"
 msgstr "Stare dispozitive"
 
-#: .\templates\manage\dashboard.html:232
 msgid "Total Devices"
 msgstr "Total dispozitive"
 
-#: .\templates\manage\dashboard.html:236
 msgid "Active Now"
 msgstr "Activ acum"
 
-#: .\templates\manage\dashboard.html:241
 msgid "No devices registered yet."
 msgstr "Niciun dispozitiv înregistrat încă."
 
-#: .\templates\manage\dashboard.html:242
 msgid ""
 "Devices are automatically registered when pickers scan their first QR code."
 msgstr ""
-"Dispozitivele sunt înregistrate automat când operatorii scanează primul cod QR."
+"Dispozitivele sunt înregistrate automat când operatorii scanează primul cod "
+"QR."
 
-#: .\templates\manage\dashboard.html:252
 msgid "Orders This Week"
 msgstr "Comenzi săptămâna aceasta"
 
-#: .\templates\manage\devices\list.html:6
 msgid "View registered picking devices"
 msgstr "Vizualizează dispozitivele de preluare înregistrate"
 
-#: .\templates\manage\devices\list.html:24
 msgid "Online"
 msgstr "Online"
 
-#: .\templates\manage\devices\list.html:27
 msgid "Offline"
 msgstr "Offline"
 
-#: .\templates\manage\devices\list.html:42
-#: .\templates\manage\picklists\detail.html:57
-#: .\templates\manage\picklists\list.html:65
 msgid "Unassigned"
 msgstr "Neatribuit"
 
-#: .\templates\manage\devices\list.html:47
 msgid "Last Seen"
 msgstr "Văzut ultima dată"
 
-#: .\templates\manage\devices\list.html:52
 msgid "Never"
 msgstr "Niciodată"
 
-#: .\templates\manage\devices\list.html:57
 msgid "Registered"
 msgstr "Înregistrat"
 
-#: .\templates\manage\devices\list.html:73
 msgid "No devices registered"
 msgstr "Niciun dispozitiv înregistrat"
 
-#: .\templates\manage\devices\list.html:74
 msgid "Devices are automatically registered when pickers access the system."
-msgstr "Dispozitivele sunt înregistrate automat când operatorii accesează sistemul."
+msgstr ""
+"Dispozitivele sunt înregistrate automat când operatorii accesează sistemul."
 
-#: .\templates\manage\devices\list.html:81
 msgid "How it works"
 msgstr "Cum funcționează"
 
-#: .\templates\manage\devices\list.html:83
 msgid "A picker opens the queue on their mobile device"
 msgstr "Un operator deschide coada pe dispozitivul mobil"
 
-#: .\templates\manage\devices\list.html:84
 msgid "They enter their name to identify themselves"
 msgstr "Ei introduc numele lor pentru identificare"
 
-#: .\templates\manage\devices\list.html:85
 msgid "The device is automatically registered"
 msgstr "Dispozitivul este înregistrat automat"
 
-#: .\templates\manage\devices\list.html:86
 msgid "They can then claim orders from the queue"
 msgstr "Apoi pot revendica comenzi din coadă"
 
-#: .\templates\manage\orders\form.html:4 .\templates\manage\orders\form.html:5
 msgid "Edit Order"
 msgstr "Editează comandă"
 
-#: .\templates\manage\orders\form.html:9
 msgid "Update order details"
 msgstr "Actualizează detaliile comenzii"
 
-#: .\templates\manage\orders\form.html:23
 msgid "e.g., ORD-2024-001"
 msgstr "ex., CMD-2024-001"
 
-#: .\templates\manage\orders\form.html:33
 msgid "Add to queue immediately"
 msgstr "Adaugă în coadă imediat"
 
-#: .\templates\manage\orders\form.html:43
 msgid "Optional notes for this order"
 msgstr "Note opționale pentru această comandă"
 
-#: .\templates\manage\orders\form.html:55
 msgid "Add Line"
 msgstr "Adaugă linie"
 
-#: .\templates\manage\orders\form.html:61
 msgid "Qty"
 msgstr "Cant."
 
-#: .\templates\manage\orders\form.html:75
 msgid "Search product..."
 msgstr "Caută produs..."
 
-#: .\templates\manage\orders\form.html:102
-#: .\templates\manage\orders\form.html:409
 msgid "Search product by code or description..."
 msgstr "Caută produs după cod sau descriere..."
 
-#: .\templates\manage\orders\form.html:126
-#: .\templates\manage\orders\import.html:34
-#: .\templates\manage\orders\list.html:184
-#: .\templates\manage\products\form.html:61
-#: .\templates\manage\products\import.html:34
-#: .\templates\manage\products\list.html:179
 msgid "Cancel"
 msgstr "Anulează"
 
-#: .\templates\manage\orders\form.html:128
-#: .\templates\manage\products\form.html:63 .\templates\manage\profile.html:47
 msgid "Save Changes"
 msgstr "Salvează modificările"
 
-#: .\templates\manage\orders\form.html:439
 msgid "An order must have at least one product"
 msgstr "O comandă trebuie să aibă cel puțin un produs"
 
-#: .\templates\manage\orders\form.html:463
-#: .\templates\manage\products\list.html:151
 msgid "No products found"
 msgstr "Niciun produs găsit"
 
-#: .\templates\manage\orders\form.html:619
 msgid "Please select a product for all order lines"
 msgstr "Vă rugăm să selectați un produs pentru toate liniile comenzii"
 
-#: .\templates\manage\orders\import.html:4
-#: .\templates\manage\orders\import.html:5
-#: .\templates\manage\orders\import.html:39
 msgid "Import Orders"
 msgstr "Importă comenzi"
 
-#: .\templates\manage\orders\import.html:6
 msgid "Upload a CSV file to import orders"
 msgstr "Încarcă un fișier CSV pentru a importa comenzi"
 
-#: .\templates\manage\orders\import.html:12
-#: .\templates\manage\products\import.html:12
 msgid "Upload CSV File"
 msgstr "Încarcă fișier CSV"
 
-#: .\templates\manage\orders\import.html:18
-#: .\templates\manage\products\import.html:18
 msgid "Select CSV File"
 msgstr "Selectează fișier CSV"
 
-#: .\templates\manage\orders\import.html:27
-#: .\templates\manage\products\import.html:27
 msgid "Drag and drop your CSV file here, or click to select"
 msgstr "Trageți și plasați fișierul CSV aici sau faceți clic pentru a selecta"
 
-#: .\templates\manage\orders\import.html:28
-#: .\templates\manage\orders\import.html:235
-#: .\templates\manage\products\import.html:28
-#: .\templates\manage\products\import.html:216
 msgid "Maximum file size: 5MB"
 msgstr "Dimensiune maximă fișier: 5MB"
 
-#: .\templates\manage\orders\import.html:48
-#: .\templates\manage\products\import.html:48
 msgid "CSV Format"
 msgstr "Format CSV"
 
-#: .\templates\manage\orders\import.html:51
-#: .\templates\manage\products\import.html:51
 msgid "Your CSV file should have the following columns:"
 msgstr "Fișierul CSV trebuie să conțină următoarele coloane:"
 
-#: .\templates\manage\orders\import.html:57
-#: .\templates\manage\products\import.html:57
 msgid "Column"
 msgstr "Coloană"
 
-#: .\templates\manage\orders\import.html:58
-#: .\templates\manage\products\import.html:58
 msgid "Required"
 msgstr "Obligatoriu"
 
-#: .\templates\manage\orders\import.html:65
-#: .\templates\manage\orders\import.html:70
-#: .\templates\manage\products\import.html:65
-#: .\templates\manage\products\import.html:70
 msgid "Yes"
 msgstr "Da"
 
-#: .\templates\manage\orders\import.html:66
 msgid "Unique order identifier"
 msgstr "Identificator unic comandă"
 
-#: .\templates\manage\orders\import.html:71
 msgid "Product code (must exist in your inventory)"
 msgstr "Cod produs (trebuie să existe în inventar)"
 
-#: .\templates\manage\orders\import.html:75
-#: .\templates\manage\orders\import.html:80
-#: .\templates\manage\products\import.html:75
-#: .\templates\manage\products\import.html:80
 msgid "No"
 msgstr "Nu"
 
-#: .\templates\manage\orders\import.html:76
 msgid "Quantity (default: 1)"
 msgstr "Cantitate (implicit: 1)"
 
-#: .\templates\manage\orders\import.html:81
 msgid "Order notes (only from first line)"
 msgstr "Note comandă (doar din prima linie)"
 
-#: .\templates\manage\orders\import.html:87
-#: .\templates\manage\products\import.html:87
 msgid "Example CSV"
 msgstr "Exemplu CSV"
 
-#: .\templates\manage\orders\import.html:102
 msgid "Multiple rows with the same order_code will be combined into one order"
-msgstr "Mai multe rânduri cu același order_code vor fi combinate într-o singură comandă"
+msgstr ""
+"Mai multe rânduri cu același order_code vor fi combinate într-o singură "
+"comandă"
 
-#: .\templates\manage\orders\import.html:103
 msgid "Product codes must already exist in your inventory"
 msgstr "Codurile produselor trebuie să existe deja în inventar"
 
-#: .\templates\manage\orders\import.html:104
 msgid "Orders with duplicate codes will be skipped"
 msgstr "Comenzile cu coduri duplicate vor fi omise"
 
-#: .\templates\manage\orders\import.html:105
 msgid "Imported orders will have 'draft' status"
 msgstr "Comenzile importate vor avea statusul 'schiță'"
 
-#: .\templates\manage\orders\list.html:6
 msgid "Manage your customer orders"
 msgstr "Gestionează comenzile clienților"
 
-#: .\templates\manage\orders\list.html:13
-#: .\templates\manage\products\list.html:19
 msgid "Import"
 msgstr "Import"
 
-#: .\templates\manage\orders\list.html:32
 msgid "Search orders..."
 msgstr "Caută comenzi..."
 
-#: .\templates\manage\orders\list.html:38
-#: .\templates\manage\picklists\list.html:13
-#: .\templates\manage\products\list.html:44
 msgid "All Status"
 msgstr "Toate stările"
 
-#: .\templates\manage\orders\list.html:46
-#: .\templates\manage\products\list.html:53
 msgid "Newest First"
 msgstr "Cele mai recente"
 
-#: .\templates\manage\orders\list.html:47
-#: .\templates\manage\products\list.html:54
 msgid "Oldest First"
 msgstr "Cele mai vechi"
 
-#: .\templates\manage\orders\list.html:48
-#: .\templates\manage\products\list.html:49
 msgid "Code A-Z"
 msgstr "Cod A-Z"
 
-#: .\templates\manage\orders\list.html:49
-#: .\templates\manage\products\list.html:50
 msgid "Code Z-A"
 msgstr "Cod Z-A"
 
-#: .\templates\manage\orders\list.html:63
-#: .\templates\queue\_order_cards.html:24
 msgid "Items"
 msgstr "Articole"
 
-#: .\templates\manage\orders\list.html:66
-#: .\templates\manage\picklists\list.html:36
-#: .\templates\manage\products\list.html:72
 msgid "Actions"
 msgstr "Locație"
 
-#: .\templates\manage\orders\list.html:95 .\templates\queue\manage.html:66
 msgid "Add to Queue"
 msgstr "Adaugă în coadă"
 
-#: .\templates\manage\orders\list.html:102
-#: .\templates\manage\products\list.html:100
 msgid "Edit"
 msgstr "Editează"
 
-#: .\templates\manage\orders\list.html:111
-#: .\templates\manage\orders\list.html:185
-#: .\templates\manage\products\list.html:108
-#: .\templates\manage\products\list.html:180
 msgid "Delete"
 msgstr "Șterge"
 
-#: .\templates\manage\orders\list.html:137
-#: .\templates\manage\picklists\list.html:106
-#: .\templates\manage\products\list.html:133
 msgid "Page"
 msgstr "Pagina"
 
-#: .\templates\manage\orders\list.html:137
-#: .\templates\manage\picklists\list.html:106
-#: .\templates\manage\products\list.html:133
 msgid "of"
 msgstr "din"
 
-#: .\templates\manage\orders\list.html:156
 msgid "No orders found"
 msgstr "Nicio comandă în coadă"
 
-#: .\templates\manage\orders\list.html:157
-#: .\templates\manage\products\list.html:152
 msgid "Try adjusting your search or filter criteria."
 msgstr "Încercați să ajustați criteriile de căutare sau filtrare."
 
-#: .\templates\manage\orders\list.html:158
-#: .\templates\manage\products\list.html:153
 msgid "Clear Filters"
 msgstr "Șterge filtrele"
 
-#: .\templates\manage\orders\list.html:160
 msgid "No orders yet"
 msgstr "Nicio comandă în coadă"
 
-#: .\templates\manage\orders\list.html:161
 msgid "Get started by creating your first order or importing from a CSV file."
 msgstr "Începeți prin a crea prima comandă sau importați dintr-un fișier CSV."
 
-#: .\templates\manage\orders\list.html:164
-#: .\templates\manage\products\list.html:159
 msgid "Import CSV"
 msgstr "Importă CSV"
 
-#: .\templates\manage\orders\list.html:176
 msgid "Delete Order"
 msgstr "Bun venit la Orderpiqr!"
 
-#: .\templates\manage\orders\list.html:180
 msgid "Are you sure you want to delete order"
 msgstr "Sigur doriți să ștergeți comanda"
 
-#: .\templates\manage\orders\list.html:181
-#: .\templates\manage\products\list.html:176
 msgid "This action cannot be undone."
 msgstr "Această acțiune nu poate fi anulată."
 
-#: .\templates\manage\orders\list.html:313
-#: .\templates\manage\queue\list.html:414 .\templates\queue\manage.html:172
 msgid "Order added to queue"
 msgstr "%(count)s comandă(comenzi) adăugată(e) în coadă."
 
-#: .\templates\manage\orders\list.html:316
 msgid "Error adding to queue"
 msgstr "Adaugă în coadă"
 
-#: .\templates\manage\orders\list.html:320
-#: .\templates\manage\orders\list.html:354
-#: .\templates\manage\products\list.html:321
 msgid "An error occurred"
 msgstr "A apărut o eroare"
 
-#: .\templates\manage\picklists\detail.html:19
 msgid "Back to List"
 msgstr "Listă de preluare"
 
-#: .\templates\manage\picklists\detail.html:28
 msgid "Picklist Information"
 msgstr "Cod listă de preluare"
 
-#: .\templates\manage\picklists\detail.html:32
-#: .\templates\manage\picklists\detail.html:127
-#: .\templates\manage\picklists\list.html:17
-#: .\templates\manage\picklists\list.html:72
 msgid "Failed"
 msgstr "Eșuat"
 
-#: .\templates\manage\picklists\detail.html:36
-#: .\templates\manage\picklists\detail.html:129
-#: .\templates\manage\picklists\list.html:14
-#: .\templates\manage\picklists\list.html:76
 msgid "Pending"
 msgstr "În așteptare"
 
-#: .\templates\manage\picklists\detail.html:52
-#: .\templates\manage\picklists\list.html:33
 msgid "Picker"
 msgstr "Ordinea de colectare"
 
-#: .\templates\manage\picklists\detail.html:73
-#: .\templates\manage\picklists\detail.html:103
 msgid "Duration"
 msgstr "Descriere"
 
-#: .\templates\manage\picklists\detail.html:91
-#: .\templates\manage\queue\_queue_list.html:12
-#: .\templates\manage\queue\list.html:63 .\templates\manage\queue\list.html:103
-#: .\templates\queue\_manage_queue_list.html:12
-#: .\templates\queue\_picker_orders.html:16 .\templates\queue\manage.html:63
-#: .\templates\queue\manage.html:91
 msgid "items"
 msgstr "articole"
 
-#: .\templates\manage\picklists\detail.html:125
 msgid "Picked"
 msgstr "Liste selectate"
 
-#: .\templates\manage\picklists\detail.html:146
 msgid "No products in this picklist."
 msgstr "Preluare a %(product)s în lista %(picklist_id)s"
 
-#: .\templates\manage\picklists\list.html:6
 msgid "View picking operations"
 msgstr "Vezi operațiuni de preluare"
 
-#: .\templates\manage\picklists\list.html:83
 msgid "View Details"
 msgstr "Vezi detalii"
 
-#: .\templates\manage\picklists\list.html:121
 msgid "No pick lists yet"
 msgstr "Cod listă de preluare"
 
-#: .\templates\manage\picklists\list.html:122
 msgid ""
 "Pick lists are created automatically when pickers claim orders from the "
 "queue."
@@ -1439,555 +1038,400 @@ msgstr ""
 "Listele de preluare sunt create automat când operatorii revendică comenzi "
 "din coadă."
 
-#: .\templates\manage\picklists\list.html:123
 msgid "Go to Queue"
 msgstr "Adaugă în coadă"
 
-#: .\templates\manage\products\form.html:4
-#: .\templates\manage\products\form.html:5
 msgid "Edit Product"
 msgstr "Produs"
 
-#: .\templates\manage\products\form.html:9
 msgid "Update product details"
 msgstr "Actualizează detaliile produsului"
 
-#: .\templates\manage\products\form.html:22
 msgid "e.g., SKU-001"
 msgstr "ex., SKU-001"
 
-#: .\templates\manage\products\form.html:24
 msgid "A unique identifier for this product"
 msgstr "Un identificator unic pentru acest produs"
 
-#: .\templates\manage\products\form.html:31
 msgid "e.g., Blue Widget - Large"
 msgstr "ex., Widget albastru - Mare"
 
-#: .\templates\manage\products\form.html:33
 msgid "A short description of the product"
 msgstr "O descriere scurtă a produsului"
 
-#: .\templates\manage\products\form.html:40
 msgid "e.g., Aisle 3, Shelf B"
 msgstr "ex., Culoar 3, Raft B"
 
-#: .\templates\manage\products\form.html:41
 msgid "Where this product is stored in your warehouse"
 msgstr "Unde este stocat acest produs în depozit"
 
-#: .\templates\manage\products\form.html:54
 msgid "Inactive products won't appear in new orders"
 msgstr "Produsele inactive nu vor apărea în comenzi noi"
 
-#: .\templates\manage\products\form.html:63
 msgid "Create Product"
 msgstr "Produs"
 
-#: .\templates\manage\products\import.html:4
-#: .\templates\manage\products\import.html:5
-#: .\templates\manage\products\import.html:39
 msgid "Import Products"
 msgstr "Produse"
 
-#: .\templates\manage\products\import.html:6
 msgid "Upload a CSV file to import products"
 msgstr "Încarcă un fișier CSV pentru a importa produse"
 
-#: .\templates\manage\products\import.html:66
 msgid "Unique product code"
 msgstr "Cod produs"
 
-#: .\templates\manage\products\import.html:76
 msgid "Warehouse location"
 msgstr "Locație depozit"
 
-#: .\templates\manage\products\import.html:81
 msgid "true/false (default: true)"
 msgstr "adevărat/fals (implicit: adevărat)"
 
-#: .\templates\manage\products\import.html:99
 msgid "Note"
 msgstr "Note"
 
-#: .\templates\manage\products\import.html:100
 msgid ""
 "If a product with the same code already exists, it will be updated with the "
 "new values."
 msgstr ""
-"Dacă un produs cu același cod există deja, va fi actualizat cu noile "
-"valori."
+"Dacă un produs cu același cod există deja, va fi actualizat cu noile valori."
 
-#: .\templates\manage\products\list.html:6
 msgid "Manage your product inventory"
 msgstr "Gestionează inventarul de produse"
 
-#: .\templates\manage\products\list.html:13
 msgid "Export"
 msgstr "Export"
 
-#: .\templates\manage\products\list.html:38
 msgid "Search products..."
 msgstr "Caută produse..."
 
-#: .\templates\manage\products\list.html:46
-#: .\templates\manage\products\list.html:94
 msgid "Inactive"
 msgstr "Activ"
 
-#: .\templates\manage\products\list.html:51
 msgid "Description A-Z"
 msgstr "Descriere"
 
-#: .\templates\manage\products\list.html:52
 msgid "Location A-Z"
 msgstr "Locație"
 
-#: .\templates\manage\products\list.html:155
 msgid "No products yet"
 msgstr "Produse"
 
-#: .\templates\manage\products\list.html:156
 msgid "Get started by adding your first product or importing from a CSV file."
-msgstr "Începeți prin a adăuga primul produs sau importați dintr-un fișier CSV."
+msgstr ""
+"Începeți prin a adăuga primul produs sau importați dintr-un fișier CSV."
 
-#: .\templates\manage\products\list.html:171
 msgid "Delete Product"
 msgstr "Produs"
 
-#: .\templates\manage\products\list.html:175
 msgid "Are you sure you want to delete product"
 msgstr "Sigur doriți să ștergeți produsul"
 
-#: .\templates\manage\profile.html:6
 msgid "Manage your account settings"
 msgstr "Gestionează setările contului"
 
-#: .\templates\manage\profile.html:14
 msgid "Account Information"
 msgstr "Informații cont"
 
-#: .\templates\manage\profile.html:22 .\templates\registration\login.html:35
-#: .\templates\registration\signup.html:95
-#: .\templates\registration\signup.html:168
 msgid "Username"
 msgstr "Utilizator"
 
-#: .\templates\manage\profile.html:24
 msgid "Username cannot be changed."
 msgstr "Numele de utilizator nu poate fi schimbat."
 
-#: .\templates\manage\profile.html:29
 msgid "First Name"
 msgstr "Nume produs"
 
-#: .\templates\manage\profile.html:34
 msgid "Last Name"
 msgstr "Nume"
 
-#: .\templates\manage\profile.html:41 .\templates\registration\signup.html:108
-#: .\templates\registration\signup.html:181
 msgid "Email"
 msgstr "Email"
 
-#: .\templates\manage\profile.html:56 .\templates\manage\profile.html:82
 msgid "Change Password"
 msgstr "Schimbă parola"
 
-#: .\templates\manage\profile.html:64
 msgid "Current Password"
 msgstr "Parolă curentă"
 
-#: .\templates\manage\profile.html:69
-#: .\templates\registration\password_reset_confirm.html:33
 msgid "New Password"
 msgstr "Parolă nouă"
 
-#: .\templates\manage\profile.html:72
 msgid "Minimum 8 characters."
 msgstr "Minim 8 caractere."
 
-#: .\templates\manage\profile.html:76
-#: .\templates\registration\password_reset_confirm.html:45
 msgid "Confirm New Password"
 msgstr "Confirmă parola nouă"
 
-#: .\templates\manage\profile.html:91 .\templates\registration\signup.html:67
 msgid "Company Information"
 msgstr "Informații companie"
 
-#: .\templates\manage\profile.html:96
 msgid "Company"
 msgstr "Companie"
 
-#: .\templates\manage\profile.html:106
 msgid "Role"
 msgstr "Rol"
 
-#: .\templates\manage\profile.html:109
 msgid "Administrator"
 msgstr "Administrator"
 
-#: .\templates\manage\profile.html:111
 msgid "Staff"
 msgstr "Personal"
 
-#: .\templates\manage\profile.html:113
 msgid "Company Admin"
 msgstr "Administrator companie"
 
-#: .\templates\manage\profile.html:120
 msgid "Member Since"
 msgstr "Membru din"
 
-#: .\templates\manage\queue\_queue_list.html:8
-#: .\templates\queue\_manage_queue_list.html:8
 msgid "Drag to reorder"
 msgstr "Trageți pentru a reordona"
 
-#: .\templates\manage\queue\_queue_list.html:30
-#: .\templates\queue\_manage_queue_list.html:25
 msgid "Move up"
 msgstr "Mută sus"
 
-#: .\templates\manage\queue\_queue_list.html:31
-#: .\templates\queue\_manage_queue_list.html:26
 msgid "Move down"
 msgstr "Mută jos"
 
-#: .\templates\manage\queue\_queue_list.html:32
-#: .\templates\queue\_manage_queue_list.html:27
 msgid "Remove from queue"
 msgstr "Elimină comenzile selectate din coadă"
 
-#: .\templates\manage\queue\_queue_list.html:42
-#: .\templates\queue\_manage_queue_list.html:34
 msgid "Queue is empty"
 msgstr "Gestionare coadă"
 
-#: .\templates\manage\queue\_queue_list.html:43
-#: .\templates\queue\_manage_queue_list.html:35
 msgid "Add orders from the available list"
 msgstr "Adaugă comenzi din lista disponibilă"
 
-#: .\templates\manage\queue\list.html:6
 msgid "Manage and reorder your order queue"
 msgstr "Gestionează și reordonează coada de comenzi"
 
-#: .\templates\manage\queue\list.html:18 .\templates\queue\manage.html:23
 msgid "Display View"
 msgstr "Vizualizare afișaj"
 
-#: .\templates\manage\queue\list.html:38 .\templates\queue\manage.html:39
 msgid "Current Queue"
 msgstr "Coadă curentă"
 
-#: .\templates\manage\queue\list.html:39 .\templates\manage\queue\list.html:54
-#: .\templates\queue\manage.html:40 .\templates\queue\manage.html:54
 msgid "orders"
 msgstr "comenzi"
 
-#: .\templates\manage\queue\list.html:53 .\templates\queue\manage.html:53
 msgid "Available Orders"
 msgstr "Comenzi disponibile"
 
-#: .\templates\manage\queue\list.html:77
 msgid "Add"
 msgstr "Adaugă"
 
-#: .\templates\manage\queue\list.html:84
 msgid "No draft orders available"
 msgstr "Nicio comandă schiță disponibilă"
 
-#: .\templates\manage\queue\list.html:94 .\templates\queue\manage.html:82
 msgid "Recently Completed"
 msgstr "Finalizate recent"
 
-#: .\templates\manage\queue\list.html:113
 msgid "No completed orders yet"
 msgstr "Nicio comandă finalizată"
 
-#: .\templates\manage\queue\list.html:397 .\templates\queue\manage.html:155
 msgid "Queue order saved"
 msgstr "Ordinea cozii salvată"
 
-#: .\templates\manage\queue\list.html:432 .\templates\queue\manage.html:190
 msgid "Order removed from queue"
 msgstr "%(count)s comandă(comenzi) eliminată(e) din coadă."
 
-#: .\templates\manage\settings.html:6
 msgid "Configure your company preferences"
 msgstr "Configurează preferințele companiei"
 
-#: .\templates\manage\settings.html:13
 msgid "Company Settings"
 msgstr "Setări companie"
 
-#: .\templates\manage\settings.html:58 .\templates\manage\settings.html:69
 msgid "No settings configured"
 msgstr "Nicio setare configurată"
 
-#: .\templates\manage\settings.html:59 .\templates\manage\settings.html:70
 msgid "There are no configurable settings available yet."
 msgstr "Nu există încă setări configurabile disponibile."
 
-#: .\templates\manage\settings.html:77
 msgid "Save Settings"
 msgstr "Salvează setările"
 
-#: .\templates\offline.html:65
 msgid "You're offline"
 msgstr "Sunteți offline"
 
-#: .\templates\offline.html:66
 msgid "Sorry, content is unavailable right now."
 msgstr "Ne pare rău, conținutul nu este disponibil momentan."
 
-#: .\templates\offline.html:68
 msgid "Retry"
 msgstr "Reîncercați"
 
-#: .\templates\offline.html:69
-msgid "Go Back"
-msgstr "Înapoi"
-
-#: .\templates\partials\scan_confirmation_overlay.html:9
 msgid "Tap to scan next item"
 msgstr "Apăsați pentru a scana următorul articol"
 
-#: .\templates\queue\_order_cards.html:67
-#: .\templates\queue\_picker_orders.html:54
 msgid "No orders in queue"
 msgstr "Nicio comandă în coadă"
 
-#: .\templates\queue\_picker_orders.html:36 .\templates\queue\picker.html:111
-#: .\templates\queue\picker.html:118
 msgid "Start Picking"
 msgstr "Începe ridicarea"
 
-#: .\templates\queue\_picker_orders.html:55
 msgid "New orders will appear here automatically"
 msgstr "Comenzile noi vor apărea aici automat"
 
-#: .\templates\queue\manage.html:16
 msgid "Admin"
 msgstr "Administrare"
 
-#: .\templates\queue\manage.html:22
 msgid "Open tablet display view"
 msgstr "Deschide vizualizarea tabletă"
 
-#: .\templates\queue\manage.html:25
 msgid "Open mobile picker view"
 msgstr "Deschide vizualizarea mobilă"
 
-#: .\templates\queue\manage.html:73
 msgid "No available orders"
 msgstr "Nicio comandă disponibilă"
 
-#: .\templates\queue\manage.html:74
 msgid "Create orders in the admin to add them here"
 msgstr "Creați comenzi în administrare pentru a le adăuga aici"
 
-#: .\templates\queue\manage.html:101
 msgid "No completed orders"
 msgstr "Nicio comandă finalizată"
 
-#: .\templates\queue\picker.html:11
 msgid "Pick Queue"
 msgstr "Coadă ridicare"
 
-#: .\templates\queue\picker.html:16
 msgid "Scanner"
 msgstr "Scanner"
 
-#: .\templates\queue\picker.html:65
 msgid "Claiming..."
 msgstr "Revendicare..."
 
-#: .\templates\queue\picker.html:90
 msgid "Order claimed! Redirecting..."
 msgstr "Comandă revendicată! Redirecționare..."
 
-#: .\templates\queue\picker.html:116
 msgid "Error claiming order"
 msgstr "Eroare la revendicarea comenzii"
 
-#: .\templates\registration\login.html:4
 msgid "Login"
 msgstr "Autentificare"
 
-#: .\templates\registration\login.html:11
 msgid "Sign in to your OrderPiqR account"
 msgstr "Autentificați-vă în contul OrderPiqR"
 
-#: .\templates\registration\login.html:41
 msgid "Enter your username"
 msgstr "Introduceți numele dumneavoastră"
 
-#: .\templates\registration\login.html:50
-#: .\templates\registration\signup.html:124
-#: .\templates\registration\signup.html:197
 msgid "Password"
 msgstr "Parolă"
 
-#: .\templates\registration\login.html:55
 msgid "Enter your password"
 msgstr "Introduceți numele dumneavoastră"
 
-#: .\templates\registration\login.html:65
 msgid "Remember me"
 msgstr "Ține-mă minte"
 
-#: .\templates\registration\login.html:67
 msgid "Forgot password?"
 msgstr "Ați uitat parola?"
 
-#: .\templates\registration\login.html:72
-#: .\templates\registration\signup.html:233
 msgid "Sign in"
 msgstr "Autentificare"
 
-#: .\templates\registration\login.html:79
 msgid "New to OrderPiqR?"
 msgstr "Bun venit la Orderpiqr!"
 
-#: .\templates\registration\login.html:80
 msgid "Create your account"
 msgstr "Creați-vă contul"
 
-#: .\templates\registration\name_entry.html:4
 msgid "Enter Your Name"
 msgstr "Introduceți numele dumneavoastră"
 
-#: .\templates\registration\name_entry.html:10
 msgid "Welcome!"
 msgstr "Bun venit!"
 
-#: .\templates\registration\name_entry.html:11
 msgid "Please enter your name to register this device"
 msgstr "Vă rugăm să introduceți numele pentru a înregistra acest dispozitiv"
 
-#: .\templates\registration\name_entry.html:19
 msgid "Your Name"
 msgstr "Introduceți numele dumneavoastră"
 
-#: .\templates\registration\name_entry.html:24
 msgid "Enter your name"
 msgstr "Introduceți numele dumneavoastră"
 
-#: .\templates\registration\name_entry.html:27
 msgid "This name will be shown when you pick orders"
 msgstr "Acest nume va fi afișat când preluați comenzi"
 
-#: .\templates\registration\name_entry.html:32
 msgid "Continue"
 msgstr "Continuă"
 
-#: .\templates\registration\name_entry.html:43
 msgid "This device will be registered for order picking"
 msgstr "Acest dispozitiv va fi înregistrat pentru preluarea comenzilor"
 
-#: .\templates\registration\password_reset.html:4
-#: .\templates\registration\password_reset_confirm.html:56
 msgid "Reset Password"
 msgstr "Resetează parola"
 
-#: .\templates\registration\password_reset.html:10
 msgid "Reset your password"
 msgstr "Resetați parola"
 
-#: .\templates\registration\password_reset.html:11
 msgid ""
 "Enter your email address and we'll send you a link to reset your password"
 msgstr ""
-"Introduceți adresa de email și vă vom trimite un link pentru resetarea parolei"
+"Introduceți adresa de email și vă vom trimite un link pentru resetarea "
+"parolei"
 
-#: .\templates\registration\password_reset.html:32
 msgid "Email Address"
 msgstr "Adresă email"
 
-#: .\templates\registration\password_reset.html:37
 msgid "Enter your email address"
 msgstr "Introduceți numele dumneavoastră"
 
-#: .\templates\registration\password_reset.html:44
 msgid "Send Reset Link"
 msgstr "Trimite link de resetare"
 
-#: .\templates\registration\password_reset.html:51
-#: .\templates\registration\password_reset_confirm.html:73
-#: .\templates\registration\password_reset_done.html:30
 msgid "Back to login"
 msgstr "Ultima autentificare"
 
-#: .\templates\registration\password_reset_complete.html:4
 msgid "Password Reset Complete"
 msgstr "Finalizate recent"
 
-#: .\templates\registration\password_reset_complete.html:15
 msgid "Password reset complete!"
 msgstr "Resetare parolă completă!"
 
-#: .\templates\registration\password_reset_complete.html:16
 msgid "Your password has been successfully changed"
 msgstr "Parola a fost schimbată cu succes"
 
-#: .\templates\registration\password_reset_complete.html:21
 msgid "You can now use your new password to log in to your account."
 msgstr "Acum puteți folosi noua parolă pentru a vă autentifica în cont."
 
-#: .\templates\registration\password_reset_complete.html:24
 msgid "Go to Login"
 msgstr "Ultima autentificare"
 
-#: .\templates\registration\password_reset_confirm.html:4
 msgid "Set New Password"
 msgstr "Setează parolă nouă"
 
-#: .\templates\registration\password_reset_confirm.html:10
 msgid "Set new password"
 msgstr "Setează parolă nouă"
 
-#: .\templates\registration\password_reset_confirm.html:11
 msgid "Enter your new password below"
 msgstr "Introduceți noua parolă mai jos"
 
-#: .\templates\registration\password_reset_confirm.html:38
 msgid "Enter new password"
 msgstr "Introduceți parola nouă"
 
-#: .\templates\registration\password_reset_confirm.html:41
 msgid "Minimum 8 characters"
 msgstr "Minim 8 caractere"
 
-#: .\templates\registration\password_reset_confirm.html:50
 msgid "Confirm new password"
 msgstr "Confirmă parola nouă"
 
-#: .\templates\registration\password_reset_confirm.html:62
 msgid ""
 "This password reset link is invalid or has expired. Please request a new one."
 msgstr ""
-"Acest link de resetare parolă este invalid sau a expirat. Vă rugăm să solicitați unul nou."
+"Acest link de resetare parolă este invalid sau a expirat. Vă rugăm să "
+"solicitați unul nou."
 
-#: .\templates\registration\password_reset_confirm.html:66
 msgid "Request New Link"
 msgstr "Solicită link nou"
 
-#: .\templates\registration\password_reset_done.html:4
 msgid "Password Reset Sent"
 msgstr "Resetare parolă trimisă"
 
-#: .\templates\registration\password_reset_done.html:15
 msgid "Check your email"
 msgstr "Verificați emailul"
 
-#: .\templates\registration\password_reset_done.html:16
 msgid "We've sent you instructions to reset your password"
 msgstr "V-am trimis instrucțiuni pentru resetarea parolei"
 
-#: .\templates\registration\password_reset_done.html:21
 msgid ""
 "If an account exists with the email address you entered, you will receive a "
 "password reset link shortly."
@@ -1995,19 +1439,15 @@ msgstr ""
 "Dacă există un cont cu adresa de email introdusă, veți primi în curând un "
 "link de resetare parolă."
 
-#: .\templates\registration\password_reset_done.html:24
 msgid "Didn't receive the email? Check your spam folder or"
 msgstr "Nu ați primit emailul? Verificați folderul spam sau"
 
-#: .\templates\registration\password_reset_done.html:25
 msgid "try again"
 msgstr "încercați din nou"
 
-#: .\templates\registration\password_reset_email.html:2
 msgid "Hello,"
 msgstr "Bună ziua,"
 
-#: .\templates\registration\password_reset_email.html:4
 msgid ""
 "You're receiving this email because you requested a password reset for your "
 "OrderPiqR account."
@@ -2015,55 +1455,44 @@ msgstr ""
 "Primiți acest email pentru că ați solicitat resetarea parolei pentru contul "
 "OrderPiqR."
 
-#: .\templates\registration\password_reset_email.html:6
 msgid "Please click the link below to set a new password:"
-msgstr "Vă rugăm să faceți clic pe linkul de mai jos pentru a seta o parolă nouă:"
+msgstr ""
+"Vă rugăm să faceți clic pe linkul de mai jos pentru a seta o parolă nouă:"
 
-#: .\templates\registration\password_reset_email.html:10
 msgid "This link will expire in 24 hours."
 msgstr "Acest link va expira în 24 de ore."
 
-#: .\templates\registration\password_reset_email.html:12
 msgid ""
 "If you didn't request this password reset, you can safely ignore this email. "
 "Your password will not be changed."
 msgstr ""
-"Dacă nu ați solicitat această resetare parolă, puteți ignora acest email în siguranță. "
-"Parola nu va fi schimbată."
+"Dacă nu ați solicitat această resetare parolă, puteți ignora acest email în "
+"siguranță. Parola nu va fi schimbată."
 
-#: .\templates\registration\password_reset_email.html:14
 msgid "Best regards,"
 msgstr "Cu respect,"
 
-#: .\templates\registration\password_reset_email.html:15
 msgid "The OrderPiqR Team"
 msgstr "Echipa OrderPiqR"
 
-#: .\templates\registration\password_reset_subject.txt:1
 msgid "Reset your OrderPiqR password"
 msgstr "Resetați parola OrderPiqR"
 
-#: .\templates\registration\signup.html:4
 msgid "Sign Up"
 msgstr "Înregistrare"
 
-#: .\templates\registration\signup.html:11
 msgid "Create your workspace"
 msgstr "Creați spațiul de lucru"
 
-#: .\templates\registration\signup.html:12
 msgid "Get started with OrderPiqR in just a few minutes"
 msgstr "Începeți cu OrderPiqR în doar câteva minute"
 
-#: .\templates\registration\signup.html:17
 msgid "How OrderPiqR works"
 msgstr "Cum funcționează OrderPiqR"
 
-#: .\templates\registration\signup.html:27
 msgid "Admin Account"
 msgstr "Cont administrator"
 
-#: .\templates\registration\signup.html:28
 msgid ""
 "For managers: add products, create orders, manage the queue, and track "
 "progress."
@@ -2071,106 +1500,89 @@ msgstr ""
 "Pentru manageri: adăugați produse, creați comenzi, gestionați coada și "
 "urmăriți progresul."
 
-#: .\templates\registration\signup.html:41
 msgid "Picker Account"
 msgstr "Cont operator"
 
-#: .\templates\registration\signup.html:42
 msgid ""
 "One shared login for all warehouse staff. Each picker enters their name on "
 "first use - their device is then remembered."
 msgstr ""
-"O singură autentificare partajată pentru tot personalul depozitului. Fiecare operator "
-"își introduce numele la prima utilizare - dispozitivul lor este apoi reținut."
+"O singură autentificare partajată pentru tot personalul depozitului. Fiecare "
+"operator își introduce numele la prima utilizare - dispozitivul lor este "
+"apoi reținut."
 
-#: .\templates\registration\signup.html:47
 msgid ""
 "You only need these two accounts. When pickers log in on a new device, they "
 "enter their name once and the device is automatically linked to them."
 msgstr ""
-"Aveți nevoie doar de aceste două conturi. Când operatorii se autentifică pe un dispozitiv "
-"nou, își introduc numele o dată și dispozitivul este asociat automat cu ei."
+"Aveți nevoie doar de aceste două conturi. Când operatorii se autentifică pe "
+"un dispozitiv nou, își introduc numele o dată și dispozitivul este asociat "
+"automat cu ei."
 
-#: .\templates\registration\signup.html:71
 msgid "Company Name"
 msgstr "Nume companie"
 
-#: .\templates\registration\signup.html:77
 msgid "Enter your company name"
 msgstr "Introduceți numele dumneavoastră"
 
-#: .\templates\registration\signup.html:89
 msgid "Administrator Account"
 msgstr "Cont administrator"
 
-#: .\templates\registration\signup.html:91
 msgid ""
 "Your personal login for the management dashboard. Use this to add products, "
 "create orders, manage the queue, and configure settings."
 msgstr ""
-"Autentificarea personală pentru tabloul de bord de management. Folosiți aceasta pentru a "
-"adăuga produse, crea comenzi, gestiona coada și configura setările."
+"Autentificarea personală pentru tabloul de bord de management. Folosiți "
+"aceasta pentru a adăuga produse, crea comenzi, gestiona coada și configura "
+"setările."
 
-#: .\templates\registration\signup.html:101
 msgid "admin"
 msgstr "Administrare"
 
-#: .\templates\registration\signup.html:114
 msgid "admin@company.com"
 msgstr "admin@companie.ro"
 
-#: .\templates\registration\signup.html:129
-#: .\templates\registration\signup.html:202
 msgid "Create a password"
 msgstr "Creați o parolă"
 
-#: .\templates\registration\signup.html:136
-#: .\templates\registration\signup.html:209
 msgid "Confirm Password"
 msgstr "Confirmă parola"
 
-#: .\templates\registration\signup.html:141
-#: .\templates\registration\signup.html:214
 msgid "Confirm password"
 msgstr "Confirmă parola"
 
-#: .\templates\registration\signup.html:154
 msgid "Shared Picker Account"
 msgstr "Cont operator partajat"
 
-#: .\templates\registration\signup.html:157
 msgid "This is a shared login for all your warehouse pickers."
-msgstr "Aceasta este o autentificare partajată pentru toți operatorii depozitului."
+msgstr ""
+"Aceasta este o autentificare partajată pentru toți operatorii depozitului."
 
-#: .\templates\registration\signup.html:159
 msgid "Share these credentials with your team"
 msgstr "Distribuiți aceste credențiale echipei"
 
-#: .\templates\registration\signup.html:160
 msgid "When a picker logs in for the first time, they enter their name"
-msgstr "Când un operator se autentifică pentru prima dată, își introduce numele"
+msgstr ""
+"Când un operator se autentifică pentru prima dată, își introduce numele"
 
-#: .\templates\registration\signup.html:161
 msgid "Their device is then remembered - no need to enter their name again"
-msgstr "Dispozitivul lor este apoi reținut - nu mai este nevoie să își introducă numele din nou"
+msgstr ""
+"Dispozitivul lor este apoi reținut - nu mai este nevoie să își introducă "
+"numele din nou"
 
-#: .\templates\registration\signup.html:162
 msgid "You can see which picker is using which device in the dashboard"
-msgstr "Puteți vedea care operator folosește care dispozitiv în tabloul de bord"
+msgstr ""
+"Puteți vedea care operator folosește care dispozitiv în tabloul de bord"
 
-#: .\templates\registration\signup.html:174
 msgid "picker"
 msgstr "operator"
 
-#: .\templates\registration\signup.html:187
 msgid "picker@company.com"
 msgstr "operator@companie.ro"
 
-#: .\templates\registration\signup.html:225
 msgid "Create Company & Accounts"
 msgstr "Creează companie și conturi"
 
-#: .\templates\registration\signup.html:232
 msgid "Already have an account?"
 msgstr "Aveți deja un cont?"
 

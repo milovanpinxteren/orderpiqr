@@ -169,32 +169,56 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,  # Keep Django's default loggers
+    'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
             'format': '[{levelname}] {asctime} {name}: {message}',
+            'style': '{',
+        },
+        'detailed': {
+            'format': '[{levelname}] {asctime} {name} {module}.{funcName}:{lineno} - {message}',
             'style': '{',
         },
     },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'verbose',  # More readable output
+            'formatter': 'verbose',
+        },
+        'console_detailed': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'detailed',
         },
     },
     'root': {
         'handlers': ['console'],
-        'level': 'WARNING',  # Change to INFO or DEBUG if you want more
+        'level': 'WARNING',
     },
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'ERROR',  # Capture all Django errors
-            'propagate': True,
+            'level': 'INFO',
+            'propagate': False,
         },
         'django.request': {
-            'handlers': ['console'],
+            'handlers': ['console_detailed'],
             'level': 'ERROR',
+            'propagate': True,  # Propagate to ensure errors are logged
+        },
+        'django.server': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        # App-specific loggers
+        'orderpiqrApp': {
+            'handlers': ['console_detailed'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'api': {
+            'handlers': ['console_detailed'],
+            'level': 'INFO',
             'propagate': False,
         },
     },

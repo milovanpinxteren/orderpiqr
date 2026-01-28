@@ -11,12 +11,16 @@ from django.conf import settings
 import os
 import threading
 import time
+import logging
+import sys
 from django.db.models.functions import TruncDate
 from django.db.models import Count
 from datetime import date, timedelta
 from orderpiqrApp.models import PickList
 from django.utils import timezone
 from calendar import monthrange
+
+logger = logging.getLogger(__name__)
 
 
 def index(request):
@@ -170,3 +174,64 @@ def picklists_this_month_cumulative(request):
         "limit": PLAN_LIMIT,
         "month_label": today.strftime("%B %Y"),
     })
+
+
+# Custom error views
+def error_400(request, exception=None):
+    logger.warning(
+        "Bad Request (400) at %s: %s",
+        request.path,
+        exception,
+        extra={'request': request}
+    )
+    return render(request, '400.html', status=400)
+
+
+def error_403(request, exception=None):
+    logger.warning(
+        "Permission Denied (403) at %s: %s | User: %s",
+        request.path,
+        exception,
+        request.user,
+        extra={'request': request}
+    )
+    return render(request, '403.html', status=403)
+
+
+def error_404(request, exception=None):
+    logger.info(
+        "Not Found (404): %s",
+        request.path,
+        extra={'request': request}
+    )
+    return render(request, '404.html', status=404)
+
+
+def error_500(request):
+    # Get exception info from sys.exc_info()
+    exc_info = sys.exc_info()
+
+    # Log the full exception with traceback
+    logger.error(
+        "Internal Server Error (500) at %s",
+        request.path,
+        exc_info=exc_info,
+        extra={
+            'request': request,
+            'status_code': 500,
+        }
+    )
+
+    # Also log request details that might be helpful for debugging
+    try:
+        logger.error(
+            "Request details - Method: %s | User: %s | GET: %s | POST keys: %s",
+            request.method,
+            getattr(request, 'user', 'Anonymous'),
+            dict(request.GET),
+            list(request.POST.keys()) if request.POST else [],
+        )
+    except Exception:
+        pass  # Don't let logging errors prevent the error page from showing
+
+    return render(request, '500.html', status=500)

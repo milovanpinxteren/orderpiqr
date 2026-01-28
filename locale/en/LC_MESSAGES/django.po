@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-21 16:09+0200\n"
+"POT-Creation-Date: 2026-01-28 18:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,582 +18,152 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\orderpiqrApp\admin\order_admin.py:35
 msgid "Generate QR PDF for selected Orders"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:38
 msgid "No orders selected."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:47
 #, python-format
 msgid "Failed to generate QR batch: %(error)s"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:81
-#: .\orderpiqrApp\admin\order_admin.py:285
+msgid "Add selected orders to queue"
+msgstr "Add selected orders to queue"
+
+#, python-format
+msgid "%(count)s order(s) added to queue."
+msgstr "%(count)s order(s) added to queue."
+
+#, python-format
+msgid "%(count)s order(s) skipped (not in draft status)."
+msgstr "%(count)s order(s) skipped (not in draft status)."
+
+msgid "Remove selected orders from queue"
+msgstr "Remove selected orders from queue"
+
+#, python-format
+msgid "%(count)s order(s) removed from queue."
+msgstr "%(count)s order(s) removed from queue."
+
 msgid "Your account is not linked to a customer."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:105
 #, python-format
 msgid "Missing required column: \"%(column)s\""
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:121
 #, python-format
 msgid "Missing value for \"order_code\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:127
 #, python-format
 msgid "Invalid quantity for product code \"%(code)s\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:134
 #, python-format
 msgid "Unknown product code \"%(code)s\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:212
 #, python-format
 msgid "%(orders)s orders and %(lines)s lines added."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:219
 #, python-format
 msgid "Overwritten orders: %(codes)s."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:227
 #, python-format
 msgid "Error processing file: %(msg)s"
 msgstr ""
 
-#: .\orderpiqrApp\admin\preferences_admin.py:14
 msgid "General Info"
 msgstr ""
 
-#: .\orderpiqrApp\admin\preferences_admin.py:17
 msgid "Advanced"
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:62
 #, python-format
 msgid "Missing value for \"%(field)s\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:141
 msgid "Unsupported file format, only .csv and .xlsx are supported"
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:143
 #, python-format
 msgid "%(added)d products added, %(overwritten)d products overwritten."
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:149
 #, python-format
 msgid "Error processing file: %(error)s"
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:152
 msgid "No file uploaded."
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:154
 msgid "Upload CSV or XLSX File"
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:166
 msgid "Invalid form submission."
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:185
 #, python-format
 msgid "A product with the code \"%(code)s\" already exists for this customer."
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:189
 #, python-format
 msgid ""
 "A product with the code \"%(code)s\" already exists, cannot add duplicate."
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:195
 #, python-format
 msgid "The product \"%(description)s\" was added successfully."
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:200
 msgid "User is not allowed to save products."
 msgstr ""
 
-#: .\orderpiqrApp\models\customers.py:8 .\orderpiqrApp\models\devices.py:12
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 msgid "Name"
 msgstr ""
 
-#: .\orderpiqrApp\models\customers.py:9 .\orderpiqrApp\models\devices.py:13
-#: .\orderpiqrApp\models\products.py:10
 msgid "Description"
 msgstr ""
 
-#: .\orderpiqrApp\models\customers.py:12 .\orderpiqrApp\models\customers.py:21
-#: .\orderpiqrApp\models\devices.py:14 .\orderpiqrApp\models\orders.py:10
-#: .\orderpiqrApp\models\picklists.py:11
-#: .\orderpiqrApp\models\preferences.py:66 .\orderpiqrApp\models\products.py:12
 msgid "Customer"
 msgstr ""
 
-#: .\orderpiqrApp\models\customers.py:13
 msgid "Customers"
 msgstr ""
 
-#: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:9
-#: .\templates\index.html:52
 msgid "User"
 msgstr ""
 
-#: .\orderpiqrApp\models\customers.py:24
 msgid "User Profile"
 msgstr ""
 
-#: .\orderpiqrApp\models\customers.py:25
 msgid "User Profiles"
 msgstr ""
 
-#: .\orderpiqrApp\models\devices.py:11
 msgid "Device Fingerprint"
 msgstr ""
 
-#: .\orderpiqrApp\models\devices.py:15
 msgid "Last Login"
 msgstr ""
 
-#: .\orderpiqrApp\models\devices.py:16
 msgid "Lists Picked"
 msgstr ""
 
-#: .\orderpiqrApp\models\devices.py:19 .\orderpiqrApp\models\picklists.py:14
 msgid "Device"
 msgstr ""
 
-#: .\orderpiqrApp\models\devices.py:20
 msgid "Devices"
 msgstr ""
 
-#: .\orderpiqrApp\models\orders.py:11
-msgid "Order Code"
-msgstr ""
-
-#: .\orderpiqrApp\models\orders.py:13 .\orderpiqrApp\models\picklists.py:21
-#: .\orderpiqrApp\models\picklists.py:49
-msgid "Notes"
-msgstr ""
-
-#: .\orderpiqrApp\models\orders.py:16 .\orderpiqrApp\models\orders.py:24
-msgid "Order"
-msgstr ""
-
-#: .\orderpiqrApp\models\orders.py:17
-msgid "Orders"
-msgstr ""
-
-#: .\orderpiqrApp\models\orders.py:25 .\orderpiqrApp\models\picklists.py:43
-#: .\orderpiqrApp\models\products.py:16
-msgid "Product"
-msgstr ""
-
-#: .\orderpiqrApp\models\orders.py:26 .\orderpiqrApp\models\picklists.py:46
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81
-msgid "Quantity"
-msgstr ""
-
-#: .\orderpiqrApp\models\orders.py:29
-msgid "Order Line"
-msgstr ""
-
-#: .\orderpiqrApp\models\orders.py:30
-msgid "Order Lines"
-msgstr ""
-
-#: .\orderpiqrApp\models\orders.py:33
-#, python-format
-msgid "Order %(order)s, Product: %(quantity)s x %(product)s"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:12
-msgid "Source Order"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:13
-msgid "Picklist Code"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:15
-msgid "Created At"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:16
-msgid "Updated At"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:17
-msgid "Pick Started"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:18
-msgid "Pick Time"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:19 .\orderpiqrApp\models\picklists.py:47
-msgid "Time Taken"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:20 .\orderpiqrApp\models\picklists.py:48
-msgid "Successful"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:24 .\orderpiqrApp\models\picklists.py:45
-msgid "Pick List"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:25
-msgid "Pick Lists"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:33
-#, python-format
-msgid "PickList %(id)s for Device %(device)s"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:52
-msgid "Product Pick"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:53
-msgid "Product Picks"
-msgstr ""
-
-#: .\orderpiqrApp\models\picklists.py:56
-#, python-format
-msgid "Pick of %(product)s in PickList %(picklist_id)s"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:9
-msgid "String"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:10
-msgid "Boolean"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:11
-msgid "Integer"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:12
-msgid "Float"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:13
-msgid "Date"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:14
-msgid "DateTime"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:15
-msgid "Color (HEX)"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:16
-msgid "URL"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:17
-msgid "Image"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:18
-msgid "JSON"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:20
-msgid "Key"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:21
-msgid "Internal name for this setting (e.g. 'language', 'sort_by_location')."
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:22
-msgid "Label"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:23
-msgid "Human-readable label shown in admin or forms (e.g. 'Language')."
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:24
-msgid "Help text"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:25
-msgid "Additional description or guidance for this setting."
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:27
-msgid "Type"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:28
-msgid "The type of this setting (e.g. boolean, integer, string)."
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:29
-msgid "Default value"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:30
-msgid "Used if customer-specific value is not set."
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:68
-msgid "Setting"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:69
-msgid "Value"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:69
-msgid "The value set for this customer."
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:73
-msgid "Customer setting value"
-msgstr ""
-
-#: .\orderpiqrApp\models\preferences.py:74
-msgid "Customer setting values"
-msgstr ""
-
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:63
-msgid "Product Code"
-msgstr ""
-
-#: .\orderpiqrApp\models\products.py:11
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:45
-msgid "Location"
-msgstr ""
-
-#: .\orderpiqrApp\models\products.py:13
-msgid "Active"
-msgstr ""
-
-#: .\orderpiqrApp\models\products.py:17
-msgid "Products"
-msgstr ""
-
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81
-msgid "Code"
-msgstr ""
-
-#: .\orderpiqrApp\views\auth\signup_view.py:59
-msgid ""
-"Your company and users were created. Welcome! Start the onboarding by "
-"pressing the green button on the lower right of your screen."
-msgstr ""
-
-#: .\orderpiqrApp\views\auth\signup_view.py:66
-msgid ""
-"That username or email is already in use. Please choose a different one."
-msgstr ""
-
-#: .\orderpiqrApp\views\auth\signup_view.py:70
-msgid ""
-"Some of the submitted data is invalid or too long. Please review and try "
-"again."
-msgstr ""
-
-#: .\orderpiqrApp\views\auth\signup_view.py:78
-msgid "Please correct the highlighted errors and try again."
-msgstr ""
-
-#: .\orderpiqrApp\views\auth\signup_view.py:83
-msgid ""
-"Some of the submitted information is missing or invalid. Please check and "
-"try again."
-msgstr ""
-
-#: .\orderpiqrApp\views\auth\signup_view.py:86
-msgid "We’re experiencing technical issues. Please try again shortly."
-msgstr ""
-
-#: .\templates\admin\base_site.html:186 .\templates\admin\base_site.html:187
-#: .\templates\admin\base_site.html:192
-msgid "Start tour"
-msgstr ""
-
-#: .\templates\admin\orderpiqrApp\order\change_list.html:5
-msgid "Upload Order CSV/XLSX"
-msgstr ""
-
-#: .\templates\admin\orderpiqrApp\order\change_list.html:7
-#: .\templates\admin\orderpiqrApp\product\change_list.html:8
-msgid "Please upload a CSV or XLSX file that includes the following columns:"
-msgstr ""
-
-#: .\templates\admin\orderpiqrApp\order\change_list.html:9
-msgid ""
-"With each row representing a product/pick. The order code is repeated for "
-"each product"
-msgstr ""
-
-#: .\templates\admin\orderpiqrApp\order\change_list.html:10
-#: .\templates\admin\orderpiqrApp\product\change_list.html:10
-msgid ""
-"Or manually add a product using the button at the top right of the page."
-msgstr ""
-
-#: .\templates\admin\orderpiqrApp\order\change_list.html:18
-#: .\templates\admin\orderpiqrApp\product\change_list.html:18
-msgid "Upload File"
-msgstr ""
-
-#: .\templates\admin\orderpiqrApp\product\change_list.html:6
-msgid "Upload Product CSV/XLSX"
-msgstr ""
-
-#: .\templates\index.html:26
-msgid "Welcome to Orderpiqr!"
-msgstr ""
-
-#: .\templates\index.html:36
-msgid "Log out"
-msgstr ""
-
-#: .\templates\index.html:39
-msgid "Order Importance"
-msgstr ""
-
-#: .\templates\index.html:39
-msgid "Enabled"
-msgstr ""
-
-#: .\templates\index.html:42
-msgid "Sort Picklist By"
-msgstr ""
-
-#: .\templates\index.html:44
-msgid "Original order"
-msgstr ""
-
-#: .\templates\index.html:46
-msgid "Product description"
-msgstr ""
-
-#: .\templates\index.html:64
-msgid "Product Name"
-msgstr ""
-
-#: .\templates\index.html:65
-msgid "Pick Order"
-msgstr ""
-
-#: .\templates\offline.html:65
-msgid "You're offline"
-msgstr ""
-
-#: .\templates\offline.html:66
-msgid "Sorry, content is unavailable right now."
-msgstr ""
-
-#: .\templates\offline.html:68
-msgid "Retry"
-msgstr ""
-
-#: .\templates\offline.html:69
-msgid "Go Back"
-msgstr ""
-
-#: .\templates\registration\login.html:8
-msgid "login"
-msgstr ""
-
-#: .\templates\registration\login.html:18
-msgid "Orderpiqr Login"
-msgstr ""
-
-#: .\templates\registration\login.html:24
-msgid "Login"
-msgstr ""
-
-#: .\templates\registration\login.html:26
-msgid "New customer?"
-msgstr ""
-
-#: .\templates\registration\login.html:27
-msgid "Create your account here"
-msgstr ""
-
-#: .\templates\registration\name_entry.html:8
-#: .\templates\registration\name_entry.html:14
-msgid "Enter Your Name"
-msgstr ""
-
-#: .\templates\registration\name_entry.html:18
-msgid "Name:"
-msgstr ""
-
-#: .\templates\registration\name_entry.html:20
-msgid "Submit"
-msgstr ""
-
-#: .\templates\registration\signup.html:55
-msgid "Create your Orderpiqr workspace"
-msgstr ""
-
-#: .\templates\registration\signup.html:57
-msgid ""
-"Set up your company with two accounts: one administrator and one order "
-"picker.\n"
-"                    Usernames must be unique within your company, but emails "
-"don’t have to be unique globally.\n"
-"                    If you have any questions, email"
-msgstr ""
-
-#: .\templates\registration\signup.html:89
-msgid "Create company and users"
-msgstr ""
-
-#: .\templates\registration\signup.html:95
-msgid "Already have an account?"
-msgstr ""
-
-#: .\templates\registration\signup.html:96
-msgid "Log in"
-msgstr "Log in"
-
-#: Queue related translations
-msgid "Order Queue"
-msgstr "Order Queue"
-
-msgid "Pick Queue"
-msgstr "Pick Queue"
-
-msgid "Scanner"
-msgstr "Scanner"
-
-msgid "items"
-msgstr "items"
-
-msgid "Start Picking"
-msgstr "Start Picking"
+msgid "Draft"
+msgstr "Draft"
+
+msgid "Queued"
+msgstr "Queued"
 
 msgid "In Progress"
 msgstr "In Progress"
@@ -601,77 +171,14 @@ msgstr "In Progress"
 msgid "Completed"
 msgstr "Completed"
 
-msgid "No orders in queue"
-msgstr "No orders in queue"
-
-msgid "New orders will appear here automatically"
-msgstr "New orders will appear here automatically"
-
-msgid "Items"
-msgstr "Items"
-
-msgid "Queued"
-msgstr "Queued"
-
-msgid "Admin"
-msgstr "Admin"
-
-msgid "Queue Management"
-msgstr "Queue Management"
-
-msgid "Display View"
-msgstr "Display View"
-
-msgid "Picker View"
-msgstr "Picker View"
-
-msgid "Open tablet display view"
-msgstr "Open tablet display view"
-
-msgid "Open mobile picker view"
-msgstr "Open mobile picker view"
-
-msgid "Current Queue"
-msgstr "Current Queue"
-
-msgid "orders"
-msgstr "orders"
-
-msgid "Available Orders"
-msgstr "Available Orders"
-
-msgid "Add to Queue"
-msgstr "Add to Queue"
-
-msgid "No available orders"
-msgstr "No available orders"
-
-msgid "Create orders in the admin to add them here"
-msgstr "Create orders in the admin to add them here"
-
-msgid "Recently Completed"
-msgstr "Recently Completed"
-
-msgid "No completed orders"
-msgstr "No completed orders"
-
-msgid "ago"
-msgstr "ago"
-
-msgid "Remove"
-msgstr "Remove"
-
-msgid "Open Queue Manager"
-msgstr "Open Queue Manager"
-
-msgid "Manage the picking queue - add orders, reorder, and monitor progress"
-msgstr "Manage the picking queue - add orders, reorder, and monitor progress"
-
-msgid "Draft"
-msgstr "Draft"
-
 msgid "Cancelled"
 msgstr "Cancelled"
+
+msgid "Order Code"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
 
 msgid "Status"
 msgstr "Status"
@@ -685,20 +192,1382 @@ msgstr "Position in the picking queue. Lower numbers are picked first."
 msgid "Completed At"
 msgstr "Completed At"
 
-msgid "Add selected orders to queue"
-msgstr "Add selected orders to queue"
+msgid "Order"
+msgstr ""
 
-msgid "Remove selected orders from queue"
+msgid "Orders"
+msgstr ""
+
+msgid "Product"
+msgstr ""
+
+msgid "Quantity"
+msgstr ""
+
+msgid "Order Line"
+msgstr ""
+
+msgid "Order Lines"
+msgstr ""
+
+#, python-format
+msgid "Order %(order)s, Product: %(quantity)s x %(product)s"
+msgstr ""
+
+msgid "Source Order"
+msgstr ""
+
+msgid "Picklist Code"
+msgstr ""
+
+msgid "Created At"
+msgstr ""
+
+msgid "Updated At"
+msgstr ""
+
+msgid "Pick Started"
+msgstr ""
+
+msgid "Pick Time"
+msgstr ""
+
+msgid "Time Taken"
+msgstr ""
+
+msgid "Successful"
+msgstr ""
+
+msgid "Pick List"
+msgstr ""
+
+msgid "Pick Lists"
+msgstr ""
+
+#, python-format
+msgid "PickList %(id)s for Device %(device)s"
+msgstr ""
+
+msgid "Product Pick"
+msgstr ""
+
+msgid "Product Picks"
+msgstr ""
+
+#, python-format
+msgid "Pick of %(product)s in PickList %(picklist_id)s"
+msgstr ""
+
+msgid "String"
+msgstr ""
+
+msgid "Boolean"
+msgstr ""
+
+msgid "Integer"
+msgstr ""
+
+msgid "Float"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "DateTime"
+msgstr ""
+
+msgid "Color (HEX)"
+msgstr ""
+
+msgid "URL"
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+msgid "JSON"
+msgstr ""
+
+msgid "Key"
+msgstr ""
+
+msgid "Internal name for this setting (e.g. 'language', 'sort_by_location')."
+msgstr ""
+
+msgid "Label"
+msgstr ""
+
+msgid "Human-readable label shown in admin or forms (e.g. 'Language')."
+msgstr ""
+
+msgid "Help text"
+msgstr ""
+
+msgid "Additional description or guidance for this setting."
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "The type of this setting (e.g. boolean, integer, string)."
+msgstr ""
+
+msgid "Default value"
+msgstr ""
+
+msgid "Used if customer-specific value is not set."
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid ""
+"For 'choice' type settings: list of {value, label} options. E.g. "
+"[{\"value\": \"original\", \"label\": \"Original order\"}]"
+msgstr ""
+
+msgid "Setting"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "The value set for this customer."
+msgstr ""
+
+msgid "Customer setting value"
+msgstr ""
+
+msgid "Customer setting values"
+msgstr ""
+
+msgid "Product Code"
+msgstr ""
+
+msgid "Location"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Products"
+msgstr ""
+
+msgid "Code"
+msgstr ""
+
+msgid ""
+"Your company and users were created. Welcome! Start by adding your products, "
+"then create orders and manage your queue."
+msgstr ""
+
+msgid ""
+"That username or email is already in use. Please choose a different one."
+msgstr ""
+
+msgid ""
+"Some of the submitted data is invalid or too long. Please review and try "
+"again."
+msgstr ""
+
+msgid "Please correct the highlighted errors and try again."
+msgstr ""
+
+msgid ""
+"Some of the submitted information is missing or invalid. Please check and "
+"try again."
+msgstr ""
+
+msgid "We’re experiencing technical issues. Please try again shortly."
+msgstr ""
+
+msgid "No customer profile found for your account."
+msgstr ""
+
+msgid "Product code is required."
+msgstr ""
+
+msgid "A product with this code already exists."
+msgstr ""
+
+msgid "Description is required."
+msgstr ""
+
+#, python-brace-format
+msgid "Product '{code}' created successfully."
+msgstr ""
+
+#, python-brace-format
+msgid "Product '{code}' updated successfully."
+msgstr ""
+
+msgid "No customer found."
+msgstr ""
+
+#, python-brace-format
+msgid "Product '{code}' deleted."
+msgstr ""
+
+msgid "Invalid request method."
+msgstr ""
+
+msgid "Please select a CSV file."
+msgstr ""
+
+msgid "Please upload a valid CSV file."
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"Import completed: {created} created, {updated} updated, {errors} errors."
+msgstr ""
+
+#, python-brace-format
+msgid "Error processing CSV: {error}"
+msgstr ""
+
+msgid "Order code is required."
+msgstr ""
+
+msgid "An order with this code already exists."
+msgstr ""
+
+msgid "At least one product is required."
+msgstr ""
+
+#, python-brace-format
+msgid "Order '{code}' created successfully."
+msgstr ""
+
+#, python-brace-format
+msgid "Order '{code}' updated successfully."
+msgstr ""
+
+#, python-brace-format
+msgid "Order '{code}' deleted."
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"Import completed: {orders} orders created with {lines} lines, {errors} "
+"errors."
+msgstr ""
+
+msgid "First name is required."
+msgstr ""
+
+msgid "Email is required."
+msgstr ""
+
+msgid "Profile updated successfully."
+msgstr ""
+
+msgid "Current password is incorrect."
+msgstr ""
+
+msgid "New password must be at least 8 characters."
+msgstr ""
+
+msgid "New passwords do not match."
+msgstr ""
+
+msgid "Password changed successfully."
+msgstr ""
+
+msgid "Settings saved successfully."
+msgstr ""
+
+msgid "You have been logged out successfully."
+msgstr ""
+
+msgid "Bad Request"
+msgstr ""
+
+msgid ""
+"The server could not understand your request. This might be due to invalid "
+"data or a malformed request."
+msgstr ""
+
+msgid "Access Denied"
+msgstr ""
+
+msgid ""
+"You don't have permission to access this page. Please make sure you're "
+"logged in with the correct account."
+msgstr ""
+
+msgid "Sign In"
+msgstr ""
+
+msgid "Go to Homepage"
+msgstr ""
+
+msgid "Page Not Found"
+msgstr ""
+
+msgid ""
+"The page you're looking for doesn't exist or has been moved. Please check "
+"the URL or navigate back to the homepage."
+msgstr ""
+
+msgid "Server Error"
+msgstr ""
+
+msgid ""
+"Something went wrong on our end. Our team has been notified and we're "
+"working to fix the issue. Please try again in a few minutes."
+msgstr ""
+
+msgid "Try Again"
+msgstr ""
+
+msgid "Start tour"
+msgstr ""
+
+msgid "Picklists scanned this month"
+msgstr ""
+
+msgid "Cumulative picklists"
+msgstr ""
+
+msgid "Queue Management"
+msgstr "Queue Management"
+
+msgid "Manage the picking queue - add orders, reorder, and monitor progress"
+msgstr "Manage the picking queue - add orders, reorder, and monitor progress"
+
+msgid "Open Queue Manager"
+msgstr "Open Queue Manager"
+
+msgid "Upload Order CSV/XLSX"
+msgstr ""
+
+msgid "Please upload a CSV or XLSX file that includes the following columns:"
+msgstr ""
+
+msgid ""
+"With each row representing a product/pick. The order code is repeated for "
+"each product"
+msgstr ""
+
+msgid ""
+"Or manually add a product using the button at the top right of the page."
+msgstr ""
+
+msgid "Upload File"
+msgstr ""
+
+msgid "Upload Product CSV/XLSX"
+msgstr ""
+
+msgid "Go Back"
+msgstr ""
+
+msgid ""
+"If this problem persists, please contact <a "
+"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
+msgstr ""
+
+msgid "Welcome to Orderpiqr!"
+msgstr ""
+
+msgid "Log out"
+msgstr ""
+
+msgid "Order Queue"
+msgstr "Order Queue"
+
+msgid "Order Importance"
+msgstr ""
+
+msgid "Enabled"
+msgstr ""
+
+msgid "Sort Picklist By"
+msgstr ""
+
+msgid "Original order"
+msgstr ""
+
+msgid "Product description"
+msgstr ""
+
+msgid "This app is best viewed on your phone"
+msgstr ""
+
+msgid "Picklist"
+msgstr ""
+
+msgid "Product Name"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "Close menu"
+msgstr ""
+
+msgid "Main"
+msgstr ""
+
+msgid "Inventory"
+msgstr ""
+
+#, fuzzy
+#| msgid "Queued"
+msgid "Queue"
+msgstr "Queued"
+
+msgid "Operations"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Profile"
+msgstr ""
+
+msgid "Open menu"
+msgstr ""
+
+msgid "Welcome back"
+msgstr ""
+
+msgid "Add Product"
+msgstr ""
+
+msgid "active"
+msgstr ""
+
+msgid "Orders Today"
+msgstr ""
+
+msgid "this week"
+msgstr ""
+
+#, fuzzy
+#| msgid "Queued"
+msgid "In Queue"
+msgstr "Queued"
+
+#, fuzzy
+#| msgid "Draft"
+msgid "draft"
+msgstr "Draft"
+
+#, fuzzy
+#| msgid "Completed"
+msgid "Completed Today"
+msgstr "Completed"
+
+msgid "active picklists"
+msgstr ""
+
+msgid "Quick Actions"
+msgstr ""
+
+msgid "Create a new product in your inventory"
+msgstr ""
+
+msgid "Step"
+msgstr ""
+
+msgid "Create Order"
+msgstr ""
+
+msgid "Add a new order with products"
+msgstr ""
+
+#, fuzzy
+#| msgid "Order Queue"
+msgid "Manage Queue"
+msgstr "Order Queue"
+
+#, fuzzy
+#| msgid "No orders in queue"
+msgid "Add orders to the picking queue"
+msgstr "No orders in queue"
+
+msgid "Open Views"
+msgstr ""
+
+msgid "Queue Display"
+msgstr ""
+
+msgid ""
+"Full-screen view for warehouse screens. Shows QR codes for pickers to scan."
+msgstr ""
+
+msgid "Picker View"
+msgstr "Picker View"
+
+msgid ""
+"Mobile-friendly view for order pickers. Share the picker login with your "
+"team."
+msgstr ""
+
+msgid "Recent Orders"
+msgstr ""
+
+msgid "View All"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "ago"
+msgstr "ago"
+
+msgid "No orders yet. Create your first order!"
+msgstr ""
+
+#, fuzzy
+#| msgid "Status"
+msgid "Device Status"
+msgstr "Status"
+
+msgid "Total Devices"
+msgstr ""
+
+msgid "Active Now"
+msgstr ""
+
+msgid "No devices registered yet."
+msgstr ""
+
+msgid ""
+"Devices are automatically registered when pickers scan their first QR code."
+msgstr ""
+
+msgid "Orders This Week"
+msgstr ""
+
+msgid "View registered picking devices"
+msgstr ""
+
+msgid "Online"
+msgstr ""
+
+msgid "Offline"
+msgstr ""
+
+msgid "Unassigned"
+msgstr ""
+
+msgid "Last Seen"
+msgstr ""
+
+msgid "Never"
+msgstr ""
+
+msgid "Registered"
+msgstr ""
+
+msgid "No devices registered"
+msgstr ""
+
+msgid "Devices are automatically registered when pickers access the system."
+msgstr ""
+
+msgid "How it works"
+msgstr ""
+
+msgid "A picker opens the queue on their mobile device"
+msgstr ""
+
+msgid "They enter their name to identify themselves"
+msgstr ""
+
+msgid "The device is automatically registered"
+msgstr ""
+
+#, fuzzy
+#| msgid "Remove selected orders from queue"
+msgid "They can then claim orders from the queue"
 msgstr "Remove selected orders from queue"
 
-#, python-format
-msgid "%(count)s order(s) added to queue."
+msgid "Edit Order"
+msgstr ""
+
+msgid "Update order details"
+msgstr ""
+
+msgid "e.g., ORD-2024-001"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add to Queue"
+msgid "Add to queue immediately"
+msgstr "Add to Queue"
+
+msgid "Optional notes for this order"
+msgstr ""
+
+msgid "Add Line"
+msgstr ""
+
+msgid "Qty"
+msgstr ""
+
+msgid "Search product..."
+msgstr ""
+
+msgid "Search product by code or description..."
+msgstr ""
+
+#, fuzzy
+#| msgid "Cancelled"
+msgid "Cancel"
+msgstr "Cancelled"
+
+msgid "Save Changes"
+msgstr ""
+
+msgid "An order must have at least one product"
+msgstr ""
+
+msgid "No products found"
+msgstr ""
+
+msgid "Please select a product for all order lines"
+msgstr ""
+
+#, fuzzy
+#| msgid "orders"
+msgid "Import Orders"
+msgstr "orders"
+
+msgid "Upload a CSV file to import orders"
+msgstr ""
+
+msgid "Upload CSV File"
+msgstr ""
+
+msgid "Select CSV File"
+msgstr ""
+
+msgid "Drag and drop your CSV file here, or click to select"
+msgstr ""
+
+msgid "Maximum file size: 5MB"
+msgstr ""
+
+msgid "CSV Format"
+msgstr ""
+
+msgid "Your CSV file should have the following columns:"
+msgstr ""
+
+msgid "Column"
+msgstr ""
+
+msgid "Required"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "Unique order identifier"
+msgstr ""
+
+msgid "Product code (must exist in your inventory)"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Quantity (default: 1)"
+msgstr ""
+
+msgid "Order notes (only from first line)"
+msgstr ""
+
+msgid "Example CSV"
+msgstr ""
+
+msgid "Multiple rows with the same order_code will be combined into one order"
+msgstr ""
+
+msgid "Product codes must already exist in your inventory"
+msgstr ""
+
+msgid "Orders with duplicate codes will be skipped"
+msgstr ""
+
+msgid "Imported orders will have 'draft' status"
+msgstr ""
+
+msgid "Manage your customer orders"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Search orders..."
+msgstr ""
+
+#, fuzzy
+#| msgid "Status"
+msgid "All Status"
+msgstr "Status"
+
+msgid "Newest First"
+msgstr ""
+
+msgid "Oldest First"
+msgstr ""
+
+msgid "Code A-Z"
+msgstr ""
+
+msgid "Code Z-A"
+msgstr ""
+
+msgid "Items"
+msgstr "Items"
+
+msgid "Actions"
+msgstr ""
+
+msgid "Add to Queue"
+msgstr "Add to Queue"
+
+msgid "Edit"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Page"
+msgstr ""
+
+msgid "of"
+msgstr ""
+
+#, fuzzy
+#| msgid "No orders in queue"
+msgid "No orders found"
+msgstr "No orders in queue"
+
+msgid "Try adjusting your search or filter criteria."
+msgstr ""
+
+msgid "Clear Filters"
+msgstr ""
+
+#, fuzzy
+#| msgid "No orders in queue"
+msgid "No orders yet"
+msgstr "No orders in queue"
+
+msgid "Get started by creating your first order or importing from a CSV file."
+msgstr ""
+
+msgid "Import CSV"
+msgstr ""
+
+msgid "Delete Order"
+msgstr ""
+
+msgid "Are you sure you want to delete order"
+msgstr ""
+
+msgid "This action cannot be undone."
+msgstr ""
+
+#, fuzzy
+#| msgid "%(count)s order(s) added to queue."
+msgid "Order added to queue"
 msgstr "%(count)s order(s) added to queue."
 
-#, python-format
-msgid "%(count)s order(s) skipped (not in draft status)."
-msgstr "%(count)s order(s) skipped (not in draft status)."
+#, fuzzy
+#| msgid "Add to Queue"
+msgid "Error adding to queue"
+msgstr "Add to Queue"
 
-#, python-format
-msgid "%(count)s order(s) removed from queue."
+msgid "An error occurred"
+msgstr ""
+
+msgid "Back to List"
+msgstr ""
+
+msgid "Picklist Information"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "Pending"
+msgstr ""
+
+#, fuzzy
+#| msgid "Picker View"
+msgid "Picker"
+msgstr "Picker View"
+
+msgid "Duration"
+msgstr ""
+
+msgid "items"
+msgstr "items"
+
+#, fuzzy
+#| msgid "Pick Queue"
+msgid "Picked"
+msgstr "Pick Queue"
+
+msgid "No products in this picklist."
+msgstr ""
+
+msgid "View picking operations"
+msgstr ""
+
+msgid "View Details"
+msgstr ""
+
+msgid "No pick lists yet"
+msgstr ""
+
+msgid ""
+"Pick lists are created automatically when pickers claim orders from the "
+"queue."
+msgstr ""
+
+#, fuzzy
+#| msgid "Add to Queue"
+msgid "Go to Queue"
+msgstr "Add to Queue"
+
+msgid "Edit Product"
+msgstr ""
+
+msgid "Update product details"
+msgstr ""
+
+msgid "e.g., SKU-001"
+msgstr ""
+
+msgid "A unique identifier for this product"
+msgstr ""
+
+msgid "e.g., Blue Widget - Large"
+msgstr ""
+
+msgid "A short description of the product"
+msgstr ""
+
+msgid "e.g., Aisle 3, Shelf B"
+msgstr ""
+
+msgid "Where this product is stored in your warehouse"
+msgstr ""
+
+msgid "Inactive products won't appear in new orders"
+msgstr ""
+
+msgid "Create Product"
+msgstr ""
+
+msgid "Import Products"
+msgstr ""
+
+msgid "Upload a CSV file to import products"
+msgstr ""
+
+msgid "Unique product code"
+msgstr ""
+
+msgid "Warehouse location"
+msgstr ""
+
+msgid "true/false (default: true)"
+msgstr ""
+
+msgid "Note"
+msgstr ""
+
+msgid ""
+"If a product with the same code already exists, it will be updated with the "
+"new values."
+msgstr ""
+
+msgid "Manage your product inventory"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Search products..."
+msgstr ""
+
+msgid "Inactive"
+msgstr ""
+
+msgid "Description A-Z"
+msgstr ""
+
+msgid "Location A-Z"
+msgstr ""
+
+msgid "No products yet"
+msgstr ""
+
+msgid "Get started by adding your first product or importing from a CSV file."
+msgstr ""
+
+msgid "Delete Product"
+msgstr ""
+
+msgid "Are you sure you want to delete product"
+msgstr ""
+
+msgid "Manage your account settings"
+msgstr ""
+
+msgid "Account Information"
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+msgid "Username cannot be changed."
+msgstr ""
+
+msgid "First Name"
+msgstr ""
+
+msgid "Last Name"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Change Password"
+msgstr ""
+
+msgid "Current Password"
+msgstr ""
+
+msgid "New Password"
+msgstr ""
+
+msgid "Minimum 8 characters."
+msgstr ""
+
+msgid "Confirm New Password"
+msgstr ""
+
+msgid "Company Information"
+msgstr ""
+
+msgid "Company"
+msgstr ""
+
+msgid "Role"
+msgstr ""
+
+msgid "Administrator"
+msgstr ""
+
+msgid "Staff"
+msgstr ""
+
+msgid "Company Admin"
+msgstr ""
+
+msgid "Member Since"
+msgstr ""
+
+msgid "Drag to reorder"
+msgstr ""
+
+msgid "Move up"
+msgstr ""
+
+msgid "Move down"
+msgstr ""
+
+#, fuzzy
+#| msgid "Remove selected orders from queue"
+msgid "Remove from queue"
+msgstr "Remove selected orders from queue"
+
+#, fuzzy
+#| msgid "Queue Management"
+msgid "Queue is empty"
+msgstr "Queue Management"
+
+msgid "Add orders from the available list"
+msgstr ""
+
+msgid "Manage and reorder your order queue"
+msgstr ""
+
+msgid "Display View"
+msgstr "Display View"
+
+msgid "Current Queue"
+msgstr "Current Queue"
+
+msgid "orders"
+msgstr "orders"
+
+msgid "Available Orders"
+msgstr "Available Orders"
+
+msgid "Add"
+msgstr ""
+
+msgid "No draft orders available"
+msgstr ""
+
+msgid "Recently Completed"
+msgstr "Recently Completed"
+
+#, fuzzy
+#| msgid "No completed orders"
+msgid "No completed orders yet"
+msgstr "No completed orders"
+
+msgid "Queue order saved"
+msgstr ""
+
+#, fuzzy
+#| msgid "%(count)s order(s) removed from queue."
+msgid "Order removed from queue"
 msgstr "%(count)s order(s) removed from queue."
+
+msgid "Configure your company preferences"
+msgstr ""
+
+msgid "Company Settings"
+msgstr ""
+
+msgid "No settings configured"
+msgstr ""
+
+msgid "There are no configurable settings available yet."
+msgstr ""
+
+msgid "Save Settings"
+msgstr ""
+
+msgid "You're offline"
+msgstr ""
+
+msgid "Sorry, content is unavailable right now."
+msgstr ""
+
+msgid "Retry"
+msgstr ""
+
+msgid "Tap to scan next item"
+msgstr ""
+
+msgid "No orders in queue"
+msgstr "No orders in queue"
+
+msgid "Start Picking"
+msgstr "Start Picking"
+
+msgid "New orders will appear here automatically"
+msgstr "New orders will appear here automatically"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Open tablet display view"
+msgstr "Open tablet display view"
+
+msgid "Open mobile picker view"
+msgstr "Open mobile picker view"
+
+msgid "No available orders"
+msgstr "No available orders"
+
+msgid "Create orders in the admin to add them here"
+msgstr "Create orders in the admin to add them here"
+
+msgid "No completed orders"
+msgstr "No completed orders"
+
+msgid "Pick Queue"
+msgstr "Pick Queue"
+
+msgid "Scanner"
+msgstr "Scanner"
+
+msgid "Claiming..."
+msgstr ""
+
+msgid "Order claimed! Redirecting..."
+msgstr ""
+
+msgid "Error claiming order"
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Sign in to your OrderPiqR account"
+msgstr ""
+
+msgid "Enter your username"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Enter your password"
+msgstr ""
+
+msgid "Remember me"
+msgstr ""
+
+msgid "Forgot password?"
+msgstr ""
+
+msgid "Sign in"
+msgstr ""
+
+msgid "New to OrderPiqR?"
+msgstr ""
+
+msgid "Create your account"
+msgstr ""
+
+msgid "Enter Your Name"
+msgstr ""
+
+msgid "Welcome!"
+msgstr ""
+
+msgid "Please enter your name to register this device"
+msgstr ""
+
+msgid "Your Name"
+msgstr ""
+
+msgid "Enter your name"
+msgstr ""
+
+msgid "This name will be shown when you pick orders"
+msgstr ""
+
+msgid "Continue"
+msgstr ""
+
+msgid "This device will be registered for order picking"
+msgstr ""
+
+msgid "Reset Password"
+msgstr ""
+
+msgid "Reset your password"
+msgstr ""
+
+msgid ""
+"Enter your email address and we'll send you a link to reset your password"
+msgstr ""
+
+msgid "Email Address"
+msgstr ""
+
+msgid "Enter your email address"
+msgstr ""
+
+msgid "Send Reset Link"
+msgstr ""
+
+msgid "Back to login"
+msgstr ""
+
+#, fuzzy
+#| msgid "Recently Completed"
+msgid "Password Reset Complete"
+msgstr "Recently Completed"
+
+msgid "Password reset complete!"
+msgstr ""
+
+msgid "Your password has been successfully changed"
+msgstr ""
+
+msgid "You can now use your new password to log in to your account."
+msgstr ""
+
+msgid "Go to Login"
+msgstr ""
+
+msgid "Set New Password"
+msgstr ""
+
+msgid "Set new password"
+msgstr ""
+
+msgid "Enter your new password below"
+msgstr ""
+
+msgid "Enter new password"
+msgstr ""
+
+msgid "Minimum 8 characters"
+msgstr ""
+
+msgid "Confirm new password"
+msgstr ""
+
+msgid ""
+"This password reset link is invalid or has expired. Please request a new one."
+msgstr ""
+
+msgid "Request New Link"
+msgstr ""
+
+msgid "Password Reset Sent"
+msgstr ""
+
+msgid "Check your email"
+msgstr ""
+
+msgid "We've sent you instructions to reset your password"
+msgstr ""
+
+msgid ""
+"If an account exists with the email address you entered, you will receive a "
+"password reset link shortly."
+msgstr ""
+
+msgid "Didn't receive the email? Check your spam folder or"
+msgstr ""
+
+msgid "try again"
+msgstr ""
+
+msgid "Hello,"
+msgstr ""
+
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"OrderPiqR account."
+msgstr ""
+
+msgid "Please click the link below to set a new password:"
+msgstr ""
+
+msgid "This link will expire in 24 hours."
+msgstr ""
+
+msgid ""
+"If you didn't request this password reset, you can safely ignore this email. "
+"Your password will not be changed."
+msgstr ""
+
+msgid "Best regards,"
+msgstr ""
+
+msgid "The OrderPiqR Team"
+msgstr ""
+
+msgid "Reset your OrderPiqR password"
+msgstr ""
+
+msgid "Sign Up"
+msgstr ""
+
+msgid "Create your workspace"
+msgstr ""
+
+msgid "Get started with OrderPiqR in just a few minutes"
+msgstr ""
+
+msgid "How OrderPiqR works"
+msgstr ""
+
+msgid "Admin Account"
+msgstr ""
+
+msgid ""
+"For managers: add products, create orders, manage the queue, and track "
+"progress."
+msgstr ""
+
+msgid "Picker Account"
+msgstr ""
+
+msgid ""
+"One shared login for all warehouse staff. Each picker enters their name on "
+"first use - their device is then remembered."
+msgstr ""
+
+msgid ""
+"You only need these two accounts. When pickers log in on a new device, they "
+"enter their name once and the device is automatically linked to them."
+msgstr ""
+
+msgid "Company Name"
+msgstr ""
+
+msgid "Enter your company name"
+msgstr ""
+
+msgid "Administrator Account"
+msgstr ""
+
+msgid ""
+"Your personal login for the management dashboard. Use this to add products, "
+"create orders, manage the queue, and configure settings."
+msgstr ""
+
+#, fuzzy
+#| msgid "Admin"
+msgid "admin"
+msgstr "Admin"
+
+msgid "admin@company.com"
+msgstr ""
+
+msgid "Create a password"
+msgstr ""
+
+msgid "Confirm Password"
+msgstr ""
+
+msgid "Confirm password"
+msgstr ""
+
+msgid "Shared Picker Account"
+msgstr ""
+
+msgid "This is a shared login for all your warehouse pickers."
+msgstr ""
+
+msgid "Share these credentials with your team"
+msgstr ""
+
+msgid "When a picker logs in for the first time, they enter their name"
+msgstr ""
+
+msgid "Their device is then remembered - no need to enter their name again"
+msgstr ""
+
+msgid "You can see which picker is using which device in the dashboard"
+msgstr ""
+
+msgid "picker"
+msgstr ""
+
+msgid "picker@company.com"
+msgstr ""
+
+msgid "Create Company & Accounts"
+msgstr ""
+
+msgid "Already have an account?"
+msgstr ""
+
+#~ msgid "Log in"
+#~ msgstr "Log in"
+
+#~ msgid "Remove"
+#~ msgstr "Remove"
