@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 18:34+0100\n"
+"POT-Creation-Date: 2026-01-28 18:48+0100\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -524,8 +524,8 @@ msgid ""
 "The page you're looking for doesn't exist or has been moved. Please check "
 "the URL or navigate back to the homepage."
 msgstr ""
-"Strona, której szukasz, nie istnieje lub została przeniesiona. Sprawdź "
-"adres URL lub wróć do strony głównej."
+"Strona, której szukasz, nie istnieje lub została przeniesiona. Sprawdź adres "
+"URL lub wróć do strony głównej."
 
 msgid "Server Error"
 msgstr "Błąd serwera"
@@ -769,8 +769,10 @@ msgstr "Online"
 msgid "Offline"
 msgstr "Offline"
 
-msgid "Unassigned"
-msgstr "Nieprzypisane"
+#, fuzzy
+#| msgid "Picklist"
+msgid "Picks"
+msgstr "Lista pobrań"
 
 msgid "Last Seen"
 msgstr "Ostatnio widziane"
@@ -778,8 +780,8 @@ msgstr "Ostatnio widziane"
 msgid "Never"
 msgstr "Nigdy"
 
-msgid "Registered"
-msgstr "Zarejestrowane"
+msgid "Note"
+msgstr "Uwaga"
 
 msgid "No devices registered"
 msgstr "Brak zarejestrowanych urządzeń"
@@ -1006,6 +1008,9 @@ msgstr "Oczekujące"
 msgid "Picker"
 msgstr "Kompletator"
 
+msgid "Unassigned"
+msgstr "Nieprzypisane"
+
 msgid "Duration"
 msgstr "Czas trwania"
 
@@ -1081,9 +1086,6 @@ msgstr "Lokalizacja w magazynie"
 
 msgid "true/false (default: true)"
 msgstr "prawda/fałsz (domyślnie: prawda)"
-
-msgid "Note"
-msgstr "Uwaga"
 
 msgid ""
 "If a product with the same code already exists, it will be updated with the "
@@ -1574,6 +1576,9 @@ msgstr "Utwórz firmę i konta"
 
 msgid "Already have an account?"
 msgstr "Masz już konto?"
+
+#~ msgid "Registered"
+#~ msgstr "Zarejestrowane"
 
 #~ msgid "login"
 #~ msgstr "zaloguj się"

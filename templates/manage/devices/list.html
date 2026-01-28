@@ -30,33 +30,29 @@
         </div>
 
         <div class="device-body">
-            <h3 class="device-name">{{ device.device_name|default:device.device_id|truncatechars:20 }}</h3>
+            <h3 class="device-name">{{ device.name|default:device.device_id|truncatechars:20 }}</h3>
 
             <div class="device-info">
                 <div class="info-row">
-                    <span class="info-label">{% trans "User" %}</span>
-                    <span class="info-value">
-                        {% if device.user %}
-                        {{ device.user.get_full_name|default:device.user.username }}
-                        {% else %}
-                        <span class="text-muted">{% trans "Unassigned" %}</span>
-                        {% endif %}
-                    </span>
+                    <span class="info-label">{% trans "Picks" %}</span>
+                    <span class="info-value">{{ device.lists_picked }}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">{% trans "Last Seen" %}</span>
                     <span class="info-value">
-                        {% if device.last_seen %}
-                        {{ device.last_seen|timesince }} {% trans "ago" %}
+                        {% if device.last_login %}
+                        {{ device.last_login|timesince }} {% trans "ago" %}
                         {% else %}
                         <span class="text-muted">{% trans "Never" %}</span>
                         {% endif %}
                     </span>
                 </div>
+                {% if device.description %}
                 <div class="info-row">
-                    <span class="info-label">{% trans "Registered" %}</span>
-                    <span class="info-value">{{ device.created_at|date:"d M Y" }}</span>
+                    <span class="info-label">{% trans "Note" %}</span>
+                    <span class="info-value">{{ device.description|truncatechars:30 }}</span>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

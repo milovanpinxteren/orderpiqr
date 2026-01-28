@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 18:34+0100\n"
+"POT-Creation-Date: 2026-01-28 18:48+0100\n"
 "PO-Revision-Date: 2025-05-31 14:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Deutsch <de@li.org>\n"
@@ -548,7 +548,8 @@ msgid ""
 "working to fix the issue. Please try again in a few minutes."
 msgstr ""
 "Auf unserer Seite ist etwas schief gelaufen. Unser Team wurde benachrichtigt "
-"und arbeitet an einer Lösung. Bitte versuchen Sie es in einigen Minuten erneut."
+"und arbeitet an einer Lösung. Bitte versuchen Sie es in einigen Minuten "
+"erneut."
 
 msgid "Try Again"
 msgstr "Erneut versuchen"
@@ -783,8 +784,10 @@ msgstr "Online"
 msgid "Offline"
 msgstr "Offline"
 
-msgid "Unassigned"
-msgstr "Nicht zugewiesen"
+#, fuzzy
+#| msgid "Picklist"
+msgid "Picks"
+msgstr "Pickliste"
 
 msgid "Last Seen"
 msgstr "Zuletzt gesehen"
@@ -792,8 +795,8 @@ msgstr "Zuletzt gesehen"
 msgid "Never"
 msgstr "Nie"
 
-msgid "Registered"
-msgstr "Registriert"
+msgid "Note"
+msgstr "Hinweis"
 
 msgid "No devices registered"
 msgstr "Keine Geräte registriert"
@@ -1022,6 +1025,9 @@ msgstr "Ausstehend"
 msgid "Picker"
 msgstr "Kommissionierer"
 
+msgid "Unassigned"
+msgstr "Nicht zugewiesen"
+
 msgid "Duration"
 msgstr "Dauer"
 
@@ -1097,9 +1103,6 @@ msgstr "Lagerstandort"
 
 msgid "true/false (default: true)"
 msgstr "true/false (Standard: true)"
-
-msgid "Note"
-msgstr "Hinweis"
 
 msgid ""
 "If a product with the same code already exists, it will be updated with the "
@@ -1598,6 +1601,9 @@ msgstr "Unternehmen & Konten erstellen"
 
 msgid "Already have an account?"
 msgstr "Haben Sie bereits ein Konto?"
+
+#~ msgid "Registered"
+#~ msgstr "Registriert"
 
 #~ msgid "login"
 #~ msgstr "Anmelden"

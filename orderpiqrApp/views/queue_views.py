@@ -103,6 +103,11 @@ def queue_picker(request):
         device_fingerprint=device_fingerprint
     ).first()
 
+    # Update last_login when picker loads the queue page
+    if device:
+        device.last_login = timezone.now()
+        device.save(update_fields=['last_login'])
+
     orders = get_queue_orders(customer, include_lines=True)
 
     context = {
@@ -177,6 +182,10 @@ def queue_claim_order(request, order_id):
             'status': 'error',
             'message': 'Device not found. Please log in again.'
         }, status=400)
+
+    # Update last_login on activity
+    device.last_login = timezone.now()
+    device.save(update_fields=['last_login'])
 
     try:
         with transaction.atomic():
