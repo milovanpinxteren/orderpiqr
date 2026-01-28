@@ -1166,6 +1166,7 @@ select.form-control {
         display: none;
     }
 
+
     .header-actions .btn svg {
         margin: 0;
     }
@@ -1247,6 +1248,10 @@ select.form-control {
 
     .header-actions {
         gap: var(--spacing-xs);
+    }
+
+    .hide-mobile {
+        display: none !important;
     }
 
     .dropdown-toggle {

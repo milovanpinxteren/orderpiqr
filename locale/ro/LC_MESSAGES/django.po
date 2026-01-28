@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 18:34+0100\n"
+"POT-Creation-Date: 2026-01-28 18:48+0100\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -508,8 +508,8 @@ msgid ""
 "You don't have permission to access this page. Please make sure you're "
 "logged in with the correct account."
 msgstr ""
-"Nu aveți permisiunea de a accesa această pagină. Vă rugăm să vă asigurați "
-"că sunteți conectat cu contul corect."
+"Nu aveți permisiunea de a accesa această pagină. Vă rugăm să vă asigurați că "
+"sunteți conectat cu contul corect."
 
 msgid "Sign In"
 msgstr "Autentificare"
@@ -773,8 +773,10 @@ msgstr "Online"
 msgid "Offline"
 msgstr "Offline"
 
-msgid "Unassigned"
-msgstr "Neatribuit"
+#, fuzzy
+#| msgid "Picklist"
+msgid "Picks"
+msgstr "Listă de preluare"
 
 msgid "Last Seen"
 msgstr "Văzut ultima dată"
@@ -782,8 +784,8 @@ msgstr "Văzut ultima dată"
 msgid "Never"
 msgstr "Niciodată"
 
-msgid "Registered"
-msgstr "Înregistrat"
+msgid "Note"
+msgstr "Note"
 
 msgid "No devices registered"
 msgstr "Niciun dispozitiv înregistrat"
@@ -1010,6 +1012,9 @@ msgstr "În așteptare"
 msgid "Picker"
 msgstr "Ordinea de colectare"
 
+msgid "Unassigned"
+msgstr "Neatribuit"
+
 msgid "Duration"
 msgstr "Descriere"
 
@@ -1085,9 +1090,6 @@ msgstr "Locație depozit"
 
 msgid "true/false (default: true)"
 msgstr "adevărat/fals (implicit: adevărat)"
-
-msgid "Note"
-msgstr "Note"
 
 msgid ""
 "If a product with the same code already exists, it will be updated with the "
@@ -1585,6 +1587,9 @@ msgstr "Creează companie și conturi"
 
 msgid "Already have an account?"
 msgstr "Aveți deja un cont?"
+
+#~ msgid "Registered"
+#~ msgstr "Înregistrat"
 
 #~ msgid "login"
 #~ msgstr "autentificare"

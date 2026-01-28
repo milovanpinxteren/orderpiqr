@@ -35,6 +35,9 @@ def scan_picklist(request):
     # Fetch or create device
     try:
         device = Device.objects.get(device_fingerprint=device_fingerprint)
+        # Update last_login on activity
+        device.last_login = local_time
+        device.save(update_fields=['last_login'])
     except Device.DoesNotExist:
         if not request.user.is_authenticated:
             return JsonResponse({
@@ -159,6 +162,8 @@ def product_pick(request):
 
     try:
         device = Device.objects.get(device_fingerprint=device_fp)
+        # Update last_login on activity
+        Device.objects.filter(pk=device.pk).update(last_login=timezone.now())
     except Device.DoesNotExist:
         return JsonResponse({"status": "error", "message": "Device not found with given fingerprint"}, status=404)
 
@@ -218,6 +223,9 @@ def complete_picklist(request):
             order_id = data.get('orderID', None)  # Assuming orderID is passed in the request
             # Fetch the device using the fingerprint
             device = Device.objects.get(device_fingerprint=device_fingerprint)
+            # Update last_login on activity
+            device.last_login = timezone.now()
+            device.save(update_fields=['last_login'])
             picklist = PickList.objects.filter(picklist_code=order_id, customer=device.customer,
                                                device=device).first()
             if picklist:

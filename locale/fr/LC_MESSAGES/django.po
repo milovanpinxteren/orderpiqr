@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 18:34+0100\n"
+"POT-Creation-Date: 2026-01-28 18:48+0100\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Français <fr@li.org>\n"
@@ -779,8 +779,10 @@ msgstr "En ligne"
 msgid "Offline"
 msgstr "Hors ligne"
 
-msgid "Unassigned"
-msgstr "Non assigné"
+#, fuzzy
+#| msgid "Picklist"
+msgid "Picks"
+msgstr "Liste de prélèvement"
 
 msgid "Last Seen"
 msgstr "Vu pour la dernière fois"
@@ -788,8 +790,8 @@ msgstr "Vu pour la dernière fois"
 msgid "Never"
 msgstr "Jamais"
 
-msgid "Registered"
-msgstr "Enregistré"
+msgid "Note"
+msgstr "Note"
 
 msgid "No devices registered"
 msgstr "Aucun appareil enregistré"
@@ -1019,6 +1021,9 @@ msgstr "En attente"
 msgid "Picker"
 msgstr "Préparateur"
 
+msgid "Unassigned"
+msgstr "Non assigné"
+
 msgid "Duration"
 msgstr "Durée"
 
@@ -1094,9 +1099,6 @@ msgstr "Emplacement dans l'entrepôt"
 
 msgid "true/false (default: true)"
 msgstr "true/false (par défaut : true)"
-
-msgid "Note"
-msgstr "Note"
 
 msgid ""
 "If a product with the same code already exists, it will be updated with the "
@@ -1599,3 +1601,6 @@ msgstr "Créer l'entreprise et les comptes"
 
 msgid "Already have an account?"
 msgstr "Vous avez déjà un compte ?"
+
+#~ msgid "Registered"
+#~ msgstr "Enregistré"
