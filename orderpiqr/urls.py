@@ -7,6 +7,7 @@ from orderpiqr.views import *
 from orderpiqrApp.views import scan_picklist, complete_picklist, product_pick
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from api.views.documentation_views import documentation_view
 from django.views.generic import TemplateView
 from django.views.static import serve
 from django.conf import settings
@@ -41,6 +42,12 @@ urlpatterns = [
 
     # Optional: Redoc UI
     path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+
+    # Markdown documentation
+    path('api/documentation/', documentation_view, {'language': 'en'}, name='api-documentation'),
+    path('api/documentation/en/', documentation_view, {'language': 'en'}, name='api-documentation-en'),
+    path('api/documentation/nl/', documentation_view, {'language': 'nl'}, name='api-documentation-nl'),
+
     path('api/', include('api.urls')),  # your actual API
 
 ]

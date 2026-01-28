@@ -1,5 +1,6 @@
-from .product_serializer import ProductSerializer
-from .order_serializer import OrderSerializer
-from .orderline_serializer import OrderLineSerializer
-from .picklist_serializer import PickListSerializer
-from .productpick_serializer import ProductPickSerializer
+from .product_serializer import ProductSerializer, ProductDetailSerializer
+from .order_serializer import OrderSerializer, OrderDetailSerializer, OrderCreateSerializer
+from .orderline_serializer import OrderLineSerializer, OrderLineDetailSerializer, OrderLineCreateSerializer
+from .picklist_serializer import PickListSerializer, PickListDetailSerializer, PickListCreateSerializer
+from .productpick_serializer import ProductPickSerializer, ProductPickUpdateSerializer, ProductPickBulkUpdateSerializer
+from .device_serializer import DeviceSerializer, DeviceCreateSerializer, DeviceStatsSerializer
