@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-21 16:09+0200\n"
+"POT-Creation-Date: 2026-01-28 17:38+0100\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,42 +25,65 @@ msgstr ""
 msgid "Failed to generate QR batch: %(error)s"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:81
-#: .\orderpiqrApp\admin\order_admin.py:285
+#: .\orderpiqrApp\admin\order_admin.py:49
+msgid "Add selected orders to queue"
+msgstr "Ajouter les commandes sélectionnées à la file"
+
+#: .\orderpiqrApp\admin\order_admin.py:71
+#, python-format
+msgid "%(count)s order(s) added to queue."
+msgstr "%(count)s commande(s) ajoutée(s) à la file."
+
+#: .\orderpiqrApp\admin\order_admin.py:73
+#, python-format
+msgid "%(count)s order(s) skipped (not in draft status)."
+msgstr "%(count)s commande(s) ignorée(s) (pas en statut brouillon)."
+
+#: .\orderpiqrApp\admin\order_admin.py:75
+msgid "Remove selected orders from queue"
+msgstr "Retirer les commandes sélectionnées de la file"
+
+#: .\orderpiqrApp\admin\order_admin.py:85
+#, python-format
+msgid "%(count)s order(s) removed from queue."
+msgstr "%(count)s commande(s) retirée(s) de la file."
+
+#: .\orderpiqrApp\admin\order_admin.py:120
+#: .\orderpiqrApp\admin\order_admin.py:324
 msgid "Your account is not linked to a customer."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:105
+#: .\orderpiqrApp\admin\order_admin.py:144
 #, python-format
 msgid "Missing required column: \"%(column)s\""
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:121
+#: .\orderpiqrApp\admin\order_admin.py:160
 #, python-format
 msgid "Missing value for \"order_code\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:127
+#: .\orderpiqrApp\admin\order_admin.py:166
 #, python-format
 msgid "Invalid quantity for product code \"%(code)s\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:134
+#: .\orderpiqrApp\admin\order_admin.py:173
 #, python-format
 msgid "Unknown product code \"%(code)s\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:212
+#: .\orderpiqrApp\admin\order_admin.py:251
 #, python-format
 msgid "%(orders)s orders and %(lines)s lines added."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:219
+#: .\orderpiqrApp\admin\order_admin.py:258
 #, python-format
 msgid "Overwritten orders: %(codes)s."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:227
+#: .\orderpiqrApp\admin\order_admin.py:266
 #, python-format
 msgid "Error processing file: %(msg)s"
 msgstr ""
@@ -133,13 +156,17 @@ msgstr "Nom"
 
 #: .\orderpiqrApp\models\customers.py:9 .\orderpiqrApp\models\devices.py:13
 #: .\orderpiqrApp\models\products.py:10
+#: .\templates\manage\orders\import.html:59
+#: .\templates\manage\products\form.html:28
+#: .\templates\manage\products\import.html:59
+#: .\templates\manage\products\list.html:68 .\templates\manage\profile.html:101
 msgid "Description"
 msgstr "Description"
 
 #: .\orderpiqrApp\models\customers.py:12 .\orderpiqrApp\models\customers.py:21
-#: .\orderpiqrApp\models\devices.py:14 .\orderpiqrApp\models\orders.py:10
+#: .\orderpiqrApp\models\devices.py:14 .\orderpiqrApp\models\orders.py:18
 #: .\orderpiqrApp\models\picklists.py:11
-#: .\orderpiqrApp\models\preferences.py:66 .\orderpiqrApp\models\products.py:12
+#: .\orderpiqrApp\models\preferences.py:68 .\orderpiqrApp\models\products.py:12
 msgid "Customer"
 msgstr "Client"
 
@@ -148,7 +175,8 @@ msgid "Customers"
 msgstr "Clients"
 
 #: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:9
-#: .\templates\index.html:52
+#: .\templates\index.html:51 .\templates\manage\devices\list.html:37
+#: .\templates\manage\profile.html:115
 msgid "User"
 msgstr "Utilisateur"
 
@@ -164,7 +192,7 @@ msgstr "Profils utilisateur"
 msgid "Device Fingerprint"
 msgstr "Empreinte de l'appareil"
 
-#: .\orderpiqrApp\models\devices.py:15
+#: .\orderpiqrApp\models\devices.py:15 .\templates\manage\profile.html:124
 msgid "Last Login"
 msgstr "Dernière connexion"
 
@@ -173,59 +201,135 @@ msgid "Lists Picked"
 msgstr "Listes sélectionnées"
 
 #: .\orderpiqrApp\models\devices.py:19 .\orderpiqrApp\models\picklists.py:14
+#: .\templates\manage\picklists\detail.html:42
+#: .\templates\manage\picklists\list.html:32
 msgid "Device"
 msgstr "Appareil"
 
-#: .\orderpiqrApp\models\devices.py:20
+#: .\orderpiqrApp\models\devices.py:20 .\templates\manage\base.html:104
+#: .\templates\manage\devices\list.html:4
+#: .\templates\manage\devices\list.html:5
 msgid "Devices"
 msgstr "Appareils"
 
-#: .\orderpiqrApp\models\orders.py:11
+#: .\orderpiqrApp\models\orders.py:10 .\templates\manage\orders\list.html:39
+msgid "Draft"
+msgstr "Brouillon"
+
+#: .\orderpiqrApp\models\orders.py:11 .\templates\manage\orders\list.html:40
+#: .\templates\manage\queue\_queue_list.html:26
+#: .\templates\queue\_manage_queue_list.html:21
+#: .\templates\queue\_order_cards.html:53
+msgid "Queued"
+msgstr "En file d'attente"
+
+#: .\orderpiqrApp\models\orders.py:12 .\templates\manage\orders\list.html:41
+#: .\templates\manage\picklists\detail.html:34
+#: .\templates\manage\picklists\list.html:15
+#: .\templates\manage\picklists\list.html:74
+#: .\templates\manage\queue\_queue_list.html:24
+#: .\templates\queue\_manage_queue_list.html:19
+#: .\templates\queue\_order_cards.html:56
+#: .\templates\queue\_picker_orders.html:40
+msgid "In Progress"
+msgstr "En cours"
+
+#: .\orderpiqrApp\models\orders.py:13 .\templates\manage\orders\list.html:42
+#: .\templates\manage\picklists\detail.html:30
+#: .\templates\manage\picklists\list.html:16
+#: .\templates\manage\picklists\list.html:70
+#: .\templates\queue\_order_cards.html:59
+#: .\templates\queue\_picker_orders.html:44
+msgid "Completed"
+msgstr "Terminé"
+
+#: .\orderpiqrApp\models\orders.py:14 .\templates\manage\orders\list.html:43
+msgid "Cancelled"
+msgstr "Annulé"
+
+#: .\orderpiqrApp\models\orders.py:19 .\templates\manage\orders\form.html:20
+#: .\templates\manage\orders\list.html:62
 #, fuzzy
 #| msgid "Product Code"
 msgid "Order Code"
 msgstr "Code produit"
 
-#: .\orderpiqrApp\models\orders.py:13 .\orderpiqrApp\models\picklists.py:21
-#: .\orderpiqrApp\models\picklists.py:49
+#: .\orderpiqrApp\models\orders.py:21 .\orderpiqrApp\models\picklists.py:21
+#: .\orderpiqrApp\models\picklists.py:51 .\templates\manage\orders\form.html:41
+#: .\templates\manage\orders\import.html:100
+#: .\templates\manage\picklists\detail.html:80
+#: .\templates\queue\_order_cards.html:44
 msgid "Notes"
 msgstr "Remarques"
 
-#: .\orderpiqrApp\models\orders.py:16 .\orderpiqrApp\models\orders.py:24
+#: .\orderpiqrApp\models\orders.py:23 .\templates\manage\dashboard.html:192
+#: .\templates\manage\orders\list.html:64
+#: .\templates\manage\picklists\detail.html:102
+#: .\templates\manage\picklists\list.html:34
+#: .\templates\manage\products\form.html:45
+#: .\templates\manage\products\list.html:71
+msgid "Status"
+msgstr "Statut"
+
+#: .\orderpiqrApp\models\orders.py:29
+msgid "Queue Position"
+msgstr "Position dans la file"
+
+#: .\orderpiqrApp\models\orders.py:32
+msgid "Position in the picking queue. Lower numbers are picked first."
+msgstr ""
+"Position dans la file de préparation. Les numéros les plus bas sont traités "
+"en premier."
+
+#: .\orderpiqrApp\models\orders.py:35
+msgid "Completed At"
+msgstr "Terminé le"
+
+#: .\orderpiqrApp\models\orders.py:41 .\orderpiqrApp\models\orders.py:50
+#: .\templates\manage\dashboard.html:191
+#: .\templates\manage\picklists\detail.html:9
+#: .\templates\manage\picklists\list.html:31
 #, fuzzy
 #| msgid "Pick Order"
 msgid "Order"
 msgstr "Ordre de prélèvement"
 
-#: .\orderpiqrApp\models\orders.py:17
+#: .\orderpiqrApp\models\orders.py:42 .\templates\manage\base.html:73
+#: .\templates\manage\base.html:80 .\templates\manage\orders\list.html:4
+#: .\templates\manage\orders\list.html:5
+#: .\templates\manage\products\list.html:70
 #, fuzzy
 #| msgid "Pick Order"
 msgid "Orders"
 msgstr "Ordre de prélèvement"
 
-#: .\orderpiqrApp\models\orders.py:25 .\orderpiqrApp\models\picklists.py:43
-#: .\orderpiqrApp\models\products.py:16
+#: .\orderpiqrApp\models\orders.py:51 .\orderpiqrApp\models\picklists.py:45
+#: .\orderpiqrApp\models\products.py:16 .\templates\manage\orders\form.html:60
+#: .\templates\manage\orders\form.html:357
+#: .\templates\manage\picklists\detail.html:99
 msgid "Product"
 msgstr "Produit"
 
-#: .\orderpiqrApp\models\orders.py:26 .\orderpiqrApp\models\picklists.py:46
+#: .\orderpiqrApp\models\orders.py:52 .\orderpiqrApp\models\picklists.py:48
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
+#: .\templates\manage\orders\form.html:366
+#: .\templates\manage\picklists\detail.html:101
 msgid "Quantity"
 msgstr "Quantité"
 
-#: .\orderpiqrApp\models\orders.py:29
+#: .\orderpiqrApp\models\orders.py:55
 #, fuzzy
 #| msgid "Orderpiqr Login"
 msgid "Order Line"
 msgstr "Connexion à Orderpiqr"
 
-#: .\orderpiqrApp\models\orders.py:30
+#: .\orderpiqrApp\models\orders.py:56 .\templates\manage\orders\form.html:50
 #, fuzzy
 #| msgid "Orderpiqr Login"
 msgid "Order Lines"
 msgstr "Connexion à Orderpiqr"
 
-#: .\orderpiqrApp\models\orders.py:33
+#: .\orderpiqrApp\models\orders.py:59
 #, python-format
 msgid "Order %(order)s, Product: %(quantity)s x %(product)s"
 msgstr ""
@@ -255,39 +359,43 @@ msgid "Pick Started"
 msgstr "Ordre de prélèvement"
 
 #: .\orderpiqrApp\models\picklists.py:18
+#: .\templates\manage\picklists\detail.html:67
 msgid "Pick Time"
 msgstr "Heure de prélèvement"
 
-#: .\orderpiqrApp\models\picklists.py:19 .\orderpiqrApp\models\picklists.py:47
+#: .\orderpiqrApp\models\picklists.py:19 .\orderpiqrApp\models\picklists.py:49
 msgid "Time Taken"
 msgstr "Temps écoulé"
 
-#: .\orderpiqrApp\models\picklists.py:20 .\orderpiqrApp\models\picklists.py:48
+#: .\orderpiqrApp\models\picklists.py:20 .\orderpiqrApp\models\picklists.py:50
 msgid "Successful"
 msgstr "Réussi"
 
-#: .\orderpiqrApp\models\picklists.py:24 .\orderpiqrApp\models\picklists.py:45
+#: .\orderpiqrApp\models\picklists.py:24 .\orderpiqrApp\models\picklists.py:47
 msgid "Pick List"
 msgstr "Liste de prélèvement"
 
-#: .\orderpiqrApp\models\picklists.py:25
+#: .\orderpiqrApp\models\picklists.py:25 .\templates\manage\base.html:97
+#: .\templates\manage\picklists\list.html:4
+#: .\templates\manage\picklists\list.html:5
 msgid "Pick Lists"
 msgstr "Listes de prélèvement"
 
-#: .\orderpiqrApp\models\picklists.py:33
+#: .\orderpiqrApp\models\picklists.py:35
 #, python-format
 msgid "PickList %(id)s for Device %(device)s"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:52
+#: .\orderpiqrApp\models\picklists.py:54
 msgid "Product Pick"
 msgstr "Prélèvement de produit"
 
-#: .\orderpiqrApp\models\picklists.py:53
+#: .\orderpiqrApp\models\picklists.py:55
+#: .\templates\manage\picklists\detail.html:90
 msgid "Product Picks"
 msgstr "Prélèvements de produits"
 
-#: .\orderpiqrApp\models\picklists.py:56
+#: .\orderpiqrApp\models\picklists.py:58
 #, python-format
 msgid "Pick of %(product)s in PickList %(picklist_id)s"
 msgstr "Prélèvement de %(product)s dans la liste %(picklist_id)s"
@@ -372,51 +480,72 @@ msgstr ""
 msgid "Used if customer-specific value is not set."
 msgstr ""
 
-#: .\orderpiqrApp\models\preferences.py:68
+#: .\orderpiqrApp\models\preferences.py:31
+msgid "Options"
+msgstr ""
+
+#: .\orderpiqrApp\models\preferences.py:32
+msgid ""
+"For 'choice' type settings: list of {value, label} options. E.g. "
+"[{\"value\": \"original\", \"label\": \"Original order\"}]"
+msgstr ""
+
+#: .\orderpiqrApp\models\preferences.py:70
 msgid "Setting"
 msgstr ""
 
-#: .\orderpiqrApp\models\preferences.py:69
+#: .\orderpiqrApp\models\preferences.py:71
 msgid "Value"
 msgstr ""
 
-#: .\orderpiqrApp\models\preferences.py:69
+#: .\orderpiqrApp\models\preferences.py:71
 msgid "The value set for this customer."
 msgstr ""
 
-#: .\orderpiqrApp\models\preferences.py:73
+#: .\orderpiqrApp\models\preferences.py:75
 msgid "Customer setting value"
 msgstr ""
 
-#: .\orderpiqrApp\models\preferences.py:74
+#: .\orderpiqrApp\models\preferences.py:76
 msgid "Customer setting values"
 msgstr ""
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:63
+#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:68
+#: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Code produit"
 
 #: .\orderpiqrApp\models\products.py:11
-#: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:45
+#: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:44
+#: .\templates\index.html:70 .\templates\manage\orders\form.html:62
+#: .\templates\manage\picklists\detail.html:100
+#: .\templates\manage\products\form.html:37
+#: .\templates\manage\products\list.html:69
 msgid "Location"
 msgstr "Emplacement"
 
 #: .\orderpiqrApp\models\products.py:13
+#: .\templates\manage\products\form.html:52
+#: .\templates\manage\products\list.html:45
+#: .\templates\manage\products\list.html:92
 msgid "Active"
 msgstr "Actif"
 
-#: .\orderpiqrApp\models\products.py:17
+#: .\orderpiqrApp\models\products.py:17 .\templates\manage\base.html:68
+#: .\templates\manage\dashboard.html:22 .\templates\manage\products\list.html:4
+#: .\templates\manage\products\list.html:5
 msgid "Products"
 msgstr "Produits"
 
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
+#: .\templates\manage\products\list.html:67
 msgid "Code"
 msgstr ""
 
 #: .\orderpiqrApp\views\auth\signup_view.py:59
 msgid ""
-"Your company and users were created. Welcome! Start the onboarding by "
-"pressing the green button on the lower right of your screen."
+"Your company and users were created. Welcome! Start by adding your products, "
+"then create orders and manage your queue."
 msgstr ""
 
 #: .\orderpiqrApp\views\auth\signup_view.py:66
@@ -444,86 +573,1300 @@ msgstr ""
 msgid "We’re experiencing technical issues. Please try again shortly."
 msgstr ""
 
-#: .\templates\admin\base_site.html:186 .\templates\admin\base_site.html:187
-#: .\templates\admin\base_site.html:192
+#: .\orderpiqrApp\views\manage_views.py:54
+msgid "No customer profile found for your account."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:187
+#: .\orderpiqrApp\views\manage_views.py:233
+msgid "Product code is required."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:189
+#: .\orderpiqrApp\views\manage_views.py:235
+msgid "A product with this code already exists."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:191
+#: .\orderpiqrApp\views\manage_views.py:237
+#, fuzzy
+#| msgid "Description"
+msgid "Description is required."
+msgstr "Description"
+
+#: .\orderpiqrApp\views\manage_views.py:206
+#, python-brace-format
+msgid "Product '{code}' created successfully."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:251
+#, python-brace-format
+msgid "Product '{code}' updated successfully."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:263
+#: .\orderpiqrApp\views\manage_views.py:554
+#, fuzzy
+#| msgid "Customer"
+msgid "No customer found."
+msgstr "Client"
+
+#: .\orderpiqrApp\views\manage_views.py:270
+#, python-brace-format
+msgid "Product '{code}' deleted."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:272
+#: .\orderpiqrApp\views\manage_views.py:563
+msgid "Invalid request method."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:287
+#: .\orderpiqrApp\views\manage_views.py:578
+msgid "Please select a CSV file."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:291
+#: .\orderpiqrApp\views\manage_views.py:582
+msgid "Please upload a valid CSV file."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:328
+#, python-brace-format
+msgid ""
+"Import completed: {created} created, {updated} updated, {errors} errors."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:334
+#: .\orderpiqrApp\views\manage_views.py:647
+#, python-brace-format
+msgid "Error processing CSV: {error}"
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:437
+#: .\orderpiqrApp\views\manage_views.py:511
+msgid "Order code is required."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:439
+#: .\orderpiqrApp\views\manage_views.py:513
+msgid "An order with this code already exists."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:442
+#: .\orderpiqrApp\views\manage_views.py:516
+msgid "At least one product is required."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:478
+#, python-brace-format
+msgid "Order '{code}' created successfully."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:542
+#, python-brace-format
+msgid "Order '{code}' updated successfully."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:561
+#, python-brace-format
+msgid "Order '{code}' deleted."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:641
+#, python-brace-format
+msgid ""
+"Import completed: {orders} orders created with {lines} lines, {errors} "
+"errors."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:774
+msgid "First name is required."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:776
+msgid "Email is required."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:786
+msgid "Profile updated successfully."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:795
+msgid "Current password is incorrect."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:797
+msgid "New password must be at least 8 characters."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:799
+msgid "New passwords do not match."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:808
+msgid "Password changed successfully."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:883
+msgid "Settings saved successfully."
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:897
+msgid "You have been logged out successfully."
+msgstr ""
+
+#: .\templates\admin\base_site.html:36 .\templates\admin\base_site.html:37
+#: .\templates\admin\base_site.html:42
 msgid "Start tour"
 msgstr ""
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:5
+#: .\templates\admin\custom_index.html:8
+msgid "Picklists scanned this month"
+msgstr ""
+
+#: .\templates\admin\custom_index.html:34
+msgid "Cumulative picklists"
+msgstr ""
+
+#: .\templates\admin\orderpiqrApp\order\change_list.html:42
+#: .\templates\manage\queue\list.html:4 .\templates\manage\queue\list.html:5
+#: .\templates\queue\manage.html:18
+msgid "Queue Management"
+msgstr "Gestion de la file d'attente"
+
+#: .\templates\admin\orderpiqrApp\order\change_list.html:43
+msgid "Manage the picking queue - add orders, reorder, and monitor progress"
+msgstr ""
+"Gérer la file de préparation - ajouter des commandes, réordonner et suivre "
+"la progression"
+
+#: .\templates\admin\orderpiqrApp\order\change_list.html:45
+msgid "Open Queue Manager"
+msgstr "Ouvrir le gestionnaire de file"
+
+#: .\templates\admin\orderpiqrApp\order\change_list.html:48
 #, fuzzy
 #| msgid "Upload Product CSV/XLSX"
 msgid "Upload Order CSV/XLSX"
 msgstr "Télécharger un fichier produit CSV/XLSX"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:7
-#: .\templates\admin\orderpiqrApp\product\change_list.html:8
+#: .\templates\admin\orderpiqrApp\order\change_list.html:50
+#: .\templates\admin\orderpiqrApp\product\change_list.html:12
 msgid "Please upload a CSV or XLSX file that includes the following columns:"
 msgstr ""
 "Veuillez télécharger un fichier CSV ou XLSX contenant les colonnes "
 "suivantes :"
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:9
+#: .\templates\admin\orderpiqrApp\order\change_list.html:52
 msgid ""
 "With each row representing a product/pick. The order code is repeated for "
 "each product"
 msgstr ""
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:10
-#: .\templates\admin\orderpiqrApp\product\change_list.html:10
+#: .\templates\admin\orderpiqrApp\order\change_list.html:53
+#: .\templates\admin\orderpiqrApp\product\change_list.html:14
 msgid ""
 "Or manually add a product using the button at the top right of the page."
 msgstr ""
 "Ou ajoutez un produit manuellement à l'aide du bouton en haut à droite de la "
 "page."
 
-#: .\templates\admin\orderpiqrApp\order\change_list.html:18
-#: .\templates\admin\orderpiqrApp\product\change_list.html:18
+#: .\templates\admin\orderpiqrApp\order\change_list.html:61
+#: .\templates\admin\orderpiqrApp\product\change_list.html:22
 msgid "Upload File"
 msgstr "Télécharger le fichier"
 
-#: .\templates\admin\orderpiqrApp\product\change_list.html:6
+#: .\templates\admin\orderpiqrApp\product\change_list.html:10
 msgid "Upload Product CSV/XLSX"
 msgstr "Télécharger un fichier produit CSV/XLSX"
 
-#: .\templates\index.html:26
+#: .\templates\index.html:24
 msgid "Welcome to Orderpiqr!"
 msgstr "Bienvenue sur Orderpiqr !"
 
-#: .\templates\index.html:36
+#: .\templates\index.html:34 .\templates\manage\base.html:194
 msgid "Log out"
 msgstr "Se déconnecter"
 
-#: .\templates\index.html:39
+#: .\templates\index.html:36 .\templates\queue\display.html:10
+#: .\templates\queue\display.html:14 .\templates\queue\picker.html:18
+msgid "Order Queue"
+msgstr "File d'attente des commandes"
+
+#: .\templates\index.html:38
 msgid "Order Importance"
 msgstr "Importance de l'ordre"
 
-#: .\templates\index.html:39
+#: .\templates\index.html:38
 msgid "Enabled"
 msgstr "Activé"
 
-#: .\templates\index.html:42
+#: .\templates\index.html:41
 #, fuzzy
 #| msgid "Picklist Code"
 msgid "Sort Picklist By"
 msgstr "Code de la liste de prélèvement"
 
-#: .\templates\index.html:44
+#: .\templates\index.html:43
 msgid "Original order"
 msgstr ""
 
-#: .\templates\index.html:46
+#: .\templates\index.html:45 .\templates\manage\products\import.html:71
 #, fuzzy
 #| msgid "Description"
 msgid "Product description"
 msgstr "Description"
 
-#: .\templates\index.html:64
+#: .\templates\index.html:56
+msgid "This app is best viewed on your phone"
+msgstr ""
+
+#: .\templates\index.html:63 .\templates\manage\picklists\detail.html:4
+#: .\templates\manage\picklists\detail.html:5
+#: .\templates\manage\picklists\list.html:30
+#, fuzzy
+#| msgid "Pick List"
+msgid "Picklist"
+msgstr "Liste de prélèvement"
+
+#: .\templates\index.html:69
 msgid "Product Name"
 msgstr "Nom du produit"
 
-#: .\templates\index.html:65
-msgid "Pick Order"
+#: .\templates\manage\base.html:8 .\templates\manage\base.html:58
+#: .\templates\manage\base.html:151 .\templates\manage\dashboard.html:4
+#: .\templates\manage\dashboard.html:5
+msgid "Dashboard"
+msgstr ""
+
+#: .\templates\manage\base.html:41
+msgid "Close menu"
+msgstr ""
+
+#: .\templates\manage\base.html:50
+msgid "Main"
+msgstr ""
+
+#: .\templates\manage\base.html:63
+msgid "Inventory"
+msgstr ""
+
+#: .\templates\manage\base.html:87
+#, fuzzy
+#| msgid "Queued"
+msgid "Queue"
+msgstr "En file d'attente"
+
+#: .\templates\manage\base.html:92
+msgid "Operations"
+msgstr ""
+
+#: .\templates\manage\base.html:109 .\templates\manage\base.html:115
+#: .\templates\manage\base.html:192 .\templates\manage\settings.html:4
+#: .\templates\manage\settings.html:5
+msgid "Settings"
+msgstr ""
+
+#: .\templates\manage\base.html:122 .\templates\manage\base.html:191
+#: .\templates\manage\profile.html:4 .\templates\manage\profile.html:5
+#, fuzzy
+#| msgid "User Profile"
+msgid "Profile"
+msgstr "Profil utilisateur"
+
+#: .\templates\manage\base.html:144
+msgid "Open menu"
+msgstr ""
+
+#: .\templates\manage\dashboard.html:6 .\templates\registration\login.html:10
+msgid "Welcome back"
+msgstr ""
+
+#: .\templates\manage\dashboard.html:13 .\templates\manage\dashboard.html:89
+#: .\templates\manage\products\form.html:4
+#: .\templates\manage\products\form.html:5
+#: .\templates\manage\products\list.html:25
+#: .\templates\manage\products\list.html:158
+#, fuzzy
+#| msgid "Product"
+msgid "Add Product"
+msgstr "Produit"
+
+#: .\templates\manage\dashboard.html:30
+#, fuzzy
+#| msgid "Active"
+msgid "active"
+msgstr "Actif"
+
+#: .\templates\manage\dashboard.html:35
+#, fuzzy
+#| msgid "Product Code"
+msgid "Orders Today"
+msgstr "Code produit"
+
+#: .\templates\manage\dashboard.html:44
+msgid "this week"
+msgstr ""
+
+#: .\templates\manage\dashboard.html:49
+#, fuzzy
+#| msgid "Queued"
+msgid "In Queue"
+msgstr "En file d'attente"
+
+#: .\templates\manage\dashboard.html:57
+#, fuzzy
+#| msgid "Draft"
+msgid "draft"
+msgstr "Brouillon"
+
+#: .\templates\manage\dashboard.html:62
+#, fuzzy
+#| msgid "Completed"
+msgid "Completed Today"
+msgstr "Terminé"
+
+#: .\templates\manage\dashboard.html:71
+msgid "active picklists"
+msgstr ""
+
+#: .\templates\manage\dashboard.html:78
+msgid "Quick Actions"
+msgstr ""
+
+#: .\templates\manage\dashboard.html:90 .\templates\manage\products\form.html:8
+msgid "Create a new product in your inventory"
+msgstr ""
+
+#: .\templates\manage\dashboard.html:92 .\templates\manage\dashboard.html:107
+#: .\templates\manage\dashboard.html:121
+msgid "Step"
+msgstr ""
+
+#: .\templates\manage\dashboard.html:104 .\templates\manage\dashboard.html:216
+#: .\templates\manage\orders\form.html:4 .\templates\manage\orders\form.html:5
+#: .\templates\manage\orders\form.html:128
+#: .\templates\manage\orders\list.html:19
+#: .\templates\manage\orders\list.html:163
+#: .\templates\manage\queue\list.html:85
+#, fuzzy
+#| msgid "Pick Order"
+msgid "Create Order"
 msgstr "Ordre de prélèvement"
+
+#: .\templates\manage\dashboard.html:105 .\templates\manage\orders\form.html:8
+msgid "Add a new order with products"
+msgstr ""
+
+#: .\templates\manage\dashboard.html:118 .\templates\queue\manage.html:11
+#, fuzzy
+#| msgid "Order Queue"
+msgid "Manage Queue"
+msgstr "File d'attente des commandes"
+
+#: .\templates\manage\dashboard.html:119
+#, fuzzy
+#| msgid "No orders in queue"
+msgid "Add orders to the picking queue"
+msgstr "Aucune commande dans la file"
+
+#: .\templates\manage\dashboard.html:130
+msgid "Open Views"
+msgstr ""
+
+#: .\templates\manage\dashboard.html:143
+msgid "Queue Display"
+msgstr ""
+
+#: .\templates\manage\dashboard.html:144
+msgid ""
+"Full-screen view for warehouse screens. Shows QR codes for pickers to scan."
+msgstr ""
+
+#: .\templates\manage\dashboard.html:163 .\templates\manage\queue\list.html:25
+#: .\templates\queue\manage.html:26
+msgid "Picker View"
+msgstr "Vue préparateur"
+
+#: .\templates\manage\dashboard.html:164
+msgid ""
+"Mobile-friendly view for order pickers. Share the picker login with your "
+"team."
+msgstr ""
+
+#: .\templates\manage\dashboard.html:182
+#, fuzzy
+#| msgid "Pick Order"
+msgid "Recent Orders"
+msgstr "Ordre de prélèvement"
+
+#: .\templates\manage\dashboard.html:183 .\templates\manage\dashboard.html:226
+msgid "View All"
+msgstr ""
+
+#: .\templates\manage\dashboard.html:193 .\templates\manage\orders\list.html:65
+#: .\templates\manage\picklists\detail.html:62
+#: .\templates\manage\picklists\list.html:35
+#, fuzzy
+#| msgid "Created At"
+msgid "Created"
+msgstr "Créé le"
+
+#: .\templates\manage\dashboard.html:207
+#: .\templates\manage\devices\list.html:50
+#: .\templates\manage\orders\list.html:90
+#: .\templates\manage\picklists\list.html:79
+#: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:94
+msgid "ago"
+msgstr "il y a"
+
+#: .\templates\manage\dashboard.html:215
+msgid "No orders yet. Create your first order!"
+msgstr ""
+
+#: .\templates\manage\dashboard.html:225
+#, fuzzy
+#| msgid "Devices"
+msgid "Device Status"
+msgstr "Appareils"
+
+#: .\templates\manage\dashboard.html:232
+#, fuzzy
+#| msgid "Devices"
+msgid "Total Devices"
+msgstr "Appareils"
+
+#: .\templates\manage\dashboard.html:236
+#, fuzzy
+#| msgid "Active"
+msgid "Active Now"
+msgstr "Actif"
+
+#: .\templates\manage\dashboard.html:241
+msgid "No devices registered yet."
+msgstr ""
+
+#: .\templates\manage\dashboard.html:242
+msgid ""
+"Devices are automatically registered when pickers scan their first QR code."
+msgstr ""
+
+#: .\templates\manage\dashboard.html:252
+#, fuzzy
+#| msgid "Orderpiqr Login"
+msgid "Orders This Week"
+msgstr "Connexion à Orderpiqr"
+
+#: .\templates\manage\devices\list.html:6
+msgid "View registered picking devices"
+msgstr ""
+
+#: .\templates\manage\devices\list.html:24
+msgid "Online"
+msgstr ""
+
+#: .\templates\manage\devices\list.html:27
+msgid "Offline"
+msgstr ""
+
+#: .\templates\manage\devices\list.html:42
+#: .\templates\manage\picklists\detail.html:57
+#: .\templates\manage\picklists\list.html:65
+msgid "Unassigned"
+msgstr ""
+
+#: .\templates\manage\devices\list.html:47
+#, fuzzy
+#| msgid "Last Login"
+msgid "Last Seen"
+msgstr "Dernière connexion"
+
+#: .\templates\manage\devices\list.html:52
+msgid "Never"
+msgstr ""
+
+#: .\templates\manage\devices\list.html:57
+msgid "Registered"
+msgstr ""
+
+#: .\templates\manage\devices\list.html:73
+msgid "No devices registered"
+msgstr ""
+
+#: .\templates\manage\devices\list.html:74
+msgid "Devices are automatically registered when pickers access the system."
+msgstr ""
+
+#: .\templates\manage\devices\list.html:81
+msgid "How it works"
+msgstr ""
+
+#: .\templates\manage\devices\list.html:83
+msgid "A picker opens the queue on their mobile device"
+msgstr ""
+
+#: .\templates\manage\devices\list.html:84
+msgid "They enter their name to identify themselves"
+msgstr ""
+
+#: .\templates\manage\devices\list.html:85
+msgid "The device is automatically registered"
+msgstr ""
+
+#: .\templates\manage\devices\list.html:86
+#, fuzzy
+#| msgid "Remove selected orders from queue"
+msgid "They can then claim orders from the queue"
+msgstr "Retirer les commandes sélectionnées de la file"
+
+#: .\templates\manage\orders\form.html:4 .\templates\manage\orders\form.html:5
+#, fuzzy
+#| msgid "Pick Order"
+msgid "Edit Order"
+msgstr "Ordre de prélèvement"
+
+#: .\templates\manage\orders\form.html:9
+#, fuzzy
+#| msgid "Updated At"
+msgid "Update order details"
+msgstr "Mis à jour le"
+
+#: .\templates\manage\orders\form.html:23
+msgid "e.g., ORD-2024-001"
+msgstr ""
+
+#: .\templates\manage\orders\form.html:33
+#, fuzzy
+#| msgid "Add to Queue"
+msgid "Add to queue immediately"
+msgstr "Ajouter à la file"
+
+#: .\templates\manage\orders\form.html:43
+msgid "Optional notes for this order"
+msgstr ""
+
+#: .\templates\manage\orders\form.html:55
+#, fuzzy
+#| msgid "Orderpiqr Login"
+msgid "Add Line"
+msgstr "Connexion à Orderpiqr"
+
+#: .\templates\manage\orders\form.html:61
+msgid "Qty"
+msgstr ""
+
+#: .\templates\manage\orders\form.html:75
+msgid "Search product..."
+msgstr ""
+
+#: .\templates\manage\orders\form.html:102
+#: .\templates\manage\orders\form.html:409
+#, fuzzy
+#| msgid "Description"
+msgid "Search product by code or description..."
+msgstr "Description"
+
+#: .\templates\manage\orders\form.html:126
+#: .\templates\manage\orders\import.html:34
+#: .\templates\manage\orders\list.html:184
+#: .\templates\manage\products\form.html:61
+#: .\templates\manage\products\import.html:34
+#: .\templates\manage\products\list.html:179
+#, fuzzy
+#| msgid "Cancelled"
+msgid "Cancel"
+msgstr "Annulé"
+
+#: .\templates\manage\orders\form.html:128
+#: .\templates\manage\products\form.html:63 .\templates\manage\profile.html:47
+msgid "Save Changes"
+msgstr ""
+
+#: .\templates\manage\orders\form.html:439
+msgid "An order must have at least one product"
+msgstr ""
+
+#: .\templates\manage\orders\form.html:463
+#: .\templates\manage\products\list.html:151
+#, fuzzy
+#| msgid "Product Code"
+msgid "No products found"
+msgstr "Code produit"
+
+#: .\templates\manage\orders\form.html:619
+msgid "Please select a product for all order lines"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:4
+#: .\templates\manage\orders\import.html:5
+#: .\templates\manage\orders\import.html:39
+#, fuzzy
+#| msgid "Pick Order"
+msgid "Import Orders"
+msgstr "Ordre de prélèvement"
+
+#: .\templates\manage\orders\import.html:6
+msgid "Upload a CSV file to import orders"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:12
+#: .\templates\manage\products\import.html:12
+#, fuzzy
+#| msgid "Upload File"
+msgid "Upload CSV File"
+msgstr "Télécharger le fichier"
+
+#: .\templates\manage\orders\import.html:18
+#: .\templates\manage\products\import.html:18
+msgid "Select CSV File"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:27
+#: .\templates\manage\products\import.html:27
+msgid "Drag and drop your CSV file here, or click to select"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:28
+#: .\templates\manage\orders\import.html:235
+#: .\templates\manage\products\import.html:28
+#: .\templates\manage\products\import.html:216
+msgid "Maximum file size: 5MB"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:48
+#: .\templates\manage\products\import.html:48
+msgid "CSV Format"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:51
+#: .\templates\manage\products\import.html:51
+#, fuzzy
+#| msgid ""
+#| "Please upload a CSV or XLSX file that includes the following columns:"
+msgid "Your CSV file should have the following columns:"
+msgstr ""
+"Veuillez télécharger un fichier CSV ou XLSX contenant les colonnes "
+"suivantes :"
+
+#: .\templates\manage\orders\import.html:57
+#: .\templates\manage\products\import.html:57
+msgid "Column"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:58
+#: .\templates\manage\products\import.html:58
+msgid "Required"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:65
+#: .\templates\manage\orders\import.html:70
+#: .\templates\manage\products\import.html:65
+#: .\templates\manage\products\import.html:70
+msgid "Yes"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:66
+msgid "Unique order identifier"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:71
+msgid "Product code (must exist in your inventory)"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:75
+#: .\templates\manage\orders\import.html:80
+#: .\templates\manage\products\import.html:75
+#: .\templates\manage\products\import.html:80
+msgid "No"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:76
+msgid "Quantity (default: 1)"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:81
+msgid "Order notes (only from first line)"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:87
+#: .\templates\manage\products\import.html:87
+msgid "Example CSV"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:102
+msgid "Multiple rows with the same order_code will be combined into one order"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:103
+msgid "Product codes must already exist in your inventory"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:104
+msgid "Orders with duplicate codes will be skipped"
+msgstr ""
+
+#: .\templates\manage\orders\import.html:105
+msgid "Imported orders will have 'draft' status"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:6
+msgid "Manage your customer orders"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:13
+#: .\templates\manage\products\list.html:19
+msgid "Import"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:32
+msgid "Search orders..."
+msgstr ""
+
+#: .\templates\manage\orders\list.html:38
+#: .\templates\manage\picklists\list.html:13
+#: .\templates\manage\products\list.html:44
+#, fuzzy
+#| msgid "Status"
+msgid "All Status"
+msgstr "Statut"
+
+#: .\templates\manage\orders\list.html:46
+#: .\templates\manage\products\list.html:53
+msgid "Newest First"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:47
+#: .\templates\manage\products\list.html:54
+msgid "Oldest First"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:48
+#: .\templates\manage\products\list.html:49
+msgid "Code A-Z"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:49
+#: .\templates\manage\products\list.html:50
+msgid "Code Z-A"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:63
+#: .\templates\queue\_order_cards.html:24
+msgid "Items"
+msgstr "Articles"
+
+#: .\templates\manage\orders\list.html:66
+#: .\templates\manage\picklists\list.html:36
+#: .\templates\manage\products\list.html:72
+#, fuzzy
+#| msgid "Location"
+msgid "Actions"
+msgstr "Emplacement"
+
+#: .\templates\manage\orders\list.html:95 .\templates\queue\manage.html:66
+msgid "Add to Queue"
+msgstr "Ajouter à la file"
+
+#: .\templates\manage\orders\list.html:102
+#: .\templates\manage\products\list.html:100
+msgid "Edit"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:111
+#: .\templates\manage\orders\list.html:185
+#: .\templates\manage\products\list.html:108
+#: .\templates\manage\products\list.html:180
+msgid "Delete"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:137
+#: .\templates\manage\picklists\list.html:106
+#: .\templates\manage\products\list.html:133
+msgid "Page"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:137
+#: .\templates\manage\picklists\list.html:106
+#: .\templates\manage\products\list.html:133
+msgid "of"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:156
+#, fuzzy
+#| msgid "No orders in queue"
+msgid "No orders found"
+msgstr "Aucune commande dans la file"
+
+#: .\templates\manage\orders\list.html:157
+#: .\templates\manage\products\list.html:152
+msgid "Try adjusting your search or filter criteria."
+msgstr ""
+
+#: .\templates\manage\orders\list.html:158
+#: .\templates\manage\products\list.html:153
+msgid "Clear Filters"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:160
+#, fuzzy
+#| msgid "No orders in queue"
+msgid "No orders yet"
+msgstr "Aucune commande dans la file"
+
+#: .\templates\manage\orders\list.html:161
+msgid "Get started by creating your first order or importing from a CSV file."
+msgstr ""
+
+#: .\templates\manage\orders\list.html:164
+#: .\templates\manage\products\list.html:159
+msgid "Import CSV"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:176
+#, fuzzy
+#| msgid "Welcome to Orderpiqr!"
+msgid "Delete Order"
+msgstr "Bienvenue sur Orderpiqr !"
+
+#: .\templates\manage\orders\list.html:180
+msgid "Are you sure you want to delete order"
+msgstr ""
+
+#: .\templates\manage\orders\list.html:181
+#: .\templates\manage\products\list.html:176
+msgid "This action cannot be undone."
+msgstr ""
+
+#: .\templates\manage\orders\list.html:313
+#: .\templates\manage\queue\list.html:414 .\templates\queue\manage.html:172
+#, fuzzy
+#| msgid "%(count)s order(s) added to queue."
+msgid "Order added to queue"
+msgstr "%(count)s commande(s) ajoutée(s) à la file."
+
+#: .\templates\manage\orders\list.html:316
+#, fuzzy
+#| msgid "Add to Queue"
+msgid "Error adding to queue"
+msgstr "Ajouter à la file"
+
+#: .\templates\manage\orders\list.html:320
+#: .\templates\manage\orders\list.html:354
+#: .\templates\manage\products\list.html:321
+msgid "An error occurred"
+msgstr ""
+
+#: .\templates\manage\picklists\detail.html:19
+#, fuzzy
+#| msgid "Pick List"
+msgid "Back to List"
+msgstr "Liste de prélèvement"
+
+#: .\templates\manage\picklists\detail.html:28
+#, fuzzy
+#| msgid "Picklist Code"
+msgid "Picklist Information"
+msgstr "Code de la liste de prélèvement"
+
+#: .\templates\manage\picklists\detail.html:32
+#: .\templates\manage\picklists\detail.html:127
+#: .\templates\manage\picklists\list.html:17
+#: .\templates\manage\picklists\list.html:72
+msgid "Failed"
+msgstr ""
+
+#: .\templates\manage\picklists\detail.html:36
+#: .\templates\manage\picklists\detail.html:129
+#: .\templates\manage\picklists\list.html:14
+#: .\templates\manage\picklists\list.html:76
+msgid "Pending"
+msgstr ""
+
+#: .\templates\manage\picklists\detail.html:52
+#: .\templates\manage\picklists\list.html:33
+#, fuzzy
+#| msgid "Pick Order"
+msgid "Picker"
+msgstr "Ordre de prélèvement"
+
+#: .\templates\manage\picklists\detail.html:73
+#: .\templates\manage\picklists\detail.html:103
+#, fuzzy
+#| msgid "Description"
+msgid "Duration"
+msgstr "Description"
+
+#: .\templates\manage\picklists\detail.html:91
+#: .\templates\manage\queue\_queue_list.html:12
+#: .\templates\manage\queue\list.html:63 .\templates\manage\queue\list.html:103
+#: .\templates\queue\_manage_queue_list.html:12
+#: .\templates\queue\_picker_orders.html:16 .\templates\queue\manage.html:63
+#: .\templates\queue\manage.html:91
+msgid "items"
+msgstr "articles"
+
+#: .\templates\manage\picklists\detail.html:125
+#, fuzzy
+#| msgid "Lists Picked"
+msgid "Picked"
+msgstr "Listes sélectionnées"
+
+#: .\templates\manage\picklists\detail.html:146
+#, fuzzy
+#| msgid "Pick of %(product)s in PickList %(picklist_id)s"
+msgid "No products in this picklist."
+msgstr "Prélèvement de %(product)s dans la liste %(picklist_id)s"
+
+#: .\templates\manage\picklists\list.html:6
+msgid "View picking operations"
+msgstr ""
+
+#: .\templates\manage\picklists\list.html:83
+msgid "View Details"
+msgstr ""
+
+#: .\templates\manage\picklists\list.html:121
+#, fuzzy
+#| msgid "Picklist Code"
+msgid "No pick lists yet"
+msgstr "Code de la liste de prélèvement"
+
+#: .\templates\manage\picklists\list.html:122
+msgid ""
+"Pick lists are created automatically when pickers claim orders from the "
+"queue."
+msgstr ""
+
+#: .\templates\manage\picklists\list.html:123
+#, fuzzy
+#| msgid "Add to Queue"
+msgid "Go to Queue"
+msgstr "Ajouter à la file"
+
+#: .\templates\manage\products\form.html:4
+#: .\templates\manage\products\form.html:5
+#, fuzzy
+#| msgid "Product"
+msgid "Edit Product"
+msgstr "Produit"
+
+#: .\templates\manage\products\form.html:9
+msgid "Update product details"
+msgstr ""
+
+#: .\templates\manage\products\form.html:22
+msgid "e.g., SKU-001"
+msgstr ""
+
+#: .\templates\manage\products\form.html:24
+msgid "A unique identifier for this product"
+msgstr ""
+
+#: .\templates\manage\products\form.html:31
+msgid "e.g., Blue Widget - Large"
+msgstr ""
+
+#: .\templates\manage\products\form.html:33
+msgid "A short description of the product"
+msgstr ""
+
+#: .\templates\manage\products\form.html:40
+msgid "e.g., Aisle 3, Shelf B"
+msgstr ""
+
+#: .\templates\manage\products\form.html:41
+msgid "Where this product is stored in your warehouse"
+msgstr ""
+
+#: .\templates\manage\products\form.html:54
+msgid "Inactive products won't appear in new orders"
+msgstr ""
+
+#: .\templates\manage\products\form.html:63
+#, fuzzy
+#| msgid "Product"
+msgid "Create Product"
+msgstr "Produit"
+
+#: .\templates\manage\products\import.html:4
+#: .\templates\manage\products\import.html:5
+#: .\templates\manage\products\import.html:39
+#, fuzzy
+#| msgid "Products"
+msgid "Import Products"
+msgstr "Produits"
+
+#: .\templates\manage\products\import.html:6
+msgid "Upload a CSV file to import products"
+msgstr ""
+
+#: .\templates\manage\products\import.html:66
+#, fuzzy
+#| msgid "Product Code"
+msgid "Unique product code"
+msgstr "Code produit"
+
+#: .\templates\manage\products\import.html:76
+msgid "Warehouse location"
+msgstr ""
+
+#: .\templates\manage\products\import.html:81
+msgid "true/false (default: true)"
+msgstr ""
+
+#: .\templates\manage\products\import.html:99
+#, fuzzy
+#| msgid "Notes"
+msgid "Note"
+msgstr "Remarques"
+
+#: .\templates\manage\products\import.html:100
+msgid ""
+"If a product with the same code already exists, it will be updated with the "
+"new values."
+msgstr ""
+
+#: .\templates\manage\products\list.html:6
+msgid "Manage your product inventory"
+msgstr ""
+
+#: .\templates\manage\products\list.html:13
+msgid "Export"
+msgstr ""
+
+#: .\templates\manage\products\list.html:38
+msgid "Search products..."
+msgstr ""
+
+#: .\templates\manage\products\list.html:46
+#: .\templates\manage\products\list.html:94
+#, fuzzy
+#| msgid "Active"
+msgid "Inactive"
+msgstr "Actif"
+
+#: .\templates\manage\products\list.html:51
+#, fuzzy
+#| msgid "Description"
+msgid "Description A-Z"
+msgstr "Description"
+
+#: .\templates\manage\products\list.html:52
+#, fuzzy
+#| msgid "Location"
+msgid "Location A-Z"
+msgstr "Emplacement"
+
+#: .\templates\manage\products\list.html:155
+#, fuzzy
+#| msgid "Products"
+msgid "No products yet"
+msgstr "Produits"
+
+#: .\templates\manage\products\list.html:156
+msgid "Get started by adding your first product or importing from a CSV file."
+msgstr ""
+
+#: .\templates\manage\products\list.html:171
+#, fuzzy
+#| msgid "Product"
+msgid "Delete Product"
+msgstr "Produit"
+
+#: .\templates\manage\products\list.html:175
+msgid "Are you sure you want to delete product"
+msgstr ""
+
+#: .\templates\manage\profile.html:6
+msgid "Manage your account settings"
+msgstr ""
+
+#: .\templates\manage\profile.html:14
+msgid "Account Information"
+msgstr ""
+
+#: .\templates\manage\profile.html:22 .\templates\registration\login.html:35
+#: .\templates\registration\signup.html:95
+#: .\templates\registration\signup.html:168
+#, fuzzy
+#| msgid "User"
+msgid "Username"
+msgstr "Utilisateur"
+
+#: .\templates\manage\profile.html:24
+msgid "Username cannot be changed."
+msgstr ""
+
+#: .\templates\manage\profile.html:29
+#, fuzzy
+#| msgid "Product Name"
+msgid "First Name"
+msgstr "Nom du produit"
+
+#: .\templates\manage\profile.html:34
+#, fuzzy
+#| msgid "Name"
+msgid "Last Name"
+msgstr "Nom"
+
+#: .\templates\manage\profile.html:41 .\templates\registration\signup.html:108
+#: .\templates\registration\signup.html:181
+msgid "Email"
+msgstr ""
+
+#: .\templates\manage\profile.html:56 .\templates\manage\profile.html:82
+msgid "Change Password"
+msgstr ""
+
+#: .\templates\manage\profile.html:64
+msgid "Current Password"
+msgstr ""
+
+#: .\templates\manage\profile.html:69
+#: .\templates\registration\password_reset_confirm.html:33
+msgid "New Password"
+msgstr ""
+
+#: .\templates\manage\profile.html:72
+msgid "Minimum 8 characters."
+msgstr ""
+
+#: .\templates\manage\profile.html:76
+#: .\templates\registration\password_reset_confirm.html:45
+msgid "Confirm New Password"
+msgstr ""
+
+#: .\templates\manage\profile.html:91 .\templates\registration\signup.html:67
+msgid "Company Information"
+msgstr ""
+
+#: .\templates\manage\profile.html:96
+msgid "Company"
+msgstr ""
+
+#: .\templates\manage\profile.html:106
+msgid "Role"
+msgstr ""
+
+#: .\templates\manage\profile.html:109
+msgid "Administrator"
+msgstr ""
+
+#: .\templates\manage\profile.html:111
+msgid "Staff"
+msgstr ""
+
+#: .\templates\manage\profile.html:113
+msgid "Company Admin"
+msgstr ""
+
+#: .\templates\manage\profile.html:120
+msgid "Member Since"
+msgstr ""
+
+#: .\templates\manage\queue\_queue_list.html:8
+#: .\templates\queue\_manage_queue_list.html:8
+msgid "Drag to reorder"
+msgstr ""
+
+#: .\templates\manage\queue\_queue_list.html:30
+#: .\templates\queue\_manage_queue_list.html:25
+msgid "Move up"
+msgstr ""
+
+#: .\templates\manage\queue\_queue_list.html:31
+#: .\templates\queue\_manage_queue_list.html:26
+msgid "Move down"
+msgstr ""
+
+#: .\templates\manage\queue\_queue_list.html:32
+#: .\templates\queue\_manage_queue_list.html:27
+#, fuzzy
+#| msgid "Remove selected orders from queue"
+msgid "Remove from queue"
+msgstr "Retirer les commandes sélectionnées de la file"
+
+#: .\templates\manage\queue\_queue_list.html:42
+#: .\templates\queue\_manage_queue_list.html:34
+#, fuzzy
+#| msgid "Queue Management"
+msgid "Queue is empty"
+msgstr "Gestion de la file d'attente"
+
+#: .\templates\manage\queue\_queue_list.html:43
+#: .\templates\queue\_manage_queue_list.html:35
+msgid "Add orders from the available list"
+msgstr ""
+
+#: .\templates\manage\queue\list.html:6
+msgid "Manage and reorder your order queue"
+msgstr ""
+
+#: .\templates\manage\queue\list.html:18 .\templates\queue\manage.html:23
+msgid "Display View"
+msgstr "Vue affichage"
+
+#: .\templates\manage\queue\list.html:38 .\templates\queue\manage.html:39
+msgid "Current Queue"
+msgstr "File actuelle"
+
+#: .\templates\manage\queue\list.html:39 .\templates\manage\queue\list.html:54
+#: .\templates\queue\manage.html:40 .\templates\queue\manage.html:54
+msgid "orders"
+msgstr "commandes"
+
+#: .\templates\manage\queue\list.html:53 .\templates\queue\manage.html:53
+msgid "Available Orders"
+msgstr "Commandes disponibles"
+
+#: .\templates\manage\queue\list.html:77
+msgid "Add"
+msgstr ""
+
+#: .\templates\manage\queue\list.html:84
+msgid "No draft orders available"
+msgstr ""
+
+#: .\templates\manage\queue\list.html:94 .\templates\queue\manage.html:82
+msgid "Recently Completed"
+msgstr "Récemment terminées"
+
+#: .\templates\manage\queue\list.html:113
+#, fuzzy
+#| msgid "No completed orders"
+msgid "No completed orders yet"
+msgstr "Aucune commande terminée"
+
+#: .\templates\manage\queue\list.html:397 .\templates\queue\manage.html:155
+msgid "Queue order saved"
+msgstr ""
+
+#: .\templates\manage\queue\list.html:432 .\templates\queue\manage.html:190
+#, fuzzy
+#| msgid "%(count)s order(s) removed from queue."
+msgid "Order removed from queue"
+msgstr "%(count)s commande(s) retirée(s) de la file."
+
+#: .\templates\manage\settings.html:6
+msgid "Configure your company preferences"
+msgstr ""
+
+#: .\templates\manage\settings.html:13
+msgid "Company Settings"
+msgstr ""
+
+#: .\templates\manage\settings.html:58 .\templates\manage\settings.html:69
+msgid "No settings configured"
+msgstr ""
+
+#: .\templates\manage\settings.html:59 .\templates\manage\settings.html:70
+msgid "There are no configurable settings available yet."
+msgstr ""
+
+#: .\templates\manage\settings.html:77
+msgid "Save Settings"
+msgstr ""
 
 #: .\templates\offline.html:65
 msgid "You're offline"
@@ -541,186 +1884,449 @@ msgstr ""
 msgid "Go Back"
 msgstr ""
 
-#: .\templates\registration\login.html:8
-msgid "login"
-msgstr "connexion"
-
-#: .\templates\registration\login.html:18
-msgid "Orderpiqr Login"
-msgstr "Connexion à Orderpiqr"
-
-#: .\templates\registration\login.html:24
-msgid "Login"
-msgstr "Connexion"
-
-#: .\templates\registration\login.html:26
-#, fuzzy
-#| msgid "Customer"
-msgid "New customer?"
-msgstr "Client"
-
-#: .\templates\registration\login.html:27
-msgid "Create your account here"
+#: .\templates\partials\scan_confirmation_overlay.html:9
+msgid "Tap to scan next item"
 msgstr ""
 
-#: .\templates\registration\name_entry.html:8
-#: .\templates\registration\name_entry.html:14
-msgid "Enter Your Name"
-msgstr "Entrez votre nom"
-
-#: .\templates\registration\name_entry.html:18
-msgid "Name:"
-msgstr "Nom :"
-
-#: .\templates\registration\name_entry.html:20
-msgid "Submit"
-msgstr "Envoyer"
-
-#: .\templates\registration\signup.html:55
-msgid "Create your Orderpiqr workspace"
-msgstr ""
-
-#: .\templates\registration\signup.html:57
-msgid ""
-"Set up your company with two accounts: one administrator and one order "
-"picker.\n"
-"                    Usernames must be unique within your company, but emails "
-"don’t have to be unique globally.\n"
-"                    If you have any questions, email"
-msgstr ""
-
-#: .\templates\registration\signup.html:89
-msgid "Create company and users"
-msgstr ""
-
-#: .\templates\registration\signup.html:95
-msgid "Already have an account?"
-msgstr ""
-
-#: .\templates\registration\signup.html:96
-msgid "Log in"
-msgstr "Se connecter"
-
-#: Queue related translations
-msgid "Order Queue"
-msgstr "File d'attente des commandes"
-
-msgid "Pick Queue"
-msgstr "File d'attente de préparation"
-
-msgid "Scanner"
-msgstr "Scanner"
-
-msgid "items"
-msgstr "articles"
-
-msgid "Start Picking"
-msgstr "Commencer la préparation"
-
-msgid "In Progress"
-msgstr "En cours"
-
-msgid "Completed"
-msgstr "Terminé"
-
+#: .\templates\queue\_order_cards.html:67
+#: .\templates\queue\_picker_orders.html:54
 msgid "No orders in queue"
 msgstr "Aucune commande dans la file"
 
+#: .\templates\queue\_picker_orders.html:36 .\templates\queue\picker.html:111
+#: .\templates\queue\picker.html:118
+msgid "Start Picking"
+msgstr "Commencer la préparation"
+
+#: .\templates\queue\_picker_orders.html:55
 msgid "New orders will appear here automatically"
 msgstr "Les nouvelles commandes apparaîtront ici automatiquement"
 
-msgid "Items"
-msgstr "Articles"
-
-msgid "Queued"
-msgstr "En file d'attente"
-
+#: .\templates\queue\manage.html:16
 msgid "Admin"
 msgstr "Administration"
 
-msgid "Queue Management"
-msgstr "Gestion de la file d'attente"
-
-msgid "Display View"
-msgstr "Vue affichage"
-
-msgid "Picker View"
-msgstr "Vue préparateur"
-
+#: .\templates\queue\manage.html:22
 msgid "Open tablet display view"
 msgstr "Ouvrir la vue tablette"
 
+#: .\templates\queue\manage.html:25
 msgid "Open mobile picker view"
 msgstr "Ouvrir la vue mobile préparateur"
 
-msgid "Current Queue"
-msgstr "File actuelle"
-
-msgid "orders"
-msgstr "commandes"
-
-msgid "Available Orders"
-msgstr "Commandes disponibles"
-
-msgid "Add to Queue"
-msgstr "Ajouter à la file"
-
+#: .\templates\queue\manage.html:73
 msgid "No available orders"
 msgstr "Aucune commande disponible"
 
+#: .\templates\queue\manage.html:74
 msgid "Create orders in the admin to add them here"
 msgstr "Créez des commandes dans l'administration pour les ajouter ici"
 
-msgid "Recently Completed"
-msgstr "Récemment terminées"
-
+#: .\templates\queue\manage.html:101
 msgid "No completed orders"
 msgstr "Aucune commande terminée"
 
-msgid "ago"
-msgstr "il y a"
+#: .\templates\queue\picker.html:11
+msgid "Pick Queue"
+msgstr "File d'attente de préparation"
 
-msgid "Remove"
-msgstr "Supprimer"
+#: .\templates\queue\picker.html:16
+msgid "Scanner"
+msgstr "Scanner"
 
-msgid "Open Queue Manager"
-msgstr "Ouvrir le gestionnaire de file"
+#: .\templates\queue\picker.html:65
+msgid "Claiming..."
+msgstr ""
 
-msgid "Manage the picking queue - add orders, reorder, and monitor progress"
-msgstr "Gérer la file de préparation - ajouter des commandes, réordonner et suivre la progression"
+#: .\templates\queue\picker.html:90
+msgid "Order claimed! Redirecting..."
+msgstr ""
 
-msgid "Draft"
-msgstr "Brouillon"
+#: .\templates\queue\picker.html:116
+msgid "Error claiming order"
+msgstr ""
 
-msgid "Cancelled"
-msgstr "Annulé"
+#: .\templates\registration\login.html:4
+msgid "Login"
+msgstr "Connexion"
 
-msgid "Status"
-msgstr "Statut"
+#: .\templates\registration\login.html:11
+msgid "Sign in to your OrderPiqR account"
+msgstr ""
 
-msgid "Queue Position"
-msgstr "Position dans la file"
+#: .\templates\registration\login.html:41
+#, fuzzy
+#| msgid "Enter Your Name"
+msgid "Enter your username"
+msgstr "Entrez votre nom"
 
-msgid "Position in the picking queue. Lower numbers are picked first."
-msgstr "Position dans la file de préparation. Les numéros les plus bas sont traités en premier."
+#: .\templates\registration\login.html:50
+#: .\templates\registration\signup.html:124
+#: .\templates\registration\signup.html:197
+msgid "Password"
+msgstr ""
 
-msgid "Completed At"
-msgstr "Terminé le"
+#: .\templates\registration\login.html:55
+#, fuzzy
+#| msgid "Enter Your Name"
+msgid "Enter your password"
+msgstr "Entrez votre nom"
 
-msgid "Add selected orders to queue"
-msgstr "Ajouter les commandes sélectionnées à la file"
+#: .\templates\registration\login.html:65
+msgid "Remember me"
+msgstr ""
 
-msgid "Remove selected orders from queue"
-msgstr "Retirer les commandes sélectionnées de la file"
+#: .\templates\registration\login.html:67
+msgid "Forgot password?"
+msgstr ""
 
-#, python-format
-msgid "%(count)s order(s) added to queue."
-msgstr "%(count)s commande(s) ajoutée(s) à la file."
+#: .\templates\registration\login.html:72
+#: .\templates\registration\signup.html:233
+msgid "Sign in"
+msgstr ""
 
-#, python-format
-msgid "%(count)s order(s) skipped (not in draft status)."
-msgstr "%(count)s commande(s) ignorée(s) (pas en statut brouillon)."
+#: .\templates\registration\login.html:79
+#, fuzzy
+#| msgid "Welcome to Orderpiqr!"
+msgid "New to OrderPiqR?"
+msgstr "Bienvenue sur Orderpiqr !"
 
-#, python-format
-msgid "%(count)s order(s) removed from queue."
-msgstr "%(count)s commande(s) retirée(s) de la file."
+#: .\templates\registration\login.html:80
+msgid "Create your account"
+msgstr ""
+
+#: .\templates\registration\name_entry.html:4
+msgid "Enter Your Name"
+msgstr "Entrez votre nom"
+
+#: .\templates\registration\name_entry.html:10
+msgid "Welcome!"
+msgstr ""
+
+#: .\templates\registration\name_entry.html:11
+msgid "Please enter your name to register this device"
+msgstr ""
+
+#: .\templates\registration\name_entry.html:19
+#, fuzzy
+#| msgid "Enter Your Name"
+msgid "Your Name"
+msgstr "Entrez votre nom"
+
+#: .\templates\registration\name_entry.html:24
+#, fuzzy
+#| msgid "Enter Your Name"
+msgid "Enter your name"
+msgstr "Entrez votre nom"
+
+#: .\templates\registration\name_entry.html:27
+msgid "This name will be shown when you pick orders"
+msgstr ""
+
+#: .\templates\registration\name_entry.html:32
+msgid "Continue"
+msgstr ""
+
+#: .\templates\registration\name_entry.html:43
+msgid "This device will be registered for order picking"
+msgstr ""
+
+#: .\templates\registration\password_reset.html:4
+#: .\templates\registration\password_reset_confirm.html:56
+msgid "Reset Password"
+msgstr ""
+
+#: .\templates\registration\password_reset.html:10
+msgid "Reset your password"
+msgstr ""
+
+#: .\templates\registration\password_reset.html:11
+msgid ""
+"Enter your email address and we'll send you a link to reset your password"
+msgstr ""
+
+#: .\templates\registration\password_reset.html:32
+msgid "Email Address"
+msgstr ""
+
+#: .\templates\registration\password_reset.html:37
+#, fuzzy
+#| msgid "Enter Your Name"
+msgid "Enter your email address"
+msgstr "Entrez votre nom"
+
+#: .\templates\registration\password_reset.html:44
+msgid "Send Reset Link"
+msgstr ""
+
+#: .\templates\registration\password_reset.html:51
+#: .\templates\registration\password_reset_confirm.html:73
+#: .\templates\registration\password_reset_done.html:30
+#, fuzzy
+#| msgid "Last Login"
+msgid "Back to login"
+msgstr "Dernière connexion"
+
+#: .\templates\registration\password_reset_complete.html:4
+#, fuzzy
+#| msgid "Recently Completed"
+msgid "Password Reset Complete"
+msgstr "Récemment terminées"
+
+#: .\templates\registration\password_reset_complete.html:15
+msgid "Password reset complete!"
+msgstr ""
+
+#: .\templates\registration\password_reset_complete.html:16
+msgid "Your password has been successfully changed"
+msgstr ""
+
+#: .\templates\registration\password_reset_complete.html:21
+msgid "You can now use your new password to log in to your account."
+msgstr ""
+
+#: .\templates\registration\password_reset_complete.html:24
+#, fuzzy
+#| msgid "Last Login"
+msgid "Go to Login"
+msgstr "Dernière connexion"
+
+#: .\templates\registration\password_reset_confirm.html:4
+msgid "Set New Password"
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:10
+msgid "Set new password"
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:11
+msgid "Enter your new password below"
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:38
+msgid "Enter new password"
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:41
+msgid "Minimum 8 characters"
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:50
+msgid "Confirm new password"
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:62
+msgid ""
+"This password reset link is invalid or has expired. Please request a new one."
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:66
+msgid "Request New Link"
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:4
+msgid "Password Reset Sent"
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:15
+msgid "Check your email"
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:16
+msgid "We've sent you instructions to reset your password"
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:21
+msgid ""
+"If an account exists with the email address you entered, you will receive a "
+"password reset link shortly."
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:24
+msgid "Didn't receive the email? Check your spam folder or"
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:25
+msgid "try again"
+msgstr ""
+
+#: .\templates\registration\password_reset_email.html:2
+msgid "Hello,"
+msgstr ""
+
+#: .\templates\registration\password_reset_email.html:4
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"OrderPiqR account."
+msgstr ""
+
+#: .\templates\registration\password_reset_email.html:6
+msgid "Please click the link below to set a new password:"
+msgstr ""
+
+#: .\templates\registration\password_reset_email.html:10
+msgid "This link will expire in 24 hours."
+msgstr ""
+
+#: .\templates\registration\password_reset_email.html:12
+msgid ""
+"If you didn't request this password reset, you can safely ignore this email. "
+"Your password will not be changed."
+msgstr ""
+
+#: .\templates\registration\password_reset_email.html:14
+msgid "Best regards,"
+msgstr ""
+
+#: .\templates\registration\password_reset_email.html:15
+msgid "The OrderPiqR Team"
+msgstr ""
+
+#: .\templates\registration\password_reset_subject.txt:1
+msgid "Reset your OrderPiqR password"
+msgstr ""
+
+#: .\templates\registration\signup.html:4
+msgid "Sign Up"
+msgstr ""
+
+#: .\templates\registration\signup.html:11
+msgid "Create your workspace"
+msgstr ""
+
+#: .\templates\registration\signup.html:12
+msgid "Get started with OrderPiqR in just a few minutes"
+msgstr ""
+
+#: .\templates\registration\signup.html:17
+msgid "How OrderPiqR works"
+msgstr ""
+
+#: .\templates\registration\signup.html:27
+msgid "Admin Account"
+msgstr ""
+
+#: .\templates\registration\signup.html:28
+msgid ""
+"For managers: add products, create orders, manage the queue, and track "
+"progress."
+msgstr ""
+
+#: .\templates\registration\signup.html:41
+msgid "Picker Account"
+msgstr ""
+
+#: .\templates\registration\signup.html:42
+msgid ""
+"One shared login for all warehouse staff. Each picker enters their name on "
+"first use - their device is then remembered."
+msgstr ""
+
+#: .\templates\registration\signup.html:47
+msgid ""
+"You only need these two accounts. When pickers log in on a new device, they "
+"enter their name once and the device is automatically linked to them."
+msgstr ""
+
+#: .\templates\registration\signup.html:71
+msgid "Company Name"
+msgstr ""
+
+#: .\templates\registration\signup.html:77
+#, fuzzy
+#| msgid "Enter Your Name"
+msgid "Enter your company name"
+msgstr "Entrez votre nom"
+
+#: .\templates\registration\signup.html:89
+msgid "Administrator Account"
+msgstr ""
+
+#: .\templates\registration\signup.html:91
+msgid ""
+"Your personal login for the management dashboard. Use this to add products, "
+"create orders, manage the queue, and configure settings."
+msgstr ""
+
+#: .\templates\registration\signup.html:101
+#, fuzzy
+#| msgid "Admin"
+msgid "admin"
+msgstr "Administration"
+
+#: .\templates\registration\signup.html:114
+msgid "admin@company.com"
+msgstr ""
+
+#: .\templates\registration\signup.html:129
+#: .\templates\registration\signup.html:202
+msgid "Create a password"
+msgstr ""
+
+#: .\templates\registration\signup.html:136
+#: .\templates\registration\signup.html:209
+msgid "Confirm Password"
+msgstr ""
+
+#: .\templates\registration\signup.html:141
+#: .\templates\registration\signup.html:214
+msgid "Confirm password"
+msgstr ""
+
+#: .\templates\registration\signup.html:154
+msgid "Shared Picker Account"
+msgstr ""
+
+#: .\templates\registration\signup.html:157
+msgid "This is a shared login for all your warehouse pickers."
+msgstr ""
+
+#: .\templates\registration\signup.html:159
+msgid "Share these credentials with your team"
+msgstr ""
+
+#: .\templates\registration\signup.html:160
+msgid "When a picker logs in for the first time, they enter their name"
+msgstr ""
+
+#: .\templates\registration\signup.html:161
+msgid "Their device is then remembered - no need to enter their name again"
+msgstr ""
+
+#: .\templates\registration\signup.html:162
+msgid "You can see which picker is using which device in the dashboard"
+msgstr ""
+
+#: .\templates\registration\signup.html:174
+msgid "picker"
+msgstr ""
+
+#: .\templates\registration\signup.html:187
+msgid "picker@company.com"
+msgstr ""
+
+#: .\templates\registration\signup.html:225
+msgid "Create Company & Accounts"
+msgstr ""
+
+#: .\templates\registration\signup.html:232
+msgid "Already have an account?"
+msgstr ""
+
+#~ msgid "login"
+#~ msgstr "connexion"
+
+#~ msgid "Orderpiqr Login"
+#~ msgstr "Connexion à Orderpiqr"
+
+#~ msgid "Name:"
+#~ msgstr "Nom :"
+
+#~ msgid "Submit"
+#~ msgstr "Envoyer"
+
+#~ msgid "Log in"
+#~ msgstr "Se connecter"
+
+#~ msgid "Remove"
+#~ msgstr "Supprimer"

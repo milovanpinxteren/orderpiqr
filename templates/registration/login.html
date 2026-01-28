@@ -1,80 +1,88 @@
+{% extends "registration/base_auth.html" %}
 {% load static i18n %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{% static 'orderpiqrApp/css/login.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'orderpiqrApp/css/custom_admin.css' %}"/>
-    <link rel="icon" type="image/png" href="{% static 'orderpiqrApp/img/favicon.png' %}">
-    <title>{% trans 'login' %}</title>
-</head>
-<body>
-<div class="page-container">
-    {% get_current_language as LANGUAGE_CODE %}
-    {% get_available_languages as LANGUAGES %}
-    {% get_language_info_list for LANGUAGES as languages %}
-    <div style="position: absolute; right: 3%">
-        <div class="language-dropdown">
-            <button class="dropdown-toggle">
-                <img src="{% static 'orderpiqrApp/flags/'|add:LANGUAGE_CODE|add:'.png' %}"
-                     alt="{{ current_language.name_local }}"
-                     title="{{ current_language.name_local }}"
-                     class="current-lang-img">
-                {{ current_language.name_local }}
-            </button>
-            <div class="dropdown-menu">
-                {% for lang in languages %}
-                    <form action="{% url 'set_language' %}" method="post">
-                        {% csrf_token %}
-                        <input name="next" type="hidden" value="{{ request.path }}">
-                        <input type="hidden" name="language" value="{{ lang.code }}">
-                        <button type="submit" class="dropdown-item">
-                            <img src="{% static 'orderpiqrApp/flags/'|add:lang.code|add:'.png' %}"
-                                 alt="{{ lang.name_local }}"
-                                 title="{{ lang.name_local }}" style="max-width: 60px">
-                            {{ lang.name_local }}
-                        </button>
-                    </form>
-                {% endfor %}
-            </div>
-        </div>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const dropdown = document.querySelector('.language-dropdown');
-                const toggle = dropdown.querySelector('.dropdown-toggle');
 
-                toggle.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    dropdown.classList.toggle('show');
-                });
+{% block title %}{% trans "Login" %} - OrderPiqR{% endblock %}
 
-                document.addEventListener('click', function () {
-                    dropdown.classList.remove('show');
-                });
-            });
-        </script>
+{% block content %}
+<div class="auth-card">
+    <div class="auth-header">
+        <img src="{% static 'orderpiqrApp/img/favicon.png' %}" alt="OrderPiqR" class="auth-logo">
+        <h1 class="auth-title">{% trans "Welcome back" %}</h1>
+        <p class="auth-subtitle">{% trans "Sign in to your OrderPiqR account" %}</p>
     </div>
 
-    <div class="form-div">
-        <form id="login-form" class="login-form form_main" role="form" method="POST">
-            <p class="heading">
-                <img src="{% static 'orderpiqrApp/img/favicon.png' %}" alt="Orderpiqr Logo" class="login-logo">
-                {% trans "Orderpiqr Login" %}
-            </p>
-            {% csrf_token %}
-            <div class="login-form-contents">
-                {{ form.as_p }}
-            </div>
-            <button class="login-button" role="button">{% trans "Login" %}</button>
-            <p class="footer-note">
-                {% trans "New customer?" %}
-                <a href="{% url 'signup' %}">{% trans "Create your account here" %}</a>
-            </p>
-        </form>
+    <div class="auth-body">
+        {% if form.non_field_errors %}
+        <div class="alert alert-error">
+            {% for error in form.non_field_errors %}
+            <div>{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
 
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'success' }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <form id="login-form" method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="form-label required" for="id_username">{% trans "Username" %}</label>
+                <input type="text"
+                       class="form-control {% if form.username.errors %}error{% endif %}"
+                       id="id_username"
+                       name="username"
+                       value="{{ form.username.value|default:'' }}"
+                       placeholder="{% trans 'Enter your username' %}"
+                       autofocus
+                       required>
+                {% if form.username.errors %}
+                <span class="form-error">{{ form.username.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label required" for="id_password">{% trans "Password" %}</label>
+                <input type="password"
+                       class="form-control {% if form.password.errors %}error{% endif %}"
+                       id="id_password"
+                       name="password"
+                       placeholder="{% trans 'Enter your password' %}"
+                       required>
+                {% if form.password.errors %}
+                <span class="form-error">{{ form.password.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="auth-links">
+                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                    <input type="checkbox" name="remember" style="width: 16px; height: 16px; accent-color: var(--primary);">
+                    <span style="font-size: 0.875rem; color: var(--text-secondary);">{% trans "Remember me" %}</span>
+                </label>
+                <a href="{% url 'password_reset' %}">{% trans "Forgot password?" %}</a>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Sign in" %}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="auth-footer">
+        {% trans "New to OrderPiqR?" %}
+        <a href="{% url 'signup' %}">{% trans "Create your account" %}</a>
     </div>
 </div>
+{% endblock %}
 
+{% block extra_js %}
 <script type="text/javascript">
     (function() {
         const STORAGE_KEY = 'orderpiqr_device_id';
@@ -97,6 +105,4 @@
         form.appendChild(fingerprintInput);
     })();
 </script>
-
-</body>
-</html>
+{% endblock %}

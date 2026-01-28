@@ -1,0 +1,295 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OrderPiqR Management Dashboard">
+    <title>{% block title %}{% trans "Dashboard" %}{% endblock %} - OrderPiqR</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'orderpiqrApp/img/favicon.png' %}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'orderpiqrApp/css/manage/base.css' %}">
+    {% block extra_css %}{% endblock %}
+
+    <!-- HTMX for dynamic updates -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <!-- i18n JavaScript -->
+    <script src="{% url 'javascript-catalog' %}"></script>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <!-- Mobile menu overlay -->
+    <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileMenu()"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="{% url 'manage_dashboard' %}" class="logo">
+                <img src="{% static 'orderpiqrApp/img/favicon.png' %}" alt="OrderPiqR" class="logo-img">
+                <span class="logo-text">OrderPiqR</span>
+            </a>
+            <button class="mobile-close" onclick="toggleMobileMenu()" aria-label="{% trans 'Close menu' %}">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-label">{% trans "Main" %}</span>
+                <a href="{% url 'manage_dashboard' %}" class="nav-item {% if active_nav == 'dashboard' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="9" rx="1"/>
+                        <rect x="14" y="3" width="7" height="5" rx="1"/>
+                        <rect x="14" y="12" width="7" height="9" rx="1"/>
+                        <rect x="3" y="16" width="7" height="5" rx="1"/>
+                    </svg>
+                    <span>{% trans "Dashboard" %}</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-label">{% trans "Inventory" %}</span>
+                <a href="{% url 'manage_products' %}" class="nav-item {% if active_nav == 'products' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                    </svg>
+                    <span>{% trans "Products" %}</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-label">{% trans "Orders" %}</span>
+                <a href="{% url 'manage_orders' %}" class="nav-item {% if active_nav == 'orders' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+                        <rect x="9" y="3" width="6" height="4" rx="1"/>
+                        <path d="M9 12h6m-6 4h6"/>
+                    </svg>
+                    <span>{% trans "Orders" %}</span>
+                </a>
+                <a href="{% url 'manage_queue' %}" class="nav-item {% if active_nav == 'queue' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 12h16M4 18h10"/>
+                        <path d="M16 16l2 2 4-4"/>
+                    </svg>
+                    <span>{% trans "Queue" %}</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-label">{% trans "Operations" %}</span>
+                <a href="{% url 'manage_picklists' %}" class="nav-item {% if active_nav == 'picklists' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 5l7 7-7 7"/>
+                    </svg>
+                    <span>{% trans "Pick Lists" %}</span>
+                </a>
+                <a href="{% url 'manage_devices' %}" class="nav-item {% if active_nav == 'devices' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="5" y="2" width="14" height="20" rx="2"/>
+                        <path d="M12 18h.01"/>
+                    </svg>
+                    <span>{% trans "Devices" %}</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-label">{% trans "Settings" %}</span>
+                <a href="{% url 'manage_settings' %}" class="nav-item {% if active_nav == 'settings' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                    </svg>
+                    <span>{% trans "Settings" %}</span>
+                </a>
+                <a href="{% url 'manage_profile' %}" class="nav-item {% if active_nav == 'profile' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    <span>{% trans "Profile" %}</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    {{ user.first_name|slice:":1"|default:user.username|slice:":1"|upper }}
+                </div>
+                <div class="user-details">
+                    <span class="user-name">{{ user.get_full_name|default:user.username }}</span>
+                    <span class="user-company">{{ customer.company_name }}</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="{% trans 'Open menu' %}">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                </svg>
+            </button>
+
+            <div class="header-title">
+                <h1>{% block page_title %}{% trans "Dashboard" %}{% endblock %}</h1>
+                {% block page_subtitle %}<p class="page-subtitle"></p>{% endblock %}
+            </div>
+
+            <div class="header-actions">
+                {% block header_actions %}{% endblock %}
+
+                <!-- Language Switcher -->
+                <div class="language-dropdown" id="lang-dropdown">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    <button class="dropdown-toggle" onclick="toggleDropdown('lang-dropdown')">
+                        <img src="{% static 'orderpiqrApp/flags/'|add:LANGUAGE_CODE|add:'.png' %}"
+                             alt="{{ LANGUAGE_CODE }}" class="lang-flag">
+                    </button>
+                    <div class="dropdown-menu">
+                        {% for lang in languages %}
+                        <form action="{% url 'set_language' %}" method="post" class="lang-form">
+                            {% csrf_token %}
+                            <input name="next" type="hidden" value="{{ request.path }}">
+                            <input type="hidden" name="language" value="{{ lang.code }}">
+                            <button type="submit" class="dropdown-item">
+                                <img src="{% static 'orderpiqrApp/flags/'|add:lang.code|add:'.png' %}"
+                                     alt="{{ lang.name_local }}">
+                                {{ lang.name_local }}
+                            </button>
+                        </form>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- User Menu -->
+                <div class="user-dropdown" id="user-dropdown">
+                    <button class="dropdown-toggle user-toggle" onclick="toggleDropdown('user-dropdown')">
+                        <div class="user-avatar small">
+                            {{ user.first_name|slice:":1"|default:user.username|slice:":1"|upper }}
+                        </div>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'manage_profile' %}" class="dropdown-item">{% trans "Profile" %}</a>
+                        <a href="{% url 'manage_settings' %}" class="dropdown-item">{% trans "Settings" %}</a>
+                        <hr class="dropdown-divider">
+                        <a href="{% url 'manage_logout' %}" class="dropdown-item text-danger">{% trans "Log out" %}</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                <div class="message message-{{ message.tags }}">
+                    {{ message }}
+                    <button class="message-close" onclick="this.parentElement.remove()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+            document.body.classList.toggle('menu-open');
+        }
+
+        // Dropdown toggle
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            const allDropdowns = document.querySelectorAll('.dropdown-toggle + .dropdown-menu');
+
+            // Close other dropdowns
+            document.querySelectorAll('.language-dropdown, .user-dropdown').forEach(d => {
+                if (d.id !== id) d.classList.remove('open');
+            });
+
+            dropdown.classList.toggle('open');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.language-dropdown, .user-dropdown')) {
+                document.querySelectorAll('.language-dropdown, .user-dropdown').forEach(d => {
+                    d.classList.remove('open');
+                });
+            }
+        });
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <span>${message}</span>
+                <button onclick="this.parentElement.remove()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            `;
+            container.appendChild(notification);
+
+            setTimeout(() => notification.classList.add('show'), 10);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        // CSRF token for AJAX requests
+        const csrfToken = "{{ csrf_token }}";
+
+        // Handle responsive behavior
+        function handleResize() {
+            if (window.innerWidth > 1024) {
+                document.getElementById('sidebar').classList.remove('open');
+                document.getElementById('mobile-overlay').classList.remove('show');
+                document.body.classList.remove('menu-open');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

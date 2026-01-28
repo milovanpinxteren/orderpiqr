@@ -1,23 +1,51 @@
-<!DOCTYPE html>
+{% extends "registration/base_auth.html" %}
 {% load static i18n %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'orderpiqrApp/css/name_entry.css' %}"/>
-    <title>{% trans "Enter Your Name" %}</title>
-    <link rel="icon" type="image/png" href="{% static 'orderpiqrApp/img/favicon.png' %}">
 
-</head>
-<body>
-<h2>{% trans "Enter Your Name" %}</h2>
-<form method="POST" id="name-form">
-    <img src="{% static 'orderpiqrApp/img/favicon.png' %}" alt="Orderpiqr Logo" class="login-logo">
-    {% csrf_token %}
-    <label for="name">{% trans "Name:" %}</label>
-    <input type="text" id="name" name="name" required>
-    <button type="submit">{% trans "Submit" %}</button>
-</form>
+{% block title %}{% trans "Enter Your Name" %} - OrderPiqR{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <div class="auth-header">
+        <img src="{% static 'orderpiqrApp/img/favicon.png' %}" alt="OrderPiqR" class="auth-logo">
+        <h1 class="auth-title">{% trans "Welcome!" %}</h1>
+        <p class="auth-subtitle">{% trans "Please enter your name to register this device" %}</p>
+    </div>
+
+    <div class="auth-body">
+        <form id="name-form" method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="form-label required" for="name">{% trans "Your Name" %}</label>
+                <input type="text"
+                       class="form-control"
+                       id="name"
+                       name="name"
+                       placeholder="{% trans 'Enter your name' %}"
+                       autofocus
+                       required>
+                <span class="form-hint">{% trans "This name will be shown when you pick orders" %}</span>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Continue" %}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="auth-footer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;">
+            <rect x="5" y="2" width="14" height="20" rx="2"/>
+            <path d="M12 18h.01"/>
+        </svg>
+        {% trans "This device will be registered for order picking" %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
 <script type="text/javascript">
     (function() {
         const STORAGE_KEY = 'orderpiqr_device_id';
@@ -40,5 +68,4 @@
         form.appendChild(fingerprintInput);
     })();
 </script>
-</body>
-</html>
+{% endblock %}

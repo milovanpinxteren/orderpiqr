@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
 from django.views.i18n import JavaScriptCatalog
@@ -25,6 +26,30 @@ urlpatterns = [
     path('signup/', signup, name='signup'),
     path('login/', custom_login, name='login'),
     path('name-entry/', name_entry, name='name_entry'),
+
+    # Password Reset URLs
+    path('password-reset/',
+         auth_views.PasswordResetView.as_view(
+             template_name='registration/password_reset.html',
+             email_template_name='registration/password_reset_email.html',
+             subject_template_name='registration/password_reset_subject.txt',
+         ),
+         name='password_reset'),
+    path('password-reset/done/',
+         auth_views.PasswordResetDoneView.as_view(
+             template_name='registration/password_reset_done.html'
+         ),
+         name='password_reset_done'),
+    path('password-reset-confirm/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(
+             template_name='registration/password_reset_confirm.html'
+         ),
+         name='password_reset_confirm'),
+    path('password-reset-complete/',
+         auth_views.PasswordResetCompleteView.as_view(
+             template_name='registration/password_reset_complete.html'
+         ),
+         name='password_reset_complete'),
     path('admin/loginas/', include('loginas.urls')),
     path('admin/download_batch_qr_pdf/<str:file_name>/', download_batch_qr_pdf, name='download_batch_qr_pdf'),
     path('orderpiqr/scan-picklist', scan_picklist, name='scan-picklist'),  # Keep this outside of i18n to enable POST

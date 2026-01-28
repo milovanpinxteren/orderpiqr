@@ -1,0 +1,146 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Pick Lists" %}{% endblock %}
+{% block page_title %}{% trans "Pick Lists" %}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% trans "View picking operations" %}</p>{% endblock %}
+
+{% block content %}
+<!-- Filters -->
+<div class="search-filters">
+    <div class="filter-group">
+        <select class="form-control" id="status-filter" onchange="applyFilter()">
+            <option value="">{% trans "All Status" %}</option>
+            <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>{% trans "Pending" %}</option>
+            <option value="in_progress" {% if status_filter == 'in_progress' %}selected{% endif %}>{% trans "In Progress" %}</option>
+            <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>{% trans "Completed" %}</option>
+            <option value="failed" {% if status_filter == 'failed' %}selected{% endif %}>{% trans "Failed" %}</option>
+        </select>
+    </div>
+</div>
+
+<!-- Picklists Table -->
+<div class="card">
+    <div class="card-body p-0">
+        {% if picklists %}
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{% trans "Picklist" %}</th>
+                        <th>{% trans "Order" %}</th>
+                        <th>{% trans "Device" %}</th>
+                        <th>{% trans "Picker" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th>{% trans "Created" %}</th>
+                        <th class="text-right">{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for picklist in picklists %}
+                    <tr>
+                        <td>
+                            <strong>{{ picklist.picklist_code|default:picklist.picklist_id }}</strong>
+                        </td>
+                        <td>
+                            {% if picklist.order %}
+                            <a href="{% url 'manage_order_edit' picklist.order.order_id %}">
+                                {{ picklist.order.order_code }}
+                            </a>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if picklist.device %}
+                            {{ picklist.device.name|default:picklist.device.device_id }}
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if picklist.device and picklist.device.user %}
+                            {{ picklist.device.user.get_full_name|default:picklist.device.user.username }}
+                            {% else %}
+                            <span class="text-muted">{% trans "Unassigned" %}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if picklist.successful == True %}
+                            <span class="badge badge-success">{% trans "Completed" %}</span>
+                            {% elif picklist.successful == False %}
+                            <span class="badge badge-danger">{% trans "Failed" %}</span>
+                            {% elif picklist.pick_started %}
+                            <span class="badge badge-warning">{% trans "In Progress" %}</span>
+                            {% else %}
+                            <span class="badge badge-secondary">{% trans "Pending" %}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted">{{ picklist.created_at|timesince }} {% trans "ago" %}</td>
+                        <td>
+                            <div class="table-actions">
+                                <a href="{% url 'manage_picklist_detail' picklist.picklist_id %}"
+                                   class="btn btn-sm btn-secondary" title="{% trans 'View Details' %}">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if paginator.num_pages > 1 %}
+        <div class="pagination">
+            {% if picklists.has_previous %}
+            <a href="?page=1{% if status_filter %}&status={{ status_filter }}{% endif %}" class="pagination-btn">&laquo;</a>
+            <a href="?page={{ picklists.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="pagination-btn">&lsaquo;</a>
+            {% endif %}
+
+            <span class="pagination-info">
+                {% trans "Page" %} {{ picklists.number }} {% trans "of" %} {{ paginator.num_pages }}
+            </span>
+
+            {% if picklists.has_next %}
+            <a href="?page={{ picklists.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="pagination-btn">&rsaquo;</a>
+            <a href="?page={{ paginator.num_pages }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="pagination-btn">&raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="empty-state">
+            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 5l7 7-7 7"/>
+            </svg>
+            <h3>{% trans "No pick lists yet" %}</h3>
+            <p>{% trans "Pick lists are created automatically when pickers claim orders from the queue." %}</p>
+            <a href="{% url 'manage_queue' %}" class="btn btn-primary">{% trans "Go to Queue" %}</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.pagination-info {
+    padding: 0 var(--spacing-md);
+    color: var(--text-secondary);
+}
+
+.p-0 { padding: 0 !important; }
+</style>
+
+<script>
+function applyFilter() {
+    const status = document.getElementById('status-filter').value;
+    let url = '{% url "manage_picklists" %}';
+    if (status) url += '?status=' + status;
+    window.location.href = url;
+}
+</script>
+{% endblock %}

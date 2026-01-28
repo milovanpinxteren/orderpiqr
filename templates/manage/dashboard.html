@@ -1,0 +1,533 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Dashboard" %}{% endblock %}
+{% block page_title %}{% trans "Dashboard" %}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% trans "Welcome back" %}, {{ user.first_name|default:user.username }}!</p>{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'manage_product_create' %}" class="btn btn-primary">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14m-7-7h14"/>
+    </svg>
+    {% trans "Add Product" %}
+</a>
+{% endblock %}
+
+{% block content %}
+<!-- Stats Grid -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">{% trans "Products" %}</span>
+            <div class="stat-card-icon green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-card-value">{{ total_products }}</div>
+        <div class="stat-card-change">{{ active_products }} {% trans "active" %}</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">{% trans "Orders Today" %}</span>
+            <div class="stat-card-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+                    <rect x="9" y="3" width="6" height="4" rx="1"/>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-card-value">{{ orders_today }}</div>
+        <div class="stat-card-change">{{ orders_this_week }} {% trans "this week" %}</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">{% trans "In Queue" %}</span>
+            <div class="stat-card-icon orange">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 6h16M4 12h16M4 18h10"/>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-card-value">{{ orders_in_queue }}</div>
+        <div class="stat-card-change">{{ orders_draft }} {% trans "draft" %}</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">{% trans "Completed Today" %}</span>
+            <div class="stat-card-icon green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-card-value">{{ orders_completed_today }}</div>
+        <div class="stat-card-change">{{ active_picklists }} {% trans "active picklists" %}</div>
+    </div>
+</div>
+
+<!-- Quick Actions for Onboarding -->
+<div class="card mb-lg">
+    <div class="card-header">
+        <h3>{% trans "Quick Actions" %}</h3>
+    </div>
+    <div class="card-body">
+        <div class="quick-actions">
+            <a href="{% url 'manage_product_create' %}" class="quick-action-card">
+                <div class="quick-action-icon green">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                    </svg>
+                </div>
+                <div class="quick-action-content">
+                    <h4>{% trans "Add Product" %}</h4>
+                    <p>{% trans "Create a new product in your inventory" %}</p>
+                </div>
+                <span class="quick-action-step">{% trans "Step" %} 1</span>
+            </a>
+
+            <a href="{% url 'manage_order_create' %}" class="quick-action-card">
+                <div class="quick-action-icon blue">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+                        <rect x="9" y="3" width="6" height="4" rx="1"/>
+                        <path d="M12 11v6m-3-3h6"/>
+                    </svg>
+                </div>
+                <div class="quick-action-content">
+                    <h4>{% trans "Create Order" %}</h4>
+                    <p>{% trans "Add a new order with products" %}</p>
+                </div>
+                <span class="quick-action-step">{% trans "Step" %} 2</span>
+            </a>
+
+            <a href="{% url 'manage_queue' %}" class="quick-action-card">
+                <div class="quick-action-icon orange">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 12h16M4 18h10"/>
+                        <path d="M16 16l2 2 4-4"/>
+                    </svg>
+                </div>
+                <div class="quick-action-content">
+                    <h4>{% trans "Manage Queue" %}</h4>
+                    <p>{% trans "Add orders to the picking queue" %}</p>
+                </div>
+                <span class="quick-action-step">{% trans "Step" %} 3</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Display & Picker Views -->
+<div class="card mb-lg">
+    <div class="card-header">
+        <h3>{% trans "Open Views" %}</h3>
+    </div>
+    <div class="card-body">
+        <div class="view-links">
+            <a href="{% url 'queue_display' %}" target="_blank" class="view-link-card">
+                <div class="view-link-icon purple">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                        <path d="M8 21h8"/>
+                        <path d="M12 17v4"/>
+                    </svg>
+                </div>
+                <div class="view-link-content">
+                    <h4>{% trans "Queue Display" %}</h4>
+                    <p>{% trans "Full-screen view for warehouse screens. Shows QR codes for pickers to scan." %}</p>
+                </div>
+                <div class="view-link-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                        <polyline points="15 3 21 3 21 9"/>
+                        <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="{% url 'queue_picker' %}" target="_blank" class="view-link-card">
+                <div class="view-link-icon teal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="5" y="2" width="14" height="20" rx="2"/>
+                        <path d="M12 18h.01"/>
+                    </svg>
+                </div>
+                <div class="view-link-content">
+                    <h4>{% trans "Picker View" %}</h4>
+                    <p>{% trans "Mobile-friendly view for order pickers. Share the picker login with your team." %}</p>
+                </div>
+                <div class="view-link-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                        <polyline points="15 3 21 3 21 9"/>
+                        <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <!-- Recent Orders -->
+    <div class="card">
+        <div class="card-header">
+            <h3>{% trans "Recent Orders" %}</h3>
+            <a href="{% url 'manage_orders' %}" class="btn btn-sm btn-secondary">{% trans "View All" %}</a>
+        </div>
+        <div class="card-body p-0">
+            {% if recent_orders %}
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Order" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Created" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in recent_orders %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'manage_order_edit' order.order_id %}">{{ order.order_code }}</a>
+                            </td>
+                            <td>
+                                <span class="badge badge-{% if order.status == 'completed' %}success{% elif order.status == 'in_progress' %}warning{% elif order.status == 'queued' %}info{% elif order.status == 'cancelled' %}danger{% else %}secondary{% endif %}">
+                                    {{ order.get_status_display }}
+                                </span>
+                            </td>
+                            <td class="text-muted">{{ order.created_at|timesince }} {% trans "ago" %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <p>{% trans "No orders yet. Create your first order!" %}</p>
+                <a href="{% url 'manage_order_create' %}" class="btn btn-primary">{% trans "Create Order" %}</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Device Status -->
+    <div class="card">
+        <div class="card-header">
+            <h3>{% trans "Device Status" %}</h3>
+            <a href="{% url 'manage_devices' %}" class="btn btn-sm btn-secondary">{% trans "View All" %}</a>
+        </div>
+        <div class="card-body">
+            <div class="device-status-summary">
+                <div class="device-stat">
+                    <div class="device-stat-value">{{ total_devices }}</div>
+                    <div class="device-stat-label">{% trans "Total Devices" %}</div>
+                </div>
+                <div class="device-stat">
+                    <div class="device-stat-value text-success">{{ active_devices }}</div>
+                    <div class="device-stat-label">{% trans "Active Now" %}</div>
+                </div>
+            </div>
+            {% if total_devices == 0 %}
+            <div class="empty-state mt-md">
+                <p>{% trans "No devices registered yet." %}</p>
+                <p class="text-muted">{% trans "Devices are automatically registered when pickers scan their first QR code." %}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Orders Chart -->
+<div class="card mt-lg">
+    <div class="card-header">
+        <h3>{% trans "Orders This Week" %}</h3>
+    </div>
+    <div class="card-body">
+        <div class="chart-container" id="orders-chart"></div>
+    </div>
+</div>
+
+<style>
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.quick-action-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--gray-50);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.quick-action-card:hover {
+    background: var(--white);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+}
+
+.quick-action-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius);
+    flex-shrink: 0;
+}
+
+.quick-action-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.quick-action-icon.green {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+.quick-action-icon.blue {
+    background: var(--info-light);
+    color: var(--info);
+}
+
+.quick-action-icon.orange {
+    background: var(--warning-light);
+    color: #e67700;
+}
+
+.quick-action-content {
+    flex: 1;
+}
+
+.quick-action-content h4 {
+    margin: 0 0 var(--spacing-xs);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.quick-action-content p {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+
+.quick-action-step {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+/* View Links */
+.view-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.view-link-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--gray-50);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.view-link-card:hover {
+    background: var(--white);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+}
+
+.view-link-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius);
+    flex-shrink: 0;
+}
+
+.view-link-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.view-link-icon.purple {
+    background: #f3e8ff;
+    color: #7c3aed;
+}
+
+.view-link-icon.teal {
+    background: #ccfbf1;
+    color: #0d9488;
+}
+
+.view-link-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.view-link-content h4 {
+    margin: 0 0 var(--spacing-xs);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.view-link-content p {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.view-link-arrow {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
+}
+
+.view-link-arrow svg {
+    width: 20px;
+    height: 20px;
+}
+
+.view-link-card:hover .view-link-arrow {
+    color: var(--primary);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.p-0 {
+    padding: 0 !important;
+}
+
+.device-status-summary {
+    display: flex;
+    gap: var(--spacing-xl);
+}
+
+.device-stat {
+    text-align: center;
+}
+
+.device-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.device-stat-label {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+
+.chart-container {
+    height: 200px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) 0;
+}
+
+.chart-bar {
+    flex: 1;
+    max-width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.chart-bar-fill {
+    width: 100%;
+    background: var(--primary);
+    border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+    min-height: 4px;
+    transition: height var(--transition);
+}
+
+.chart-bar-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.chart-bar-value {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .device-status-summary {
+        justify-content: space-around;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Render chart
+    const chartData = {{ chart_data|safe }};
+    const chartContainer = document.getElementById('orders-chart');
+
+    if (chartData && chartData.length > 0) {
+        const maxCount = Math.max(...chartData.map(d => d.count), 1);
+
+        chartData.forEach(item => {
+            const bar = document.createElement('div');
+            bar.className = 'chart-bar';
+
+            const height = (item.count / maxCount) * 150;
+            bar.innerHTML = `
+                <span class="chart-bar-value">${item.count}</span>
+                <div class="chart-bar-fill" style="height: ${height}px;"></div>
+                <span class="chart-bar-label">${item.date}</span>
+            `;
+
+            chartContainer.appendChild(bar);
+        });
+    }
+});
+</script>
+{% endblock %}

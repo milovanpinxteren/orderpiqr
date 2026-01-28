@@ -286,7 +286,7 @@ def queue_manage(request):
     """
     customer = get_customer_for_staff(request)
     if not customer:
-        return render(request, 'queue/manage.html', {'error': 'No customer profile found'})
+        return render(request, 'manage/queue/list.html', {'error': 'No customer profile found', 'active_nav': 'queue'})
 
     # Get all orders for this customer
     all_orders = Order.objects.filter(customer=customer).annotate(
@@ -303,8 +303,9 @@ def queue_manage(request):
         'queue_orders': queue_orders,
         'available_orders': available_orders,
         'completed_orders': completed_orders,
+        'active_nav': 'queue',
     }
-    return render(request, 'queue/manage.html', context)
+    return render(request, 'manage/queue/list.html', context)
 
 
 @company_admin_required
@@ -312,14 +313,14 @@ def queue_manage_partial(request):
     """HTMX partial for queue management - refreshes queue list."""
     customer = get_customer_for_staff(request)
     if not customer:
-        return render(request, 'queue/_manage_queue_list.html', {'queue_orders': []})
+        return render(request, 'manage/queue/_queue_list.html', {'queue_orders': []})
 
     queue_orders = Order.objects.filter(
         customer=customer,
         status__in=['queued', 'in_progress']
     ).annotate(item_count=Count('lines')).order_by('queue_position', 'created_at')
 
-    return render(request, 'queue/_manage_queue_list.html', {'queue_orders': queue_orders})
+    return render(request, 'manage/queue/_queue_list.html', {'queue_orders': queue_orders})
 
 
 @company_admin_required
