@@ -1,0 +1,623 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% if is_create %}{% trans "Create Order" %}{% else %}{% trans "Edit Order" %}{% endif %}{% endblock %}
+{% block page_title %}{% if is_create %}{% trans "Create Order" %}{% else %}{% trans "Edit Order" %}{% endif %}{% endblock %}
+{% block page_subtitle %}
+<p class="page-subtitle">
+    {% if is_create %}{% trans "Add a new order with products" %}
+    {% else %}{% trans "Update order details" %}{% endif %}
+</p>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <form method="post" class="card" id="order-form">
+        {% csrf_token %}
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group flex-1">
+                    <label class="form-label required" for="order_code">{% trans "Order Code" %}</label>
+                    <input type="text" class="form-control" id="order_code" name="order_code"
+                           value="{% if form_data %}{{ form_data.order_code }}{% elif order %}{{ order.order_code }}{% endif %}"
+                           placeholder="{% trans 'e.g., ORD-2024-001' %}"
+                           required autofocus>
+                </div>
+                {% if is_create %}
+                <div class="form-group">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="checkbox-inline">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="add_to_queue"
+                                   {% if form_data and form_data.add_to_queue == 'on' %}checked{% endif %}>
+                            <span class="checkbox-text">{% trans "Add to queue immediately" %}</span>
+                        </label>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="notes">{% trans "Notes" %}</label>
+                <textarea class="form-control" id="notes" name="notes" rows="2"
+                          placeholder="{% trans 'Optional notes for this order' %}">{% if form_data %}{{ form_data.notes }}{% elif order %}{{ order.notes }}{% endif %}</textarea>
+            </div>
+
+            <hr class="divider">
+
+            <div class="order-lines-section">
+                <div class="section-header">
+                    <h3>{% trans "Order Lines" %}</h3>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="addOrderLine()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14m-7-7h14"/>
+                        </svg>
+                        {% trans "Add Line" %}
+                    </button>
+                </div>
+
+                <div class="order-lines-header">
+                    <span class="header-product">{% trans "Product" %}</span>
+                    <span class="header-amount">{% trans "Qty" %}</span>
+                    <span class="header-location">{% trans "Location" %}</span>
+                    <span class="header-action"></span>
+                </div>
+
+                <div id="order-lines">
+                    {% if order_lines %}
+                        {% for line in order_lines %}
+                        <div class="order-line" data-line-index="{{ forloop.counter0 }}">
+                            <div class="line-product">
+                                <input type="hidden" name="product_id[]" value="{{ line.product.product_id }}">
+                                <div class="product-search-wrapper">
+                                    <input type="text" class="form-control product-search"
+                                           value="{{ line.product.code }} - {{ line.product.description }}"
+                                           placeholder="{% trans 'Search product...' %}"
+                                           data-product-id="{{ line.product.product_id }}"
+                                           data-location="{{ line.product.location }}"
+                                           autocomplete="off">
+                                    <div class="product-dropdown"></div>
+                                </div>
+                            </div>
+                            <div class="line-amount">
+                                <input type="number" name="amount[]" class="form-control"
+                                       value="{{ line.quantity }}" min="1" required>
+                            </div>
+                            <div class="line-location">
+                                <span class="location-display">{{ line.product.location|default:'-' }}</span>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-icon btn-danger" onclick="removeOrderLine(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <div class="order-line" data-line-index="0">
+                        <div class="line-product">
+                            <input type="hidden" name="product_id[]" value="">
+                            <div class="product-search-wrapper">
+                                <input type="text" class="form-control product-search"
+                                       placeholder="{% trans 'Search product by code or description...' %}"
+                                       autocomplete="off">
+                                <div class="product-dropdown"></div>
+                            </div>
+                        </div>
+                        <div class="line-amount">
+                            <input type="number" name="amount[]" class="form-control" value="1" min="1" required>
+                        </div>
+                        <div class="line-location">
+                            <span class="location-display">-</span>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-icon btn-danger" onclick="removeOrderLine(this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <div class="form-actions">
+                <a href="{% url 'manage_orders' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+                <button type="submit" class="btn btn-primary">
+                    {% if is_create %}{% trans "Create Order" %}{% else %}{% trans "Save Changes" %}{% endif %}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+.form-container {
+    max-width: 800px;
+}
+
+.form-row {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.checkbox-inline {
+    padding-top: 8px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+}
+
+.checkbox-text {
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: var(--spacing-lg) 0;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-md);
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.order-lines-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-lines-header {
+    display: grid;
+    grid-template-columns: 1fr 80px 120px 40px;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+#order-lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.order-line {
+    display: grid;
+    grid-template-columns: 1fr 80px 120px 40px;
+    gap: var(--spacing-sm);
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.order-line:last-child {
+    border-bottom: none;
+}
+
+.line-product {
+    min-width: 0;
+    position: relative;
+}
+
+/* Product Search Styles */
+.product-search-wrapper {
+    position: relative;
+}
+
+.product-search {
+    width: 100%;
+}
+
+.product-search.has-value {
+    background-color: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.product-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    min-height: 150px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+}
+
+.product-dropdown.show {
+    display: block;
+}
+
+.product-option {
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    border-bottom: 1px solid var(--gray-100);
+    transition: background var(--transition-fast);
+}
+
+.product-option:last-child {
+    border-bottom: none;
+}
+
+.product-option:hover,
+.product-option.highlighted {
+    background: var(--gray-50);
+}
+
+.product-option-code {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.product-option-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-option-location {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.product-no-results {
+    padding: var(--spacing-md);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.line-amount input {
+    width: 100%;
+    text-align: center;
+}
+
+.line-location {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.location-display {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--gray-100);
+    border-radius: var(--border-radius-sm);
+}
+
+.form-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+    .form-row {
+        flex-direction: column;
+    }
+
+    .order-lines-header {
+        display: none;
+    }
+
+    .order-line {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-md);
+        background: var(--gray-50);
+        border-radius: var(--border-radius);
+        border-bottom: none;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .line-product,
+    .line-amount,
+    .line-location {
+        width: 100%;
+    }
+
+    .line-product::before {
+        content: '{% trans "Product" %}';
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+    }
+
+    .line-amount::before {
+        content: '{% trans "Quantity" %}';
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+    }
+
+    .line-amount input {
+        text-align: left;
+    }
+}
+</style>
+
+<script>
+// Product data from server
+const products = [
+    {% for product in products %}
+    {
+        id: {{ product.product_id }},
+        code: "{{ product.code|escapejs }}",
+        description: "{{ product.description|escapejs }}",
+        location: "{{ product.location|escapejs }}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+];
+
+let lineIndex = {{ order_lines|length|default:1 }};
+let activeDropdown = null;
+let highlightedIndex = -1;
+
+function addOrderLine() {
+    const container = document.getElementById('order-lines');
+
+    const line = document.createElement('div');
+    line.className = 'order-line';
+    line.dataset.lineIndex = lineIndex;
+
+    line.innerHTML = `
+        <div class="line-product">
+            <input type="hidden" name="product_id[]" value="">
+            <div class="product-search-wrapper">
+                <input type="text" class="form-control product-search"
+                       placeholder="{% trans 'Search product by code or description...' %}"
+                       autocomplete="off">
+                <div class="product-dropdown"></div>
+            </div>
+        </div>
+        <div class="line-amount">
+            <input type="number" name="amount[]" class="form-control" value="1" min="1" required>
+        </div>
+        <div class="line-location">
+            <span class="location-display">-</span>
+        </div>
+        <button type="button" class="btn btn-sm btn-icon btn-danger" onclick="removeOrderLine(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+        </button>
+    `;
+
+    container.appendChild(line);
+    initProductSearch(line.querySelector('.product-search'));
+    line.querySelector('.product-search').focus();
+
+    lineIndex++;
+}
+
+function removeOrderLine(button) {
+    const lines = document.querySelectorAll('.order-line');
+    if (lines.length > 1) {
+        button.closest('.order-line').remove();
+    } else {
+        showNotification('{% trans "An order must have at least one product" %}', 'warning');
+    }
+}
+
+function initProductSearch(input) {
+    const wrapper = input.closest('.product-search-wrapper');
+    const dropdown = wrapper.querySelector('.product-dropdown');
+    const line = input.closest('.order-line');
+    const hiddenInput = line.querySelector('input[name="product_id[]"]');
+
+    // Filter and show products
+    function filterProducts(query) {
+        const q = query.toLowerCase().trim();
+        if (q.length === 0) {
+            return products.slice(0, 20); // Show first 20 when empty
+        }
+        return products.filter(p =>
+            p.code.toLowerCase().includes(q) ||
+            p.description.toLowerCase().includes(q)
+        ).slice(0, 20);
+    }
+
+    function renderDropdown(filteredProducts) {
+        if (filteredProducts.length === 0) {
+            dropdown.innerHTML = '<div class="product-no-results">{% trans "No products found" %}</div>';
+        } else {
+            dropdown.innerHTML = filteredProducts.map((p, index) => `
+                <div class="product-option${index === highlightedIndex ? ' highlighted' : ''}"
+                     data-id="${p.id}"
+                     data-code="${p.code}"
+                     data-description="${p.description}"
+                     data-location="${p.location}"
+                     data-index="${index}">
+                    <div class="product-option-code">${escapeHtml(p.code)}</div>
+                    <div class="product-option-desc">${escapeHtml(p.description)}</div>
+                    ${p.location ? `<div class="product-option-location">📍 ${escapeHtml(p.location)}</div>` : ''}
+                </div>
+            `).join('');
+        }
+        dropdown.classList.add('show');
+        activeDropdown = dropdown;
+    }
+
+    function selectProduct(productData) {
+        hiddenInput.value = productData.id;
+        input.value = productData.code + ' - ' + productData.description;
+        input.classList.add('has-value');
+        input.dataset.productId = productData.id;
+        input.dataset.location = productData.location;
+
+        // Update location display
+        const locationDisplay = line.querySelector('.location-display');
+        locationDisplay.textContent = productData.location || '-';
+
+        closeDropdown();
+    }
+
+    function closeDropdown() {
+        dropdown.classList.remove('show');
+        dropdown.innerHTML = '';
+        activeDropdown = null;
+        highlightedIndex = -1;
+    }
+
+    // Event listeners
+    input.addEventListener('focus', function() {
+        highlightedIndex = -1;
+        renderDropdown(filterProducts(this.value));
+    });
+
+    input.addEventListener('input', function() {
+        highlightedIndex = -1;
+        renderDropdown(filterProducts(this.value));
+
+        // Clear selection if user modifies text
+        if (hiddenInput.value && this.value !== this.dataset.lastValue) {
+            hiddenInput.value = '';
+            input.classList.remove('has-value');
+        }
+    });
+
+    input.addEventListener('keydown', function(e) {
+        const options = dropdown.querySelectorAll('.product-option');
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            highlightedIndex = Math.min(highlightedIndex + 1, options.length - 1);
+            updateHighlight(options);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            highlightedIndex = Math.max(highlightedIndex - 1, 0);
+            updateHighlight(options);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (highlightedIndex >= 0 && options[highlightedIndex]) {
+                const opt = options[highlightedIndex];
+                selectProduct({
+                    id: opt.dataset.id,
+                    code: opt.dataset.code,
+                    description: opt.dataset.description,
+                    location: opt.dataset.location
+                });
+            }
+        } else if (e.key === 'Escape') {
+            closeDropdown();
+            input.blur();
+        } else if (e.key === 'Tab') {
+            closeDropdown();
+        }
+    });
+
+    function updateHighlight(options) {
+        options.forEach((opt, idx) => {
+            opt.classList.toggle('highlighted', idx === highlightedIndex);
+        });
+        if (highlightedIndex >= 0 && options[highlightedIndex]) {
+            options[highlightedIndex].scrollIntoView({ block: 'nearest' });
+        }
+    }
+
+    // Click on dropdown option
+    dropdown.addEventListener('click', function(e) {
+        const option = e.target.closest('.product-option');
+        if (option) {
+            selectProduct({
+                id: option.dataset.id,
+                code: option.dataset.code,
+                description: option.dataset.description,
+                location: option.dataset.location
+            });
+        }
+    });
+
+    // Store initial value
+    if (input.value) {
+        input.dataset.lastValue = input.value;
+    }
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.product-search-wrapper')) {
+        document.querySelectorAll('.product-dropdown.show').forEach(d => {
+            d.classList.remove('show');
+            d.innerHTML = '';
+        });
+        activeDropdown = null;
+    }
+});
+
+// Initialize all existing product search inputs
+document.querySelectorAll('.product-search').forEach(initProductSearch);
+
+// Form validation
+document.getElementById('order-form').addEventListener('submit', function(e) {
+    const hiddenInputs = document.querySelectorAll('input[name="product_id[]"]');
+    let valid = true;
+
+    hiddenInputs.forEach(input => {
+        const line = input.closest('.order-line');
+        const searchInput = line.querySelector('.product-search');
+
+        if (!input.value) {
+            valid = false;
+            searchInput.classList.add('error');
+            searchInput.style.borderColor = 'var(--danger)';
+        } else {
+            searchInput.classList.remove('error');
+            searchInput.style.borderColor = '';
+        }
+    });
+
+    if (!valid) {
+        e.preventDefault();
+        showNotification('{% trans "Please select a product for all order lines" %}', 'error');
+    }
+});
+</script>
+{% endblock %}

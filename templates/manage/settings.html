@@ -1,0 +1,210 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Settings" %}{% endblock %}
+{% block page_title %}{% trans "Settings" %}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% trans "Configure your company preferences" %}</p>{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <form method="post" class="card">
+        {% csrf_token %}
+        <div class="card-header">
+            <h3>{% trans "Company Settings" %}</h3>
+        </div>
+        <div class="card-body">
+            {% if settings_list %}
+            <div class="settings-list">
+                {% for setting in settings_list %}
+                {% if setting.definition.options or setting.definition.setting_type == 'bool' %}
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label" for="setting_{{ setting.definition.key }}">
+                            {{ setting.definition.label }}
+                        </label>
+                        {% if setting.definition.help_text %}
+                        <p class="setting-help">{{ setting.definition.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="setting-input">
+                        {% if setting.definition.options %}
+                        {# Settings with predefined options - show as dropdown #}
+                        <select class="form-control" name="setting_{{ setting.definition.key }}"
+                                id="setting_{{ setting.definition.key }}">
+                            {% for option in setting.definition.options %}
+                            <option value="{{ option.value }}"
+                                    {% if setting.value == option.value or not setting.value and setting.definition.default_value == option.value %}selected{% endif %}>
+                                {{ option.label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        {% elif setting.definition.setting_type == 'bool' %}
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="setting_{{ setting.definition.key }}"
+                                   id="setting_{{ setting.definition.key }}"
+                                   {% if setting.casted_value %}checked{% endif %}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                {% empty %}
+                <div class="empty-state">
+                    <svg class="empty-state-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                    </svg>
+                    <h3>{% trans "No settings configured" %}</h3>
+                    <p>{% trans "There are no configurable settings available yet." %}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <svg class="empty-state-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                </svg>
+                <h3>{% trans "No settings configured" %}</h3>
+                <p>{% trans "There are no configurable settings available yet." %}</p>
+            </div>
+            {% endif %}
+        </div>
+        {% if settings_list %}
+        <div class="card-footer">
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">{% trans "Save Settings" %}</button>
+            </div>
+        </div>
+        {% endif %}
+    </form>
+</div>
+
+<style>
+.settings-container {
+    max-width: 800px;
+}
+
+.settings-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.setting-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg) 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.setting-item:first-child {
+    padding-top: 0;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.setting-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.setting-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.setting-help {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.setting-input {
+    flex: 0 0 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.setting-input .form-control {
+    width: 100%;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+    margin: 0;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--gray-300);
+    transition: .3s;
+    border-radius: 26px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background-color: var(--primary);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+    transform: translateX(22px);
+}
+
+.toggle-switch input:focus + .toggle-slider {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+    .setting-item {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .setting-input {
+        flex: 1;
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}

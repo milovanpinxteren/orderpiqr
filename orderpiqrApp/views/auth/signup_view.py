@@ -57,10 +57,10 @@ def signup(request):
                     UserProfile.objects.create(user=picker_user, customer=customer)
 
                 messages.success(request, _("Your company and users were created. Welcome! "
-                                            "Start the onboarding by pressing the green button on the lower right of your screen.")
+                                            "Start by adding your products, then create orders and manage your queue.")
                                  )
                 login(request, admin_user)
-                return redirect(reverse("admin:index"))
+                return redirect(reverse("manage_dashboard"))
             except IntegrityError:
                 # Likely duplicate username/email/company
                 form.add_error(None, _("That username or email is already in use. Please choose a different one."))

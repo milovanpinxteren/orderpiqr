@@ -1,100 +1,398 @@
-{% extends "admin/base_site.html" %}
-{% load i18n static %}
+{% extends "registration/base_auth.html" %}
+{% load static i18n %}
 
-    {% block extrastyle %}
-        {{ block.super }}
-        <link rel="stylesheet" href="{% static 'orderpiqrApp/css/signup.css' %}">
-    {% endblock %}
+{% block title %}{% trans "Sign Up" %} - OrderPiqR{% endblock %}
+{% block max_width %}560px{% endblock %}
+
 {% block content %}
-    {% get_current_language as LANGUAGE_CODE %}
-    {% get_available_languages as LANGUAGES %}
-    {% get_language_info_list for LANGUAGES as languages %}
-<div style="position: absolute; right: 3%">
-    <div class="language-dropdown">
-        <button class="dropdown-toggle">
-            <img src="{% static 'orderpiqrApp/flags/'|add:LANGUAGE_CODE|add:'.png' %}"
-                 alt="{{ current_language.name_local }}"
-                 title="{{ current_language.name_local }}"
-                 class="current-lang-img">
-            {{ current_language.name_local }}
-        </button>
-        <div class="dropdown-menu">
-            {% for lang in languages %}
-                <form action="{% url 'set_language' %}" method="post">
-                    {% csrf_token %}
-                    <input name="next" type="hidden" value="{{ request.path }}">
-                    <input type="hidden" name="language" value="{{ lang.code }}">
-                    <button type="submit" class="dropdown-item">
-                        <img src="{% static 'orderpiqrApp/flags/'|add:lang.code|add:'.png' %}"
-                             alt="{{ lang.name_local }}"
-                             title="{{ lang.name_local }}" style="max-width: 60px">
-                        {{ lang.name_local }}
-                    </button>
-                </form>
+<div class="auth-card">
+    <div class="auth-header">
+        <img src="{% static 'orderpiqrApp/img/favicon.png' %}" alt="OrderPiqR" class="auth-logo">
+        <h1 class="auth-title">{% trans "Create your workspace" %}</h1>
+        <p class="auth-subtitle">{% trans "Get started with OrderPiqR in just a few minutes" %}</p>
+    </div>
+
+    <!-- How it works explanation -->
+    <div class="how-it-works">
+        <h4 class="how-it-works-title">{% trans "How OrderPiqR works" %}</h4>
+        <div class="how-it-works-content">
+            <div class="how-it-works-item">
+                <div class="how-it-works-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
+                <div class="how-it-works-text">
+                    <strong>{% trans "Admin Account" %}</strong>
+                    <span>{% trans "For managers: add products, create orders, manage the queue, and track progress." %}</span>
+                </div>
+            </div>
+            <div class="how-it-works-item">
+                <div class="how-it-works-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <div class="how-it-works-text">
+                    <strong>{% trans "Picker Account" %}</strong>
+                    <span>{% trans "One shared login for all warehouse staff. Each picker enters their name on first use - their device is then remembered." %}</span>
+                </div>
+            </div>
+        </div>
+        <p class="how-it-works-note">
+            {% trans "You only need these two accounts. When pickers log in on a new device, they enter their name once and the device is automatically linked to them." %}
+        </p>
+    </div>
+
+    <div class="auth-body">
+        {% if form.non_field_errors %}
+        <div class="alert alert-error">
+            {% for error in form.non_field_errors %}
+            <div>{{ error }}</div>
             {% endfor %}
         </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const dropdown = document.querySelector('.language-dropdown');
-            const toggle = dropdown.querySelector('.dropdown-toggle');
+        {% endif %}
 
-            toggle.addEventListener('click', function (e) {
-                e.stopPropagation();
-                dropdown.classList.toggle('show');
-            });
+        <form method="POST" novalidate>
+            {% csrf_token %}
 
-            document.addEventListener('click', function () {
-                dropdown.classList.remove('show');
-            });
-        });
-    </script>
-    </div>
-    <div id="content" class="signup-container">
-        <div class="signup-card">
-            <h1 class="title">{% trans "Create your Orderpiqr workspace" %}</h1>
-            <p class="intro">
-                {% blocktrans %}Set up your company with two accounts: one administrator and one order picker.
-                    Usernames must be unique within your company, but emails don’t have to be unique globally.
-                    If you have any questions, email{% endblocktrans %} <a href="mailto:info@orderpiqr.nl">info@orderpiqr.nl</a>
+            <!-- Company Section -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <span class="section-number">1</span>
+                    {% trans "Company Information" %}
+                </h3>
 
-            </p>
-
-            {% if form.non_field_errors %}
-                <div class="errornote">
-                    {% for err in form.non_field_errors %}
-                        <div>{{ err }}</div>{% endfor %}
+                <div class="form-group">
+                    <label class="form-label required" for="id_company_name">{% trans "Company Name" %}</label>
+                    <input type="text"
+                           class="form-control {% if form.company_name.errors %}error{% endif %}"
+                           id="id_company_name"
+                           name="company_name"
+                           value="{{ form.company_name.value|default:'' }}"
+                           placeholder="{% trans 'Enter your company name' %}"
+                           required>
+                    {% if form.company_name.errors %}
+                    <span class="form-error">{{ form.company_name.errors.0 }}</span>
+                    {% endif %}
                 </div>
-            {% endif %}
+            </div>
 
-            <form method="post" novalidate>
-                {% csrf_token %}
+            <!-- Admin Account Section -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <span class="section-number">2</span>
+                    {% trans "Administrator Account" %}
+                </h3>
+                <p class="section-hint">{% trans "Your personal login for the management dashboard. Use this to add products, create orders, manage the queue, and configure settings." %}</p>
 
-                <div class="module aligned">
-                    {% for field in form.visible_fields %}
-                        <div class="form-row{% if field.errors %} errors{% endif %}">
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {% if field.help_text %}<p class="help">{{ field.help_text }}</p>{% endif %}
-                            {% for error in field.errors %}
-                                <ul class="errorlist">
-                                    <li>{{ error }}</li>
-                                </ul>
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required" for="id_admin_profile_username">{% trans "Username" %}</label>
+                        <input type="text"
+                               class="form-control {% if form.admin_profile_username.errors %}error{% endif %}"
+                               id="id_admin_profile_username"
+                               name="admin_profile_username"
+                               value="{{ form.admin_profile_username.value|default:'' }}"
+                               placeholder="{% trans 'admin' %}"
+                               required>
+                        {% if form.admin_profile_username.errors %}
+                        <span class="form-error">{{ form.admin_profile_username.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="id_admin_email">{% trans "Email" %}</label>
+                        <input type="email"
+                               class="form-control {% if form.admin_email.errors %}error{% endif %}"
+                               id="id_admin_email"
+                               name="admin_email"
+                               value="{{ form.admin_email.value|default:'' }}"
+                               placeholder="{% trans 'admin@company.com' %}"
+                               required>
+                        {% if form.admin_email.errors %}
+                        <span class="form-error">{{ form.admin_email.errors.0 }}</span>
+                        {% endif %}
+                    </div>
                 </div>
 
-                <div class="submit-row">
-                    <input type="submit" class="default" value="{% trans 'Create company and users' %}">
-                    {#        <a href="{% url 'login' %}" class="deletelink">{% trans "Cancel" %}</a>#}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required" for="id_admin_password1">{% trans "Password" %}</label>
+                        <input type="password"
+                               class="form-control {% if form.admin_password1.errors %}error{% endif %}"
+                               id="id_admin_password1"
+                               name="admin_password1"
+                               placeholder="{% trans 'Create a password' %}"
+                               required>
+                        {% if form.admin_password1.errors %}
+                        <span class="form-error">{{ form.admin_password1.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="id_admin_password2">{% trans "Confirm Password" %}</label>
+                        <input type="password"
+                               class="form-control {% if form.admin_password2.errors %}error{% endif %}"
+                               id="id_admin_password2"
+                               name="admin_password2"
+                               placeholder="{% trans 'Confirm password' %}"
+                               required>
+                        {% if form.admin_password2.errors %}
+                        <span class="form-error">{{ form.admin_password2.errors.0 }}</span>
+                        {% endif %}
+                    </div>
                 </div>
-            </form>
+            </div>
 
-            <p class="footer-note">
-                {% trans "Already have an account?" %}
-                <a href="{% url 'login' %}">{% trans "Log in" %}</a>
-            </p>
-        </div>
+            <!-- Picker Account Section -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <span class="section-number">3</span>
+                    {% trans "Shared Picker Account" %}
+                </h3>
+                <div class="section-hint-box">
+                    <p class="section-hint-main">{% trans "This is a shared login for all your warehouse pickers." %}</p>
+                    <ul class="section-hint-list">
+                        <li>{% trans "Share these credentials with your team" %}</li>
+                        <li>{% trans "When a picker logs in for the first time, they enter their name" %}</li>
+                        <li>{% trans "Their device is then remembered - no need to enter their name again" %}</li>
+                        <li>{% trans "You can see which picker is using which device in the dashboard" %}</li>
+                    </ul>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required" for="id_picker_profile_username">{% trans "Username" %}</label>
+                        <input type="text"
+                               class="form-control {% if form.picker_profile_username.errors %}error{% endif %}"
+                               id="id_picker_profile_username"
+                               name="picker_profile_username"
+                               value="{{ form.picker_profile_username.value|default:'' }}"
+                               placeholder="{% trans 'picker' %}"
+                               required>
+                        {% if form.picker_profile_username.errors %}
+                        <span class="form-error">{{ form.picker_profile_username.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="id_picker_email">{% trans "Email" %}</label>
+                        <input type="email"
+                               class="form-control {% if form.picker_email.errors %}error{% endif %}"
+                               id="id_picker_email"
+                               name="picker_email"
+                               value="{{ form.picker_email.value|default:'' }}"
+                               placeholder="{% trans 'picker@company.com' %}"
+                               required>
+                        {% if form.picker_email.errors %}
+                        <span class="form-error">{{ form.picker_email.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required" for="id_picker_password1">{% trans "Password" %}</label>
+                        <input type="password"
+                               class="form-control {% if form.picker_password1.errors %}error{% endif %}"
+                               id="id_picker_password1"
+                               name="picker_password1"
+                               placeholder="{% trans 'Create a password' %}"
+                               required>
+                        {% if form.picker_password1.errors %}
+                        <span class="form-error">{{ form.picker_password1.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="id_picker_password2">{% trans "Confirm Password" %}</label>
+                        <input type="password"
+                               class="form-control {% if form.picker_password2.errors %}error{% endif %}"
+                               id="id_picker_password2"
+                               name="picker_password2"
+                               placeholder="{% trans 'Confirm password' %}"
+                               required>
+                        {% if form.picker_password2.errors %}
+                        <span class="form-error">{{ form.picker_password2.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 28px;">
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Create Company & Accounts" %}
+                </button>
+            </div>
+        </form>
     </div>
+
+    <div class="auth-footer">
+        {% trans "Already have an account?" %}
+        <a href="{% url 'login' %}">{% trans "Sign in" %}</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* How it works section */
+    .how-it-works {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+
+    .how-it-works-title {
+        margin: 0 0 16px;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .how-it-works-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .how-it-works-item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .how-it-works-icon {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-light);
+        color: var(--primary);
+        border-radius: 8px;
+    }
+
+    .how-it-works-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .how-it-works-text strong {
+        font-size: 0.875rem;
+        color: var(--text-primary);
+    }
+
+    .how-it-works-text span {
+        font-size: 0.8125rem;
+        color: var(--text-secondary);
+        line-height: 1.4;
+    }
+
+    .how-it-works-note {
+        margin: 16px 0 0;
+        padding-top: 12px;
+        border-top: 1px solid var(--border-color);
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+    }
+
+    /* Form sections */
+    .form-section {
+        margin-bottom: 28px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .form-section:last-of-type {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 0 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .section-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        background: var(--primary);
+        color: var(--white);
+        border-radius: 50%;
+        font-size: 0.8125rem;
+        font-weight: 600;
+    }
+
+    .section-hint {
+        margin: 0 0 16px;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        padding-left: 38px;
+        line-height: 1.5;
+    }
+
+    .section-hint-box {
+        margin: 0 0 16px;
+        padding-left: 38px;
+    }
+
+    .section-hint-main {
+        margin: 0 0 8px;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .section-hint-list {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+
+    .section-hint-list li {
+        margin-bottom: 4px;
+    }
+
+    .section-hint-list li:last-child {
+        margin-bottom: 0;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    @media (max-width: 540px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .section-hint {
+            padding-left: 0;
+        }
+
+        .section-hint-box {
+            padding-left: 0;
+        }
+    }
+</style>
 {% endblock %}

@@ -1,0 +1,198 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Profile" %}{% endblock %}
+{% block page_title %}{% trans "Profile" %}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% trans "Manage your account settings" %}</p>{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-grid">
+        <!-- User Info Card -->
+        <div class="card">
+            <div class="card-header">
+                <h3>{% trans "Account Information" %}</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="update_profile">
+
+                    <div class="form-group">
+                        <label class="form-label" for="username">{% trans "Username" %}</label>
+                        <input type="text" class="form-control" id="username" value="{{ user.username }}" disabled>
+                        <small class="form-hint">{% trans "Username cannot be changed." %}</small>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label class="form-label required" for="first_name">{% trans "First Name" %}</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name"
+                                   value="{{ user.first_name }}" required>
+                        </div>
+                        <div class="form-group flex-1">
+                            <label class="form-label" for="last_name">{% trans "Last Name" %}</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name"
+                                   value="{{ user.last_name }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="email">{% trans "Email" %}</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                               value="{{ user.email }}" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Password Change Card -->
+        <div class="card">
+            <div class="card-header">
+                <h3>{% trans "Change Password" %}</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="change_password">
+
+                    <div class="form-group">
+                        <label class="form-label required" for="current_password">{% trans "Current Password" %}</label>
+                        <input type="password" class="form-control" id="current_password" name="current_password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="new_password">{% trans "New Password" %}</label>
+                        <input type="password" class="form-control" id="new_password" name="new_password"
+                               minlength="8" required>
+                        <small class="form-hint">{% trans "Minimum 8 characters." %}</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="confirm_password">{% trans "Confirm New Password" %}</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                               minlength="8" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">{% trans "Change Password" %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Company Info Card -->
+        <div class="card">
+            <div class="card-header">
+                <h3>{% trans "Company Information" %}</h3>
+            </div>
+            <div class="card-body">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">{% trans "Company" %}</span>
+                        <span class="info-value">{{ customer.name }}</span>
+                    </div>
+                    {% if customer.description %}
+                    <div class="info-item">
+                        <span class="info-label">{% trans "Description" %}</span>
+                        <span class="info-value">{{ customer.description }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="info-item">
+                        <span class="info-label">{% trans "Role" %}</span>
+                        <span class="info-value">
+                            {% if user.is_superuser %}
+                            <span class="badge badge-primary">{% trans "Administrator" %}</span>
+                            {% elif user.is_staff %}
+                            <span class="badge badge-secondary">{% trans "Staff" %}</span>
+                            {% elif user.groups.filter.name == 'companyadmin' %}
+                            <span class="badge badge-secondary">{% trans "Company Admin" %}</span>
+                            {% else %}
+                            <span class="badge badge-secondary">{% trans "User" %}</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">{% trans "Member Since" %}</span>
+                        <span class="info-value">{{ user.date_joined|date:"F j, Y" }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">{% trans "Last Login" %}</span>
+                        <span class="info-value">{{ user.last_login|date:"F j, Y, g:i a" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.profile-container {
+    max-width: 900px;
+}
+
+.profile-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.form-row {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.form-hint {
+    display: block;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.info-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.info-value {
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+@media (max-width: 640px) {
+    .form-row {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}

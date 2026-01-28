@@ -1,0 +1,457 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Queue Management" %}{% endblock %}
+{% block page_title %}{% trans "Queue Management" %}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% trans "Manage and reorder your order queue" %}</p>{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'queue_display' %}" class="btn btn-secondary" target="_blank">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="3" width="20" height="14" rx="2"/>
+        <path d="M8 21h8m-4-4v4"/>
+    </svg>
+    {% trans "Display View" %}
+</a>
+<a href="{% url 'queue_picker' %}" class="btn btn-secondary" target="_blank">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="5" y="2" width="14" height="20" rx="2"/>
+        <path d="M12 18h.01"/>
+    </svg>
+    {% trans "Picker View" %}
+</a>
+{% endblock %}
+
+{% block content %}
+{% if error %}
+<div class="message message-error">{{ error }}</div>
+{% else %}
+
+<div class="queue-management-grid">
+    <!-- Current Queue Panel -->
+    <div class="card queue-panel">
+        <div class="card-header">
+            <h3>{% trans "Current Queue" %}</h3>
+            <span class="badge badge-primary">{{ queue_orders.count }} {% trans "orders" %}</span>
+        </div>
+        <div class="card-body p-0"
+             id="queue-list"
+             hx-get="{% url 'queue_manage_partial' %}"
+             hx-trigger="refresh-queue from:body"
+             hx-swap="innerHTML">
+            {% include 'manage/queue/_queue_list.html' %}
+        </div>
+    </div>
+
+    <!-- Available Orders Panel -->
+    <div class="card available-panel">
+        <div class="card-header">
+            <h3>{% trans "Available Orders" %}</h3>
+            <span class="badge badge-secondary">{{ available_orders.count }} {% trans "orders" %}</span>
+        </div>
+        <div class="card-body p-0" id="available-list">
+            {% if available_orders %}
+            <div class="available-order-list">
+                {% for order in available_orders %}
+                <div class="available-order-item" data-order-id="{{ order.order_id }}">
+                    <div class="order-info">
+                        <span class="order-code">{{ order.order_code }}</span>
+                        <span class="item-count">{{ order.item_count }} {% trans "items" %}</span>
+                        {% if order.notes %}
+                        <span class="order-notes-icon" title="{{ order.notes }}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                                <path d="M14 2v6h6M16 13H8m8 4H8m2-8H8"/>
+                            </svg>
+                        </span>
+                        {% endif %}
+                    </div>
+                    <button class="btn btn-sm btn-primary" onclick="addToQueue({{ order.order_id }})">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14m-7-7h14"/>
+                        </svg>
+                        {% trans "Add" %}
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state small">
+                <p>{% trans "No draft orders available" %}</p>
+                <a href="{% url 'manage_order_create' %}" class="btn btn-sm btn-secondary">{% trans "Create Order" %}</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recently Completed Panel -->
+    <div class="card completed-panel">
+        <div class="card-header">
+            <h3>{% trans "Recently Completed" %}</h3>
+        </div>
+        <div class="card-body p-0" id="completed-list">
+            {% if completed_orders %}
+            <div class="completed-order-list">
+                {% for order in completed_orders %}
+                <div class="completed-order-item">
+                    <div class="order-info">
+                        <span class="order-code">{{ order.order_code }}</span>
+                        <span class="item-count">{{ order.item_count }} {% trans "items" %}</span>
+                    </div>
+                    <span class="completed-time text-muted">
+                        {{ order.completed_at|timesince }} {% trans "ago" %}
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state small">
+                <p>{% trans "No completed orders yet" %}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+<style>
+.queue-management-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: var(--spacing-lg);
+}
+
+.queue-panel {
+    grid-row: span 2;
+}
+
+.available-panel,
+.completed-panel {
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.available-panel .card-body,
+.completed-panel .card-body {
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Queue List Styles */
+.queue-order-list {
+    min-height: 200px;
+}
+
+.queue-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    transition: background var(--transition-fast);
+}
+
+.queue-item:last-child {
+    border-bottom: none;
+}
+
+.queue-item:hover {
+    background: var(--gray-50);
+}
+
+.queue-item.in-progress {
+    background: var(--warning-light);
+}
+
+.drag-handle {
+    cursor: grab;
+    padding: var(--spacing-xs);
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    line-height: 1;
+    user-select: none;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.queue-position {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.queue-item .order-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.queue-item .order-code {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.queue-item .item-count {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+
+.queue-item .order-notes-icon {
+    color: var(--text-muted);
+}
+
+.order-status {
+    flex-shrink: 0;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-badge.queued {
+    background: var(--gray-100);
+    color: var(--text-secondary);
+}
+
+.status-badge.in-progress {
+    background: var(--warning);
+    color: white;
+}
+
+.order-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.btn-move,
+.btn-remove {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    background: var(--white);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: all var(--transition-fast);
+}
+
+.btn-move:hover {
+    background: var(--gray-100);
+    border-color: var(--gray-300);
+}
+
+.btn-remove {
+    color: var(--danger);
+}
+
+.btn-remove:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: white;
+}
+
+/* Available Order List */
+.available-order-list,
+.completed-order-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.available-order-item,
+.completed-order-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.available-order-item:last-child,
+.completed-order-item:last-child {
+    border-bottom: none;
+}
+
+.available-order-item .order-info,
+.completed-order-item .order-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    min-width: 0;
+}
+
+.available-order-item .order-code,
+.completed-order-item .order-code {
+    font-weight: 600;
+}
+
+.available-order-item .item-count,
+.completed-order-item .item-count {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+
+.completed-time {
+    font-size: 0.8125rem;
+    white-space: nowrap;
+}
+
+/* Empty State */
+.empty-state.small {
+    padding: var(--spacing-lg);
+    text-align: center;
+}
+
+.empty-state.small p {
+    margin: 0 0 var(--spacing-sm);
+    color: var(--text-muted);
+}
+
+.p-0 { padding: 0 !important; }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .queue-management-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .queue-panel {
+        grid-row: auto;
+    }
+
+    .available-panel,
+    .completed-panel {
+        max-height: 300px;
+    }
+}
+</style>
+
+<script>
+// Initialize Sortable for drag-and-drop reordering
+document.addEventListener('DOMContentLoaded', function() {
+    initSortable();
+});
+
+// Reinitialize after HTMX swap
+document.body.addEventListener('htmx:afterSwap', function(event) {
+    if (event.detail.target.id === 'queue-list') {
+        initSortable();
+    }
+});
+
+function initSortable() {
+    const queueList = document.querySelector('#queue-list .queue-order-list');
+    if (queueList) {
+        new Sortable(queueList, {
+            animation: 150,
+            handle: '.drag-handle',
+            onEnd: function(evt) {
+                saveQueueOrder();
+            }
+        });
+    }
+}
+
+function saveQueueOrder() {
+    const items = document.querySelectorAll('#queue-list .queue-item');
+    const orderIds = Array.from(items).map(item => parseInt(item.dataset.orderId));
+
+    fetch("{% url 'queue_reorder' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({ order_ids: orderIds })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            showNotification('{% trans "Queue order saved" %}', 'success');
+        } else {
+            showNotification(data.message, 'error');
+        }
+    });
+}
+
+function addToQueue(orderId) {
+    fetch(`{% url 'queue_add_order' order_id=0 %}`.replace('0', orderId), {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            showNotification('{% trans "Order added to queue" %}', 'success');
+            location.reload();
+        } else {
+            showNotification(data.message, 'error');
+        }
+    });
+}
+
+function removeFromQueue(orderId) {
+    fetch(`{% url 'queue_remove_order' order_id=0 %}`.replace('0', orderId), {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            showNotification('{% trans "Order removed from queue" %}', 'success');
+            location.reload();
+        } else {
+            showNotification(data.message, 'error');
+        }
+    });
+}
+
+function moveOrder(orderId, direction) {
+    fetch(`{% url 'queue_move_order' order_id=0 direction='up' %}`.replace('0', orderId).replace('up', direction), {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            htmx.trigger(document.body, 'refresh-queue');
+        } else {
+            showNotification(data.message, 'error');
+        }
+    });
+}
+</script>
+{% endblock %}

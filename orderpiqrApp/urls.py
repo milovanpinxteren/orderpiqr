@@ -29,6 +29,27 @@ from orderpiqrApp.views.queue_views import (
     queue_reorder,
     queue_move_order,
 )
+from orderpiqrApp.views.manage_views import (
+    dashboard,
+    products_list,
+    product_create,
+    product_edit,
+    product_delete,
+    products_import,
+    products_export,
+    orders_list,
+    order_create,
+    order_edit,
+    order_delete,
+    orders_import,
+    queue_manage as manage_queue,
+    picklists_list,
+    picklist_detail,
+    devices_list,
+    profile,
+    settings_view,
+    logout_view,
+)
 
 urlpatterns = [
     path('', index, name='index'),
@@ -49,4 +70,37 @@ urlpatterns = [
     path('queue/remove/<int:order_id>/', queue_remove_order, name='queue_remove_order'),
     path('queue/reorder/', queue_reorder, name='queue_reorder'),
     path('queue/move/<int:order_id>/<str:direction>/', queue_move_order, name='queue_move_order'),
+
+    # Custom Admin Management Interface
+    path('manage/', dashboard, name='manage_dashboard'),
+
+    # Products Management
+    path('manage/products/', products_list, name='manage_products'),
+    path('manage/products/create/', product_create, name='manage_product_create'),
+    path('manage/products/<int:product_id>/edit/', product_edit, name='manage_product_edit'),
+    path('manage/products/<int:product_id>/delete/', product_delete, name='manage_product_delete'),
+    path('manage/products/import/', products_import, name='manage_products_import'),
+    path('manage/products/export/', products_export, name='manage_products_export'),
+
+    # Orders Management
+    path('manage/orders/', orders_list, name='manage_orders'),
+    path('manage/orders/create/', order_create, name='manage_order_create'),
+    path('manage/orders/<int:order_id>/edit/', order_edit, name='manage_order_edit'),
+    path('manage/orders/<int:order_id>/delete/', order_delete, name='manage_order_delete'),
+    path('manage/orders/import/', orders_import, name='manage_orders_import'),
+
+    # Queue Management (in new admin)
+    path('manage/queue/', manage_queue, name='manage_queue'),
+
+    # Picklists (Read-only)
+    path('manage/picklists/', picklists_list, name='manage_picklists'),
+    path('manage/picklists/<int:picklist_id>/', picklist_detail, name='manage_picklist_detail'),
+
+    # Devices (Read-only)
+    path('manage/devices/', devices_list, name='manage_devices'),
+
+    # Profile & Settings
+    path('manage/profile/', profile, name='manage_profile'),
+    path('manage/settings/', settings_view, name='manage_settings'),
+    path('manage/logout/', logout_view, name='manage_logout'),
 ]

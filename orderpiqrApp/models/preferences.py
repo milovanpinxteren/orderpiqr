@@ -28,6 +28,8 @@ class SettingDefinition(models.Model):
                                     help_text=_("The type of this setting (e.g. boolean, integer, string)."))
     default_value = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Default value"),
                                      help_text=_("Used if customer-specific value is not set."))
+    options = models.JSONField(blank=True, null=True, verbose_name=_("Options"),
+                               help_text=_("For 'choice' type settings: list of {value, label} options. E.g. [{\"value\": \"original\", \"label\": \"Original order\"}]"))
 
     def __str__(self):
         return f"{self.label} ({self.key})"

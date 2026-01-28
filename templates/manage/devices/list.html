@@ -1,0 +1,238 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Devices" %}{% endblock %}
+{% block page_title %}{% trans "Devices" %}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% trans "View registered picking devices" %}</p>{% endblock %}
+
+{% block content %}
+<!-- Devices Grid -->
+{% if devices %}
+<div class="devices-grid">
+    {% for device in devices %}
+    <div class="device-card {% if device.is_active %}active{% endif %}">
+        <div class="device-header">
+            <div class="device-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="5" y="2" width="14" height="20" rx="2"/>
+                    <path d="M12 18h.01"/>
+                </svg>
+            </div>
+            <div class="device-status">
+                {% if device.is_active %}
+                <span class="status-indicator active"></span>
+                <span class="status-text">{% trans "Online" %}</span>
+                {% else %}
+                <span class="status-indicator"></span>
+                <span class="status-text">{% trans "Offline" %}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="device-body">
+            <h3 class="device-name">{{ device.device_name|default:device.device_id|truncatechars:20 }}</h3>
+
+            <div class="device-info">
+                <div class="info-row">
+                    <span class="info-label">{% trans "User" %}</span>
+                    <span class="info-value">
+                        {% if device.user %}
+                        {{ device.user.get_full_name|default:device.user.username }}
+                        {% else %}
+                        <span class="text-muted">{% trans "Unassigned" %}</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">{% trans "Last Seen" %}</span>
+                    <span class="info-value">
+                        {% if device.last_seen %}
+                        {{ device.last_seen|timesince }} {% trans "ago" %}
+                        {% else %}
+                        <span class="text-muted">{% trans "Never" %}</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">{% trans "Registered" %}</span>
+                    <span class="info-value">{{ device.created_at|date:"d M Y" }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card">
+    <div class="card-body">
+        <div class="empty-state">
+            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="5" y="2" width="14" height="20" rx="2"/>
+                <path d="M12 18h.01"/>
+            </svg>
+            <h3>{% trans "No devices registered" %}</h3>
+            <p>{% trans "Devices are automatically registered when pickers access the system." %}</p>
+            <div class="info-box mt-md">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4m0-4h.01"/>
+                </svg>
+                <div>
+                    <strong>{% trans "How it works" %}:</strong>
+                    <ul class="info-list">
+                        <li>{% trans "A picker opens the queue on their mobile device" %}</li>
+                        <li>{% trans "They enter their name to identify themselves" %}</li>
+                        <li>{% trans "The device is automatically registered" %}</li>
+                        <li>{% trans "They can then claim orders from the queue" %}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<style>
+.devices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.device-card {
+    background: var(--bg-card);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: all var(--transition-fast);
+}
+
+.device-card.active {
+    border-color: var(--success);
+}
+
+.device-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.device-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md);
+    background: var(--gray-50);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.device-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gray-200);
+    border-radius: var(--border-radius);
+    color: var(--gray-600);
+}
+
+.device-card.active .device-icon {
+    background: var(--success-light);
+    color: var(--success);
+}
+
+.device-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.device-status {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gray-400);
+}
+
+.status-indicator.active {
+    background: var(--success);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.status-text {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+
+.device-body {
+    padding: var(--spacing-md);
+}
+
+.device-name {
+    margin: 0 0 var(--spacing-md);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.device-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-label {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+
+.info-value {
+    font-size: 0.8125rem;
+    color: var(--text-primary);
+}
+
+.info-box {
+    display: flex;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: var(--info-light);
+    border-radius: var(--border-radius);
+    color: #0c5460;
+    text-align: left;
+}
+
+.info-box svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.info-list {
+    margin: var(--spacing-xs) 0 0;
+    padding-left: var(--spacing-md);
+}
+
+.info-list li {
+    margin-bottom: var(--spacing-xs);
+}
+
+.info-list li:last-child {
+    margin-bottom: 0;
+}
+</style>
+{% endblock %}
