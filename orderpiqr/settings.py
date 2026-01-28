@@ -203,17 +203,34 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'OrderPiqr API',
-    'DESCRIPTION': 'API documentation for Orderpiqr',
-    'VERSION': '1.0.3',
-    'TAGS': [
-        {'name': 'products'},
-        {'name': 'orders'},
-        {'name': 'orderlines'},
-        {'name': 'picklists'},
-        {'name': 'productpicks'},
-    ]
+    'TITLE': 'OrderPiqR API',
+    'DESCRIPTION': '''
+REST API for the OrderPiqR warehouse order management system.
 
+## Documentation
+
+- **[Full Documentation (English)](/api/documentation/en/)** - Comprehensive guide with examples
+- **[Volledige Documentatie (Nederlands)](/api/documentation/nl/)** - Uitgebreide handleiding met voorbeelden
+
+## Quick Links
+
+- [Swagger UI](/api/docs/) - Interactive API testing
+- [ReDoc](/api/redoc/) - Alternative documentation viewer
+
+## Authentication
+
+All endpoints require JWT authentication. Obtain a token via `POST /api/token/` and include it in requests as `Authorization: Bearer <token>`.
+''',
+    'VERSION': '1.1.0',
+    'TAGS': [
+        {'name': 'products', 'description': 'Product management - inventory items that can be ordered and picked'},
+        {'name': 'orders', 'description': 'Order management - customer requests with order lines'},
+        {'name': 'queue', 'description': 'Queue management - prioritize and manage picking operations'},
+        {'name': 'devices', 'description': 'Device management - register and track picking devices'},
+        {'name': 'picklists', 'description': 'Pick list management - picking jobs assigned to devices'},
+        {'name': 'productpicks', 'description': 'Product picks - individual items within a pick list'},
+        {'name': 'orderlines', 'description': 'Order lines - individual items within an order'},
+    ]
 }
 
 SIMPLE_JWT = {
