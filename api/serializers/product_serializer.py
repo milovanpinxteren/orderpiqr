@@ -25,7 +25,7 @@ class ProductSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['customer', 'order_count']
 
-    def get_order_count(self, obj):
+    def get_order_count(self, obj) -> int:
         """Count how many order lines reference this product."""
         return OrderLine.objects.filter(product=obj).count()
 
@@ -41,7 +41,7 @@ class ProductDetailSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         fields = ProductSerializer.Meta.fields + ['recent_orders']
 
-    def get_recent_orders(self, obj):
+    def get_recent_orders(self, obj) -> list[dict]:
         """Get the 5 most recent orders containing this product."""
         recent_lines = OrderLine.objects.filter(
             product=obj

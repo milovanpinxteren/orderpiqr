@@ -65,8 +65,9 @@ urlpatterns = [
     # Swagger UI
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 
-    # Optional: Redoc UI
+    # Redoc UI
     path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('api/reference/', SpectacularRedocView.as_view(url_name='schema'), name='api-reference'),
 
     # Markdown documentation
     path('api/documentation/', documentation_view, {'language': 'en'}, name='api-documentation'),
