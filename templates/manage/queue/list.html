@@ -277,6 +277,33 @@
     color: white;
 }
 
+.btn-unlock {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--warning, #f59e0b);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--warning, #f59e0b);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+}
+
+.btn-unlock:hover {
+    background: var(--warning, #f59e0b);
+    color: white;
+}
+
+.picker-name {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--text-muted, #888);
+    margin-left: 4px;
+}
+
 /* Available Order List */
 .available-order-list,
 .completed-order-list {
@@ -430,6 +457,25 @@ function removeFromQueue(orderId) {
     .then(data => {
         if (data.status === 'ok') {
             showNotification('{% trans "Order removed from queue" %}', 'success');
+            location.reload();
+        } else {
+            showNotification(data.message, 'error');
+        }
+    });
+}
+
+function unlockOrder(orderId) {
+    if (!confirm('{% trans "Unlock this order? The picker will lose their progress." %}')) return;
+    fetch(`{% url 'queue_unlock_order' order_id=0 %}`.replace('0', orderId), {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            showNotification('{% trans "Order unlocked" %}', 'success');
             location.reload();
         } else {
             showNotification(data.message, 'error');

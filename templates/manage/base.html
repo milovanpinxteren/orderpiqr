@@ -106,6 +106,24 @@
             </div>
 
             <div class="nav-section">
+                <span class="nav-label">{% trans "Developer" %}</span>
+                <a href="{% url 'swagger-ui' %}" class="nav-item {% if active_nav == 'api-docs' %}active{% endif %}" target="_blank">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 18 22 12 16 6"/>
+                        <polyline points="8 6 2 12 8 18"/>
+                    </svg>
+                    <span>{% trans "API Docs" %}</span>
+                </a>
+                <a href="{% url 'redoc' %}" class="nav-item {% if active_nav == 'api-redoc' %}active{% endif %}" target="_blank">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                        <path d="M14 2v6h6M16 13H8m8 4H8m2-8H8"/>
+                    </svg>
+                    <span>{% trans "API Reference" %}</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
                 <span class="nav-label">{% trans "Settings" %}</span>
                 <a href="{% url 'manage_settings' %}" class="nav-item {% if active_nav == 'settings' %}active{% endif %}">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

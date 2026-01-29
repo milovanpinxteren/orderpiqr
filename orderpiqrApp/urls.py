@@ -28,6 +28,7 @@ from orderpiqrApp.views.queue_views import (
     queue_remove_order,
     queue_reorder,
     queue_move_order,
+    queue_unlock_order,
 )
 from orderpiqrApp.views.manage_views import (
     dashboard,
@@ -35,6 +36,8 @@ from orderpiqrApp.views.manage_views import (
     product_create,
     product_edit,
     product_delete,
+    products_bulk_action,
+    product_inline_edit,
     products_import,
     products_export,
     orders_list,
@@ -68,6 +71,7 @@ urlpatterns = [
     path('queue/manage/partial/', queue_manage_partial, name='queue_manage_partial'),
     path('queue/add/<int:order_id>/', queue_add_order, name='queue_add_order'),
     path('queue/remove/<int:order_id>/', queue_remove_order, name='queue_remove_order'),
+    path('queue/unlock/<int:order_id>/', queue_unlock_order, name='queue_unlock_order'),
     path('queue/reorder/', queue_reorder, name='queue_reorder'),
     path('queue/move/<int:order_id>/<str:direction>/', queue_move_order, name='queue_move_order'),
 
@@ -79,6 +83,8 @@ urlpatterns = [
     path('manage/products/create/', product_create, name='manage_product_create'),
     path('manage/products/<int:product_id>/edit/', product_edit, name='manage_product_edit'),
     path('manage/products/<int:product_id>/delete/', product_delete, name='manage_product_delete'),
+    path('manage/products/<int:product_id>/inline-edit/', product_inline_edit, name='manage_product_inline_edit'),
+    path('manage/products/bulk-action/', products_bulk_action, name='manage_products_bulk_action'),
     path('manage/products/import/', products_import, name='manage_products_import'),
     path('manage/products/export/', products_export, name='manage_products_export'),
 

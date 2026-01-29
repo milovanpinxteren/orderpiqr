@@ -6,10 +6,26 @@ from django.db.models import Count, Max
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
+
+from django.db.models import Subquery, OuterRef
 
 from orderpiqrApp.models import Order, Device, UserProfile, PickList, ProductPick
 from orderpiqrApp.utils.decorators import company_admin_required
+
+
+def _annotate_picker(queryset):
+    """Annotate orders with the device name of the active picker."""
+    return queryset.annotate(
+        picked_by=Subquery(
+            PickList.objects.filter(
+                order=OuterRef('pk'),
+                pick_started=True,
+                successful__isnull=True,
+            ).order_by('-created_at').values('device__name')[:1]
+        )
+    )
 
 
 def get_queue_orders(customer, include_lines=False):
@@ -108,7 +124,7 @@ def queue_picker(request):
         device.last_login = timezone.now()
         device.save(update_fields=['last_login'])
 
-    orders = get_queue_orders(customer, include_lines=True)
+    orders = _annotate_picker(get_queue_orders(customer, include_lines=True))
 
     context = {
         'orders': orders,
@@ -128,7 +144,7 @@ def queue_picker_partial(request):
     except UserProfile.DoesNotExist:
         return render(request, 'queue/_picker_orders.html', {'orders': []})
 
-    orders = get_queue_orders(customer, include_lines=True)
+    orders = _annotate_picker(get_queue_orders(customer, include_lines=True))
 
     context = {
         'orders': orders,
@@ -152,7 +168,7 @@ def queue_claim_order(request, order_id):
         print(f"[Queue Claim] Customer: {customer}")
     except UserProfile.DoesNotExist:
         print("[Queue Claim] ERROR: No customer profile")
-        return JsonResponse({'status': 'error', 'message': 'No customer profile'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('No customer profile')}, status=400)
 
     # Get device fingerprint from request
     try:
@@ -180,7 +196,7 @@ def queue_claim_order(request, order_id):
         print("[Queue Claim] ERROR: Device not found")
         return JsonResponse({
             'status': 'error',
-            'message': 'Device not found. Please log in again.'
+            'message': _('Device not found. Please log in again.')
         }, status=400)
 
     # Update last_login on activity
@@ -195,21 +211,32 @@ def queue_claim_order(request, order_id):
             )
 
             if order.status == 'in_progress':
-                return JsonResponse({
-                    'status': 'error',
-                    'message': 'This order is already being picked'
-                }, status=409)
+                force = data.get('force', False)
+                if not force:
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': _('This order is already being picked')
+                    }, status=409)
+                # Force reclaim: delete old active picklist
+                old_picklists = PickList.objects.filter(
+                    order=order,
+                    pick_started=True,
+                    successful__isnull=True,
+                )
+                for pl in old_picklists:
+                    ProductPick.objects.filter(picklist=pl).delete()
+                    pl.delete()
 
             if order.status == 'completed':
                 return JsonResponse({
                     'status': 'error',
-                    'message': 'This order has already been completed'
+                    'message': _('This order has already been completed')
                 }, status=409)
 
-            if order.status != 'queued':
+            if order.status not in ['queued', 'in_progress']:
                 return JsonResponse({
                     'status': 'error',
-                    'message': 'This order is not available for picking'
+                    'message': _('This order is not available for picking')
                 }, status=400)
 
             # Lock the order
@@ -256,7 +283,7 @@ def queue_claim_order(request, order_id):
             print(f"[Queue Claim] Returning picklist_products: {picklist_products}")
             return JsonResponse({
                 'status': 'ok',
-                'message': 'Order claimed successfully',
+                'message': _('Order claimed successfully'),
                 'order_code': order.order_code,
                 'picklist': picklist_products,
                 'redirect_url': '/'
@@ -265,7 +292,7 @@ def queue_claim_order(request, order_id):
     except Order.DoesNotExist:
         return JsonResponse({
             'status': 'error',
-            'message': 'Order not found'
+            'message': _('Order not found')
         }, status=404)
 
 
@@ -303,7 +330,7 @@ def queue_manage(request):
     ).order_by('queue_position', '-created_at')
 
     # Separate queued/in_progress from others
-    queue_orders = all_orders.filter(status__in=['queued', 'in_progress'])
+    queue_orders = _annotate_picker(all_orders.filter(status__in=['queued', 'in_progress']))
     available_orders = all_orders.filter(status='draft')
     completed_orders = all_orders.filter(status='completed').order_by('-completed_at')[:20]
 
@@ -324,10 +351,12 @@ def queue_manage_partial(request):
     if not customer:
         return render(request, 'manage/queue/_queue_list.html', {'queue_orders': []})
 
-    queue_orders = Order.objects.filter(
-        customer=customer,
-        status__in=['queued', 'in_progress']
-    ).annotate(item_count=Count('lines')).order_by('queue_position', 'created_at')
+    queue_orders = _annotate_picker(
+        Order.objects.filter(
+            customer=customer,
+            status__in=['queued', 'in_progress']
+        ).annotate(item_count=Count('lines')).order_by('queue_position', 'created_at')
+    )
 
     return render(request, 'manage/queue/_queue_list.html', {'queue_orders': queue_orders})
 
@@ -338,7 +367,7 @@ def queue_add_order(request, order_id):
     """Add an order to the queue."""
     customer = get_customer_for_staff(request)
     if not customer:
-        return JsonResponse({'status': 'error', 'message': 'No customer'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('No customer')}, status=400)
 
     try:
         with transaction.atomic():
@@ -350,7 +379,7 @@ def queue_add_order(request, order_id):
             if order.status != 'draft':
                 return JsonResponse({
                     'status': 'error',
-                    'message': 'Only draft orders can be added to queue'
+                    'message': _('Only draft orders can be added to queue')
                 }, status=400)
 
             # Get next queue position
@@ -365,11 +394,11 @@ def queue_add_order(request, order_id):
 
             return JsonResponse({
                 'status': 'ok',
-                'message': 'Order added to queue'
+                'message': _('Order added to queue')
             })
 
     except Order.DoesNotExist:
-        return JsonResponse({'status': 'error', 'message': 'Order not found'}, status=404)
+        return JsonResponse({'status': 'error', 'message': _('Order not found')}, status=404)
 
 
 @company_admin_required
@@ -378,7 +407,7 @@ def queue_remove_order(request, order_id):
     """Remove an order from the queue (back to draft)."""
     customer = get_customer_for_staff(request)
     if not customer:
-        return JsonResponse({'status': 'error', 'message': 'No customer'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('No customer')}, status=400)
 
     try:
         with transaction.atomic():
@@ -390,7 +419,7 @@ def queue_remove_order(request, order_id):
             if order.status not in ['queued', 'in_progress']:
                 return JsonResponse({
                     'status': 'error',
-                    'message': 'Order is not in queue'
+                    'message': _('Order is not in queue')
                 }, status=400)
 
             order.queue_position = None
@@ -399,11 +428,11 @@ def queue_remove_order(request, order_id):
 
             return JsonResponse({
                 'status': 'ok',
-                'message': 'Order removed from queue'
+                'message': _('Order removed from queue')
             })
 
     except Order.DoesNotExist:
-        return JsonResponse({'status': 'error', 'message': 'Order not found'}, status=404)
+        return JsonResponse({'status': 'error', 'message': _('Order not found')}, status=404)
 
 
 @company_admin_required
@@ -414,16 +443,16 @@ def queue_reorder(request):
 
     customer = get_customer_for_staff(request)
     if not customer:
-        return JsonResponse({'status': 'error', 'message': 'No customer'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('No customer')}, status=400)
 
     try:
         data = json.loads(request.body)
         order_ids = data.get('order_ids', [])
     except json.JSONDecodeError:
-        return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('Invalid JSON')}, status=400)
 
     if not order_ids:
-        return JsonResponse({'status': 'error', 'message': 'No order IDs provided'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('No order IDs provided')}, status=400)
 
     try:
         with transaction.atomic():
@@ -436,13 +465,13 @@ def queue_reorder(request):
 
             return JsonResponse({
                 'status': 'ok',
-                'message': 'Queue reordered'
+                'message': _('Queue reordered')
             })
 
     except Exception as e:
         return JsonResponse({
             'status': 'error',
-            'message': f'Error reordering: {str(e)}'
+            'message': _('Error reordering: {}').format(str(e))
         }, status=500)
 
 
@@ -452,10 +481,10 @@ def queue_move_order(request, order_id, direction):
     """Move an order up or down in the queue."""
     customer = get_customer_for_staff(request)
     if not customer:
-        return JsonResponse({'status': 'error', 'message': 'No customer'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('No customer')}, status=400)
 
     if direction not in ['up', 'down']:
-        return JsonResponse({'status': 'error', 'message': 'Invalid direction'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('Invalid direction')}, status=400)
 
     try:
         with transaction.atomic():
@@ -489,8 +518,51 @@ def queue_move_order(request, order_id, direction):
 
             return JsonResponse({
                 'status': 'ok',
-                'message': f'Order moved {direction}'
+                'message': _('Order moved {direction}').format(direction=direction)
             })
 
     except Order.DoesNotExist:
-        return JsonResponse({'status': 'error', 'message': 'Order not found'}, status=404)
+        return JsonResponse({'status': 'error', 'message': _('Order not found')}, status=404)
+
+
+@company_admin_required
+@require_POST
+def queue_unlock_order(request, order_id):
+    """Unlock an in-progress order back to queued, removing the active picklist."""
+    customer = get_customer_for_staff(request)
+    if not customer:
+        return JsonResponse({'status': 'error', 'message': _('No customer')}, status=400)
+
+    try:
+        with transaction.atomic():
+            order = Order.objects.select_for_update().get(
+                order_id=order_id,
+                customer=customer,
+            )
+
+            if order.status != 'in_progress':
+                return JsonResponse({
+                    'status': 'error',
+                    'message': _('Order is not in progress')
+                }, status=400)
+
+            # Delete the active (incomplete) picklist and its picks
+            active_picklists = PickList.objects.filter(
+                order=order,
+                pick_started=True,
+                successful__isnull=True,
+            )
+            for pl in active_picklists:
+                ProductPick.objects.filter(picklist=pl).delete()
+                pl.delete()
+
+            order.status = 'queued'
+            order.save(update_fields=['status'])
+
+            return JsonResponse({
+                'status': 'ok',
+                'message': _('Order unlocked')
+            })
+
+    except Order.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': _('Order not found')}, status=404)

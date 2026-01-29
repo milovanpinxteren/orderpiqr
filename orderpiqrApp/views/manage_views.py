@@ -149,6 +149,18 @@ def products_list(request):
         products = products.filter(active=False)
     context['status_filter'] = status_filter
 
+    # Filter by location
+    location_filter = request.GET.get('location', '')
+    if location_filter:
+        products = products.filter(location=location_filter)
+    context['location_filter'] = location_filter
+
+    # Get distinct locations for the filter dropdown
+    context['locations'] = list(
+        Product.objects.filter(customer=customer, location__gt='')
+        .values_list('location', flat=True).distinct().order_by('location')
+    )
+
     # Ordering
     ordering = request.GET.get('order', 'code')
     if ordering in ['code', '-code', 'description', '-description', 'location', '-location', 'product_id', '-product_id']:
@@ -270,6 +282,86 @@ def product_delete(request, product_id):
         return JsonResponse({'status': 'ok', 'message': _("Product '{code}' deleted.").format(code=code)})
 
     return JsonResponse({'status': 'error', 'message': _("Invalid request method.")}, status=405)
+
+
+@company_admin_required
+def products_bulk_action(request):
+    """Handle bulk actions on products (AJAX)."""
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': _("Invalid request method.")}, status=405)
+
+    customer = get_customer_from_user(request.user)
+    if not customer:
+        return JsonResponse({'status': 'error', 'message': _("No customer found.")}, status=400)
+
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'status': 'error', 'message': _("Invalid request.")}, status=400)
+
+    action = data.get('action', '')
+    product_ids = data.get('product_ids', [])
+
+    if not product_ids:
+        return JsonResponse({'status': 'error', 'message': _("No products selected.")}, status=400)
+
+    products = Product.objects.filter(customer=customer, product_id__in=product_ids)
+    count = products.count()
+
+    if action == 'delete':
+        products.delete()
+        return JsonResponse({'status': 'ok', 'message': _("{count} product(s) deleted.").format(count=count)})
+    elif action == 'activate':
+        products.update(active=True)
+        return JsonResponse({'status': 'ok', 'message': _("{count} product(s) activated.").format(count=count)})
+    elif action == 'deactivate':
+        products.update(active=False)
+        return JsonResponse({'status': 'ok', 'message': _("{count} product(s) deactivated.").format(count=count)})
+    elif action == 'set_location':
+        new_location = data.get('value', '').strip()
+        products.update(location=new_location)
+        return JsonResponse({'status': 'ok', 'message': _("{count} product(s) updated.").format(count=count)})
+    else:
+        return JsonResponse({'status': 'error', 'message': _("Unknown action.")}, status=400)
+
+
+@company_admin_required
+def product_inline_edit(request, product_id):
+    """Inline edit a single product field (AJAX)."""
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': _("Invalid request method.")}, status=405)
+
+    customer = get_customer_from_user(request.user)
+    if not customer:
+        return JsonResponse({'status': 'error', 'message': _("No customer found.")}, status=400)
+
+    product = get_object_or_404(Product, product_id=product_id, customer=customer)
+
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'status': 'error', 'message': _("Invalid request.")}, status=400)
+
+    field = data.get('field', '')
+    value = data.get('value', '')
+
+    allowed_fields = ['code', 'description', 'location', 'active']
+    if field not in allowed_fields:
+        return JsonResponse({'status': 'error', 'message': _("Invalid field.")}, status=400)
+
+    if field == 'active':
+        value = value in [True, 'true', '1']
+    elif field in ['code', 'description']:
+        value = value.strip()
+        if not value:
+            return JsonResponse({'status': 'error', 'message': _("This field cannot be empty.")}, status=400)
+        if field == 'code' and Product.objects.filter(customer=customer, code=value).exclude(product_id=product_id).exists():
+            return JsonResponse({'status': 'error', 'message': _("A product with this code already exists.")}, status=400)
+
+    setattr(product, field, value)
+    product.save(update_fields=[field])
+
+    return JsonResponse({'status': 'ok', 'message': _("Updated.")})
 
 
 @company_admin_required

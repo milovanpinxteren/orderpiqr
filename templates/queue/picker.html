@@ -126,6 +126,47 @@
             }
         }
 
+        function reclaimOrder(orderId, button) {
+            if (!confirm('{% trans "This order is being picked by someone else. Are you sure you want to take it over? Their progress will be lost." %}')) {
+                return;
+            }
+            button.disabled = true;
+            button.textContent = '{% trans "Claiming..." %}';
+
+            const deviceFingerprint = getDeviceFingerprint();
+            const url = '{% url "queue_claim_order" order_id=0 %}'.replace('0', orderId);
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    deviceFingerprint: deviceFingerprint,
+                    force: true
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    showNotification(data.message, false);
+                    setTimeout(() => {
+                        window.location.href = '{% url "index" %}?order=' + encodeURIComponent(data.order_code);
+                    }, 500);
+                } else {
+                    showNotification(data.message, true);
+                    button.disabled = false;
+                    button.textContent = '{% trans "Take Over" %}';
+                }
+            })
+            .catch(error => {
+                showNotification('{% trans "Error claiming order" %}', true);
+                button.disabled = false;
+                button.textContent = '{% trans "Take Over" %}';
+            });
+        }
+
         function showNotification(message, isError) {
             const container = document.getElementById('notification-container');
             const notification = document.createElement('div');

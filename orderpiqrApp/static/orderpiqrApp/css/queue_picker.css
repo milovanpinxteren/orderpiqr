@@ -214,6 +214,42 @@ body {
     color: #155724;
 }
 
+.in-progress-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.picker-label {
+    font-size: 0.7rem;
+    color: #856404;
+    font-weight: 500;
+}
+
+.btn-reclaim {
+    display: inline-block;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #e0a800;
+    background-color: transparent;
+    color: #856404;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: all 0.15s;
+}
+
+.btn-reclaim:hover {
+    background-color: #fff3cd;
+}
+
+.btn-reclaim:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 /* Empty Queue */
 .empty-queue {
     text-align: center;

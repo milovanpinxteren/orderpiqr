@@ -22,11 +22,17 @@
         <div class="order-status">
             {% if order.status == 'in_progress' %}
             <span class="status-badge in-progress">{% trans "In Progress" %}</span>
+            {% if order.picked_by %}
+            <span class="picker-name" title="{% trans 'Picked by' %}">{{ order.picked_by }}</span>
+            {% endif %}
             {% else %}
             <span class="status-badge queued">{% trans "Queued" %}</span>
             {% endif %}
         </div>
         <div class="order-actions">
+            {% if order.status == 'in_progress' %}
+            <button class="btn-unlock" onclick="unlockOrder({{ order.order_id }})" title="{% trans 'Unlock order' %}">🔓</button>
+            {% endif %}
             <button class="btn-move" onclick="moveOrder({{ order.order_id }}, 'up')" title="{% trans 'Move up' %}">▲</button>
             <button class="btn-move" onclick="moveOrder({{ order.order_id }}, 'down')" title="{% trans 'Move down' %}">▼</button>
             <button class="btn-remove" onclick="removeFromQueue({{ order.order_id }})" title="{% trans 'Remove from queue' %}">✕</button>

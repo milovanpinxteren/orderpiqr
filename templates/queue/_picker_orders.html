@@ -31,14 +31,19 @@
 
         <div class="order-action">
             {% if order.status == 'queued' %}
-            <!-- Debug: order_id={{ order.order_id }}, status={{ order.status }} -->
-            <button class="btn-start" onclick="console.log('Button clicked for order {{ order.order_id }}'); claimOrder({{ order.order_id }}, this)">
+            <button class="btn-start" onclick="claimOrder({{ order.order_id }}, this)">
                 {% trans "Start Picking" %}
             </button>
             {% elif order.status == 'in_progress' %}
-            <span class="status-badge in-progress">
-                {% trans "In Progress" %}
-            </span>
+            <div class="in-progress-info">
+                {% if order.picked_by %}
+                <span class="picker-label">{{ order.picked_by }}</span>
+                {% endif %}
+                <span class="status-badge in-progress">{% trans "In Progress" %}</span>
+            </div>
+            <button class="btn-reclaim" onclick="reclaimOrder({{ order.order_id }}, this)">
+                {% trans "Take Over" %}
+            </button>
             {% elif order.status == 'completed' %}
             <span class="status-badge completed">
                 {% trans "Completed" %}

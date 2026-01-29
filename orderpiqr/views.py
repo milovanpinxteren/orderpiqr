@@ -8,6 +8,9 @@ from django.utils.encoding import smart_str
 from django.utils.translation import gettext_lazy as _
 from django.http import FileResponse, Http404, JsonResponse
 from django.conf import settings
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.models import User
+from django.contrib import messages
 import os
 import threading
 import time
@@ -21,6 +24,20 @@ from django.utils import timezone
 from calendar import monthrange
 
 logger = logging.getLogger(__name__)
+
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'registration/password_reset.html'
+    email_template_name = 'registration/password_reset_email.html'
+    subject_template_name = 'registration/password_reset_subject.txt'
+
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        users = User.objects.filter(email__iexact=email, is_active=True)
+        if not users.exists():
+            form.add_error('email', _('No account found with this email address.'))
+            return self.form_invalid(form)
+        return super().form_valid(form)
 
 
 def index(request):
