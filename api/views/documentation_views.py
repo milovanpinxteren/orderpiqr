@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from drf_spectacular.utils import extend_schema
 
 
 def markdown_to_html(markdown_text):
@@ -334,6 +335,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
 '''
 
 
+@extend_schema(exclude=True)
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def documentation_view(request, language='en'):

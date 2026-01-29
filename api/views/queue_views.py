@@ -203,6 +203,7 @@ def queue_stats(request):
     - Order must have status 'draft'
     - Order must belong to the authenticated user's customer
     """,
+    request=None,
     responses={
         200: OpenApiResponse(
             description="Order added to queue",
@@ -284,6 +285,7 @@ def queue_add_order(request, order_id):
     - Order must have status 'queued' or 'in_progress'
     - Order must belong to the authenticated user's customer
     """,
+    request=None,
     responses={
         200: OpenApiResponse(
             description="Order removed from queue",
@@ -612,6 +614,7 @@ def queue_reorder(request):
             enum=['up', 'down']
         )
     ],
+    request=None,
     responses={
         200: OpenApiResponse(
             description="Order moved successfully",

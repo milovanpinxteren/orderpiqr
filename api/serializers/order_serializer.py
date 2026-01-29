@@ -34,11 +34,11 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['customer', 'created_at', 'completed_at', 'item_count', 'line_count']
 
-    def get_item_count(self, obj):
+    def get_item_count(self, obj) -> int:
         """Calculate total items across all order lines."""
         return obj.lines.aggregate(total=Sum('quantity'))['total'] or 0
 
-    def get_line_count(self, obj):
+    def get_line_count(self, obj) -> int:
         """Count the number of order lines."""
         return obj.lines.count()
 
@@ -86,7 +86,7 @@ class OrderDetailSerializer(OrderSerializer):
     class Meta(OrderSerializer.Meta):
         fields = OrderSerializer.Meta.fields + ['picklist_info']
 
-    def get_picklist_info(self, obj):
+    def get_picklist_info(self, obj) -> dict | None:
         """Get picklist information if order has been claimed."""
         picklist = obj.picklist_set.first()
         if picklist:

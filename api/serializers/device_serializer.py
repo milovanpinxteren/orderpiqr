@@ -28,7 +28,7 @@ class DeviceSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['customer', 'lists_picked', 'username', 'recent_activity']
 
-    def get_recent_activity(self, obj):
+    def get_recent_activity(self, obj) -> list[dict]:
         """Get summary of recent picking activity."""
         recent_picklists = obj.picklist_set.order_by('-created_at')[:5]
         return [

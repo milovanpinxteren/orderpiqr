@@ -37,7 +37,7 @@ class PickListSerializer(serializers.ModelSerializer):
             'order_code', 'product_count'
         ]
 
-    def get_product_count(self, obj):
+    def get_product_count(self, obj) -> int:
         """Count the number of products in this picklist."""
         return obj.products.count()
 
@@ -56,7 +56,7 @@ class PickListDetailSerializer(PickListSerializer):
     class Meta(PickListSerializer.Meta):
         fields = PickListSerializer.Meta.fields + ['products', 'order_details']
 
-    def get_products(self, obj):
+    def get_products(self, obj) -> list[dict]:
         """Get all product picks with details."""
         return [
             {
@@ -73,7 +73,7 @@ class PickListDetailSerializer(PickListSerializer):
             for pp in obj.products.select_related('product').all()
         ]
 
-    def get_order_details(self, obj):
+    def get_order_details(self, obj) -> dict | None:
         """Get source order details if available."""
         if obj.order:
             return {
