@@ -272,7 +272,7 @@ def queue_claim_order(request, order_id):
             print(f"[Queue Claim] Order {order.order_code} has {lines.count()} lines")
             for line in lines:
                 print(f"[Queue Claim] Line: {line.quantity}x {line.product.code}")
-                for _ in range(line.quantity):
+                for i in range(line.quantity):
                     ProductPick.objects.create(
                         product=line.product,
                         picklist=pick_list,
