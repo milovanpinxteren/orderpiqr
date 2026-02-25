@@ -7,3 +7,4 @@ from .product_admin import *
 from .userprofile_admin import *
 from .preferences_admin import *
 from .email_admin import *
+from .inventory_admin import *

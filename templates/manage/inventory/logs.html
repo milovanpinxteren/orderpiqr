@@ -1,0 +1,193 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Inventory Log" %}{% endblock %}
+{% block page_title %}{% trans "Inventory Log" %}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% trans "Track all inventory changes" %}</p>{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'manage_inventory_add_correction' %}" class="btn btn-primary">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14m-7-7h14"/>
+    </svg>
+    {% trans "Add Correction" %}
+</a>
+<a href="{% url 'manage_inventory_logs_export' %}?{{ request.GET.urlencode }}" class="btn btn-secondary">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4m4-5l5 5 5-5m-5 5V3"/>
+    </svg>
+    {% trans "Export CSV" %}
+</a>
+{% endblock %}
+
+{% block content %}
+<!-- Filters -->
+<div class="search-filters">
+    <div class="filter-group">
+        <select class="form-control" id="product-filter">
+            <option value="">{% trans "All Products" %}</option>
+            {% for product in products %}
+            <option value="{{ product.product_id }}" {% if product_filter == product.product_id %}selected{% endif %}>
+                {{ product.code }} - {{ product.description|truncatewords:5 }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="filter-group">
+        <select class="form-control" id="reason-filter">
+            <option value="">{% trans "All Reasons" %}</option>
+            {% for value, label in reasons %}
+            <option value="{{ value }}" {% if reason_filter == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="filter-group">
+        <input type="date" class="form-control" id="date-from" value="{{ date_from|default:'' }}" placeholder="{% trans 'From' %}">
+    </div>
+    <div class="filter-group">
+        <input type="date" class="form-control" id="date-to" value="{{ date_to|default:'' }}" placeholder="{% trans 'To' %}">
+    </div>
+    <button class="btn btn-secondary" onclick="applyFilters()">{% trans "Filter" %}</button>
+    <button class="btn btn-secondary" onclick="clearFilters()">{% trans "Clear" %}</button>
+</div>
+
+<!-- Logs Table -->
+<div class="card">
+    <div class="card-body p-0">
+        {% if logs %}
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{% trans "Date/Time" %}</th>
+                        <th>{% trans "Product" %}</th>
+                        <th>{% trans "Change" %}</th>
+                        <th>{% trans "Reason" %}</th>
+                        <th>{% trans "User" %}</th>
+                        <th>{% trans "Notes" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td class="text-muted">{{ log.created_at|date:"M j, Y H:i" }}</td>
+                        <td>
+                            <strong>{{ log.product.code }}</strong>
+                            <br><small class="text-muted">{{ log.product.description|truncatewords:5 }}</small>
+                        </td>
+                        <td>
+                            <span class="change-display">
+                                {{ log.old_quantity }} &rarr; {{ log.new_quantity }}
+                            </span>
+                            {% if log.quantity_change > 0 %}
+                            <span class="badge badge-success">+{{ log.quantity_change }}</span>
+                            {% elif log.quantity_change < 0 %}
+                            <span class="badge badge-danger">{{ log.quantity_change }}</span>
+                            {% else %}
+                            <span class="badge badge-secondary">0</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="badge badge-info">{{ log.get_reason_display }}</span>
+                        </td>
+                        <td>
+                            {{ log.user.get_full_name|default:log.user.username|default:"-" }}
+                            {% if log.device %}<br><small class="text-muted">{{ log.device.name }}</small>{% endif %}
+                        </td>
+                        <td>
+                            {% if log.notes %}
+                            <span title="{{ log.notes }}">{{ log.notes|truncatewords:5 }}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if paginator.num_pages > 1 %}
+        <div class="pagination">
+            {% if logs.has_previous %}
+            <a href="?page=1&{{ request.GET.urlencode }}" class="pagination-btn">&laquo;</a>
+            <a href="?page={{ logs.previous_page_number }}&{{ request.GET.urlencode }}" class="pagination-btn">&lsaquo;</a>
+            {% endif %}
+
+            <span class="pagination-info">
+                {% trans "Page" %} {{ logs.number }} {% trans "of" %} {{ paginator.num_pages }}
+            </span>
+
+            {% if logs.has_next %}
+            <a href="?page={{ logs.next_page_number }}&{{ request.GET.urlencode }}" class="pagination-btn">&rsaquo;</a>
+            <a href="?page={{ paginator.num_pages }}&{{ request.GET.urlencode }}" class="pagination-btn">&raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="empty-state">
+            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <h3>{% trans "No inventory changes yet" %}</h3>
+            <p>{% trans "Inventory changes will appear here once products are updated." %}</p>
+            <a href="{% url 'manage_inventory_add_correction' %}" class="btn btn-primary">{% trans "Add Correction" %}</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.pagination-info {
+    padding: 0 var(--spacing-md);
+    color: var(--text-secondary);
+}
+.p-0 { padding: 0 !important; }
+.change-display {
+    font-family: monospace;
+    margin-right: 0.5rem;
+}
+.badge-info {
+    background-color: #17a2b8;
+    color: white;
+}
+.search-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+.filter-group {
+    flex: 1;
+    min-width: 150px;
+}
+.filter-group select,
+.filter-group input {
+    width: 100%;
+}
+</style>
+
+<script>
+function applyFilters() {
+    let url = '{% url "manage_inventory_logs" %}?';
+
+    const product = document.getElementById('product-filter').value;
+    const reason = document.getElementById('reason-filter').value;
+    const dateFrom = document.getElementById('date-from').value;
+    const dateTo = document.getElementById('date-to').value;
+
+    if (product) url += 'product=' + product + '&';
+    if (reason) url += 'reason=' + reason + '&';
+    if (dateFrom) url += 'date_from=' + dateFrom + '&';
+    if (dateTo) url += 'date_to=' + dateTo + '&';
+
+    window.location.href = url.slice(0, -1);
+}
+
+function clearFilters() {
+    window.location.href = '{% url "manage_inventory_logs" %}';
+}
+</script>
+{% endblock %}

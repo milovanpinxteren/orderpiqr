@@ -90,6 +90,9 @@
                         <th>{% trans "Code" %}</th>
                         <th>{% trans "Description" %}</th>
                         <th>{% trans "Location" %}</th>
+                        {% if inventory_enabled %}
+                        <th>{% trans "Stock" %}</th>
+                        {% endif %}
                         <th>{% trans "Orders" %}</th>
                         <th>{% trans "Status" %}</th>
                         <th class="text-right">{% trans "Actions" %}</th>
@@ -118,6 +121,15 @@
                                 {% endif %}
                             </span>
                         </td>
+                        {% if inventory_enabled %}
+                        <td>
+                            <span class="inline-editable inventory-cell" data-field="inventory_quantity" data-id="{{ product.product_id }}">
+                                <span class="badge {% if product.inventory_quantity == 0 %}badge-danger{% elif product.inventory_quantity < 10 %}badge-warning{% else %}badge-secondary{% endif %}">
+                                    {{ product.inventory_quantity }}
+                                </span>
+                            </span>
+                        </td>
+                        {% endif %}
                         <td>{{ product.order_count }}</td>
                         <td>
                             {% if product.active %}
@@ -547,6 +559,12 @@ document.querySelectorAll('.inline-editable').forEach(el => {
                         this.innerHTML = newVal ? '<span class="badge badge-secondary">' + newVal + '</span>' : '<span class="text-muted">-</span>';
                     } else if (field === 'code') {
                         this.innerHTML = '<strong>' + newVal + '</strong>';
+                    } else if (field === 'inventory_quantity') {
+                        const qty = parseInt(newVal) || 0;
+                        let badgeClass = 'badge-secondary';
+                        if (qty === 0) badgeClass = 'badge-danger';
+                        else if (qty < 10) badgeClass = 'badge-warning';
+                        this.innerHTML = '<span class="badge ' + badgeClass + '">' + qty + '</span>';
                     } else {
                         this.textContent = newVal;
                     }

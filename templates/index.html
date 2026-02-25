@@ -36,21 +36,49 @@
                 </svg>
             </button>
             <div class="settings-menu" id="settings-menu">
-                <div class="settings-top-row">
-                    <div class="language-switcher">{% include 'partials/language_switcher.html' %}</div>
-                    <a href="{% url 'login' %}" class="btn-login-link">{% trans "Log out" %}</a>
+                <!-- Quick Actions -->
+                <div class="settings-section">
+                    <div class="settings-section-title">{% trans "Quick Actions" %}</div>
+                    <div class="settings-actions">
+                        <a href="{% url 'queue_picker' %}" class="action-btn action-queue">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+                                <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+                            </svg>
+                            {% trans "Order Queue" %}
+                        </a>
+                        <a href="{% url 'inventory_picker' %}" class="action-btn action-inventory" id="inventory-link" style="display: none;">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+                            </svg>
+                            {% trans "Inventory" %}
+                        </a>
+                    </div>
                 </div>
-                <a href="{% url 'queue_picker' %}" class="btn-queue-link">{% trans "Order Queue" %}</a>
-                <button id="toggle-order-btn" class="btn-toggle">
-                    {% trans "Order Importance" %}: {% trans "Enabled" %}
-                </button>
-                <div class="settings-top-row">
-                    <label for="picklist-sorting-select">{% trans "Sort Picklist By" %}</label>
-                    <select id="picklist-sorting-select" class="dropdown">
-                        <option value="original">{% trans "Original order" %}</option>
-                        <option value="location">{% trans "Location" %}</option>
-                        <option value="description">{% trans "Product description" %}</option>
-                    </select>
+
+                <!-- Preferences -->
+                <div class="settings-section">
+                    <div class="settings-section-title">{% trans "Preferences" %}</div>
+                    <div class="settings-row">
+                        <label for="picklist-sorting-select">{% trans "Sort Picklist" %}</label>
+                        <select id="picklist-sorting-select" class="dropdown">
+                            <option value="original">{% trans "Original" %}</option>
+                            <option value="location">{% trans "Location" %}</option>
+                            <option value="description">{% trans "Description" %}</option>
+                        </select>
+                    </div>
+                    <button id="toggle-order-btn" class="btn-toggle">
+                        {% trans "Order Importance" %}: {% trans "Enabled" %}
+                    </button>
+                </div>
+
+                <!-- Account -->
+                <div class="settings-section settings-section-account">
+                    <div class="settings-row">
+                        <div class="language-switcher">{% include 'partials/language_switcher.html' %}</div>
+                        <a href="{% url 'login' %}" class="btn-logout">{% trans "Log out" %}</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -146,6 +174,13 @@
         window.SETTINGS = JSON.parse(settingsElement.textContent);
         console.log('window.SETTINGS', window.SETTINGS)
 
+        // Show inventory link if enabled
+        if (window.SETTINGS.inventory_management_enabled) {
+            const inventoryLink = document.getElementById('inventory-link');
+            if (inventoryLink) {
+                inventoryLink.style.display = 'flex';
+            }
+        }
     } catch (e) {
         window.SETTINGS = {};
         console.error("Failed to parse settings JSON:", e);

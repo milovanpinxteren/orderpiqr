@@ -52,6 +52,15 @@ from orderpiqrApp.views.manage_views import (
     profile,
     settings_view,
     logout_view,
+    inventory_logs_list,
+    inventory_logs_export,
+    inventory_add_correction,
+)
+from orderpiqrApp.views.inventory_views import (
+    inventory_picker,
+    inventory_product_search,
+    inventory_product_lookup,
+    inventory_modify,
 )
 
 urlpatterns = [
@@ -109,4 +118,15 @@ urlpatterns = [
     path('manage/profile/', profile, name='manage_profile'),
     path('manage/settings/', settings_view, name='manage_settings'),
     path('manage/logout/', logout_view, name='manage_logout'),
+
+    # Inventory Management (Admin)
+    path('manage/inventory/', inventory_logs_list, name='manage_inventory_logs'),
+    path('manage/inventory/export/', inventory_logs_export, name='manage_inventory_logs_export'),
+    path('manage/inventory/correction/', inventory_add_correction, name='manage_inventory_add_correction'),
+
+    # Inventory Picker (Mobile)
+    path('inventory/', inventory_picker, name='inventory_picker'),
+    path('inventory/search/', inventory_product_search, name='inventory_search'),
+    path('inventory/lookup/<str:code>/', inventory_product_lookup, name='inventory_lookup'),
+    path('inventory/modify/', inventory_modify, name='inventory_modify'),
 ]

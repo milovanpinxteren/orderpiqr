@@ -5,3 +5,4 @@ from .picklists import *
 from .devices import *
 from .preferences import *
 from .email_log import *
+from .inventory import *
