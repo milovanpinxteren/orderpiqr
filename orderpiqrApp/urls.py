@@ -55,6 +55,7 @@ from orderpiqrApp.views.manage_views import (
     inventory_logs_list,
     inventory_logs_export,
     inventory_add_correction,
+    inventory_logs_bulk_delete,
 )
 from orderpiqrApp.views.inventory_views import (
     inventory_picker,
@@ -123,6 +124,7 @@ urlpatterns = [
     path('manage/inventory/', inventory_logs_list, name='manage_inventory_logs'),
     path('manage/inventory/export/', inventory_logs_export, name='manage_inventory_logs_export'),
     path('manage/inventory/correction/', inventory_add_correction, name='manage_inventory_add_correction'),
+    path('manage/inventory/bulk-delete/', inventory_logs_bulk_delete, name='manage_inventory_bulk_delete'),
 
     # Inventory Picker (Mobile)
     path('inventory/', inventory_picker, name='inventory_picker'),

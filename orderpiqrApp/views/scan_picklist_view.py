@@ -6,6 +6,7 @@ from django.utils import timezone
 import json
 from django.views.decorators.http import require_POST
 from orderpiqrApp.models import Device, Order, PickList, Product, ProductPick, UserProfile
+from orderpiqrApp.utils.inventory import decrement_inventory_for_picklist
 
 
 @require_POST
@@ -234,6 +235,9 @@ def complete_picklist(request):
                 picklist.time_taken = now - pick_time
                 picklist.successful = True  # or set based on some logic
                 picklist.save()
+
+                # Decrement inventory for picked products (if inventory management enabled)
+                decrement_inventory_for_picklist(picklist, request.user)
 
                 # Mark the linked order as completed if it exists
                 if picklist.order:
