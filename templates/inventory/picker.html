@@ -1,0 +1,550 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'orderpiqrApp/css/inventory_picker.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <title>{% trans "Inventory" %}</title>
+</head>
+<body>
+    <div class="picker-header">
+        <div class="header-left">
+            <a href="{% url 'index' %}" class="back-link">← {% trans "Scanner" %}</a>
+        </div>
+        <h1>{% trans "Inventory" %}</h1>
+        <div class="header-right">
+            {% if device %}
+            <span class="device-name">{{ device.name }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% else %}
+
+    <div class="picker-container">
+        <!-- Input Mode Toggle -->
+        <div class="input-mode-toggle" id="input-mode-toggle">
+            <button class="input-mode-btn active" data-mode="scan" id="scan-mode-btn">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="7" y1="8" x2="17" y2="8"/>
+                    <line x1="7" y1="12" x2="17" y2="12"/>
+                    <line x1="7" y1="16" x2="13" y2="16"/>
+                </svg>
+                {% trans "Scan" %}
+            </button>
+            <button class="input-mode-btn" data-mode="search" id="search-mode-btn">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                {% trans "Search" %}
+            </button>
+        </div>
+
+        <!-- Camera Scanner Section -->
+        <div id="scanner-section" class="scanner-section">
+            <div id="reader" class="scanner-reader"></div>
+        </div>
+
+        <!-- Manual Search Section -->
+        <div id="search-section" class="search-section" style="display: none;">
+            <div class="search-box">
+                <input type="text"
+                       id="product-search"
+                       placeholder="{% trans 'Type product code or description...' %}"
+                       autocomplete="off">
+                <button id="clear-search" class="clear-btn" style="display: none;">×</button>
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </div>
+
+        <!-- Selected Product Card -->
+        <div id="product-card" class="product-card hidden">
+            <div class="product-header">
+                <div class="product-code" id="selected-code"></div>
+                <button class="close-btn" onclick="clearSelectedProduct()">×</button>
+            </div>
+            <div class="product-desc" id="selected-desc"></div>
+            <div class="product-location">
+                <span class="location-icon">📍</span>
+                <span id="selected-location"></span>
+            </div>
+        </div>
+
+        <!-- Modification Form -->
+        <div id="modify-form" class="modify-form hidden">
+            <div class="mode-toggle">
+                <button class="mode-btn active" data-mode="set">{% trans "Set To" %}</button>
+                <button class="mode-btn" data-mode="adjust">{% trans "Adjust By" %}</button>
+            </div>
+
+            <div class="quantity-input">
+                <button class="qty-btn minus" id="qty-minus">−</button>
+                <input type="number" id="quantity-value" value="0">
+                <button class="qty-btn plus" id="qty-plus">+</button>
+            </div>
+
+            <div id="preview-result" class="preview-result">
+                <span class="stock-label">{% trans "Stock" %}:</span>
+                <span id="current-quantity">0</span>
+                <span class="stock-arrow">→</span>
+                <span id="new-quantity">0</span>
+                <span id="stock-diff"></span>
+            </div>
+
+            <div class="reason-select">
+                <label>{% trans "Reason" %}</label>
+                <select id="reason-select">
+                    {% for value, label in reasons %}
+                    {% if value != 'order_picked' %}
+                    <option value="{{ value }}">{{ label }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="notes-input">
+                <label>{% trans "Notes (optional)" %}</label>
+                <textarea id="notes-input" rows="2" placeholder="{% trans 'Add notes...' %}"></textarea>
+            </div>
+
+            <button id="submit-btn" class="submit-btn">{% trans "Update Inventory" %}</button>
+        </div>
+    </div>
+
+    {% endif %}
+
+    <!-- Success Overlay -->
+<div id="success-overlay" class="success-overlay hidden">
+    <div class="success-overlay-content">
+        <div class="success-icon">✓</div>
+        <h2 id="success-product-code"></h2>
+        <p id="success-change" class="success-change"></p>
+        <div class="success-tap-hint">{% trans "Tap to continue" %}</div>
+    </div>
+</div>
+
+<div id="notification-container" class="notification-container"></div>
+
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+        const productData = {{ products_json|safe }};
+        let selectedProduct = null;
+        let changeMode = 'set';
+        let inputMode = 'scan';
+        let scannerInstance = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupInputModeToggle();
+            setupSearch();
+            setupModeToggle();
+            setupQuantityButtons();
+            setupSubmit();
+            initializeScanner();
+        });
+
+        function setupInputModeToggle() {
+            const scanModeBtn = document.getElementById('scan-mode-btn');
+            const searchModeBtn = document.getElementById('search-mode-btn');
+            const scannerSection = document.getElementById('scanner-section');
+            const searchSection = document.getElementById('search-section');
+
+            scanModeBtn.addEventListener('click', function() {
+                inputMode = 'scan';
+                scanModeBtn.classList.add('active');
+                searchModeBtn.classList.remove('active');
+                scannerSection.style.display = 'block';
+                searchSection.style.display = 'none';
+                resumeScanner();
+            });
+
+            searchModeBtn.addEventListener('click', function() {
+                inputMode = 'search';
+                searchModeBtn.classList.add('active');
+                scanModeBtn.classList.remove('active');
+                searchSection.style.display = 'block';
+                scannerSection.style.display = 'none';
+                pauseScanner();
+                document.getElementById('product-search').focus();
+            });
+        }
+
+        function initializeScanner() {
+            const width = window.innerWidth;
+            const qrBoxSize = Math.floor(width * 0.6);
+
+            scannerInstance = new Html5QrcodeScanner("reader", {
+                fps: 5,
+                aspectRatio: 1.0,
+                qrbox: { width: qrBoxSize, height: qrBoxSize },
+                rememberLastUsedCamera: true,
+                showTorchButtonIfSupported: true
+            });
+
+            scannerInstance.render((scanResult) => {
+                handleBarcodeScan(scanResult);
+            });
+        }
+
+        function handleBarcodeScan(scannedCode) {
+            // Pause scanner while processing
+            pauseScanner();
+
+            // Look for exact match
+            const product = productData.find(p =>
+                p.code.toLowerCase() === scannedCode.toLowerCase()
+            );
+
+            if (product) {
+                selectProduct(product);
+                showNotification('{% trans "Product found" %}: ' + product.code, false);
+            } else {
+                showNotification('{% trans "Product not found" %}: ' + scannedCode, true);
+                // Resume scanner after a short delay if no product found
+                setTimeout(() => resumeScanner(), 1500);
+            }
+        }
+
+        function pauseScanner() {
+            if (scannerInstance) {
+                try {
+                    scannerInstance.pause(true);
+                } catch (e) {
+                    console.log("Scanner pause error:", e);
+                }
+            }
+        }
+
+        function resumeScanner() {
+            if (scannerInstance && inputMode === 'scan') {
+                try {
+                    scannerInstance.resume();
+                } catch (e) {
+                    console.log("Scanner resume error:", e);
+                }
+            }
+        }
+
+        function setupSearch() {
+            const searchInput = document.getElementById('product-search');
+            const clearBtn = document.getElementById('clear-search');
+            const resultsContainer = document.getElementById('search-results');
+
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim().toLowerCase();
+                clearBtn.style.display = query ? 'block' : 'none';
+
+                if (query.length < 1) {
+                    resultsContainer.innerHTML = '';
+                    resultsContainer.classList.remove('show');
+                    return;
+                }
+
+                // Search for all matches (both exact and partial) - let user choose
+                const matches = productData.filter(p =>
+                    p.code.toLowerCase().includes(query) ||
+                    p.description.toLowerCase().includes(query)
+                ).slice(0, 10);
+
+                if (matches.length === 0) {
+                    resultsContainer.innerHTML = '<div class="no-results">{% trans "No products found" %}</div>';
+                    resultsContainer.classList.add('show');
+                    return;
+                }
+
+                // Sort: exact code matches first, then starts-with, then contains
+                matches.sort((a, b) => {
+                    const aCode = a.code.toLowerCase();
+                    const bCode = b.code.toLowerCase();
+
+                    // Exact match first
+                    if (aCode === query && bCode !== query) return -1;
+                    if (bCode === query && aCode !== query) return 1;
+
+                    // Starts with query next
+                    const aStarts = aCode.startsWith(query);
+                    const bStarts = bCode.startsWith(query);
+                    if (aStarts && !bStarts) return -1;
+                    if (bStarts && !aStarts) return 1;
+
+                    // Then alphabetically
+                    return aCode.localeCompare(bCode);
+                });
+
+                resultsContainer.innerHTML = matches.map(p => `
+                    <div class="search-result-item" onclick="selectProductById(${p.product_id})">
+                        <div class="result-code">${escapeHtml(p.code)}</div>
+                        <div class="result-desc">${escapeHtml(p.description)}</div>
+                        <div class="result-stock">{% trans "Stock" %}: ${p.inventory_quantity}</div>
+                    </div>
+                `).join('');
+                resultsContainer.classList.add('show');
+            });
+
+            clearBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                clearBtn.style.display = 'none';
+                resultsContainer.innerHTML = '';
+                resultsContainer.classList.remove('show');
+                searchInput.focus();
+            });
+
+            // Close results when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.search-section')) {
+                    resultsContainer.classList.remove('show');
+                }
+            });
+        }
+
+        function selectProductById(productId) {
+            const product = productData.find(p => p.product_id === productId);
+            if (product) {
+                selectProduct(product);
+                document.getElementById('search-results').classList.remove('show');
+                document.getElementById('product-search').value = '';
+                document.getElementById('clear-search').style.display = 'none';
+            }
+        }
+
+        function selectProduct(product) {
+            selectedProduct = product;
+
+            document.getElementById('selected-code').textContent = product.code;
+            document.getElementById('selected-desc').textContent = product.description;
+            document.getElementById('selected-location').textContent = product.location || '{% trans "No location" %}';
+            document.getElementById('current-quantity').textContent = product.inventory_quantity;
+
+            // Hide scanner/search sections and show product card
+            document.getElementById('input-mode-toggle').style.display = 'none';
+            document.getElementById('scanner-section').style.display = 'none';
+            document.getElementById('search-section').style.display = 'none';
+            document.getElementById('product-card').classList.remove('hidden');
+            document.getElementById('modify-form').classList.remove('hidden');
+
+            // Reset form
+            changeMode = 'set';
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === 'set');
+            });
+            document.getElementById('quantity-value').value = product.inventory_quantity;
+            document.getElementById('reason-select').value = 'stock_count';
+            document.getElementById('notes-input').value = '';
+            updatePreview();
+        }
+
+        function clearSelectedProduct() {
+            selectedProduct = null;
+            document.getElementById('product-card').classList.add('hidden');
+            document.getElementById('modify-form').classList.add('hidden');
+
+            // Show scanner/search sections again
+            document.getElementById('input-mode-toggle').style.display = 'flex';
+            if (inputMode === 'scan') {
+                document.getElementById('scanner-section').style.display = 'block';
+                resumeScanner();
+            } else {
+                document.getElementById('search-section').style.display = 'block';
+                document.getElementById('product-search').focus();
+            }
+        }
+
+        function setupModeToggle() {
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    changeMode = this.dataset.mode;
+                    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const qtyInput = document.getElementById('quantity-value');
+                    if (changeMode === 'set' && selectedProduct) {
+                        qtyInput.value = selectedProduct.inventory_quantity;
+                    } else {
+                        qtyInput.value = 0;
+                    }
+                    updatePreview();
+                });
+            });
+        }
+
+        function setupQuantityButtons() {
+            const qtyInput = document.getElementById('quantity-value');
+            const minusBtn = document.getElementById('qty-minus');
+            const plusBtn = document.getElementById('qty-plus');
+
+            minusBtn.addEventListener('click', function() {
+                let val = parseInt(qtyInput.value) || 0;
+                if (changeMode === 'set') {
+                    qtyInput.value = Math.max(0, val - 1);
+                } else {
+                    qtyInput.value = val - 1;
+                }
+                updatePreview();
+            });
+
+            plusBtn.addEventListener('click', function() {
+                let val = parseInt(qtyInput.value) || 0;
+                qtyInput.value = val + 1;
+                updatePreview();
+            });
+
+            qtyInput.addEventListener('input', updatePreview);
+        }
+
+        function updatePreview() {
+            if (!selectedProduct) return;
+
+            const value = parseInt(document.getElementById('quantity-value').value) || 0;
+            const current = selectedProduct.inventory_quantity;
+            let newQty;
+
+            if (changeMode === 'set') {
+                newQty = Math.max(0, value);
+            } else {
+                newQty = Math.max(0, current + value);
+            }
+
+            const diff = newQty - current;
+
+            document.getElementById('current-quantity').textContent = current;
+            document.getElementById('new-quantity').textContent = newQty;
+
+            const diffEl = document.getElementById('stock-diff');
+            if (diff > 0) {
+                diffEl.innerHTML = `<span class="diff-positive">(+${diff})</span>`;
+            } else if (diff < 0) {
+                diffEl.innerHTML = `<span class="diff-negative">(${diff})</span>`;
+            } else {
+                diffEl.innerHTML = `<span class="diff-neutral">({% trans "no change" %})</span>`;
+            }
+        }
+
+        function setupSubmit() {
+            document.getElementById('submit-btn').addEventListener('click', function() {
+                if (!selectedProduct) {
+                    showNotification('{% trans "Please select a product first" %}', true);
+                    return;
+                }
+
+                const value = parseInt(document.getElementById('quantity-value').value);
+                if (isNaN(value)) {
+                    showNotification('{% trans "Please enter a valid quantity" %}', true);
+                    return;
+                }
+
+                const reason = document.getElementById('reason-select').value;
+                const notes = document.getElementById('notes-input').value.trim();
+
+                this.disabled = true;
+                this.textContent = '{% trans "Updating..." %}';
+
+                fetch('{% url "inventory_modify" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({
+                        product_id: selectedProduct.product_id,
+                        change_type: changeMode,
+                        value: value,
+                        reason: reason,
+                        notes: notes
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        // Update local data
+                        const product = productData.find(p => p.product_id === selectedProduct.product_id);
+                        if (product) {
+                            product.inventory_quantity = data.new_quantity;
+                        }
+
+                        // Show success overlay
+                        showSuccessOverlay(
+                            selectedProduct.code,
+                            data.old_quantity,
+                            data.new_quantity
+                        );
+                    } else {
+                        showNotification(data.message, true);
+                    }
+
+                    this.disabled = false;
+                    this.textContent = '{% trans "Update Inventory" %}';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('{% trans "Error updating inventory" %}', true);
+                    this.disabled = false;
+                    this.textContent = '{% trans "Update Inventory" %}';
+                });
+            });
+        }
+
+        function showNotification(message, isError) {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = 'notification' + (isError ? ' error' : '');
+            notification.textContent = message;
+            container.appendChild(notification);
+
+            setTimeout(() => notification.classList.add('show'), 10);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+
+        function showSuccessOverlay(productCode, oldQty, newQty) {
+            const overlay = document.getElementById('success-overlay');
+            const codeEl = document.getElementById('success-product-code');
+            const changeEl = document.getElementById('success-change');
+
+            codeEl.textContent = productCode;
+
+            const diff = newQty - oldQty;
+            let changeText = `${oldQty} → ${newQty}`;
+            if (diff > 0) {
+                changeText += ` (+${diff})`;
+                changeEl.className = 'success-change positive';
+            } else if (diff < 0) {
+                changeText += ` (${diff})`;
+                changeEl.className = 'success-change negative';
+            } else {
+                changeEl.className = 'success-change';
+            }
+            changeEl.textContent = changeText;
+
+            overlay.classList.remove('hidden');
+
+            // Auto-dismiss after 2 seconds or on tap
+            const dismiss = () => {
+                overlay.classList.add('hidden');
+                overlay.removeEventListener('click', dismiss);
+                clearSelectedProduct();
+            };
+
+            overlay.addEventListener('click', dismiss);
+            setTimeout(dismiss, 2000);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

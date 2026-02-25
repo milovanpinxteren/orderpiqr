@@ -7,6 +7,7 @@ from api.views.orderline_views import OrderLineViewSet
 from api.views.picklist_views import PickListViewSet
 from api.views.productpick_views import ProductPickViewSet
 from api.views.device_views import DeviceViewSet
+from api.views.inventory_views import InventoryLogViewSet
 from api.views.queue_views import (
     queue_list,
     queue_stats,
@@ -24,6 +25,7 @@ router.register(r'orderlines', OrderLineViewSet, basename='orderline')
 router.register(r'picklists', PickListViewSet, basename='picklist')
 router.register(r'productpicks', ProductPickViewSet, basename='productpick')
 router.register(r'devices', DeviceViewSet, basename='device')
+router.register(r'inventory', InventoryLogViewSet, basename='inventory')
 
 
 urlpatterns = [

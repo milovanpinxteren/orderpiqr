@@ -20,7 +20,9 @@ from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.hashers import check_password
 
 from orderpiqrApp.utils.decorators import company_admin_required
-from orderpiqrApp.models import Product, Order, OrderLine, PickList, Device, CustomerSettingValue, SettingDefinition
+from orderpiqrApp.utils.inventory import is_inventory_enabled, modify_inventory
+from orderpiqrApp.models import Product, Order, OrderLine, PickList, Device, CustomerSettingValue, SettingDefinition, InventoryLog
+from django.contrib.auth.models import User
 
 
 def get_customer_from_user(user):
@@ -33,10 +35,12 @@ def get_customer_from_user(user):
 def get_base_context(request, active_nav='dashboard'):
     """Get the base context for all manage views."""
     customer = get_customer_from_user(request.user)
+    inventory_enabled = is_inventory_enabled(customer) if customer else False
     return {
         'user': request.user,
         'customer': customer,
         'active_nav': active_nav,
+        'inventory_enabled': inventory_enabled,
     }
 
 
@@ -345,9 +349,31 @@ def product_inline_edit(request, product_id):
     field = data.get('field', '')
     value = data.get('value', '')
 
-    allowed_fields = ['code', 'description', 'location', 'active']
+    allowed_fields = ['code', 'description', 'location', 'active', 'inventory_quantity']
     if field not in allowed_fields:
         return JsonResponse({'status': 'error', 'message': _("Invalid field.")}, status=400)
+
+    # Handle inventory_quantity field specially (create log entry)
+    if field == 'inventory_quantity':
+        if not is_inventory_enabled(customer):
+            return JsonResponse({'status': 'error', 'message': _("Inventory management is not enabled.")}, status=403)
+        try:
+            value = int(value)
+            if value < 0:
+                return JsonResponse({'status': 'error', 'message': _("Quantity cannot be negative.")}, status=400)
+        except (TypeError, ValueError):
+            return JsonResponse({'status': 'error', 'message': _("Invalid quantity value.")}, status=400)
+
+        # Create log entry for admin correction
+        modify_inventory(
+            product=product,
+            user=request.user,
+            change_type=InventoryLog.ChangeType.SET,
+            reason=InventoryLog.Reason.CORRECTION,
+            value=value,
+            notes=_("Inline edit from admin panel")
+        )
+        return JsonResponse({'status': 'ok', 'message': _("Inventory updated.")})
 
     if field == 'active':
         value = value in [True, 'true', '1']
@@ -976,6 +1002,179 @@ def settings_view(request):
         return redirect('manage_settings')
 
     return render(request, 'manage/settings.html', context)
+
+
+# ============================================
+# Inventory Management
+# ============================================
+
+@company_admin_required
+def inventory_logs_list(request):
+    """List all inventory log entries with filtering."""
+    context = get_base_context(request, 'inventory')
+    customer = context['customer']
+
+    if not customer:
+        return redirect('manage_dashboard')
+
+    if not is_inventory_enabled(customer):
+        messages.warning(request, _("Inventory management is not enabled for your account."))
+        return redirect('manage_settings')
+
+    logs = InventoryLog.objects.filter(
+        product__customer=customer
+    ).select_related('product', 'user', 'device').order_by('-created_at')
+
+    # Filters
+    product_id = request.GET.get('product')
+    if product_id:
+        logs = logs.filter(product_id=product_id)
+        context['product_filter'] = int(product_id)
+
+    user_id = request.GET.get('user')
+    if user_id:
+        logs = logs.filter(user_id=user_id)
+        context['user_filter'] = int(user_id)
+
+    reason = request.GET.get('reason')
+    if reason:
+        logs = logs.filter(reason=reason)
+        context['reason_filter'] = reason
+
+    date_from = request.GET.get('date_from')
+    if date_from:
+        logs = logs.filter(created_at__date__gte=date_from)
+        context['date_from'] = date_from
+
+    date_to = request.GET.get('date_to')
+    if date_to:
+        logs = logs.filter(created_at__date__lte=date_to)
+        context['date_to'] = date_to
+
+    # Get filter options
+    context['products'] = Product.objects.filter(customer=customer).order_by('code')
+    context['users'] = User.objects.filter(userprofile__customer=customer).order_by('username')
+    context['reasons'] = InventoryLog.Reason.choices
+
+    # Pagination
+    paginator = Paginator(logs, 50)
+    page = request.GET.get('page', 1)
+    context['logs'] = paginator.get_page(page)
+    context['paginator'] = paginator
+
+    return render(request, 'manage/inventory/logs.html', context)
+
+
+@company_admin_required
+def inventory_logs_export(request):
+    """Export inventory logs to CSV."""
+    customer = get_customer_from_user(request.user)
+    if not customer:
+        return redirect('manage_dashboard')
+
+    if not is_inventory_enabled(customer):
+        messages.warning(request, _("Inventory management is not enabled."))
+        return redirect('manage_settings')
+
+    logs = InventoryLog.objects.filter(
+        product__customer=customer
+    ).select_related('product', 'user', 'device').order_by('-created_at')
+
+    # Apply same filters as list view
+    product_id = request.GET.get('product')
+    if product_id:
+        logs = logs.filter(product_id=product_id)
+
+    user_id = request.GET.get('user')
+    if user_id:
+        logs = logs.filter(user_id=user_id)
+
+    reason = request.GET.get('reason')
+    if reason:
+        logs = logs.filter(reason=reason)
+
+    date_from = request.GET.get('date_from')
+    if date_from:
+        logs = logs.filter(created_at__date__gte=date_from)
+
+    date_to = request.GET.get('date_to')
+    if date_to:
+        logs = logs.filter(created_at__date__lte=date_to)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="inventory_logs.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'Date/Time', 'Product Code', 'Product Description',
+        'Old Qty', 'New Qty', 'Change', 'Type', 'Reason',
+        'User', 'Device', 'Notes'
+    ])
+
+    for log in logs:
+        writer.writerow([
+            log.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            log.product.code,
+            log.product.description,
+            log.old_quantity,
+            log.new_quantity,
+            log.quantity_change,
+            log.get_change_type_display(),
+            log.get_reason_display(),
+            log.user.get_full_name() if log.user else '',
+            log.device.name if log.device else '',
+            log.notes or ''
+        ])
+
+    return response
+
+
+@company_admin_required
+def inventory_add_correction(request):
+    """Add a correction entry for a product."""
+    context = get_base_context(request, 'inventory')
+    customer = context['customer']
+
+    if not customer:
+        return redirect('manage_dashboard')
+
+    if not is_inventory_enabled(customer):
+        messages.warning(request, _("Inventory management is not enabled."))
+        return redirect('manage_settings')
+
+    context['products'] = Product.objects.filter(customer=customer, active=True).order_by('code')
+    context['reasons'] = InventoryLog.Reason.choices
+    context['change_types'] = InventoryLog.ChangeType.choices
+
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        change_type = request.POST.get('change_type')
+        value = request.POST.get('value')
+        reason = request.POST.get('reason')
+        notes = request.POST.get('notes', '')
+
+        try:
+            product = Product.objects.get(product_id=product_id, customer=customer)
+            value = int(value)
+
+            modify_inventory(
+                product=product,
+                user=request.user,
+                change_type=change_type,
+                reason=reason,
+                value=value,
+                notes=notes
+            )
+
+            messages.success(request, _("Inventory correction added successfully."))
+            return redirect('manage_inventory_logs')
+
+        except Product.DoesNotExist:
+            messages.error(request, _("Product not found."))
+        except (TypeError, ValueError):
+            messages.error(request, _("Invalid quantity value."))
+
+    return render(request, 'manage/inventory/add_correction.html', context)
 
 
 # ============================================

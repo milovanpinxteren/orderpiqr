@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from orderpiqrApp.models import Product, OrderLine
+from orderpiqrApp.utils.inventory import is_inventory_enabled
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -10,6 +11,10 @@ class ProductSerializer(serializers.ModelSerializer):
     # Computed fields for additional context
     order_count = serializers.SerializerMethodField(
         help_text="Number of orders containing this product"
+    )
+    inventory_quantity = serializers.IntegerField(
+        read_only=True,
+        help_text="Current stock quantity (only shown when inventory management is enabled)"
     )
 
     class Meta:
@@ -22,12 +27,31 @@ class ProductSerializer(serializers.ModelSerializer):
             'active',
             'customer',
             'order_count',
+            'inventory_quantity',
         ]
-        read_only_fields = ['customer', 'order_count']
+        read_only_fields = ['customer', 'order_count', 'inventory_quantity']
 
     def get_order_count(self, obj) -> int:
         """Count how many order lines reference this product."""
         return OrderLine.objects.filter(product=obj).count()
+
+    def to_representation(self, instance):
+        """Conditionally include inventory_quantity based on customer settings."""
+        data = super().to_representation(instance)
+
+        # Check if inventory is enabled for the customer
+        request = self.context.get('request')
+        if request and hasattr(request, 'user') and request.user.is_authenticated:
+            try:
+                customer = request.user.userprofile.customer
+                if not is_inventory_enabled(customer):
+                    data.pop('inventory_quantity', None)
+            except AttributeError:
+                data.pop('inventory_quantity', None)
+        else:
+            data.pop('inventory_quantity', None)
+
+        return data
 
 
 class ProductDetailSerializer(ProductSerializer):

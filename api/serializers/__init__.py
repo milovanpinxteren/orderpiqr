@@ -4,3 +4,4 @@ from .orderline_serializer import OrderLineSerializer, OrderLineDetailSerializer
 from .picklist_serializer import PickListSerializer, PickListDetailSerializer, PickListCreateSerializer
 from .productpick_serializer import ProductPickSerializer, ProductPickUpdateSerializer, ProductPickBulkUpdateSerializer
 from .device_serializer import DeviceSerializer, DeviceCreateSerializer, DeviceStatsSerializer
+from .inventory_serializer import InventoryLogSerializer, InventoryModifySerializer

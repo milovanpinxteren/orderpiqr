@@ -1,0 +1,220 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Add Inventory Correction" %}{% endblock %}
+{% block page_title %}{% trans "Add Inventory Correction" %}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% trans "Create a correction entry for a product" %}</p>{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <form method="post" class="form-modern">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="form-label required" for="product_id">{% trans "Product" %}</label>
+                <select class="form-control" id="product_id" name="product_id" required onchange="updateCurrentStock()">
+                    <option value="">{% trans "Select a product..." %}</option>
+                    {% for product in products %}
+                    <option value="{{ product.product_id }}" data-stock="{{ product.inventory_quantity }}">
+                        {{ product.code }} - {{ product.description|truncatewords:5 }} ({% trans "Stock" %}: {{ product.inventory_quantity }})
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div id="current-stock-display" class="current-stock-card" style="display: none;">
+                <span class="stock-label">{% trans "Current Stock" %}</span>
+                <span class="stock-value" id="current-stock-value">0</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label required">{% trans "Modification Type" %}</label>
+                <div class="radio-group">
+                    <label class="radio-item">
+                        <input type="radio" name="change_type" value="set" checked onchange="updatePreview()">
+                        <span class="radio-label">{% trans "Set To" %}</span>
+                        <span class="radio-desc">{% trans "Set inventory to an absolute value" %}</span>
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" name="change_type" value="adjust" onchange="updatePreview()">
+                        <span class="radio-label">{% trans "Adjust By" %}</span>
+                        <span class="radio-desc">{% trans "Add or subtract from current inventory" %}</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label required" for="value">{% trans "Quantity" %}</label>
+                <input type="number" class="form-control" id="value" name="value" required
+                       oninput="updatePreview()" placeholder="{% trans 'Enter quantity' %}">
+                <div id="preview-result" class="preview-result"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label required" for="reason">{% trans "Reason" %}</label>
+                <select class="form-control" id="reason" name="reason" required>
+                    {% for value, label in reasons %}
+                    {% if value != 'order_picked' %}
+                    <option value="{{ value }}" {% if value == 'correction' %}selected{% endif %}>{{ label }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="notes">{% trans "Notes (optional)" %}</label>
+                <textarea class="form-control" id="notes" name="notes" rows="3"
+                          placeholder="{% trans 'Add any additional notes...' %}"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'manage_inventory_logs' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+                <button type="submit" class="btn btn-primary">{% trans "Add Correction" %}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.current-stock-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-md);
+}
+.stock-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.stock-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+.radio-group {
+    display: flex;
+    gap: 1rem;
+}
+.radio-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.radio-item:hover {
+    border-color: var(--color-primary);
+}
+.radio-item input {
+    margin-bottom: 0.5rem;
+}
+.radio-item input:checked + .radio-label {
+    color: var(--color-primary);
+}
+.radio-label {
+    font-weight: 600;
+}
+.radio-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+.preview-result {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    text-align: center;
+}
+.preview-positive {
+    color: var(--color-success);
+    font-weight: 600;
+}
+.preview-negative {
+    color: var(--color-danger);
+    font-weight: 600;
+}
+.preview-neutral {
+    color: var(--text-secondary);
+}
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+}
+@media (max-width: 600px) {
+    .radio-group {
+        flex-direction: column;
+    }
+}
+</style>
+
+<script>
+let currentStock = 0;
+
+function updateCurrentStock() {
+    const select = document.getElementById('product_id');
+    const option = select.options[select.selectedIndex];
+    const stockDisplay = document.getElementById('current-stock-display');
+    const stockValue = document.getElementById('current-stock-value');
+
+    if (option.value) {
+        currentStock = parseInt(option.dataset.stock) || 0;
+        stockValue.textContent = currentStock;
+        stockDisplay.style.display = 'flex';
+
+        // Set initial value for "Set To" mode
+        const changeType = document.querySelector('input[name="change_type"]:checked').value;
+        if (changeType === 'set') {
+            document.getElementById('value').value = currentStock;
+        }
+    } else {
+        currentStock = 0;
+        stockDisplay.style.display = 'none';
+    }
+    updatePreview();
+}
+
+function updatePreview() {
+    const valueInput = document.getElementById('value');
+    const previewEl = document.getElementById('preview-result');
+    const changeType = document.querySelector('input[name="change_type"]:checked').value;
+    const value = parseInt(valueInput.value) || 0;
+
+    if (!document.getElementById('product_id').value) {
+        previewEl.innerHTML = '<span class="preview-neutral">{% trans "Select a product first" %}</span>';
+        return;
+    }
+
+    let newQty;
+    if (changeType === 'set') {
+        newQty = Math.max(0, value);
+    } else {
+        newQty = Math.max(0, currentStock + value);
+    }
+
+    const diff = newQty - currentStock;
+    let html = `${currentStock} &rarr; ${newQty}`;
+
+    if (diff > 0) {
+        html += ` <span class="preview-positive">(+${diff})</span>`;
+    } else if (diff < 0) {
+        html += ` <span class="preview-negative">(${diff})</span>`;
+    } else {
+        html += ` <span class="preview-neutral">({% trans "no change" %})</span>`;
+    }
+
+    previewEl.innerHTML = html;
+}
+</script>
+{% endblock %}

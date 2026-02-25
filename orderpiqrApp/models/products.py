@@ -11,6 +11,11 @@ class Product(models.Model):
     location = models.CharField(_("Location"), max_length=50)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name=_("Customer"))
     active = models.BooleanField(default=True, verbose_name=_("Active"))
+    inventory_quantity = models.PositiveIntegerField(
+        _("Inventory Quantity"),
+        default=0,
+        help_text=_("Current stock quantity for this product.")
+    )
 
     class Meta:
         verbose_name = _("Product")
