@@ -238,6 +238,14 @@ def product_edit(request, product_id):
     product = get_object_or_404(Product, product_id=product_id, customer=customer)
     context['product'] = product
 
+    # Add inventory data if enabled
+    if context.get('inventory_enabled'):
+        context['inventory_logs'] = InventoryLog.objects.filter(
+            product=product,
+            deleted=False
+        ).select_related('user', 'device').order_by('-created_at')[:10]
+        context['inventory_reasons'] = InventoryLog.Reason.choices
+
     if request.method == 'POST':
         code = request.POST.get('code', '').strip()
         description = request.POST.get('description', '').strip()
@@ -1022,7 +1030,8 @@ def inventory_logs_list(request):
         return redirect('manage_settings')
 
     logs = InventoryLog.objects.filter(
-        product__customer=customer
+        product__customer=customer,
+        deleted=False  # Exclude soft-deleted logs
     ).select_related('product', 'user', 'device').order_by('-created_at')
 
     # Filters
@@ -1052,7 +1061,12 @@ def inventory_logs_list(request):
         context['date_to'] = date_to
 
     # Get filter options
-    context['products'] = Product.objects.filter(customer=customer).order_by('code')
+    products = Product.objects.filter(customer=customer).order_by('code')
+    context['products'] = products
+    context['products_json'] = json.dumps([
+        {'id': p.product_id, 'code': p.code, 'description': p.description}
+        for p in products
+    ])
     context['users'] = User.objects.filter(userprofile__customer=customer).order_by('username')
     context['reasons'] = InventoryLog.Reason.choices
 
@@ -1063,6 +1077,64 @@ def inventory_logs_list(request):
     context['paginator'] = paginator
 
     return render(request, 'manage/inventory/logs.html', context)
+
+
+@company_admin_required
+def inventory_logs_bulk_delete(request):
+    """Bulk soft-delete inventory logs (AJAX)."""
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': _("Invalid request method.")}, status=405)
+
+    customer = get_customer_from_user(request.user)
+    if not customer:
+        return JsonResponse({'status': 'error', 'message': _("No customer found.")}, status=400)
+
+    if not is_inventory_enabled(customer):
+        return JsonResponse({'status': 'error', 'message': _("Inventory management is not enabled.")}, status=403)
+
+    try:
+        data = json.loads(request.body)
+        log_ids = data.get('log_ids', [])
+    except json.JSONDecodeError:
+        return JsonResponse({'status': 'error', 'message': _("Invalid request.")}, status=400)
+
+    if not log_ids:
+        return JsonResponse({'status': 'error', 'message': _("No logs selected.")}, status=400)
+
+    # Get the logs to delete and revert their changes
+    logs_to_delete = InventoryLog.objects.filter(
+        log_id__in=log_ids,
+        product__customer=customer,
+        deleted=False
+    ).select_related('product')
+
+    if not logs_to_delete.exists():
+        return JsonResponse({'status': 'error', 'message': _("No valid logs found.")}, status=404)
+
+    # Use transaction to ensure atomicity
+    from django.db import transaction
+    with transaction.atomic():
+        deleted_count = 0
+        for log in logs_to_delete:
+            # Revert the inventory change
+            # The change was: old_quantity -> new_quantity
+            # To revert: subtract the change that was made
+            change_made = log.new_quantity - log.old_quantity
+            log.product.inventory_quantity = max(0, log.product.inventory_quantity - change_made)
+            log.product.save(update_fields=['inventory_quantity'])
+
+            # Soft delete the log
+            log.deleted = True
+            log.deleted_at = timezone.now()
+            log.deleted_by = request.user
+            log.save(update_fields=['deleted', 'deleted_at', 'deleted_by'])
+            deleted_count += 1
+
+    return JsonResponse({
+        'status': 'ok',
+        'message': _("%(count)d log(s) deleted and inventory reverted.") % {'count': deleted_count},
+        'deleted_count': deleted_count
+    })
 
 
 @company_admin_required

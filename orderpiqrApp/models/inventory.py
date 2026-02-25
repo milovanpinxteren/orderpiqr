@@ -58,6 +58,16 @@ class InventoryLog(models.Model):
     )
     notes = models.TextField(_("Notes"), blank=True, null=True)
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
+    deleted = models.BooleanField(_("Deleted"), default=False)
+    deleted_at = models.DateTimeField(_("Deleted At"), null=True, blank=True)
+    deleted_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='deleted_inventory_logs',
+        verbose_name=_("Deleted By")
+    )
 
     # Phase 2 hook: reference to picklist that caused this change
     source_picklist = models.ForeignKey(

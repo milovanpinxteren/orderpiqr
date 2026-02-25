@@ -65,6 +65,112 @@
             </div>
         </div>
     </form>
+
+    {% if not is_create and inventory_enabled %}
+    <!-- Inventory Section -->
+    <div class="card inventory-card">
+        <div class="card-header">
+            <h3 class="card-title">{% trans "Inventory" %}</h3>
+        </div>
+        <div class="card-body">
+            <!-- Current Stock & Quick Modify -->
+            <div class="inventory-modify-section">
+                <div class="inventory-current-compact">
+                    <span class="inventory-label">{% trans "Current Stock" %}</span>
+                    <span class="inventory-value" id="current-stock">{{ product.inventory_quantity }}</span>
+                </div>
+
+                <div class="inventory-modify-form">
+                    <div class="modify-row">
+                        <div class="modify-mode">
+                            <button type="button" class="mode-btn active" data-mode="set">{% trans "Set To" %}</button>
+                            <button type="button" class="mode-btn" data-mode="adjust">{% trans "Adjust By" %}</button>
+                        </div>
+                        <div class="modify-input">
+                            <button type="button" class="qty-btn minus">−</button>
+                            <input type="number" id="inventory-value" value="{{ product.inventory_quantity }}">
+                            <button type="button" class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                    <div class="modify-row">
+                        <select id="inventory-reason" class="form-control">
+                            {% for value, label in inventory_reasons %}
+                            {% if value != 'order_picked' %}
+                            <option value="{{ value }}" {% if value == 'correction' %}selected{% endif %}>{{ label }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                        <input type="text" id="inventory-notes" class="form-control" placeholder="{% trans 'Notes (optional)' %}">
+                    </div>
+                    <div class="modify-row modify-actions">
+                        <span class="modify-preview" id="modify-preview"></span>
+                        <button type="button" class="btn btn-primary btn-sm" id="submit-inventory">
+                            {% trans "Update Stock" %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {% if inventory_logs %}
+            <div class="inventory-history">
+                <h4 class="section-subtitle">{% trans "Recent Changes" %}</h4>
+                <table class="data-table inventory-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Date" %}</th>
+                            <th>{% trans "Change" %}</th>
+                            <th>{% trans "Reason" %}</th>
+                            <th>{% trans "User" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-logs-body">
+                        {% for log in inventory_logs %}
+                        <tr>
+                            <td class="date-cell">{{ log.created_at|date:"d M Y H:i" }}</td>
+                            <td class="change-cell">
+                                <span class="change-badge {% if log.quantity_change > 0 %}positive{% elif log.quantity_change < 0 %}negative{% else %}neutral{% endif %}">
+                                    {{ log.old_quantity }} → {{ log.new_quantity }}
+                                    {% if log.quantity_change > 0 %}(+{{ log.quantity_change }}){% elif log.quantity_change < 0 %}({{ log.quantity_change }}){% endif %}
+                                </span>
+                            </td>
+                            <td>{{ log.get_reason_display }}</td>
+                            <td>
+                                {% if log.user %}
+                                    {{ log.user.get_full_name|default:log.user.username }}
+                                {% elif log.device %}
+                                    {{ log.device.name }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{% url 'manage_inventory_logs' %}?product={{ product.product_id }}" class="view-all-link">
+                    {% trans "View all inventory changes" %} →
+                </a>
+            </div>
+            {% else %}
+            <div class="inventory-history" id="inventory-history-section" style="display: none;">
+                <h4 class="section-subtitle">{% trans "Recent Changes" %}</h4>
+                <table class="data-table inventory-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Date" %}</th>
+                            <th>{% trans "Change" %}</th>
+                            <th>{% trans "Reason" %}</th>
+                            <th>{% trans "User" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-logs-body"></tbody>
+                </table>
+            </div>
+            <p class="empty-state" id="empty-state-msg">{% trans "No inventory changes recorded yet." %}</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 
 <style>
@@ -100,5 +206,417 @@
     gap: var(--spacing-sm);
     justify-content: flex-end;
 }
+
+/* Inventory Section */
+.inventory-card {
+    margin-top: var(--spacing-lg);
+}
+
+.inventory-modify-section {
+    display: flex;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+    align-items: flex-start;
+}
+
+.inventory-current-compact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    min-width: 100px;
+}
+
+.inventory-label {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+}
+
+.inventory-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.inventory-modify-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.modify-row {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+}
+
+.modify-mode {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.modify-mode .mode-btn {
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--gray-300);
+    background: white;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.modify-mode .mode-btn:hover {
+    border-color: var(--primary);
+}
+
+.modify-mode .mode-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.modify-input {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.modify-input .qty-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--gray-300);
+    background: white;
+    border-radius: var(--radius-sm);
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modify-input .qty-btn:hover {
+    background: var(--gray-100);
+}
+
+.modify-input .qty-btn.minus:hover {
+    background: #ffebee;
+    border-color: #ef9a9a;
+}
+
+.modify-input .qty-btn.plus:hover {
+    background: #e8f5e9;
+    border-color: #a5d6a7;
+}
+
+.modify-input input {
+    width: 70px;
+    height: 32px;
+    text-align: center;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.modify-input input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.modify-row select,
+.modify-row input[type="text"] {
+    flex: 1;
+    min-width: 0;
+}
+
+.modify-actions {
+    justify-content: space-between;
+    margin-top: var(--spacing-xs);
+}
+
+.modify-preview {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+}
+
+.modify-preview .diff-positive { color: #2e7d32; font-weight: 600; }
+.modify-preview .diff-negative { color: #c62828; font-weight: 600; }
+.modify-preview .diff-neutral { color: var(--gray-500); }
+
+@media (max-width: 600px) {
+    .inventory-modify-section {
+        flex-direction: column;
+    }
+    .inventory-current-compact {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+    .modify-row {
+        flex-wrap: wrap;
+    }
+}
+
+.inventory-history {
+    margin-top: var(--spacing-md);
+}
+
+.section-subtitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: var(--spacing-sm);
+}
+
+.inventory-table {
+    font-size: 0.85rem;
+}
+
+.inventory-table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+}
+
+.date-cell {
+    white-space: nowrap;
+    color: var(--gray-600);
+}
+
+.change-badge {
+    display: inline-block;
+    padding: 0.2em 0.5em;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.85em;
+}
+
+.change-badge.positive {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.change-badge.negative {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.change-badge.neutral {
+    background-color: var(--gray-100);
+    color: var(--gray-600);
+}
+
+.view-all-link {
+    display: inline-block;
+    margin-top: var(--spacing-sm);
+    font-size: 0.85rem;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.view-all-link:hover {
+    text-decoration: underline;
+}
+
+.empty-state {
+    color: var(--gray-500);
+    font-style: italic;
+    padding: var(--spacing-md) 0;
+}
 </style>
+
+{% if not is_create and inventory_enabled %}
+<script>
+(function() {
+    const productId = {{ product.product_id }};
+    let currentStock = {{ product.inventory_quantity }};
+    let changeMode = 'set';
+    const csrfToken = '{{ csrf_token }}';
+
+    // Mode toggle
+    document.querySelectorAll('.modify-mode .mode-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            changeMode = this.dataset.mode;
+            document.querySelectorAll('.modify-mode .mode-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const input = document.getElementById('inventory-value');
+            if (changeMode === 'set') {
+                input.value = currentStock;
+            } else {
+                input.value = 0;
+            }
+            updatePreview();
+        });
+    });
+
+    // Quantity buttons
+    document.querySelector('.qty-btn.minus').addEventListener('click', function() {
+        const input = document.getElementById('inventory-value');
+        let val = parseInt(input.value) || 0;
+        if (changeMode === 'set') {
+            input.value = Math.max(0, val - 1);
+        } else {
+            input.value = val - 1;
+        }
+        updatePreview();
+    });
+
+    document.querySelector('.qty-btn.plus').addEventListener('click', function() {
+        const input = document.getElementById('inventory-value');
+        let val = parseInt(input.value) || 0;
+        input.value = val + 1;
+        updatePreview();
+    });
+
+    document.getElementById('inventory-value').addEventListener('input', updatePreview);
+
+    function updatePreview() {
+        const value = parseInt(document.getElementById('inventory-value').value) || 0;
+        let newQty;
+
+        if (changeMode === 'set') {
+            newQty = Math.max(0, value);
+        } else {
+            newQty = Math.max(0, currentStock + value);
+        }
+
+        const diff = newQty - currentStock;
+        let previewHtml = `${currentStock} → ${newQty}`;
+
+        if (diff > 0) {
+            previewHtml += ` <span class="diff-positive">(+${diff})</span>`;
+        } else if (diff < 0) {
+            previewHtml += ` <span class="diff-negative">(${diff})</span>`;
+        } else {
+            previewHtml += ` <span class="diff-neutral">({% trans "no change" %})</span>`;
+        }
+
+        document.getElementById('modify-preview').innerHTML = previewHtml;
+    }
+
+    // Submit
+    document.getElementById('submit-inventory').addEventListener('click', function() {
+        const value = parseInt(document.getElementById('inventory-value').value);
+        const reason = document.getElementById('inventory-reason').value;
+        const notes = document.getElementById('inventory-notes').value.trim();
+
+        if (isNaN(value)) {
+            alert('{% trans "Please enter a valid quantity" %}');
+            return;
+        }
+
+        this.disabled = true;
+        this.textContent = '{% trans "Updating..." %}';
+
+        fetch('{% url "inventory_modify" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                change_type: changeMode,
+                value: value,
+                reason: reason,
+                notes: notes
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                // Update current stock
+                currentStock = data.new_quantity;
+                document.getElementById('current-stock').textContent = currentStock;
+
+                // Reset form
+                if (changeMode === 'set') {
+                    document.getElementById('inventory-value').value = currentStock;
+                } else {
+                    document.getElementById('inventory-value').value = 0;
+                }
+                document.getElementById('inventory-notes').value = '';
+                updatePreview();
+
+                // Add new row to history table
+                addLogRow(data);
+
+                // Show success (brief highlight)
+                const stockEl = document.getElementById('current-stock');
+                stockEl.style.transition = 'color 0.3s';
+                stockEl.style.color = '#2e7d32';
+                setTimeout(() => { stockEl.style.color = ''; }, 1500);
+            } else {
+                alert(data.message || '{% trans "Error updating inventory" %}');
+            }
+
+            this.disabled = false;
+            this.textContent = '{% trans "Update Stock" %}';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('{% trans "Error updating inventory" %}');
+            this.disabled = false;
+            this.textContent = '{% trans "Update Stock" %}';
+        });
+    });
+
+    function addLogRow(data) {
+        // Show history section if it was hidden
+        const historySection = document.getElementById('inventory-history-section');
+        const emptyMsg = document.getElementById('empty-state-msg');
+        if (historySection) historySection.style.display = 'block';
+        if (emptyMsg) emptyMsg.style.display = 'none';
+
+        const tbody = document.getElementById('inventory-logs-body');
+        if (!tbody) return;
+
+        const diff = data.new_quantity - data.old_quantity;
+        let diffClass = 'neutral';
+        let diffText = '';
+        if (diff > 0) {
+            diffClass = 'positive';
+            diffText = `(+${diff})`;
+        } else if (diff < 0) {
+            diffClass = 'negative';
+            diffText = `(${diff})`;
+        }
+
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+        const reasonLabel = document.getElementById('inventory-reason').options[document.getElementById('inventory-reason').selectedIndex].text;
+
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td class="date-cell">${dateStr}</td>
+            <td class="change-cell">
+                <span class="change-badge ${diffClass}">
+                    ${data.old_quantity} → ${data.new_quantity} ${diffText}
+                </span>
+            </td>
+            <td>${reasonLabel}</td>
+            <td>{% trans "You" %}</td>
+        `;
+        newRow.style.backgroundColor = '#e8f5e9';
+        tbody.insertBefore(newRow, tbody.firstChild);
+
+        // Fade out highlight
+        setTimeout(() => {
+            newRow.style.transition = 'background-color 1s';
+            newRow.style.backgroundColor = '';
+        }, 100);
+    }
+
+    // Initial preview
+    updatePreview();
+})();
+</script>
+{% endif %}
 {% endblock %}

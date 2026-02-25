@@ -23,15 +23,14 @@
 {% block content %}
 <!-- Filters -->
 <div class="search-filters">
-    <div class="filter-group">
-        <select class="form-control" id="product-filter">
-            <option value="">{% trans "All Products" %}</option>
-            {% for product in products %}
-            <option value="{{ product.product_id }}" {% if product_filter == product.product_id %}selected{% endif %}>
-                {{ product.code }} - {{ product.description|truncatewords:5 }}
-            </option>
-            {% endfor %}
-        </select>
+    <div class="filter-group filter-group-product">
+        <div class="searchable-select" id="product-select-container">
+            <input type="text" class="form-control" id="product-search-input"
+                   placeholder="{% trans 'Search products...' %}" autocomplete="off"
+                   value="{% if product_filter %}{% for p in products %}{% if p.product_id == product_filter %}{{ p.code }}{% endif %}{% endfor %}{% endif %}">
+            <input type="hidden" id="product-filter" value="{{ product_filter|default:'' }}">
+            <div class="searchable-dropdown" id="product-dropdown"></div>
+        </div>
     </div>
     <div class="filter-group">
         <select class="form-control" id="reason-filter">
@@ -51,6 +50,18 @@
     <button class="btn btn-secondary" onclick="clearFilters()">{% trans "Clear" %}</button>
 </div>
 
+<!-- Bulk Actions Bar -->
+<div class="bulk-actions-bar" id="bulk-actions-bar" style="display: none;">
+    <span class="selected-count"><span id="selected-count">0</span> {% trans "selected" %}</span>
+    <button class="btn btn-danger btn-sm" onclick="bulkDelete()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+        </svg>
+        {% trans "Delete Selected" %}
+    </button>
+    <button class="btn btn-secondary btn-sm" onclick="clearSelection()">{% trans "Cancel" %}</button>
+</div>
+
 <!-- Logs Table -->
 <div class="card">
     <div class="card-body p-0">
@@ -59,6 +70,9 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th class="checkbox-col">
+                            <input type="checkbox" id="select-all" onchange="toggleSelectAll(this)">
+                        </th>
                         <th>{% trans "Date/Time" %}</th>
                         <th>{% trans "Product" %}</th>
                         <th>{% trans "Change" %}</th>
@@ -69,7 +83,10 @@
                 </thead>
                 <tbody>
                     {% for log in logs %}
-                    <tr>
+                    <tr data-log-id="{{ log.log_id }}">
+                        <td class="checkbox-col">
+                            <input type="checkbox" class="log-checkbox" value="{{ log.log_id }}" onchange="updateSelection()">
+                        </td>
                         <td class="text-muted">{{ log.created_at|date:"M j, Y H:i" }}</td>
                         <td>
                             <strong>{{ log.product.code }}</strong>
@@ -161,15 +178,170 @@
 }
 .filter-group {
     flex: 1;
-    min-width: 150px;
+    min-width: 120px;
+}
+.filter-group-product {
+    min-width: 280px;
+    flex: 3;
+}
+@media (max-width: 768px) {
+    .filter-group-product {
+        min-width: 100%;
+        flex: 1 1 100%;
+    }
 }
 .filter-group select,
 .filter-group input {
     width: 100%;
 }
+
+/* Searchable Select */
+.searchable-select {
+    position: relative;
+    width: 100%;
+}
+.searchable-select input {
+    width: 100%;
+}
+.searchable-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    min-width: 300px;
+    background: white;
+    border: 1px solid var(--gray-300);
+    border-top: none;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.searchable-dropdown.show {
+    display: block;
+}
+.searchable-option {
+    padding: 0.6rem 0.85rem;
+    cursor: pointer;
+    border-bottom: 1px solid var(--gray-100);
+}
+.searchable-option:last-child {
+    border-bottom: none;
+}
+.searchable-option:hover {
+    background-color: var(--gray-50);
+}
+.searchable-option-code {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+.searchable-option-desc {
+    font-size: 0.8rem;
+    color: var(--gray-600);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.searchable-option-clear {
+    color: var(--gray-500);
+    font-style: italic;
+}
+@media (max-width: 768px) {
+    .searchable-dropdown {
+        min-width: 100%;
+    }
+}
+
+/* Checkbox column */
+.checkbox-col {
+    width: 40px;
+    text-align: center;
+}
+.checkbox-col input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* Bulk actions bar */
+.bulk-actions-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--gray-100);
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+}
+.selected-count {
+    font-weight: 500;
+    color: var(--gray-700);
+}
+tr.selected {
+    background-color: #e3f2fd !important;
+}
 </style>
 
 <script>
+const productsData = {{ products_json|safe }};
+const csrfToken = '{{ csrf_token }}';
+
+// ================== Searchable Product Dropdown ==================
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('product-search-input');
+    const hiddenInput = document.getElementById('product-filter');
+    const dropdown = document.getElementById('product-dropdown');
+
+    searchInput.addEventListener('focus', function() {
+        showDropdown('');
+    });
+
+    searchInput.addEventListener('input', function() {
+        showDropdown(this.value);
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('#product-select-container')) {
+            dropdown.classList.remove('show');
+        }
+    });
+
+    function showDropdown(query) {
+        query = query.toLowerCase();
+        let html = '<div class="searchable-option searchable-option-clear" onclick="selectProduct(\'\', \'{% trans "All Products" %}\')">{% trans "All Products" %}</div>';
+
+        const filtered = productsData.filter(p =>
+            p.code.toLowerCase().includes(query) ||
+            p.description.toLowerCase().includes(query)
+        ).slice(0, 20);
+
+        filtered.forEach(p => {
+            html += `<div class="searchable-option" onclick="selectProduct('${p.id}', '${escapeHtml(p.code)}')">
+                <div class="searchable-option-code">${escapeHtml(p.code)}</div>
+                <div class="searchable-option-desc">${escapeHtml(p.description)}</div>
+            </div>`;
+        });
+
+        dropdown.innerHTML = html;
+        dropdown.classList.add('show');
+    }
+});
+
+function selectProduct(id, code) {
+    document.getElementById('product-filter').value = id;
+    document.getElementById('product-search-input').value = id ? code : '';
+    document.getElementById('product-dropdown').classList.remove('show');
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ================== Filters ==================
 function applyFilters() {
     let url = '{% url "manage_inventory_logs" %}?';
 
@@ -188,6 +360,80 @@ function applyFilters() {
 
 function clearFilters() {
     window.location.href = '{% url "manage_inventory_logs" %}';
+}
+
+// ================== Bulk Selection ==================
+function toggleSelectAll(checkbox) {
+    const checkboxes = document.querySelectorAll('.log-checkbox');
+    checkboxes.forEach(cb => {
+        cb.checked = checkbox.checked;
+        cb.closest('tr').classList.toggle('selected', checkbox.checked);
+    });
+    updateSelection();
+}
+
+function updateSelection() {
+    const checkboxes = document.querySelectorAll('.log-checkbox:checked');
+    const count = checkboxes.length;
+    const bar = document.getElementById('bulk-actions-bar');
+    const countEl = document.getElementById('selected-count');
+
+    countEl.textContent = count;
+    bar.style.display = count > 0 ? 'flex' : 'none';
+
+    // Update select-all checkbox state
+    const allCheckboxes = document.querySelectorAll('.log-checkbox');
+    const selectAll = document.getElementById('select-all');
+    selectAll.checked = allCheckboxes.length > 0 && checkboxes.length === allCheckboxes.length;
+    selectAll.indeterminate = checkboxes.length > 0 && checkboxes.length < allCheckboxes.length;
+}
+
+function clearSelection() {
+    document.querySelectorAll('.log-checkbox').forEach(cb => {
+        cb.checked = false;
+        cb.closest('tr').classList.remove('selected');
+    });
+    document.getElementById('select-all').checked = false;
+    updateSelection();
+}
+
+function bulkDelete() {
+    const checkboxes = document.querySelectorAll('.log-checkbox:checked');
+    const logIds = Array.from(checkboxes).map(cb => parseInt(cb.value));
+
+    if (logIds.length === 0) return;
+
+    if (!confirm('{% trans "Are you sure you want to delete" %} ' + logIds.length + ' {% trans "log entries? The inventory changes will be reverted." %}')) {
+        return;
+    }
+
+    fetch('{% url "manage_inventory_bulk_delete" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({ log_ids: logIds })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            // Remove deleted rows from the table
+            logIds.forEach(id => {
+                const row = document.querySelector(`tr[data-log-id="${id}"]`);
+                if (row) row.remove();
+            });
+            clearSelection();
+            // Show success message (could add a toast notification)
+            alert(data.message);
+        } else {
+            alert(data.message || '{% trans "Error deleting logs" %}');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('{% trans "Error deleting logs" %}');
+    });
 }
 </script>
 {% endblock %}

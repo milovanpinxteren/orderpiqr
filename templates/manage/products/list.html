@@ -100,7 +100,7 @@
                 </thead>
                 <tbody>
                     {% for product in products %}
-                    <tr data-id="{{ product.product_id }}">
+                    <tr data-id="{{ product.product_id }}" data-edit-url="{% url 'manage_product_edit' product.product_id %}" class="clickable-row">
                         <td class="col-checkbox"><input type="checkbox" class="row-checkbox" value="{{ product.product_id }}" onchange="updateBulkBar()"></td>
                         <td>
                             <span class="inline-editable" data-field="code" data-id="{{ product.product_id }}">
@@ -284,6 +284,18 @@
 
 /* Selected row highlight */
 tr.selected { background: rgba(17, 143, 17, 0.06); }
+
+/* Clickable row */
+tr.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+tr.clickable-row:hover {
+    background-color: var(--gray-50, #f8f9fa);
+}
+tr.clickable-row.selected:hover {
+    background-color: rgba(17, 143, 17, 0.1);
+}
 
 .modal-overlay {
     position: fixed;
@@ -582,6 +594,31 @@ document.querySelectorAll('.inline-editable').forEach(el => {
             if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
             if (e.key === 'Escape') { input.value = val; input.blur(); }
         });
+    });
+});
+
+// ========================================
+// Clickable Rows
+// ========================================
+document.querySelectorAll('.clickable-row').forEach(row => {
+    row.addEventListener('click', function(e) {
+        // Don't navigate if clicking on interactive elements
+        const target = e.target;
+        if (
+            target.closest('input') ||
+            target.closest('button') ||
+            target.closest('a') ||
+            target.closest('.inline-editable') ||
+            target.closest('.toggle-active') ||
+            target.closest('.table-actions')
+        ) {
+            return;
+        }
+
+        const url = this.dataset.editUrl;
+        if (url) {
+            window.location.href = url;
+        }
     });
 });
 
