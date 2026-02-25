@@ -286,7 +286,7 @@ tr.selected {
 
 <script>
 const productsData = {{ products_json|safe }};
-const csrfToken = '{{ csrf_token }}';
+// csrfToken is already defined in base.html
 
 // ================== Searchable Product Dropdown ==================
 document.addEventListener('DOMContentLoaded', function() {
