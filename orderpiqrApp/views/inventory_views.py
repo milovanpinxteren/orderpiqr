@@ -43,6 +43,12 @@ def inventory_picker(request):
 
     device = get_device_from_request(request)
 
+    # Redirect to name_entry if no device registered
+    if not device:
+        from django.shortcuts import redirect
+        from django.urls import reverse
+        return redirect(f"{reverse('name_entry')}?next={request.get_full_path()}")
+
     # Get products as JSON for JavaScript search
     products = Product.objects.filter(
         customer=customer,

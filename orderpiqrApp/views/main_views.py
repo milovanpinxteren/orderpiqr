@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils.safestring import mark_safe
+from django.urls import reverse
 
-from orderpiqr.views import name_entry
 from orderpiqrApp.models import Product, Device, SettingDefinition, CustomerSettingValue, Order
 import json
 
@@ -9,7 +9,8 @@ def index(request):
     device_fingerprint = request.session.get('device_fingerprint')
     device = Device.objects.filter(user=request.user, device_fingerprint=device_fingerprint).first()
     if not device:
-        return name_entry(request)
+        # Redirect to name_entry with next parameter to return here after
+        return redirect(f"{reverse('name_entry')}?next={request.get_full_path()}")
 
     customer = request.user.userprofile.customer
     product_data = Product.objects.filter(active=True, customer=customer)

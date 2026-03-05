@@ -26,6 +26,7 @@ urlpatterns = [
     path('signup/', signup, name='signup'),
     path('login/', custom_login, name='login'),
     path('name-entry/', name_entry, name='name_entry'),
+    path('picker-choice/', picker_choice, name='picker_choice'),
 
     # Password Reset URLs
     path('password-reset/',

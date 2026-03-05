@@ -14,6 +14,7 @@
     <div class="auth-body">
         <form id="name-form" method="POST">
             {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
 
             <div class="form-group">
                 <label class="form-label required" for="name">{% trans "Your Name" %}</label>

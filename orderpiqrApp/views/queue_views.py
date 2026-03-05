@@ -119,10 +119,14 @@ def queue_picker(request):
         device_fingerprint=device_fingerprint
     ).first()
 
+    # Redirect to name_entry if no device registered
+    if not device:
+        from django.urls import reverse
+        return redirect(f"{reverse('name_entry')}?next={reverse('index')}")
+
     # Update last_login when picker loads the queue page
-    if device:
-        device.last_login = timezone.now()
-        device.save(update_fields=['last_login'])
+    device.last_login = timezone.now()
+    device.save(update_fields=['last_login'])
 
     orders = _annotate_picker(get_queue_orders(customer, include_lines=True))
 

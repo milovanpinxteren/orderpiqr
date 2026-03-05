@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from orderpiqrApp.models import Device, UserProfile
+from orderpiqrApp.utils.inventory import is_inventory_enabled, is_orderpicking_enabled
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext_lazy as _
 from django.http import FileResponse, Http404, JsonResponse
@@ -59,7 +60,22 @@ def root_redirect(request):
     if request.user.groups.filter(name='companyadmin').exists():
         return redirect('/orderpiqr/manage/')  # Redirect companyadmin to the custom admin
     if request.user.groups.filter(name='orderpicker').exists():
-        return redirect('/orderpiqr')  # Redirect orderpicker to their specific page
+        # Check which features are enabled for the orderpicker's customer
+        try:
+            customer = request.user.userprofile.customer
+            orderpicking = is_orderpicking_enabled(customer)
+            inventory = is_inventory_enabled(customer)
+
+            if orderpicking and inventory:
+                return redirect('picker_choice')  # Show choice screen
+            elif orderpicking:
+                return redirect('/orderpiqr/queue/')  # Direct to order picking
+            elif inventory:
+                return redirect('/orderpiqr/inventory/')  # Direct to inventory
+            else:
+                return redirect('/orderpiqr')  # Fallback to index
+        except Exception:
+            return redirect('/orderpiqr')  # Fallback on error
     return redirect('/login')  # Redirect to login if no role matches (should not happen)
 
 
@@ -95,7 +111,28 @@ def custom_login(request):
     return render(request, 'registration/login.html', {'form': form})
 
 
+@login_required
+def picker_choice(request):
+    """Show choice between order picking and inventory counting."""
+    device_fingerprint = request.session.get('device_fingerprint')
+    device = Device.objects.filter(user=request.user, device_fingerprint=device_fingerprint).first()
+
+    # Get customer and check enabled features
+    customer = getattr(getattr(request.user, 'userprofile', None), 'customer', None)
+    orderpicking_enabled = is_orderpicking_enabled(customer)
+    inventory_enabled = is_inventory_enabled(customer)
+
+    return render(request, 'registration/picker_choice.html', {
+        'device': device,
+        'orderpicking_enabled': orderpicking_enabled,
+        'inventory_enabled': inventory_enabled,
+    })
+
+
 def name_entry(request):
+    # Get the 'next' parameter from GET or POST
+    next_url = request.POST.get('next') or request.GET.get('next') or '/'
+
     if request.method == 'POST':
         # Handle form submission and save the name to Device model
         name = request.POST.get('name')
@@ -122,9 +159,9 @@ def name_entry(request):
                 existing.last_login = datetime.now()
                 existing.save()
             request.session['device_fingerprint'] = device_fingerprint
-            return redirect('/')
+            return redirect(next_url)
 
-    return render(request, 'registration/name_entry.html')  # Render a form for name input
+    return render(request, 'registration/name_entry.html', {'next': next_url})
 
 
 @login_required

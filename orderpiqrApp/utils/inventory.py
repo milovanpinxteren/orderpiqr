@@ -30,6 +30,32 @@ def is_inventory_enabled(customer):
         return False
 
 
+def is_orderpicking_enabled(customer):
+    """
+    Check if order picking is enabled for this customer.
+
+    Args:
+        customer: Customer instance
+
+    Returns:
+        bool: True if order picking is enabled
+    """
+    if not customer:
+        return False
+
+    try:
+        definition = SettingDefinition.objects.get(key='orderpicking_enabled')
+        customer_value = CustomerSettingValue.objects.filter(
+            customer=customer,
+            definition=definition
+        ).first()
+
+        raw_value = customer_value.value if customer_value else definition.default_value
+        return definition.cast_value(raw_value) if raw_value else True  # Default to True
+    except SettingDefinition.DoesNotExist:
+        return True  # Default to enabled if setting doesn't exist
+
+
 @transaction.atomic
 def modify_inventory(
     product,
