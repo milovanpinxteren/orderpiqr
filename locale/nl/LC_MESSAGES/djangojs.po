@@ -522,3 +522,36 @@ msgstr "Order verwijderd uit wachtrij"
 #, python-format
 msgid "<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining"
 msgstr "<strong>%(remaining)s</strong> van <strong>%(total)s</strong> over"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Install Orderpiqr"
+msgstr "Installeer Orderpiqr"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Add Orderpiqr to your home screen for quick access"
+msgstr "Voeg Orderpiqr toe aan je startscherm voor snelle toegang"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Install"
+msgstr "Installeren"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Tap the Share button"
+msgstr "Tik op de Deel-knop"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Tap \"Add to Home Screen\""
+msgstr "Tik op \"Zet op beginscherm\""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+#, python-format
+msgid "Picked %(quantity)s of %(product)s"
+msgstr "%(quantity)s van %(product)s gepickt"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+msgid "Please enter a valid quantity"
+msgstr "Voer een geldig aantal in"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+msgid "Could not update bulk product pick."
+msgstr "Kon bulkpick niet bijwerken."

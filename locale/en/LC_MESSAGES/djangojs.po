@@ -509,3 +509,36 @@ msgstr "Order removed from queue"
 #, python-format
 msgid "<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining"
 msgstr "<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Install Orderpiqr"
+msgstr "Install Orderpiqr"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Add Orderpiqr to your home screen for quick access"
+msgstr "Add Orderpiqr to your home screen for quick access"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Install"
+msgstr "Install"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Tap the Share button"
+msgstr "Tap the Share button"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Tap \"Add to Home Screen\""
+msgstr "Tap \"Add to Home Screen\""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+#, python-format
+msgid "Picked %(quantity)s of %(product)s"
+msgstr "Picked %(quantity)s of %(product)s"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+msgid "Please enter a valid quantity"
+msgstr "Please enter a valid quantity"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+msgid "Could not update bulk product pick."
+msgstr "Could not update bulk product pick."

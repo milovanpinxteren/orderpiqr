@@ -9,3 +9,37 @@
         <div class="overlay-btn">{% trans "Tap to scan next item" %}</div>
     </div>
 </div>
+
+<!-- Bulk pick overlay -->
+<div id="bulk-pick-overlay" class="scan-overlay hidden">
+    <div class="bulk-pick-overlay-content">
+        <div class="scan-overlay-icon">✓</div>
+        <h2 id="bulk-overlay-product-name"></h2>
+        <p id="bulk-overlay-remaining-count" class="remaining-count"></p>
+
+        <div class="bulk-pick-custom-section">
+            <div class="bulk-pick-divider">
+                <span>{% trans "Pick a specific quantity" %}</span>
+            </div>
+
+            <div class="bulk-pick-stepper">
+                <button id="bulk-pick-minus" class="stepper-btn stepper-minus" type="button">&minus;</button>
+                <input id="bulk-pick-quantity" type="number" inputmode="numeric" class="bulk-pick-input" min="1" value="1">
+                <button id="bulk-pick-plus" class="stepper-btn stepper-plus" type="button">+</button>
+            </div>
+
+            <button id="bulk-confirm-qty-btn" class="overlay-btn bulk-confirm-qty" type="button">
+                {% trans "Confirm" %}
+            </button>
+        </div>
+
+        <div class="bulk-pick-bottom-actions">
+            <button id="bulk-confirm-all-btn" class="overlay-btn bulk-confirm-all" type="button">
+                {% trans "Pick All" %}
+            </button>
+            <button id="bulk-pick-one-btn" class="overlay-btn bulk-pick-one" type="button">
+                {% trans "Pick 1" %}
+            </button>
+        </div>
+    </div>
+</div>

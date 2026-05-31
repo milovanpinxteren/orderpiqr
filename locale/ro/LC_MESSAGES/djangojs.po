@@ -513,3 +513,36 @@ msgstr "Comandă eliminată din coadă"
 #, python-format
 msgid "<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining"
 msgstr "<strong>%(remaining)s</strong> din <strong>%(total)s</strong> rămase"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Install Orderpiqr"
+msgstr "Instalează Orderpiqr"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Add Orderpiqr to your home screen for quick access"
+msgstr "Adaugă Orderpiqr pe ecranul principal pentru acces rapid"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Install"
+msgstr "Instalează"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Tap the Share button"
+msgstr "Apasă butonul Partajare"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Tap \"Add to Home Screen\""
+msgstr "Apasă \"Adaugă pe ecranul de pornire\""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+#, python-format
+msgid "Picked %(quantity)s of %(product)s"
+msgstr "%(quantity)s din %(product)s preluate"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+msgid "Please enter a valid quantity"
+msgstr "Introduceți o cantitate validă"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+msgid "Could not update bulk product pick."
+msgstr "Nu s-a putut actualiza preluarea în bloc."

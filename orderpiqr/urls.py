@@ -5,7 +5,7 @@ from django.conf.urls.i18n import i18n_patterns
 from django.views.i18n import JavaScriptCatalog
 
 from orderpiqr.views import *
-from orderpiqrApp.views import scan_picklist, complete_picklist, product_pick
+from orderpiqrApp.views import scan_picklist, complete_picklist, product_pick, bulk_product_pick
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from api.views.documentation_views import documentation_view
@@ -51,6 +51,7 @@ urlpatterns = [
     path('admin/download_batch_qr_pdf/<str:file_name>/', download_batch_qr_pdf, name='download_batch_qr_pdf'),
     path('orderpiqr/scan-picklist', scan_picklist, name='scan-picklist'),  # Keep this outside of i18n to enable POST
     path('orderpiqr/product-pick', product_pick, name='product-pick'),
+    path('orderpiqr/bulk-product-pick', bulk_product_pick, name='bulk-product-pick'),
     path('orderpiqr/complete-picklist', complete_picklist, name='complete-picklist'),
     # Keep this outside of i18n to enable POST
     path('offline/', TemplateView.as_view(template_name='offline.html'), name='offline'),

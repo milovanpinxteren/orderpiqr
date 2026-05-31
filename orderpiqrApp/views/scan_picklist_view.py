@@ -215,6 +215,70 @@ def product_pick(request):
     )
 
 
+@require_POST
+def bulk_product_pick(request):
+    payload = json.loads(request.body.decode("utf-8"))
+    order_id = payload.get("orderID")
+    product_code = payload.get("productCode")
+    device_fp = payload.get("deviceFingerprint")
+    quantity = payload.get("quantity")
+    time_taken_ms = payload.get("timeTakenMs")
+    scanned_at = payload.get("scannedAt") or timezone.now().isoformat()
+
+    if not quantity or int(quantity) < 1:
+        return JsonResponse({"status": "error", "message": "quantity must be at least 1"}, status=400)
+
+    quantity = int(quantity)
+
+    try:
+        device = Device.objects.get(device_fingerprint=device_fp)
+        Device.objects.filter(pk=device.pk).update(last_login=timezone.now())
+    except Device.DoesNotExist:
+        return JsonResponse({"status": "error", "message": "Device not found"}, status=404)
+
+    picklist = (PickList.objects.filter(picklist_code=order_id, customer=device.customer, device=device)
+                .select_related("customer", "device")
+                .first())
+    if not picklist:
+        return JsonResponse({"status": "error", "message": "PickList not found"}, status=404)
+
+    product = Product.objects.filter(customer=device.customer, code=product_code).first()
+    if not product:
+        return JsonResponse({"status": "error", "message": "Product not found"}, status=404)
+
+    qs = ProductPick.objects.filter(
+        picklist=picklist, product=product, successful__isnull=True
+    ).order_by("id")
+
+    available = qs.count()
+    if quantity > available:
+        return JsonResponse({
+            "status": "error",
+            "message": f"Requested {quantity} but only {available} unpicked rows available"
+        }, status=400)
+
+    time_taken = timedelta(milliseconds=int(time_taken_ms)) if time_taken_ms else timedelta(0)
+    stamp = f"device={device_fp}; scanned_at={scanned_at}; bulk_pick=true"
+
+    with transaction.atomic():
+        picks_to_update = list(qs.select_for_update()[:quantity])
+        for i, pp in enumerate(picks_to_update):
+            pp.successful = True
+            pp.time_taken = time_taken if i == 0 else timedelta(0)
+            pp.notes = f"{pp.notes}\n{stamp}" if pp.notes else stamp
+            pp.save(update_fields=["successful", "time_taken", "notes"])
+
+    remaining = qs.filter(successful__isnull=True).count()
+
+    return JsonResponse({
+        "status": "ok",
+        "picklist_code": picklist.picklist_code,
+        "product_code": product.code,
+        "updated_count": quantity,
+        "remaining_for_product": remaining,
+    }, status=200)
+
+
 def complete_picklist(request):
     if request.method == 'POST':
         try:

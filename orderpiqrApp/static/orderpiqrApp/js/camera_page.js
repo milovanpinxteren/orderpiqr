@@ -127,12 +127,16 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 if (remainingCount > 0) {
                     const totalCount = originalProductCounts[firstProductCode] || remainingCount + 1;
                     pauseScanner();
-                    showConfirmationOverlay(product.description, remainingCount, totalCount);
+                    if (window.SETTINGS?.bulk_pick_enabled === true && remainingCount > 1) {
+                        showBulkPickOverlay(product.description, firstProductCode, remainingCount, totalCount);
+                    } else {
+                        showConfirmationOverlay(product.description, remainingCount, totalCount);
+                    }
                 }
 
 
                 if (currentPicklist.length === 0) {
-                    notifyPicklistCompleted(currentOrderID, csrfToken);  // <- you'll need to make csrfToken available
+                    notifyPicklistCompleted(currentOrderID, csrfToken);
                 }
             } else {
                 // Incorrect scan, show error notification
@@ -154,11 +158,15 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 if (remainingCount > 0) {
                     const totalCount = originalProductCounts[code] || remainingCount + 1;
                     pauseScanner();
-                    showConfirmationOverlay(product.description, remainingCount, totalCount);
+                    if (window.SETTINGS?.bulk_pick_enabled === true && remainingCount > 1) {
+                        showBulkPickOverlay(product.description, code, remainingCount, totalCount);
+                    } else {
+                        showConfirmationOverlay(product.description, remainingCount, totalCount);
+                    }
                 }
 
                 if (currentPicklist.length === 0) {
-                    notifyPicklistCompleted(currentOrderID, csrfToken);  // <- you'll need to make csrfToken available
+                    notifyPicklistCompleted(currentOrderID, csrfToken);
                 }
             } else {
                 showNotification(gettext("Product code not found in the list."), true);
@@ -276,6 +284,163 @@ function showConfirmationOverlay(productDescription, remainingCount, totalCount)
 function hideConfirmationOverlay() {
     overlay.classList.add('hidden');
 }
+
+// Bulk pick overlay elements
+const bulkOverlay = document.getElementById('bulk-pick-overlay');
+const bulkOverlayProductName = document.getElementById('bulk-overlay-product-name');
+const bulkOverlayRemainingCount = document.getElementById('bulk-overlay-remaining-count');
+const bulkConfirmAllBtn = document.getElementById('bulk-confirm-all-btn');
+const bulkConfirmQtyBtn = document.getElementById('bulk-confirm-qty-btn');
+const bulkPickOneBtn = document.getElementById('bulk-pick-one-btn');
+const bulkPickQuantityInput = document.getElementById('bulk-pick-quantity');
+const bulkPickMinusBtn = document.getElementById('bulk-pick-minus');
+const bulkPickPlusBtn = document.getElementById('bulk-pick-plus');
+
+let bulkPickContext = null;
+
+function showBulkPickOverlay(productDescription, productCode, remainingCount, totalCount) {
+    bulkPickContext = { productCode, remainingCount, totalCount, productDescription };
+
+    bulkOverlayProductName.textContent = productDescription;
+    bulkOverlayRemainingCount.innerHTML = gettext("<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining")
+        .replace("%(remaining)s", remainingCount)
+        .replace("%(total)s", totalCount);
+
+    bulkPickQuantityInput.value = remainingCount;
+    bulkPickQuantityInput.max = remainingCount;
+    bulkPickQuantityInput.min = 1;
+
+    bulkOverlay.classList.remove('hidden');
+}
+
+function hideBulkPickOverlay() {
+    bulkOverlay.classList.add('hidden');
+    bulkPickContext = null;
+}
+
+function executeBulkPick(productCode, quantity, returnToScanner) {
+    const ctx = bulkPickContext;
+    if (!ctx) return;
+
+    const now = Date.now();
+    const timeTakenMs = lastPickTs ? (now - lastPickTs) : null;
+    lastPickTs = now;
+
+    // Remove quantity instances from currentPicklist
+    let removed = 0;
+    for (let i = currentPicklist.length - 1; i >= 0 && removed < quantity; i--) {
+        if (currentPicklist[i] === productCode) {
+            currentPicklist.splice(i, 1);
+            removed++;
+        }
+    }
+
+    updateScannedList(currentPicklist, productData);
+
+    // Send to server
+    notifyBulkProductPicked({ orderID: currentOrderID, productCode, quantity, timeTakenMs, csrfToken })
+        .catch(function (err) {
+            console.error('bulk-product-pick update failed', err);
+            showNotification(gettext("Could not update bulk product pick."), true);
+        });
+
+    // Show notification
+    const product = productData.find(function (item) { return item.code === productCode; });
+    const desc = product ? product.description : productCode;
+    showNotification(
+        gettext("Picked %(quantity)s of %(product)s")
+            .replace("%(quantity)s", quantity)
+            .replace("%(product)s", desc)
+    );
+
+    // Check remaining
+    const newRemaining = currentPicklist.filter(function (c) { return c === productCode; }).length;
+
+    hideBulkPickOverlay();
+
+    if (currentPicklist.length === 0) {
+        isProcessingScan = false;
+        resumeScanner();
+        notifyPicklistCompleted(currentOrderID, csrfToken);
+    } else if (returnToScanner) {
+        isProcessingScan = false;
+        resumeScanner();
+    } else if (newRemaining > 1) {
+        const totalCount = originalProductCounts[productCode] || 0;
+        showBulkPickOverlay(desc, productCode, newRemaining, totalCount);
+    } else if (newRemaining === 1) {
+        const totalCount = originalProductCounts[productCode] || 0;
+        showConfirmationOverlay(desc, newRemaining, totalCount);
+    } else {
+        isProcessingScan = false;
+        resumeScanner();
+    }
+}
+
+function notifyBulkProductPicked({orderID, productCode, quantity, timeTakenMs, csrfToken}) {
+    return getDeviceFingerprint()
+        .then(function (deviceFingerprint) {
+            return fetch('/orderpiqr/bulk-product-pick', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    orderID,
+                    productCode,
+                    quantity,
+                    timeTakenMs,
+                    deviceFingerprint,
+                    scannedAt: new Date().toISOString()
+                })
+            });
+        });
+}
+
+// Bulk overlay event listeners
+bulkConfirmAllBtn.addEventListener('click', function () {
+    if (!bulkPickContext) return;
+    executeBulkPick(bulkPickContext.productCode, bulkPickContext.remainingCount, true);
+});
+
+bulkPickOneBtn.addEventListener('click', function () {
+    if (!bulkPickContext) return;
+    executeBulkPick(bulkPickContext.productCode, 1, true);
+});
+
+bulkConfirmQtyBtn.addEventListener('click', function () {
+    if (!bulkPickContext) return;
+    var qty = parseInt(bulkPickQuantityInput.value, 10);
+    if (isNaN(qty) || qty < 1 || qty > bulkPickContext.remainingCount) {
+        showNotification(gettext("Please enter a valid quantity"), true);
+        return;
+    }
+    executeBulkPick(bulkPickContext.productCode, qty, true);
+});
+
+bulkPickMinusBtn.addEventListener('click', function () {
+    var current = parseInt(bulkPickQuantityInput.value, 10) || 1;
+    if (current > 1) {
+        bulkPickQuantityInput.value = current - 1;
+    }
+});
+
+bulkPickPlusBtn.addEventListener('click', function () {
+    if (!bulkPickContext) return;
+    var current = parseInt(bulkPickQuantityInput.value, 10) || 0;
+    if (current < bulkPickContext.remainingCount) {
+        bulkPickQuantityInput.value = current + 1;
+    }
+});
+
+bulkPickQuantityInput.addEventListener('blur', function () {
+    if (!bulkPickContext) return;
+    var val = parseInt(this.value, 10);
+    if (isNaN(val) || val < 1) val = 1;
+    if (val > bulkPickContext.remainingCount) val = bulkPickContext.remainingCount;
+    this.value = val;
+});
 
 function updatePicklistCodeDisplay(orderID) {
     const display = document.getElementById('picklist-code-display');

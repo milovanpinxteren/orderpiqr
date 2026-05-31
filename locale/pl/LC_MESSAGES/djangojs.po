@@ -513,3 +513,36 @@ msgstr "Zamówienie usunięte z kolejki"
 #, python-format
 msgid "<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining"
 msgstr "<strong>%(remaining)s</strong> z <strong>%(total)s</strong> pozostało"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Install Orderpiqr"
+msgstr "Zainstaluj Orderpiqr"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Add Orderpiqr to your home screen for quick access"
+msgstr "Dodaj Orderpiqr do ekranu głównego, aby mieć szybki dostęp"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Install"
+msgstr "Zainstaluj"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Tap the Share button"
+msgstr "Kliknij przycisk Udostępnij"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js
+msgid "Tap \"Add to Home Screen\""
+msgstr "Kliknij \"Dodaj do ekranu głównego\""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+#, python-format
+msgid "Picked %(quantity)s of %(product)s"
+msgstr "Pobrano %(quantity)s z %(product)s"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+msgid "Please enter a valid quantity"
+msgstr "Wprowadź prawidłową ilość"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js
+msgid "Could not update bulk product pick."
+msgstr "Nie udało się zaktualizować zbiorczego pobrania."

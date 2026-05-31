@@ -1266,6 +1266,22 @@ msgstr ""
 msgid "Tap to scan next item"
 msgstr ""
 
+#: templates/partials/scan_confirmation_overlay.html
+msgid "Pick All"
+msgstr "Pick All"
+
+#: templates/partials/scan_confirmation_overlay.html
+msgid "Pick 1"
+msgstr "Pick 1"
+
+#: templates/partials/scan_confirmation_overlay.html
+msgid "Pick a specific quantity"
+msgstr "Pick a specific quantity"
+
+#: templates/partials/scan_confirmation_overlay.html
+msgid "Confirm"
+msgstr "Confirm"
+
 msgid "No orders in queue"
 msgstr "No orders in queue"
 

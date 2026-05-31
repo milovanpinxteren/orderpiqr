@@ -2676,6 +2676,22 @@ msgstr "Réessayer"
 msgid "Tap to scan next item"
 msgstr "Appuyez pour scanner l'article suivant"
 
+#: templates/partials/scan_confirmation_overlay.html
+msgid "Pick All"
+msgstr "Tout prélever"
+
+#: templates/partials/scan_confirmation_overlay.html
+msgid "Pick 1"
+msgstr "Prélever 1"
+
+#: templates/partials/scan_confirmation_overlay.html
+msgid "Pick a specific quantity"
+msgstr "Choisir une quantité spécifique"
+
+#: templates/partials/scan_confirmation_overlay.html
+msgid "Confirm"
+msgstr "Confirmer"
+
 #: .\templates\queue\_order_cards.html:67
 #: .\templates\queue\_picker_orders.html:59
 msgid "No orders in queue"

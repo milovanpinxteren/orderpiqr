@@ -440,3 +440,228 @@ button:hover {
     width: 100%;
     box-sizing: border-box;
 }
+
+/* PWA Install Prompt Banner */
+#install-prompt-banner {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    margin: 10px;
+}
+
+.install-prompt-inner {
+    position: relative;
+    background-color: #fff;
+    border: 1px solid rgba(17, 143, 17, 0.25);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.install-prompt-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: #999;
+    cursor: pointer;
+    padding: 2px 6px;
+    line-height: 1;
+}
+
+.install-prompt-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0 auto 8px;
+}
+
+.install-prompt-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.install-prompt-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.install-prompt-desc {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 12px;
+}
+
+.install-prompt-btn {
+    background-color: #118f11;
+    color: white;
+    border: none;
+    padding: 10px 32px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.install-prompt-btn:hover {
+    background-color: #0e7a0e;
+}
+
+.install-prompt-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+}
+
+.install-prompt-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.install-prompt-step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #118f11;
+    color: white;
+    font-weight: 600;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Bulk Pick Overlay */
+.bulk-pick-overlay-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    max-width: 340px;
+    width: 90%;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+.bulk-pick-custom-section {
+    background-color: #f4f6f9;
+    border-radius: 10px;
+    padding: 12px 16px 16px;
+    margin-bottom: 16px;
+}
+
+.bulk-pick-bottom-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.bulk-pick-bottom-actions .overlay-btn {
+    flex: 1;
+}
+
+.bulk-confirm-all {
+    background-color: #118f11;
+}
+
+.bulk-confirm-all:hover {
+    background-color: #0e7a0e;
+}
+
+.bulk-pick-one {
+    background-color: #555;
+}
+
+.bulk-pick-one:hover {
+    background-color: #444;
+}
+
+.bulk-pick-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 12px;
+    color: #999;
+    font-size: 0.85rem;
+}
+
+.bulk-pick-divider::before,
+.bulk-pick-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.bulk-pick-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 16px;
+}
+
+.stepper-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border: 2px solid #118f11;
+    background: white;
+    color: #118f11;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.stepper-minus {
+    border-radius: 8px 0 0 8px;
+    border-right: none;
+}
+
+.stepper-plus {
+    border-radius: 0 8px 8px 0;
+    border-left: none;
+}
+
+.stepper-btn:active {
+    background-color: #e8f5e9;
+}
+
+.bulk-pick-input {
+    width: 64px;
+    height: 48px;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    border: 2px solid #118f11;
+    border-radius: 0;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.bulk-pick-input::-webkit-inner-spin-button,
+.bulk-pick-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.bulk-confirm-qty {
+    background-color: #118f11;
+}
+
+.bulk-confirm-qty:hover {
+    background-color: #0e7a0e;
+}

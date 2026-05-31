@@ -2641,6 +2641,22 @@ msgstr "Erneut versuchen"
 msgid "Tap to scan next item"
 msgstr "Tippen, um nächsten Artikel zu scannen"
 
+#: templates/partials/scan_confirmation_overlay.html
+msgid "Pick All"
+msgstr "Alle picken"
+
+#: templates/partials/scan_confirmation_overlay.html
+msgid "Pick 1"
+msgstr "1 picken"
+
+#: templates/partials/scan_confirmation_overlay.html
+msgid "Pick a specific quantity"
+msgstr "Bestimmte Menge auswählen"
+
+#: templates/partials/scan_confirmation_overlay.html
+msgid "Confirm"
+msgstr "Bestätigen"
+
 #: .\templates\queue\_order_cards.html:67
 #: .\templates\queue\_picker_orders.html:59
 msgid "No orders in queue"
