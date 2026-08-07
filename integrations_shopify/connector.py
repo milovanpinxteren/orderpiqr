@@ -315,8 +315,11 @@ class ShopifyConnector(BaseConnector):
         return False
 
     def _sync_product_payload(self, payload):
-        """Refresh ProductLinks from a products/create|update webhook payload."""
-        from integrations.services.intake import resolve_line
+        """Refresh ProductLinks from a products/create|update webhook payload.
+        Under the auto_create policy, brand-new variants become OrderPiqr
+        products immediately (same behaviour as the full catalog sync)."""
+        from integrations.services.intake import _auto_create_product, resolve_line
+        auto_create = self.config.get('unknown_product_policy') == 'auto_create'
         product_id = str(payload.get('id') or '')
         for variant in payload.get('variants', []):
             variant_id = str(variant.get('id') or '')
@@ -330,14 +333,18 @@ class ShopifyConnector(BaseConnector):
                 external_variant_id=variant_id,
                 external_product_id=product_id,
                 quantity=0,
-                title=payload.get('title') or '',
+                title=' - '.join(filter(None, [
+                    payload.get('title') or '', variant.get('title') or ''])),
                 identifiers={
                     'sku': variant.get('sku') or '',
                     'barcode': variant.get('barcode') or '',
                     'variant_id': variant_id,
                 },
             )
-            resolve_line(self.connection, line, self.config)
+            product = resolve_line(self.connection, line, self.config)
+            if product is None and auto_create and any(
+                    str(v).strip() for v in line.identifiers.values()):
+                _auto_create_product(self.connection, line, self.config)
 
     def fetch_variants(self):
         """Yield every product variant in the shop (product sync)."""
