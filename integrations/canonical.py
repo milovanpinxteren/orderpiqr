@@ -15,6 +15,8 @@ class ExternalLine:
     identifiers: dict = field(default_factory=dict)
     title: str = ''
     external_product_id: str = ''
+    # Warehouse location as reported by the platform (e.g. via metafield)
+    location: str = ''
 
 
 @dataclass
@@ -36,3 +38,5 @@ class ExternalVariant:
     title: str = ''
     identifiers: dict = field(default_factory=dict)
     inventory_quantity: int | None = None
+    # Warehouse location as reported by the platform (e.g. via metafield)
+    location: str = ''

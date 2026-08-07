@@ -79,7 +79,7 @@ def _auto_create_product(connection, line, config):
             customer=connection.customer,
             code=code,
             description=line.title or code,
-            location='',
+            location=getattr(line, 'location', '') or '',
             active=True,
         )
         logger.info("Auto-created product %s for connection %s", code, connection.pk)

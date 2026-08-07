@@ -27,7 +27,9 @@ def gid_tail(gid):
 
 VARIANTS_QUERY = """
 query Variants($first: Int!, $after: String, $withMetafield: Boolean!,
-               $mfNamespace: String!, $mfKey: String!) {
+               $mfNamespace: String!, $mfKey: String!,
+               $withLocationMetafield: Boolean!,
+               $locNamespace: String!, $locKey: String!) {
   productVariants(first: $first, after: $after) {
     pageInfo { hasNextPage endCursor }
     nodes {
@@ -37,6 +39,8 @@ query Variants($first: Int!, $after: String, $withMetafield: Boolean!,
       title
       product { id title }
       metafield(namespace: $mfNamespace, key: $mfKey) @include(if: $withMetafield) { value }
+      locationMetafield: metafield(namespace: $locNamespace, key: $locKey)
+        @include(if: $withLocationMetafield) { value }
     }
   }
 }
@@ -44,7 +48,9 @@ query Variants($first: Int!, $after: String, $withMetafield: Boolean!,
 
 VARIANT_NODES_QUERY = """
 query VariantNodes($ids: [ID!]!, $withMetafield: Boolean!,
-                   $mfNamespace: String!, $mfKey: String!) {
+                   $mfNamespace: String!, $mfKey: String!,
+                   $withLocationMetafield: Boolean!,
+                   $locNamespace: String!, $locKey: String!) {
   nodes(ids: $ids) {
     ... on ProductVariant {
       id
@@ -52,6 +58,8 @@ query VariantNodes($ids: [ID!]!, $withMetafield: Boolean!,
       barcode
       product { id title }
       metafield(namespace: $mfNamespace, key: $mfKey) @include(if: $withMetafield) { value }
+      locationMetafield: metafield(namespace: $locNamespace, key: $locKey)
+        @include(if: $withLocationMetafield) { value }
     }
   }
 }
@@ -125,6 +133,10 @@ class ShopifyConnector(BaseConnector):
         # Metafield identifier support (identifier_chain entry 'metafield').
         'metafield_namespace': '',
         'metafield_key': '',
+        # Optional metafield that carries the warehouse location; when set,
+        # Shopify is the source of truth for Product.location on synced items.
+        'location_metafield_namespace': '',
+        'location_metafield_key': '',
         # Only import orders that are paid (any|paid).
         'financial_status': 'paid',
     }
@@ -141,10 +153,15 @@ class ShopifyConnector(BaseConnector):
     def _metafield_vars(self):
         ns = self.config.get('metafield_namespace') or ''
         key = self.config.get('metafield_key') or ''
+        loc_ns = self.config.get('location_metafield_namespace') or ''
+        loc_key = self.config.get('location_metafield_key') or ''
         return {
             'withMetafield': bool(ns and key),
             'mfNamespace': ns or '_',
             'mfKey': key or '_',
+            'withLocationMetafield': bool(loc_ns and loc_key),
+            'locNamespace': loc_ns or '_',
+            'locKey': loc_key or '_',
         }
 
     # --------------------------------------------------------------- inbound
@@ -321,6 +338,29 @@ class ShopifyConnector(BaseConnector):
         from integrations.services.intake import _auto_create_product, resolve_line
         auto_create = self.config.get('unknown_product_policy') == 'auto_create'
         product_id = str(payload.get('id') or '')
+
+        # Webhook payloads don't include metafields; fetch them when the
+        # identifier chain or location source needs one.
+        mf_vars = self._metafield_vars()
+        needs_lookup = (
+            (mf_vars['withMetafield'] and 'metafield' in self.config.get('identifier_chain', []))
+            or mf_vars['withLocationMetafield']
+        )
+        enriched = {}
+        if needs_lookup:
+            variant_ids = [str(v.get('id')) for v in payload.get('variants', []) if v.get('id')]
+            if variant_ids:
+                try:
+                    data = self.client().graphql(VARIANT_NODES_QUERY, {
+                        'ids': [f"gid://shopify/ProductVariant/{v}" for v in variant_ids],
+                        **mf_vars,
+                    })
+                    for node in data.get('nodes') or []:
+                        if node and node.get('id'):
+                            enriched[gid_tail(node['id'])] = node
+                except Exception:
+                    logger.exception("Metafield lookup failed for product %s", product_id)
+
         for variant in payload.get('variants', []):
             variant_id = str(variant.get('id') or '')
             if not variant_id:
@@ -329,6 +369,7 @@ class ShopifyConnector(BaseConnector):
                 connection=self.connection, external_variant_id=variant_id, locked=True,
             ).exists():
                 continue
+            node = enriched.get(variant_id) or {}
             line = ExternalLine(
                 external_variant_id=variant_id,
                 external_product_id=product_id,
@@ -338,13 +379,19 @@ class ShopifyConnector(BaseConnector):
                 identifiers={
                     'sku': variant.get('sku') or '',
                     'barcode': variant.get('barcode') or '',
+                    'metafield': (node.get('metafield') or {}).get('value') or '',
                     'variant_id': variant_id,
                 },
+                location=(node.get('locationMetafield') or {}).get('value') or '',
             )
             product = resolve_line(self.connection, line, self.config)
             if product is None and auto_create and any(
                     str(v).strip() for v in line.identifiers.values()):
-                _auto_create_product(self.connection, line, self.config)
+                product = _auto_create_product(self.connection, line, self.config)
+            if product is not None and line.location and product.location != line.location:
+                # Location metafield configured -> Shopify is source of truth
+                product.location = line.location
+                product.save(update_fields=['location'])
 
     def fetch_variants(self):
         """Yield every product variant in the shop (product sync)."""
@@ -357,6 +404,7 @@ class ShopifyConnector(BaseConnector):
             page = data['productVariants']
             for node in page['nodes']:
                 metafield = node.get('metafield') or {}
+                location_metafield = node.get('locationMetafield') or {}
                 product = node.get('product') or {}
                 yield ExternalVariant(
                     external_variant_id=gid_tail(node['id']),
@@ -369,6 +417,7 @@ class ShopifyConnector(BaseConnector):
                         'metafield': metafield.get('value') or '',
                         'variant_id': gid_tail(node['id']),
                     },
+                    location=location_metafield.get('value') or '',
                 )
             if not page['pageInfo']['hasNextPage']:
                 break

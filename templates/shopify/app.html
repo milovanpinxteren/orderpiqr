@@ -114,11 +114,19 @@
                 <option value="barcode">{% trans "Barcode only" %}</option>
                 <option value="sku">{% trans "SKU only" %}</option>
                 <option value="metafield">{% trans "Metafield" %}</option>
+                <option value="metafield,barcode,sku">{% trans "Metafield, then barcode/SKU" %}</option>
             </select>
         </div>
         <div class="row" id="metafield-row" style="display:none">
             <div><label>{% trans "Metafield (namespace.key)" %}</label></div>
             <input type="text" id="cfg-metafield" placeholder="custom.product_code">
+        </div>
+        <div class="row">
+            <div>
+                <label>{% trans "Warehouse location metafield (optional)" %}</label>
+                <div class="hint">{% trans "If your products carry their warehouse location in a metafield, OrderPiqr keeps product locations in sync with it." %}</div>
+            </div>
+            <input type="text" id="cfg-location-metafield" placeholder="custom.location">
         </div>
         <div class="row">
             <div>
@@ -210,10 +218,13 @@
         const sel = document.getElementById('cfg-identifier');
         sel.value = [...sel.options].some(o => o.value === chain) ? chain : 'barcode,sku';
         document.getElementById('metafield-row').style.display =
-            sel.value === 'metafield' ? '' : 'none';
+            sel.value.includes('metafield') ? '' : 'none';
         document.getElementById('cfg-metafield').value =
             cfg.metafield_namespace && cfg.metafield_key
                 ? cfg.metafield_namespace + '.' + cfg.metafield_key : '';
+        document.getElementById('cfg-location-metafield').value =
+            cfg.location_metafield_namespace && cfg.location_metafield_key
+                ? cfg.location_metafield_namespace + '.' + cfg.location_metafield_key : '';
         document.getElementById('cfg-unknown').value = cfg.unknown_product_policy || 'auto_create';
         document.getElementById('cfg-autoqueue').checked = !!cfg.auto_queue;
         document.getElementById('cfg-fulfill').checked = !!cfg.fulfill_on_complete;
@@ -225,10 +236,14 @@
         const chain = document.getElementById('cfg-identifier').value.split(',');
         const mfRaw = document.getElementById('cfg-metafield').value.trim();
         const [ns, ...rest] = mfRaw.split('.');
+        const locRaw = document.getElementById('cfg-location-metafield').value.trim();
+        const [locNs, ...locRest] = locRaw.split('.');
         return {
             identifier_chain: chain,
             metafield_namespace: rest.length ? ns : '',
             metafield_key: rest.join('.') || '',
+            location_metafield_namespace: locRest.length ? locNs : '',
+            location_metafield_key: locRest.join('.') || '',
             unknown_product_policy: document.getElementById('cfg-unknown').value,
             auto_queue: document.getElementById('cfg-autoqueue').checked,
             fulfill_on_complete: document.getElementById('cfg-fulfill').checked,
@@ -340,7 +355,7 @@
 
     document.getElementById('cfg-identifier').addEventListener('change', function () {
         document.getElementById('metafield-row').style.display =
-            this.value === 'metafield' ? '' : 'none';
+            this.value.includes('metafield') ? '' : 'none';
     });
 
     document.getElementById('btn-save').addEventListener('click', async function () {

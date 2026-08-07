@@ -165,12 +165,17 @@ def sync_products(connection):
             quantity=0,
             title=variant.title,
             identifiers=variant.identifiers,
+            location=variant.location,
         )
         product = resolve_line(connection, line, config)
         if product is None and auto_create and any(
                 str(v).strip() for v in (variant.identifiers or {}).values()):
             product = _auto_create_product(connection, line, config)
         if product is not None:
+            if variant.location and product.location != variant.location:
+                # Location metafield configured -> Shopify is source of truth
+                product.location = variant.location
+                product.save(update_fields=['location'])
             linked += 1
         else:
             unresolved += 1
