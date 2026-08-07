@@ -42,6 +42,18 @@ class OrderSerializer(serializers.ModelSerializer):
         """Count the number of order lines."""
         return obj.lines.count()
 
+    def validate_order_code(self, value):
+        """Order codes are unique per customer, not globally."""
+        request = self.context.get('request')
+        customer = getattr(getattr(getattr(request, 'user', None), 'userprofile', None), 'customer', None)
+        if customer is not None:
+            qs = Order.objects.filter(customer=customer, order_code=value)
+            if self.instance is not None:
+                qs = qs.exclude(pk=self.instance.pk)
+            if qs.exists():
+                raise serializers.ValidationError("An order with this code already exists.")
+        return value
+
     def create(self, validated_data):
         orderlines_data = validated_data.pop('lines', [])
         order = Order.objects.create(**validated_data)
@@ -110,6 +122,8 @@ class OrderCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['order_code', 'notes', 'lines']
+
+    validate_order_code = OrderSerializer.validate_order_code
 
     def create(self, validated_data):
         orderlines_data = validated_data.pop('lines', [])

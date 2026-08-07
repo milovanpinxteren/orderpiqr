@@ -9,6 +9,24 @@ from orderpiqrApp.models import Device, Order, PickList, Product, ProductPick, U
 from orderpiqrApp.utils.inventory import decrement_inventory_for_picklist
 
 
+def _resolve_device(request, device_fingerprint):
+    """Fetch a device by fingerprint.
+
+    When the requesting user is authenticated, the device must belong to the
+    same customer as the user; a mismatch returns a 403 error response.
+    Returns (device, error_response) — both can be None (device not found).
+    """
+    device = Device.objects.filter(device_fingerprint=device_fingerprint).first()
+    if device and request.user.is_authenticated:
+        profile = UserProfile.objects.filter(user=request.user).first()
+        if profile and device.customer_id != profile.customer_id:
+            return None, JsonResponse({
+                'status': 'error',
+                'message': 'Device does not belong to your company'
+            }, status=403)
+    return device, None
+
+
 @require_POST
 def scan_picklist(request):
     # Parse JSON
@@ -34,12 +52,14 @@ def scan_picklist(request):
     local_time = timezone.localtime(timezone.now())
 
     # Fetch or create device
-    try:
-        device = Device.objects.get(device_fingerprint=device_fingerprint)
+    device, device_error = _resolve_device(request, device_fingerprint)
+    if device_error:
+        return device_error
+    if device:
         # Update last_login on activity
         device.last_login = local_time
         device.save(update_fields=['last_login'])
-    except Device.DoesNotExist:
+    else:
         if not request.user.is_authenticated:
             return JsonResponse({
                 'status': 'error',
@@ -161,12 +181,13 @@ def product_pick(request):
     time_taken_ms = payload.get("timeTakenMs")
     scanned_at = payload.get("scannedAt") or timezone.now().isoformat()
 
-    try:
-        device = Device.objects.get(device_fingerprint=device_fp)
-        # Update last_login on activity
-        Device.objects.filter(pk=device.pk).update(last_login=timezone.now())
-    except Device.DoesNotExist:
+    device, device_error = _resolve_device(request, device_fp)
+    if device_error:
+        return device_error
+    if not device:
         return JsonResponse({"status": "error", "message": "Device not found with given fingerprint"}, status=404)
+    # Update last_login on activity
+    Device.objects.filter(pk=device.pk).update(last_login=timezone.now())
 
     picklist = (PickList.objects.filter(picklist_code=order_id, customer=device.customer, device=device)
                 .select_related("customer", "device")
@@ -230,11 +251,12 @@ def bulk_product_pick(request):
 
     quantity = int(quantity)
 
-    try:
-        device = Device.objects.get(device_fingerprint=device_fp)
-        Device.objects.filter(pk=device.pk).update(last_login=timezone.now())
-    except Device.DoesNotExist:
+    device, device_error = _resolve_device(request, device_fp)
+    if device_error:
+        return device_error
+    if not device:
         return JsonResponse({"status": "error", "message": "Device not found"}, status=404)
+    Device.objects.filter(pk=device.pk).update(last_login=timezone.now())
 
     picklist = (PickList.objects.filter(picklist_code=order_id, customer=device.customer, device=device)
                 .select_related("customer", "device")
@@ -287,7 +309,11 @@ def complete_picklist(request):
             device_fingerprint = data.get('deviceFingerprint', '')
             order_id = data.get('orderID', None)  # Assuming orderID is passed in the request
             # Fetch the device using the fingerprint
-            device = Device.objects.get(device_fingerprint=device_fingerprint)
+            device, device_error = _resolve_device(request, device_fingerprint)
+            if device_error:
+                return device_error
+            if not device:
+                raise Device.DoesNotExist()
             # Update last_login on activity
             device.last_login = timezone.now()
             device.save(update_fields=['last_login'])
@@ -308,6 +334,10 @@ def complete_picklist(request):
                     picklist.order.status = 'completed'
                     picklist.order.completed_at = now
                     picklist.order.save(update_fields=['status', 'completed_at'])
+
+                    # Queue platform write-backs (Shopify fulfillment etc.)
+                    from integrations.services.events import order_completed
+                    order_completed(picklist.order)
             else:
                 print('No picklist found, contact support')
 

@@ -52,16 +52,20 @@ class OrderAdmin(admin.ModelAdmin):
         added = 0
         skipped = 0
 
-        # Get current max queue position
-        max_pos = Order.objects.filter(
-            status__in=['queued', 'in_progress']
-        ).aggregate(max_pos=Max('queue_position'))['max_pos'] or 0
+        # Queue positions are per customer
+        max_pos_by_customer = {}
 
         for order in queryset:
             if order.status == 'draft':
-                max_pos += 1
+                cid = order.customer_id
+                if cid not in max_pos_by_customer:
+                    max_pos_by_customer[cid] = Order.objects.filter(
+                        customer_id=cid,
+                        status__in=['queued', 'in_progress']
+                    ).aggregate(max_pos=Max('queue_position'))['max_pos'] or 0
+                max_pos_by_customer[cid] += 1
                 order.status = 'queued'
-                order.queue_position = max_pos
+                order.queue_position = max_pos_by_customer[cid]
                 order.save(update_fields=['status', 'queue_position'])
                 added += 1
             else:

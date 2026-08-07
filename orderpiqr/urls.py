@@ -74,6 +74,8 @@ urlpatterns = [
 
     path('api/', include('api.urls')),  # your actual API
 
+    # Shopify app (embedded console + webhooks); outside i18n, session-token auth
+    path('shopify/', include('integrations_shopify.urls')),
 ]
 
 urlpatterns += i18n_patterns(

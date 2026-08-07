@@ -185,7 +185,7 @@ def queue_claim_order(request, order_id):
 
     device = None
     if device_fingerprint:
-        device = Device.objects.filter(device_fingerprint=device_fingerprint).first()
+        device = Device.objects.filter(device_fingerprint=device_fingerprint, customer=customer).first()
         print(f"[Queue Claim] Device from fingerprint: {device}")
 
     if not device:
@@ -193,7 +193,7 @@ def queue_claim_order(request, order_id):
         session_fingerprint = request.session.get('device_fingerprint')
         print(f"[Queue Claim] Session fingerprint: {session_fingerprint}")
         if session_fingerprint:
-            device = Device.objects.filter(device_fingerprint=session_fingerprint).first()
+            device = Device.objects.filter(device_fingerprint=session_fingerprint, customer=customer).first()
             print(f"[Queue Claim] Device from session: {device}")
 
     if not device:

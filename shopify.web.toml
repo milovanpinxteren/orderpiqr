@@ -1,0 +1,5 @@
+# Web process definition for `shopify app dev` (tunnels to local Django).
+roles = ["frontend", "backend"]
+
+[commands]
+dev = "python scripts/shopify_dev.py"

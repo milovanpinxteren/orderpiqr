@@ -1,0 +1,41 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "OrderPiqr"
+handle = "orderpiqr"
+application_url = "https://app.orderpiqr.nl/shopify/app/"
+embedded = true
+client_id = "97d237f09cc0bcfd09a9c351c90e6b34"
+
+[build]
+automatically_update_urls_on_dev = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_products,read_orders,write_orders,write_fulfillments,read_merchant_managed_fulfillment_orders,write_merchant_managed_fulfillment_orders,read_third_party_fulfillment_orders,write_third_party_fulfillment_orders"
+
+[auth]
+redirect_urls = [ "https://app.orderpiqr.nl/shopify/app/" ]
+
+[webhooks]
+api_version = "2026-10"
+
+  [[webhooks.subscriptions]]
+  uri = "/shopify/webhooks/"
+  topics = [
+  "orders/create",
+  "orders/updated",
+  "orders/cancelled",
+  "fulfillments/create",
+  "products/create",
+  "products/update",
+  "products/delete",
+  "app/uninstalled"
+]
+
+  [webhooks.privacy_compliance]
+  customer_data_request_url = "/shopify/webhooks/"
+  customer_deletion_url = "/shopify/webhooks/"
+  shop_deletion_url = "/shopify/webhooks/"
+
+[pos]
+embedded = false

@@ -355,7 +355,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         errors = []
 
         for i, order_data in enumerate(orders_data):
-            serializer = OrderCreateSerializer(data=order_data)
+            serializer = OrderCreateSerializer(data=order_data, context=self.get_serializer_context())
             if serializer.is_valid():
                 order = serializer.save(customer=customer)
                 created_orders.append({

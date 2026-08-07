@@ -16,7 +16,7 @@ class Order(models.Model):
 
     order_id = models.AutoField(primary_key=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name=_("Customer"))
-    order_code = models.CharField(_("Order Code"), max_length=255, unique=True)
+    order_code = models.CharField(_("Order Code"), max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     notes = models.TextField(_("Notes"), blank=True, null=True)
     status = models.CharField(
@@ -36,11 +36,24 @@ class Order(models.Model):
         null=True,
         blank=True
     )
+    source = models.CharField(
+        _("Source"),
+        max_length=32,
+        default='manual',
+        blank=True,
+        help_text=_("Where this order came from: manual, csv, api, or an integration platform (e.g. shopify)."),
+    )
 
     class Meta:
         verbose_name = _("Order")
         verbose_name_plural = _("Orders")
         ordering = ['queue_position', 'created_at']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['customer', 'order_code'],
+                name='unique_order_code_per_customer',
+            ),
+        ]
 
     def __str__(self):
         return self.order_code

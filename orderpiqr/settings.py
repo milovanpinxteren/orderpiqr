@@ -26,13 +26,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-p-75o+wln8vp7kf^2!8un_!_&p9_-^e4%m01-pu0^jd69$q)xz'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=True)
 
+# SECURITY WARNING: keep the secret key used in production secret!
+# In production (DEBUG=False) SECRET_KEY must come from the environment.
+SECRET_KEY = env('SECRET_KEY', default=None)
+if SECRET_KEY is None:
+    if DEBUG:
+        SECRET_KEY = 'django-insecure-p-75o+wln8vp7kf^2!8un_!_&p9_-^e4%m01-pu0^jd69$q)xz'
+    else:
+        from django.core.exceptions import ImproperlyConfigured
+        raise ImproperlyConfigured("SECRET_KEY environment variable is required when DEBUG=False")
+
+# Demo login (custom_login ?demo=true). Disabled unless set.
+DEMO_USER_PASSWORD = env('DEMO_USER_PASSWORD', default=None)
+
 ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', 'app.orderpiqr.nl']
+if DEBUG:
+    # `shopify app dev` tunnels (cloudflare) reach the local dev server
+    ALLOWED_HOSTS += ['127.0.0.1', '.trycloudflare.com']
+    CSRF_TRUSTED_ORIGINS = ['https://*.trycloudflare.com']
 
 LOGIN_URL = '/login/'  # Adjust this URL to match your login view or URL pattern
 LOGIN_REDIRECT_URL = '/'  # You can set this to any page you'd like as a fallback
@@ -61,6 +75,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'orderpiqrApp',
     'api',
+    'integrations',
+    'integrations_shopify',
     'statici18n',
     'loginas',
     'rest_framework',
@@ -268,6 +284,11 @@ All endpoints require JWT authentication. Obtain a token via `POST /api/token/` 
         {'name': 'orderlines', 'description': 'Order lines - individual items within an order'},
     ]
 }
+
+# Shopify app credentials (from the Partner dashboard / shopify.app.toml)
+SHOPIFY_API_KEY = env('SHOPIFY_API_KEY', default='')
+SHOPIFY_API_SECRET = env('SHOPIFY_API_SECRET', default='')
+SHOPIFY_API_VERSION = env('SHOPIFY_API_VERSION', default='2026-01')
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(env('ACCESS_TOKEN_LIFETIME_MINUTES', default=15))),

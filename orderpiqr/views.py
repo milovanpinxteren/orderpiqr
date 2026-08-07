@@ -50,6 +50,13 @@ def index(request):
 def root_redirect(request):
     """Redirect user based on their group after login."""
 
+    # Embedded Shopify admin requests land on the app root (Shopify sets the
+    # app URL to the host root); hand them to the Shopify app entry view.
+    if request.GET.get('shop', '').endswith('.myshopify.com') and (
+            'id_token' in request.GET or 'embedded' in request.GET or 'hmac' in request.GET):
+        from integrations_shopify.views import app_entry
+        return app_entry(request)
+
     if not request.user.is_authenticated:
         return redirect('/login/')  # Redirect unauthenticated users to the login page
 
@@ -97,10 +104,9 @@ def custom_login(request):
                 return redirect('name_entry')  # Redirect to a name entry page
             return redirect('/')  # Redirect to root (or wherever you want after login)
     else:
-        if is_demo:
+        if is_demo and settings.DEMO_USER_PASSWORD:
             demo_username = 'orderpicker'
-            demo_password = 'yfiT328SPfaBaf8'
-            # demo_password = 'kerstdiner'
+            demo_password = settings.DEMO_USER_PASSWORD
             # Authenticate the demo user automatically
             user = authenticate(request, username=demo_username, password=demo_password)
             if user is not None:

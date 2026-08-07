@@ -1,0 +1,378 @@
+{% load i18n static %}<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OrderPiqr</title>
+    <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
+    <meta name="shopify-api-key" content="{{ api_key }}">
+    <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js"></script>
+    <style>
+        :root {
+            /* OrderPiqr brand palette (matches custom_admin.css) */
+            --primary: #118f11;
+            --secondary: #419073;
+            --accent: #f5dd5d;
+            --link: #139973;
+            --button-hover: #60b694;
+            --border: #e8e8e8;
+            --text: #333;
+            --subdued: #666;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: "Gill Sans", "Gill Sans MT", -apple-system, BlinkMacSystemFont,
+                         "Segoe UI", Roboto, sans-serif;
+            color: var(--text);
+            background: #f2f2f2;
+            font-size: 14px;
+        }
+        .page { max-width: 960px; margin: 0 auto; padding: 20px 16px; }
+        .brand-header {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+        }
+        .brand-header img { width: 36px; height: 36px; }
+        .brand-header .brand-name { font-size: 20px; font-weight: 600; color: var(--text); }
+        .card {
+            background: #fff; border: 1px solid var(--border);
+            border-radius: 8px; padding: 20px; margin-bottom: 16px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.04);
+        }
+        .card h2 { margin: 0 0 12px; font-size: 16px; color: var(--text); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .stat { font-size: 28px; font-weight: 600; color: var(--primary); }
+        .stat-label { color: var(--subdued); }
+        .badge {
+            display: inline-block; padding: 2px 10px; border-radius: 10px;
+            font-size: 12px; font-weight: 600;
+        }
+        .badge.active { background: #dfd; color: #0a4c3a; }
+        .badge.other { background: #ffc; color: #7a4b00; }
+        .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .row:last-child { border-bottom: none; }
+        .row label { font-weight: 500; }
+        .hint { color: var(--subdued); font-size: 12px; margin-top: 2px; }
+        select, input[type=text], input[type=password] {
+            padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px;
+            font-size: 14px; min-width: 160px; font-family: inherit;
+        }
+        select:focus, input[type=text]:focus, input[type=password]:focus { outline: 2px solid var(--button-hover); border-color: var(--primary); }
+        input[type=checkbox] { accent-color: var(--primary); width: 17px; height: 17px; }
+        button {
+            background: var(--primary); color: #fff; border: none; border-radius: 5px;
+            padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer;
+            font-family: inherit; letter-spacing: .3px;
+        }
+        button:hover { background: var(--button-hover); }
+        button.secondary { background: var(--secondary); }
+        button.secondary:hover { background: #206753; }
+        button:disabled { opacity: .6; cursor: default; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+                 background: #333; color: #fff; padding: 10px 18px; border-radius: 5px;
+                 opacity: 0; transition: opacity .2s; pointer-events: none; }
+        .toast.show { opacity: 1; }
+        a { color: var(--link); }
+        a:hover { color: #0a4c3a; }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="brand-header">
+        <img src="{% static 'orderpiqrApp/img/favicon.png' %}" alt="OrderPiqR">
+        <span class="brand-name">OrderPiqR</span>
+    </div>
+    <div class="card">
+        <h2>{% trans "Overview" %} <span id="status-badge" class="badge other">…</span></h2>
+        <div class="grid">
+            <div>
+                <div class="stat" id="stat-queued">–</div>
+                <div class="stat-label">{% trans "Orders ready to pick" %}</div>
+            </div>
+            <div>
+                <div class="stat" id="stat-unresolved">–</div>
+                <div class="stat-label">{% trans "Products needing mapping" %}</div>
+            </div>
+        </div>
+        <p style="margin-bottom:0">
+            <a id="picker-link" href="#" target="_blank" rel="noopener">
+                {% trans "Open the picker app" %} ↗
+            </a>
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>{% trans "Sync settings" %}</h2>
+        <div class="row">
+            <div>
+                <label>{% trans "Product matching" %}</label>
+                <div class="hint">{% trans "Which Shopify field matches your product codes" %}</div>
+            </div>
+            <select id="cfg-identifier">
+                <option value="barcode,sku">{% trans "Barcode, then SKU" %}</option>
+                <option value="sku,barcode">{% trans "SKU, then barcode" %}</option>
+                <option value="barcode">{% trans "Barcode only" %}</option>
+                <option value="sku">{% trans "SKU only" %}</option>
+                <option value="metafield">{% trans "Metafield" %}</option>
+            </select>
+        </div>
+        <div class="row" id="metafield-row" style="display:none">
+            <div><label>{% trans "Metafield (namespace.key)" %}</label></div>
+            <input type="text" id="cfg-metafield" placeholder="custom.product_code">
+        </div>
+        <div class="row">
+            <div>
+                <label>{% trans "Unknown products" %}</label>
+                <div class="hint">{% trans "When an order contains a product OrderPiqr doesn't know" %}</div>
+            </div>
+            <select id="cfg-unknown">
+                <option value="auto_create">{% trans "Create it automatically" %}</option>
+                <option value="hold">{% trans "Hold order for review" %}</option>
+                <option value="skip">{% trans "Skip that line" %}</option>
+            </select>
+        </div>
+        <div class="row">
+            <div><label>{% trans "New orders go straight to the picking queue" %}</label></div>
+            <input type="checkbox" id="cfg-autoqueue">
+        </div>
+        <div class="row">
+            <div><label>{% trans "Mark order fulfilled in Shopify when picked" %}</label></div>
+            <input type="checkbox" id="cfg-fulfill">
+        </div>
+        <div class="row">
+            <div><label>{% trans "Send Shopify's shipping notification to the customer" %}</label></div>
+            <input type="checkbox" id="cfg-notify">
+        </div>
+        <div class="row">
+            <div><label>{% trans "Archive the Shopify order after fulfilling" %}</label></div>
+            <input type="checkbox" id="cfg-archive">
+        </div>
+        <div class="row" style="border-bottom:none; justify-content:flex-end">
+            <button class="secondary" id="btn-sync">{% trans "Re-sync products" %}</button>
+            <button id="btn-save">{% trans "Save settings" %}</button>
+        </div>
+    </div>
+
+    <div class="card" id="mapping-card" style="display:none">
+        <h2>{% trans "Products needing mapping" %}</h2>
+        <p class="hint">{% trans "These Shopify products couldn't be matched. Enter the OrderPiqr product code to link them." %}</p>
+        <div id="mapping-list"></div>
+    </div>
+
+    <div class="card" id="link-card" style="display:none">
+        <h2>{% trans "Already using OrderPiqr?" %}</h2>
+        <p class="hint">
+            {% trans "This store got a fresh OrderPiqr workspace when you installed the app. If your company already has an account on orderpiqr.nl, link this store to it — your existing products and settings will be used instead." %}
+        </p>
+        <div class="row" style="border-bottom:none; flex-wrap:wrap">
+            <input type="text" id="link-username" placeholder="{% trans 'Admin username' %}" autocomplete="username">
+            <input type="password" id="link-password" placeholder="{% trans 'Password' %}" autocomplete="current-password">
+            <button id="btn-link">{% trans "Link account" %}</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>{% trans "Picker access" %}</h2>
+        <p class="hint">
+            {% trans "Your warehouse staff log into the picker app with this account:" %}
+            <strong id="picker-username">–</strong>
+        </p>
+        <div class="row" style="border-bottom:none">
+            <input type="text" id="picker-password" placeholder="{% trans 'New password (min 8 characters)' %}" style="flex:1">
+            <button id="btn-picker-password">{% trans "Set password" %}</button>
+        </div>
+    </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+    'use strict';
+
+    async function authFetch(url, options) {
+        const token = await window.shopify.idToken();
+        options = options || {};
+        options.headers = Object.assign({}, options.headers, {
+            'Authorization': 'Bearer ' + token,
+        });
+        return fetch(url, options);
+    }
+
+    function toast(msg) {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.classList.add('show');
+        setTimeout(() => el.classList.remove('show'), 2500);
+    }
+
+    function setConfigUI(cfg) {
+        const chain = (cfg.identifier_chain || []).join(',');
+        const sel = document.getElementById('cfg-identifier');
+        sel.value = [...sel.options].some(o => o.value === chain) ? chain : 'barcode,sku';
+        document.getElementById('metafield-row').style.display =
+            sel.value === 'metafield' ? '' : 'none';
+        document.getElementById('cfg-metafield').value =
+            cfg.metafield_namespace && cfg.metafield_key
+                ? cfg.metafield_namespace + '.' + cfg.metafield_key : '';
+        document.getElementById('cfg-unknown').value = cfg.unknown_product_policy || 'auto_create';
+        document.getElementById('cfg-autoqueue').checked = !!cfg.auto_queue;
+        document.getElementById('cfg-fulfill').checked = !!cfg.fulfill_on_complete;
+        document.getElementById('cfg-notify').checked = !!cfg.notify_customer;
+        document.getElementById('cfg-archive').checked = !!cfg.archive_on_complete;
+    }
+
+    function readConfigUI() {
+        const chain = document.getElementById('cfg-identifier').value.split(',');
+        const mfRaw = document.getElementById('cfg-metafield').value.trim();
+        const [ns, ...rest] = mfRaw.split('.');
+        return {
+            identifier_chain: chain,
+            metafield_namespace: rest.length ? ns : '',
+            metafield_key: rest.join('.') || '',
+            unknown_product_policy: document.getElementById('cfg-unknown').value,
+            auto_queue: document.getElementById('cfg-autoqueue').checked,
+            fulfill_on_complete: document.getElementById('cfg-fulfill').checked,
+            notify_customer: document.getElementById('cfg-notify').checked,
+            archive_on_complete: document.getElementById('cfg-archive').checked,
+        };
+    }
+
+    async function load() {
+        const res = await authFetch('/shopify/api/status/');
+        if (!res.ok) { toast('Could not load status'); return; }
+        const data = await res.json();
+        const badge = document.getElementById('status-badge');
+        badge.textContent = data.status;
+        badge.className = 'badge ' + (data.status === 'active' ? 'active' : 'other');
+        document.getElementById('stat-queued').textContent = data.queued_orders;
+        document.getElementById('stat-unresolved').textContent = data.unresolved_products;
+        document.getElementById('picker-link').href = data.picker_url;
+        document.getElementById('picker-username').textContent = data.picker_username || '–';
+        document.getElementById('link-card').style.display =
+            data.auto_provisioned ? '' : 'none';
+        setConfigUI(data.config);
+        loadUnresolved(data.unresolved_products);
+    }
+
+    document.getElementById('btn-link').addEventListener('click', async function () {
+        this.disabled = true;
+        this.textContent = 'Linking…';
+        try {
+            const res = await authFetch('/shopify/api/link-account/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    username: document.getElementById('link-username').value,
+                    password: document.getElementById('link-password').value,
+                }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (res.ok) {
+                toast('Linked to ' + data.customer_name);
+                load();
+            } else {
+                toast(data.error || 'Linking failed');
+            }
+        } finally {
+            this.disabled = false;
+            this.textContent = 'Link account';
+        }
+    });
+
+    async function loadUnresolved(count) {
+        const card = document.getElementById('mapping-card');
+        if (!count) { card.style.display = 'none'; return; }
+        const res = await authFetch('/shopify/api/unresolved/');
+        if (!res.ok) return;
+        const data = await res.json();
+        const list = document.getElementById('mapping-list');
+        list.innerHTML = '';
+        data.unresolved.forEach(function (item) {
+            const row = document.createElement('div');
+            row.className = 'row';
+            const label = document.createElement('div');
+            label.innerHTML = '<label></label><div class="hint"></div>';
+            label.querySelector('label').textContent = item.title || item.external_variant_id;
+            label.querySelector('.hint').textContent = 'Variant ' + item.external_variant_id;
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Product code';
+            const btn = document.createElement('button');
+            btn.textContent = 'Link';
+            btn.addEventListener('click', async function () {
+                btn.disabled = true;
+                const res = await authFetch('/shopify/api/map-product/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({link_id: item.id, product_code: input.value.trim()}),
+                });
+                if (res.ok) { row.remove(); toast('Linked'); }
+                else {
+                    const err = await res.json().catch(() => ({}));
+                    toast(err.error || 'Link failed');
+                    btn.disabled = false;
+                }
+            });
+            row.appendChild(label);
+            row.appendChild(input);
+            row.appendChild(btn);
+            list.appendChild(row);
+        });
+        card.style.display = data.unresolved.length ? '' : 'none';
+    }
+
+    document.getElementById('btn-picker-password').addEventListener('click', async function () {
+        const input = document.getElementById('picker-password');
+        this.disabled = true;
+        try {
+            const res = await authFetch('/shopify/api/picker-password/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({password: input.value}),
+            });
+            if (res.ok) { toast('Password set'); input.value = ''; }
+            else {
+                const err = await res.json().catch(() => ({}));
+                toast(err.error || 'Failed');
+            }
+        } finally { this.disabled = false; }
+    });
+
+    document.getElementById('cfg-identifier').addEventListener('change', function () {
+        document.getElementById('metafield-row').style.display =
+            this.value === 'metafield' ? '' : 'none';
+    });
+
+    document.getElementById('btn-save').addEventListener('click', async function () {
+        this.disabled = true;
+        try {
+            const res = await authFetch('/shopify/api/config/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(readConfigUI()),
+            });
+            toast(res.ok ? 'Settings saved' : 'Save failed');
+        } finally { this.disabled = false; }
+    });
+
+    document.getElementById('btn-sync').addEventListener('click', async function () {
+        this.disabled = true;
+        this.textContent = 'Syncing…';
+        try {
+            const res = await authFetch('/shopify/api/sync-products/', {method: 'POST'});
+            if (res.ok) {
+                const data = await res.json();
+                toast(data.linked + ' linked, ' + data.unresolved + ' need mapping');
+                load();
+            } else { toast('Sync failed'); }
+        } finally {
+            this.disabled = false;
+            this.textContent = 'Re-sync products';
+        }
+    });
+
+    load();
+})();
+</script>
+</body>
+</html>

@@ -187,6 +187,10 @@ class PickListViewSet(viewsets.ModelViewSet):
             picklist.order.save(update_fields=['status', 'completed_at'])
             order_status = 'completed'
 
+            # Queue platform write-backs (Shopify fulfillment etc.)
+            from integrations.services.events import order_completed
+            order_completed(picklist.order)
+
         return Response({
             'status': 'ok',
             'message': 'Pick list completed',
