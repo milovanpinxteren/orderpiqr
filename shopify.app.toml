@@ -20,7 +20,7 @@ redirect_urls = [ "https://app.orderpiqr.nl/shopify/app/" ]
 api_version = "2026-10"
 
   [[webhooks.subscriptions]]
-  uri = "/shopify/webhooks/"
+  uri = "https://app.orderpiqr.nl/shopify/webhooks"
   topics = [
   "orders/create",
   "orders/updated",
@@ -33,9 +33,9 @@ api_version = "2026-10"
 ]
 
   [webhooks.privacy_compliance]
-  customer_data_request_url = "/shopify/webhooks/"
-  customer_deletion_url = "/shopify/webhooks/"
-  shop_deletion_url = "/shopify/webhooks/"
+  customer_data_request_url = "https://app.orderpiqr.nl/shopify/webhooks"
+  customer_deletion_url = "https://app.orderpiqr.nl/shopify/webhooks"
+  shop_deletion_url = "https://app.orderpiqr.nl/shopify/webhooks"
 
 [pos]
 embedded = false
