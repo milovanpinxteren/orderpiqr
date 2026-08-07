@@ -54,6 +54,8 @@ def exchange_session_token(shop, session_token):
         'subject_token': session_token,
         'subject_token_type': ID_TOKEN_TYPE,
         'requested_token_type': OFFLINE_TOKEN_TYPE,
+        # Expiring offline tokens (mandatory for new public apps from Apr 2026)
+        'expiring': 1,
     }, timeout=15)
     if response.status_code != 200:
         raise ShopifyAuthError(

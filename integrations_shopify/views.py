@@ -102,13 +102,17 @@ def app_entry(request):
             newly_active = shop.connection.status != 'active'
             services.activate_shop(shop)
             if created or newly_active:
-                services.sync_products(shop.connection)
                 try:
+                    services.sync_products(shop.connection)
                     shop.connection.get_connector().poll()
                 except Exception:
-                    logger.exception("Initial order poll failed for %s", shop_domain)
+                    # Never block the console on initial sync problems;
+                    # the merchant can re-sync from the UI.
+                    logger.exception("Initial sync failed for %s", shop_domain)
         except ShopifyAuthError as exc:
             logger.warning("Token exchange failed for %s: %s", shop_domain, exc)
+        except Exception:
+            logger.exception("App entry bootstrap failed for %s", shop_domain)
 
     if not shop_domain:
         return HttpResponse("Missing shop parameter", status=400)
