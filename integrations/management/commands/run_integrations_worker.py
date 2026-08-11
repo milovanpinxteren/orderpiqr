@@ -112,6 +112,10 @@ class Command(BaseCommand):
             logger.exception("Inbox row %s failed", row.pk)
             row.status = 'failed' if row.attempts >= 5 else 'pending'
             row.error = str(exc)[:2000]
+        if row.connection.pk is None:
+            # Handler deleted the connection (shop/redact); this row was
+            # cascade-deleted with it, so there is nothing left to save.
+            return
         row.processed_at = timezone.now()
         row.save(update_fields=['status', 'attempts', 'error', 'processed_at'])
 
