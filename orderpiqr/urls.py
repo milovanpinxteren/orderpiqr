@@ -9,7 +9,7 @@ from orderpiqrApp.views import scan_picklist, complete_picklist, product_pick, b
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from api.views.documentation_views import documentation_view
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from django.views.static import serve
 from django.conf import settings
 from django.urls import re_path
@@ -76,6 +76,11 @@ urlpatterns = [
 
     # Shopify app (embedded console + webhooks); outside i18n, session-token auth
     path('shopify/', include('integrations_shopify.urls')),
+
+    # Shorthand: /manage/... -> /orderpiqr/manage/... (LocaleMiddleware then adds
+    # the language prefix), so hand-typed manage URLs don't 404
+    path('manage/', RedirectView.as_view(url='/orderpiqr/manage/', query_string=True)),
+    path('manage/<path:rest>', RedirectView.as_view(url='/orderpiqr/manage/%(rest)s', query_string=True)),
 ]
 
 urlpatterns += i18n_patterns(
