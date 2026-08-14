@@ -2,6 +2,7 @@ import openpyxl
 from django.contrib import admin
 import csv
 from django.core.exceptions import ValidationError
+from orderpiqrApp.utils.csv_import import read_csv_rows, PRODUCT_CSV_FIELDS, CSVImportError
 from orderpiqrApp.models import Product, UserProfile
 from django.contrib import messages
 from django import forms
@@ -21,19 +22,9 @@ class ProductAdmin(admin.ModelAdmin):
 
     def parse_csv(self, file):
         """Parse CSV and return list of dicts."""
-        decoded_file = file.read().decode('utf-8').splitlines()
-        csv_reader = csv.reader(decoded_file)
-        header = next(csv_reader)
-        header_mapping = {col.strip().lower(): index for index, col in enumerate(header)}
-
-        data = []
-        for row in csv_reader:
-            data.append({
-                'code': row[header_mapping['code']],
-                'description': row[header_mapping['description']],
-                'location': row[header_mapping['location']],
-            })
-        return data
+        rows = read_csv_rows(file, PRODUCT_CSV_FIELDS)
+        return [{'code': row['code'], 'description': row['description'],
+                 'location': row['location']} for _unused, row in rows]
 
     def parse_xlsx(self, file):
         """Parse XLSX and return list of dicts."""
@@ -42,18 +33,30 @@ class ProductAdmin(admin.ModelAdmin):
         header = [str(cell.value).strip().lower() if cell.value else '' for cell in sheet[1]]
 
         header_mapping = {col: idx for idx, col in enumerate(header)}
+        for required in ('code', 'description'):
+            if required not in header_mapping:
+                raise ValidationError(_('Missing required column "%(field)s"') % {'field': required})
+
+        def cell(row, name):
+            idx = header_mapping.get(name)
+            if idx is None or idx >= len(row) or row[idx] is None:
+                return ''
+            return str(row[idx]).strip()
+
         data = []
         for row in sheet.iter_rows(min_row=2, values_only=True):
+            if not any(v is not None and str(v).strip() for v in row):
+                continue
             data.append({
-                'code': row[header_mapping['code']],
-                'description': row[header_mapping['description']],
-                'location': row[header_mapping['location']],
+                'code': cell(row, 'code'),
+                'description': cell(row, 'description'),
+                'location': cell(row, 'location'),
             })
         return data
 
     def validate_product_data(self, data):
         """Validate product data and return cleaned data or raise ValidationError."""
-        required_fields = ['code', 'description', 'location']
+        required_fields = ['code', 'description']
         cleaned_data = []
 
         for idx, item in enumerate(data, start=2):
@@ -63,12 +66,8 @@ class ProductAdmin(admin.ModelAdmin):
                         'field': field,
                         'row': idx,
                     })
-            # try:
-            #     item['location'] = int(item['location'])
-            # except ValueError:
-            #     raise ValidationError(_('Invalid number for "location" in row %(row)d') % {
-            #         'row': idx,
-            #     })
+            item['code'] = item['code'][:255]
+            item['location'] = (item.get('location') or '')[:50]
             cleaned_data.append(item)
         return cleaned_data
 
@@ -133,9 +132,9 @@ class ProductAdmin(admin.ModelAdmin):
                 customer = user_profile.customer
 
                 # Determine file type
-                if file.name.endswith('.csv'):
+                if file.name.lower().endswith('.csv'):
                     added, overwritten = self.process_csv_file(file, customer)
-                elif file.name.endswith('.xlsx'):
+                elif file.name.lower().endswith('.xlsx'):
                     added, overwritten = self.process_xlsx_file(file, customer)
                 else:
                     raise ValidationError(_('Unsupported file format, only .csv and .xlsx are supported'))

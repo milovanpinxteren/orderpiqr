@@ -90,6 +90,13 @@ ORD-001,SKU-001,2,Priority order
 ORD-001,SKU-002,1,
 ORD-002,SKU-003,3,
 ORD-002,SKU-001,1,</pre>
+            <p class="mt-md">
+                <a href="data:text/csv;charset=utf-8,order_code%2Cproduct_code%2Camount%2Cnotes%0AORD-001%2CSKU-001%2C2%2CPriority%20order%0AORD-001%2CSKU-002%2C1%2C%0AORD-002%2CSKU-003%2C3%2C%0AORD-002%2CSKU-001%2C1%2C"
+                   download="orders_example.csv">{% trans "Download example CSV" %}</a>
+            </p>
+            <p class="upload-hint">
+                {% trans "Comma and semicolon separated files both work, and common column names such as Order Number, SKU or Quantity are recognized automatically." %}
+            </p>
 
             <div class="info-box mt-md">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

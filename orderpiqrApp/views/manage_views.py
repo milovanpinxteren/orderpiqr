@@ -20,6 +20,9 @@ from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.hashers import check_password
 
 from orderpiqrApp.utils.decorators import company_admin_required
+from orderpiqrApp.utils.csv_import import (
+    CSVImportError, read_csv_rows, parse_bool, PRODUCT_CSV_FIELDS, ORDER_CSV_FIELDS,
+)
 from orderpiqrApp.utils.inventory import is_inventory_enabled, modify_inventory
 from orderpiqrApp.models import Product, Order, OrderLine, PickList, Device, CustomerSettingValue, SettingDefinition, InventoryLog
 from django.contrib.auth.models import User
@@ -413,27 +416,25 @@ def products_import(request):
             messages.error(request, _("Please select a CSV file."))
             return render(request, 'manage/products/import.html', context)
 
-        if not csv_file.name.endswith('.csv'):
+        if not csv_file.name.lower().endswith('.csv'):
             messages.error(request, _("Please upload a valid CSV file."))
             return render(request, 'manage/products/import.html', context)
 
         try:
-            decoded_file = csv_file.read().decode('utf-8-sig')
-            reader = csv.DictReader(io.StringIO(decoded_file))
+            rows = read_csv_rows(csv_file, PRODUCT_CSV_FIELDS)
 
             created_count = 0
             updated_count = 0
-            error_count = 0
+            skipped_rows = []
 
-            for row in reader:
-                code = row.get('code', row.get('Code', '')).strip()
-                description = row.get('description', row.get('Description', '')).strip()
-                location = row.get('location', row.get('Location', '')).strip()
-                active_str = row.get('active', row.get('Active', 'true')).strip().lower()
-                active = active_str in ['true', '1', 'yes', 'ja', 'actief']
+            for line_number, row in rows:
+                code = row['code'][:255]
+                description = row['description']
+                location = row['location'][:50]
+                active = parse_bool(row['active'])
 
                 if not code or not description:
-                    error_count += 1
+                    skipped_rows.append(line_number)
                     continue
 
                 product, created = Product.objects.update_or_create(
@@ -451,11 +452,25 @@ def products_import(request):
                 else:
                     updated_count += 1
 
-            messages.success(request, _("Import completed: {created} created, {updated} updated, {errors} errors.").format(
-                created=created_count, updated=updated_count, errors=error_count
+            if not created_count and not updated_count:
+                messages.error(request, _(
+                    "No products were imported: every row is missing a product code or description. "
+                    "Please check the CSV format below."
+                ))
+                return render(request, 'manage/products/import.html', context)
+
+            messages.success(request, _("Import completed: {created} created, {updated} updated.").format(
+                created=created_count, updated=updated_count
             ))
+            if skipped_rows:
+                messages.warning(request, _(
+                    "{count} row(s) were skipped because the product code or description was empty (rows: {rows})."
+                ).format(count=len(skipped_rows), rows=', '.join(str(r) for r in skipped_rows[:10])))
             return redirect('manage_products')
 
+        except CSVImportError as e:
+            messages.error(request, str(e))
+            return render(request, 'manage/products/import.html', context)
         except Exception as e:
             messages.error(request, _("Error processing CSV: {error}").format(error=str(e)))
             return render(request, 'manage/products/import.html', context)
@@ -704,28 +719,27 @@ def orders_import(request):
             messages.error(request, _("Please select a CSV file."))
             return render(request, 'manage/orders/import.html', context)
 
-        if not csv_file.name.endswith('.csv'):
+        if not csv_file.name.lower().endswith('.csv'):
             messages.error(request, _("Please upload a valid CSV file."))
             return render(request, 'manage/orders/import.html', context)
 
         try:
-            decoded_file = csv_file.read().decode('utf-8-sig')
-            reader = csv.DictReader(io.StringIO(decoded_file))
+            rows = read_csv_rows(csv_file, ORDER_CSV_FIELDS)
 
             created_count = 0
             line_count = 0
-            error_count = 0
+            problems = []
 
             # Group by order_code
             orders_data = {}
-            for row in reader:
-                order_code = row.get('order_code', row.get('Order Code', '')).strip()
-                product_code = row.get('product_code', row.get('Product Code', '')).strip()
-                amount = row.get('amount', row.get('Amount', '1')).strip()
-                notes = row.get('notes', row.get('Notes', '')).strip()
+            for line_number, row in rows:
+                order_code = row['order_code'][:255]
+                product_code = row['product_code']
+                amount = row['amount']
+                notes = row['notes']
 
                 if not order_code or not product_code:
-                    error_count += 1
+                    problems.append(_("row {row}: missing order code or product code").format(row=line_number))
                     continue
 
                 if order_code not in orders_data:
@@ -741,7 +755,7 @@ def orders_import(request):
             # Create orders
             for order_code, data in orders_data.items():
                 if Order.objects.filter(customer=customer, order_code=order_code).exists():
-                    error_count += len(data['lines'])
+                    problems.append(_("order {order} already exists").format(order=order_code))
                     continue
 
                 order = Order.objects.create(
@@ -762,13 +776,26 @@ def orders_import(request):
                         )
                         line_count += 1
                     except Product.DoesNotExist:
-                        error_count += 1
+                        problems.append(_("order {order}: unknown product {product}").format(
+                            order=order_code, product=line_data['product_code']))
 
-            messages.success(request, _("Import completed: {orders} orders created with {lines} lines, {errors} errors.").format(
-                orders=created_count, lines=line_count, errors=error_count
+            if not created_count:
+                messages.error(request, _(
+                    "No orders were imported: {reasons}"
+                ).format(reasons='; '.join(problems[:10]) or _("the file contains no valid rows.")))
+                return render(request, 'manage/orders/import.html', context)
+
+            messages.success(request, _("Import completed: {orders} orders created with {lines} lines.").format(
+                orders=created_count, lines=line_count
             ))
+            if problems:
+                messages.warning(request, _("Some rows could not be imported: {reasons}").format(
+                    reasons='; '.join(problems[:10])))
             return redirect('manage_orders')
 
+        except CSVImportError as e:
+            messages.error(request, str(e))
+            return render(request, 'manage/orders/import.html', context)
         except Exception as e:
             messages.error(request, _("Error processing CSV: {error}").format(error=str(e)))
             return render(request, 'manage/orders/import.html', context)
