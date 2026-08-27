@@ -5,6 +5,7 @@ import secrets
 
 from django.contrib.auth.models import Group, User
 from django.db import transaction
+from django.utils import timezone
 
 from integrations.models import Connection
 from integrations.services.intake import resolve_line
@@ -18,6 +19,43 @@ logger = logging.getLogger(__name__)
 SHOP_INFO_QUERY = """
 { shop { name email myshopifyDomain } }
 """
+
+SUBSCRIPTION_QUERY = """
+{ currentAppInstallation { activeSubscriptions { name status currentPeriodEnd } } }
+"""
+
+SUBSCRIPTION_CHECK_INTERVAL = timezone.timedelta(hours=1)
+
+
+def check_subscription(shop, force=False):
+    """Refresh the cached Managed Pricing subscription state (throttled).
+
+    Returns True when an active subscription exists (trials are ACTIVE in
+    Shopify's model). On API failure the last known state is kept — billing
+    checks must never take the console or sync down."""
+    fresh = (shop.subscription_checked_at is not None
+             and timezone.now() - shop.subscription_checked_at < SUBSCRIPTION_CHECK_INTERVAL)
+    if fresh and not force:
+        return shop.subscription_status == 'active'
+
+    client = ShopifyClient(shop)
+    try:
+        subs = (client.graphql(SUBSCRIPTION_QUERY)
+                ['currentAppInstallation']['activeSubscriptions'])
+    except Exception:
+        logger.exception("Subscription check failed for %s", shop.shop_domain)
+        return shop.subscription_status == 'active'
+
+    if subs:
+        shop.subscription_status = 'active'
+        shop.subscription_plan = subs[0].get('name') or ''
+    else:
+        shop.subscription_status = 'none'
+        shop.subscription_plan = ''
+    shop.subscription_checked_at = timezone.now()
+    shop.save(update_fields=[
+        'subscription_status', 'subscription_plan', 'subscription_checked_at'])
+    return shop.subscription_status == 'active'
 
 
 @transaction.atomic
@@ -92,6 +130,8 @@ def activate_shop(shop):
     if connection.status != 'active':
         connection.status = 'active'
         connection.save(update_fields=['status'])
+
+    check_subscription(shop, force=True)
 
 
 @transaction.atomic

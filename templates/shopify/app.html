@@ -82,6 +82,16 @@
         <img src="{% static 'orderpiqrApp/img/favicon.png' %}" alt="OrderPiqR">
         <span class="brand-name">OrderPiqR</span>
     </div>
+    <div class="card" id="billing-card" style="display:none">
+        <h2>{% trans "No active plan" %}</h2>
+        <p class="hint">
+            {% trans "This store has no active OrderPiqr subscription. Choose a plan to keep order sync running — billing is handled by Shopify." %}
+        </p>
+        <p style="margin-bottom:0">
+            <a id="pricing-link" href="#" target="_top">{% trans "Choose a plan" %} ↗</a>
+        </p>
+    </div>
+
     <div class="card">
         <h2>{% trans "Overview" %} <span id="status-badge" class="badge other">…</span></h2>
         <div class="grid">
@@ -265,6 +275,9 @@
         document.getElementById('picker-username').textContent = data.picker_username || '–';
         document.getElementById('link-card').style.display =
             data.auto_provisioned ? '' : 'none';
+        document.getElementById('billing-card').style.display =
+            data.subscription_status === 'none' ? '' : 'none';
+        document.getElementById('pricing-link').href = data.pricing_url;
         setConfigUI(data.config);
         loadUnresolved(data.unresolved_products);
     }

@@ -24,6 +24,11 @@ class ShopifyShop(models.Model):
     uninstalled_at = models.DateTimeField(null=True, blank=True)
     # Cursor for the reconciliation poll.
     last_synced_at = models.DateTimeField(null=True, blank=True)
+    # Managed Pricing subscription state, cached from GraphQL:
+    # '' = never checked, 'active' = active or trialing, 'none' = no subscription.
+    subscription_status = models.CharField(max_length=20, blank=True, default='')
+    subscription_plan = models.CharField(max_length=100, blank=True, default='')
+    subscription_checked_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         verbose_name = 'Shopify shop'

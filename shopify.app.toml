@@ -23,6 +23,7 @@ api_version = "2026-10"
   uri = "https://app.orderpiqr.nl/shopify/webhooks"
   topics = [
   "orders/create",
+  "orders/paid",
   "orders/updated",
   "orders/cancelled",
   "fulfillments/create",

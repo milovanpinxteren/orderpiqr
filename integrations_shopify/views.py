@@ -161,10 +161,18 @@ def api_status(request):
               .order_by('pk')
               .first())
 
+    services.check_subscription(shop)
+    store_handle = shop.shop_domain.replace('.myshopify.com', '')
+    app_handle = getattr(settings, 'SHOPIFY_APP_HANDLE', 'orderpiqr')
+
     return JsonResponse({
         'shop': shop.shop_domain,
         'shop_name': shop.shop_name,
         'status': connection.status,
+        'subscription_status': shop.subscription_status or 'unknown',
+        'subscription_plan': shop.subscription_plan,
+        'pricing_url': (f"https://admin.shopify.com/store/{store_handle}"
+                        f"/charges/{app_handle}/pricing_plans"),
         'config': connection.get_config(),
         'queued_orders': queued,
         'unresolved_products': unresolved,

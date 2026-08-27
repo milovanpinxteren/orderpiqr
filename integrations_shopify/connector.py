@@ -13,7 +13,8 @@ from integrations_shopify.client import ShopifyClient
 
 logger = logging.getLogger(__name__)
 
-ORDER_TOPICS = {'orders/create', 'orders/updated', 'orders/cancelled', 'poll/order'}
+ORDER_TOPICS = {'orders/create', 'orders/paid', 'orders/updated', 'orders/cancelled',
+                'poll/order'}
 
 
 def order_gid(numeric_id):
@@ -195,12 +196,11 @@ class ShopifyConnector(BaseConnector):
                 status='cancelled',
             )
 
-        if topic == 'orders/updated':
-            # v1: only cancellations are interesting on update events
-            # (handled above); everything else is ignored.
-            return None
-
-        # orders/create
+        # orders/create, orders/paid and orders/updated all funnel into the
+        # same import path: an order that only becomes eligible after creation
+        # (e.g. created unpaid, marked as paid later) is imported the moment
+        # an event shows it passing the filter. Import is idempotent on
+        # external_order_id, so repeated events are harmless.
         if not self._passes_import_filter(payload):
             return None
 
