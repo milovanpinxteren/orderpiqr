@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'drf_hashed_token',
     'drf_spectacular',
     'django_user_agents',
 ]
@@ -244,6 +245,7 @@ LOGGING = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'drf_hashed_token.authentication.HashedTokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -297,3 +299,6 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 
 }
+
+# Which drf_hashed_token stage this environment accepts: 'LIVE' or 'TEST'.
+TOKEN_PREFIX = env('TOKEN_PREFIX', default='LIVE')

@@ -3,12 +3,112 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from api.serializers import OrderSerializer, OrderDetailSerializer, OrderCreateSerializer
-from orderpiqrApp.models import Order
+from orderpiqrApp.models import Order, OrderLine, Product
 from rest_framework import filters
-from django.db.models import Count, Sum
+from django.db import DatabaseError, transaction
+from django.db.models import Count, Max, Sum
 from django.utils import timezone
 from datetime import timedelta
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiExample, OpenApiResponse, OpenApiParameter
+
+
+def _upsert_product(customer, line, counters):
+    """Resolve a product by code, creating or updating it from inline line data."""
+    code = str(line.get('code') or '').strip()
+    if not code:
+        raise ValueError('Order line is missing a product code')
+
+    description = str(line.get('description') or '').strip()
+    location = str(line.get('location') if line.get('location') is not None else '').strip()
+
+    product = Product.objects.filter(customer=customer, code=code).first()
+    if product is None:
+        product = Product.objects.create(
+            customer=customer,
+            code=code,
+            description=description or code,
+            location=location,
+            active=True,
+        )
+        counters['products_created'] += 1
+        return product
+
+    update_fields = []
+    if description and product.description != description:
+        product.description = description
+        update_fields.append('description')
+    if location and product.location != location:
+        product.location = location
+        update_fields.append('location')
+    if update_fields:
+        product.save(update_fields=update_fields)
+        counters['products_updated'] += 1
+    return product
+
+
+def _next_queue_position(customer):
+    max_pos = Order.objects.filter(
+        customer=customer,
+        status__in=['queued', 'in_progress']
+    ).aggregate(max_pos=Max('queue_position'))['max_pos']
+    return (max_pos or 0) + 1
+
+
+def _upsert_order(customer, order_data, source, counters):
+    """Apply one order's desired state. Returns (outcome, order_code, current_status)."""
+    order_code = str(order_data.get('order_code') or '').strip()
+    if not order_code:
+        raise ValueError('order_code is required')
+
+    target_status = order_data.get('status') or 'draft'
+    if target_status not in ('draft', 'queued'):
+        raise ValueError(f'Invalid target status "{target_status}". Only "draft" or "queued" are allowed.')
+
+    queue_position = order_data.get('queue_position')
+    notes = str(order_data.get('notes') or '').strip()
+    lines = []
+    for line in (order_data.get('lines') or []):
+        quantity = int(line.get('quantity') or 0)
+        if quantity > 0:
+            lines.append((line, quantity))
+
+    order = Order.objects.select_for_update().filter(
+        customer=customer, order_code=order_code
+    ).first()
+
+    # Never touch an order a picker has started or finished.
+    if order and order.status in ('in_progress', 'completed'):
+        return ('skipped', order_code, order.status)
+
+    if not lines:
+        # Desired state is "no order": cancel it if it exists and is still cancellable.
+        if order and order.status in ('draft', 'queued'):
+            order.status = 'cancelled'
+            order.queue_position = None
+            order.save(update_fields=['status', 'queue_position'])
+            return ('cancelled', order_code, 'cancelled')
+        return ('skipped', order_code, order.status if order else None)
+
+    created = order is None
+    if created:
+        order = Order(customer=customer, order_code=order_code)
+    order.source = source
+    order.notes = notes or None
+    order.status = target_status
+    if target_status == 'queued':
+        order.queue_position = queue_position if queue_position is not None else _next_queue_position(customer)
+    else:
+        order.queue_position = None
+    order.save()
+
+    if not created:
+        order.lines.all().delete()
+    OrderLine.objects.bulk_create([
+        OrderLine(order=order, product=_upsert_product(customer, line, counters), quantity=quantity)
+        for line, quantity in lines
+    ])
+
+    return ('created' if created else 'updated', order_code, order.status)
 
 
 @extend_schema_view(
@@ -379,3 +479,160 @@ class OrderViewSet(viewsets.ModelViewSet):
             return Response(response_data, status=status.HTTP_207_MULTI_STATUS)
 
         return Response(response_data, status=status.HTTP_201_CREATED)
+
+    @extend_schema(
+        summary="Bulk upsert orders (desired state)",
+        description="""
+        Idempotently synchronise orders from an external system. Orders are matched by
+        `order_code` (unique per customer) and brought to the requested state:
+
+        - Unknown `order_code`: the order is created.
+        - Existing `draft`/`queued`/`cancelled` order: its lines are replaced wholesale and
+          its status/queue position updated.
+        - Existing `in_progress`/`completed` order: never touched — reported as skipped.
+        - An order sent with no lines (or only zero quantities) is cancelled if still cancellable.
+
+        Order lines reference products by `code` (not numeric id). Unknown products are
+        created on the fly; known products get their `description`/`location` updated when
+        those fields are provided and differ.
+
+        `status` per order may be `draft` (default, not pickable yet) or `queued` (released
+        for picking). `queue_position` is honoured when given, otherwise appended to the queue.
+
+        With `prune`, orders from the same `source` whose `order_code` ends with
+        `prune.order_code_suffix` but which are absent from this payload are cancelled
+        (only `draft`/`queued` ones) — use this to retire orders that disappeared upstream.
+
+        The whole request is processed per-order: a failing order is reported under `errors`
+        without blocking the rest (HTTP 207 when any error occurred).
+        """,
+        request={
+            "application/json": {
+                "type": "object",
+                "properties": {
+                    "source": {"type": "string", "description": "Origin tag stamped on the orders, e.g. 'hfportal'. Defaults to 'api'."},
+                    "orders": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "order_code": {"type": "string"},
+                                "status": {"type": "string", "enum": ["draft", "queued"]},
+                                "queue_position": {"type": "integer"},
+                                "notes": {"type": "string"},
+                                "lines": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "code": {"type": "string"},
+                                            "quantity": {"type": "integer"},
+                                            "description": {"type": "string"},
+                                            "location": {"type": "string"}
+                                        },
+                                        "required": ["code", "quantity"]
+                                    }
+                                }
+                            },
+                            "required": ["order_code", "lines"]
+                        }
+                    },
+                    "prune": {
+                        "type": "object",
+                        "properties": {
+                            "order_code_suffix": {"type": "string"}
+                        }
+                    }
+                },
+                "required": ["orders"]
+            }
+        },
+        responses={
+            200: OpenApiResponse(
+                description="All orders processed",
+                examples=[
+                    OpenApiExample(
+                        name="Success Response",
+                        value={
+                            "created": ["AMS01-20260915", "UTR03-20260915"],
+                            "updated": ["RTM02-20260915"],
+                            "skipped": [{"order_code": "DEV09-20260915", "status": "in_progress"}],
+                            "cancelled": ["EIN04-20260915"],
+                            "products_created": 2,
+                            "products_updated": 5,
+                            "errors": []
+                        }
+                    )
+                ]
+            ),
+            207: OpenApiResponse(description="Processed with per-order errors (see `errors`)")
+        }
+    )
+    @action(detail=False, methods=['post'])
+    def upsert(self, request):
+        """Bulk upsert orders by order_code: create, replace lines, promote to queue, or cancel."""
+        orders_data = request.data.get('orders', [])
+        if not isinstance(orders_data, list) or not orders_data:
+            return Response(
+                {'detail': 'No orders provided'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        customer = request.user.userprofile.customer
+        source = str(request.data.get('source') or 'api').strip()[:32] or 'api'
+        prune = request.data.get('prune') or {}
+
+        results = {
+            'created': [],
+            'updated': [],
+            'skipped': [],
+            'cancelled': [],
+        }
+        counters = {'products_created': 0, 'products_updated': 0}
+        errors = []
+        payload_codes = set()
+
+        for i, order_data in enumerate(orders_data):
+            order_code = str(order_data.get('order_code') or '').strip()
+            if order_code:
+                payload_codes.add(order_code)
+            try:
+                with transaction.atomic():
+                    outcome, code, current_status = _upsert_order(customer, order_data, source, counters)
+            except (ValueError, TypeError, DatabaseError) as e:
+                errors.append({
+                    'index': i,
+                    'order_code': order_code or None,
+                    'error': str(e),
+                })
+                continue
+
+            if outcome == 'skipped':
+                results['skipped'].append({'order_code': code, 'status': current_status})
+            else:
+                results[outcome].append(code)
+
+        suffix = str(prune.get('order_code_suffix') or '').strip()
+        if suffix:
+            with transaction.atomic():
+                stale_orders = Order.objects.select_for_update().filter(
+                    customer=customer,
+                    source=source,
+                    order_code__endswith=suffix,
+                    status__in=['draft', 'queued'],
+                ).exclude(order_code__in=payload_codes)
+                for stale in stale_orders:
+                    stale.status = 'cancelled'
+                    stale.queue_position = None
+                    stale.save(update_fields=['status', 'queue_position'])
+                    results['cancelled'].append(stale.order_code)
+
+        response_data = {
+            **results,
+            **counters,
+            'errors': errors,
+        }
+        return Response(
+            response_data,
+            status=status.HTTP_207_MULTI_STATUS if errors else status.HTTP_200_OK
+        )
