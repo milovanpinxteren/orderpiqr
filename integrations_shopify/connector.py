@@ -428,9 +428,10 @@ class ShopifyConnector(BaseConnector):
             if product is None and auto_create and any(
                     str(v).strip() for v in line.identifiers.values()):
                 product = _auto_create_product(self.connection, line, self.config)
-            if product is not None and line.location and product.location != line.location:
+            location = (line.location or '')[:50]
+            if product is not None and location and product.location != location:
                 # Location metafield configured -> Shopify is source of truth
-                product.location = line.location
+                product.location = location
                 product.save(update_fields=['location'])
 
     def fetch_variants(self):

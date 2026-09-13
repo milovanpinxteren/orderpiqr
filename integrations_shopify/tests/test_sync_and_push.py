@@ -83,6 +83,29 @@ class SyncJobTests(TestCase):
         self.assertEqual(job.linked, 1)
         self.assertEqual(job.unresolved, 1)
 
+    def test_sync_clips_overlong_external_values(self):
+        # Real House of Beers regression: a variant title > 255 chars made
+        # PostgreSQL reject the ProductLink row and killed the whole sync.
+        long_title = 'Extremely long product title ' * 20
+        variants = [
+            ExternalVariant(external_variant_id='113', external_product_id='222',
+                            title=long_title, identifiers={'sku': 'LONG-1'}),
+        ]
+        job = enqueue_product_sync(self.connection)
+        with patch('integrations_shopify.connector.ShopifyConnector.fetch_variants',
+                   return_value=iter(variants)), \
+             patch('integrations_shopify.connector.ShopifyConnector.count_variants',
+                   return_value=1):
+            Command().process_sync_jobs()
+
+        job.refresh_from_db()
+        self.assertEqual(job.status, 'done')
+        from integrations.models import ProductLink
+        link = ProductLink.objects.get(
+            connection=self.connection, external_variant_id='113')
+        self.assertEqual(len(link.title), 255)
+        self.assertIsNotNone(link.product)
+
     def test_worker_marks_failed_job(self):
         job = enqueue_product_sync(self.connection)
         with patch('integrations_shopify.connector.ShopifyConnector.fetch_variants',

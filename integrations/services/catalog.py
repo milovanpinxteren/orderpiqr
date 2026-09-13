@@ -6,7 +6,7 @@ import logging
 
 from integrations.canonical import ExternalLine
 from integrations.models import ProductLink, SyncJob
-from integrations.services.intake import _auto_create_product, resolve_line
+from integrations.services.intake import _auto_create_product, _clip, resolve_line
 
 logger = logging.getLogger(__name__)
 
@@ -63,9 +63,10 @@ def sync_products(connection, job=None):
                 str(v).strip() for v in (variant.identifiers or {}).values()):
             product = _auto_create_product(connection, line, config)
         if product is not None:
-            if variant.location and product.location != variant.location:
+            location = _clip(variant.location, 50)
+            if location and product.location != location:
                 # Location metafield configured -> platform is source of truth
-                product.location = variant.location
+                product.location = location
                 product.save(update_fields=['location'])
             linked += 1
         else:
@@ -79,7 +80,7 @@ def sync_products(connection, job=None):
                     'external_product_id': variant.external_product_id,
                     'identifier_value': '',
                     'match_method': '',
-                    'title': variant.title,
+                    'title': _clip(variant.title, 255),
                 },
             )
     flush_progress(force=True)

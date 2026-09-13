@@ -13,6 +13,12 @@ from integrations.models import ExternalOrderLink, ProductLink
 logger = logging.getLogger(__name__)
 
 
+def _clip(value, limit):
+    """External platforms allow longer text than our CharFields; clip instead
+    of letting the DB reject the whole sync."""
+    return (value or '')[:limit]
+
+
 class UnresolvedLinesError(Exception):
     """Raised under the 'hold' unknown-product policy when one or more lines
     cannot be resolved to a Product."""
@@ -52,9 +58,9 @@ def resolve_line(connection, line, config):
                 defaults={
                     'product': product,
                     'external_product_id': line.external_product_id,
-                    'identifier_value': value,
+                    'identifier_value': _clip(value, 255),
                     'match_method': id_type,
-                    'title': line.title or '',
+                    'title': _clip(line.title, 255),
                 },
             )
             return product
@@ -72,6 +78,7 @@ def _auto_create_product(connection, line, config):
             break
     if not code:
         code = f"{connection.platform}-{line.external_variant_id}"
+    code = _clip(code, 255)
 
     product = Product.objects.filter(customer=connection.customer, code=code).first()
     if product is None:
@@ -79,7 +86,7 @@ def _auto_create_product(connection, line, config):
             customer=connection.customer,
             code=code,
             description=line.title or code,
-            location=getattr(line, 'location', '') or '',
+            location=_clip(getattr(line, 'location', ''), 50),
             active=True,
         )
         logger.info("Auto-created product %s for connection %s", code, connection.pk)
@@ -92,7 +99,7 @@ def _auto_create_product(connection, line, config):
             'external_product_id': line.external_product_id,
             'identifier_value': code,
             'match_method': 'auto_created',
-            'title': line.title or '',
+            'title': _clip(line.title, 255),
         },
     )
     return product
