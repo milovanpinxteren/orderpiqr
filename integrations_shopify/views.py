@@ -11,7 +11,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from integrations.models import ProductLink, WebhookInbox
+from integrations.canonical import ExternalLine, ExternalOrder
+from integrations.models import ExternalOrderLink, ProductLink, WebhookInbox
+from integrations.services import intake
 from integrations_shopify import services
 from integrations_shopify.client import ShopifyAuthError, exchange_session_token
 from integrations_shopify.models import ShopifyShop
@@ -102,13 +104,10 @@ def app_entry(request):
             newly_active = shop.connection.status != 'active'
             services.activate_shop(shop)
             if created or newly_active:
-                try:
-                    services.sync_products(shop.connection)
-                    shop.connection.get_connector().poll()
-                except Exception:
-                    # Never block the console on initial sync problems;
-                    # the merchant can re-sync from the UI.
-                    logger.exception("Initial sync failed for %s", shop_domain)
+                # Catalog sync runs in the worker (it can take minutes for
+                # large shops); the console shows its progress. The worker
+                # also polls new connections for recent orders on its own.
+                services.enqueue_product_sync(shop.connection)
         except ShopifyAuthError as exc:
             logger.warning("Token exchange failed for %s: %s", shop_domain, exc)
         except Exception:
@@ -208,12 +207,147 @@ def api_update_config(request):
 @csrf_exempt
 @require_POST
 def api_sync_products(request):
-    """Manual product re-sync from the console."""
+    """Queue a product re-sync; the worker executes it and the console
+    follows progress via api_sync_status."""
     shop = _authenticated_shop(request)
     if shop is None:
         return JsonResponse({'error': 'unauthorized'}, status=401)
-    linked, unresolved = services.sync_products(shop.connection)
-    return JsonResponse({'ok': True, 'linked': linked, 'unresolved': unresolved})
+    job = services.enqueue_product_sync(shop.connection)
+    return JsonResponse({'ok': True, 'job': job.as_dict()})
+
+
+def api_sync_status(request):
+    """Progress of the most recent product sync job."""
+    from integrations.models import SyncJob
+    shop = _authenticated_shop(request)
+    if shop is None:
+        return JsonResponse({'error': 'unauthorized'}, status=401)
+    job = (SyncJob.objects
+           .filter(connection=shop.connection, kind='product_sync')
+           .order_by('-created_at')
+           .first())
+    return JsonResponse({'job': job.as_dict() if job else None})
+
+
+# Server-side filter presets keep Shopify search-syntax assembly out of the
+# client (and out of user hands).
+ORDER_FILTERS = {
+    'open_unfulfilled': 'status:open fulfillment_status:unfulfilled',
+    'open_unfulfilled_paid': 'status:open fulfillment_status:unfulfilled financial_status:paid',
+    'open': 'status:open',
+    'any': '',
+}
+
+PUSH_BATCH_LIMIT = 50
+
+
+def api_orders(request):
+    """One page of the shop's orders for the console's order browser, each
+    flagged with whether it is already imported into OrderPiqr."""
+    shop = _authenticated_shop(request)
+    if shop is None:
+        return JsonResponse({'error': 'unauthorized'}, status=401)
+
+    query = ORDER_FILTERS.get(request.GET.get('filter', ''),
+                              ORDER_FILTERS['open_unfulfilled'])
+    search = request.GET.get('q', '').strip().replace('"', '')
+    if search:
+        query = f"{query} {search}".strip()
+    after = request.GET.get('after') or None
+
+    connector = shop.connection.get_connector()
+    try:
+        orders, has_next, end_cursor = connector.browse_orders(
+            query=query, first=25, after=after)
+    except Exception:
+        logger.exception("Order browse failed for %s", shop.shop_domain)
+        return JsonResponse({'error': 'Could not load orders from Shopify'}, status=502)
+
+    links = {
+        link.external_order_id: link
+        for link in (ExternalOrderLink.objects
+                     .filter(connection=shop.connection,
+                             external_order_id__in=[o['external_order_id'] for o in orders])
+                     .select_related('order'))
+    }
+    for order in orders:
+        link = links.get(order['external_order_id'])
+        order['imported'] = link is not None
+        order['local_status'] = link.order.status if link else ''
+        order['local_code'] = link.order.order_code if link else ''
+
+    return JsonResponse({
+        'orders': orders,
+        'has_next': has_next,
+        'end_cursor': end_cursor,
+    })
+
+
+@csrf_exempt
+@require_POST
+def api_push_orders(request):
+    """Import the selected Shopify orders into OrderPiqr right now.
+
+    An explicit push bypasses the financial-status import filter — the
+    merchant chose these orders. Capped per request; the console pushes
+    large selections in batches."""
+    shop = _authenticated_shop(request)
+    if shop is None:
+        return JsonResponse({'error': 'unauthorized'}, status=401)
+    try:
+        data = json.loads(request.body or b'{}')
+        order_ids = [str(i) for i in data['order_ids']][:PUSH_BATCH_LIMIT]
+    except (json.JSONDecodeError, KeyError, TypeError):
+        return JsonResponse({'error': 'invalid request'}, status=400)
+    if not order_ids:
+        return JsonResponse({'error': 'no orders selected'}, status=400)
+
+    connection = shop.connection
+    connector = connection.get_connector()
+    try:
+        payloads = connector.fetch_orders(order_ids)
+    except Exception:
+        logger.exception("Order fetch failed for %s", shop.shop_domain)
+        return JsonResponse({'error': 'Could not load orders from Shopify'}, status=502)
+
+    imported = already = needs_mapping = skipped = 0
+    orders = []
+    for payload in payloads:
+        if payload['status'] == 'cancelled':
+            skipped += 1
+            continue
+        orders.append(ExternalOrder(
+            external_order_id=payload['external_order_id'],
+            order_number=payload['order_number'],
+            note=payload['note'],
+            status='open',
+            lines=[ExternalLine(**line) for line in payload['lines']],
+        ))
+    # One identifier lookup for the whole batch (only variants without a
+    # ProductLink are fetched), instead of one GraphQL call per order.
+    connector._enrich_line_identifiers(
+        [line for ext in orders for line in ext.lines])
+
+    for ext in orders:
+        try:
+            order, created = intake.import_external_order(connection, ext)
+        except intake.UnresolvedLinesError:
+            needs_mapping += 1
+            continue
+        if created:
+            imported += 1
+        elif order is not None:
+            already += 1
+        else:
+            skipped += 1  # every line skipped (unknown products, skip policy)
+
+    return JsonResponse({
+        'ok': True,
+        'imported': imported,
+        'already_imported': already,
+        'needs_mapping': needs_mapping,
+        'skipped': skipped,
+    })
 
 
 def api_unresolved(request):
@@ -295,17 +429,14 @@ def api_link_account(request):
 
     services.link_to_existing_account(shop, profile.customer)
     shop.refresh_from_db()
-    linked, unresolved = services.sync_products(shop.connection)
-    try:
-        shop.connection.get_connector().poll()
-    except Exception:
-        logger.exception("Post-link order poll failed for %s", shop.shop_domain)
+    # Catalog re-sync against the new customer's products runs in the worker;
+    # the worker's next poll re-imports recent orders (last_synced_at was reset).
+    job = services.enqueue_product_sync(shop.connection)
 
     return JsonResponse({
         'ok': True,
         'customer_name': shop.connection.customer.name,
-        'linked': linked,
-        'unresolved': unresolved,
+        'sync_job': job.as_dict(),
     })
 
 
@@ -325,14 +456,8 @@ def api_set_picker_password(request):
     if len(password) < 8:
         return JsonResponse({'error': 'password too short (min 8 characters)'}, status=400)
 
-    from django.contrib.auth.models import User
-    user = (User.objects
-            .filter(userprofile__customer=shop.connection.customer,
-                    groups__name='orderpicker')
-            .order_by('pk')
-            .first())
-    if user is None:
-        return JsonResponse({'error': 'no picker user found'}, status=404)
+    store_handle = shop.shop_domain.replace('.myshopify.com', '')
+    user = services.ensure_picker_user(shop.connection.customer, store_handle)
     user.set_password(password)
     user.save(update_fields=['password'])
     return JsonResponse({'ok': True, 'username': user.username})

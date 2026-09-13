@@ -85,6 +85,56 @@
             </div>
         </div>
 
+        <!-- Picker Accounts Card -->
+        <div class="card">
+            <div class="card-header">
+                <h3>{% trans "Picker Accounts" %}</h3>
+            </div>
+            <div class="card-body">
+                <p class="form-hint" style="margin-top:0">
+                    {% trans "Your warehouse staff log into the picker app with these accounts. Set a password here and hand it to your team — pickers cannot change it themselves." %}
+                </p>
+
+                {% for picker in picker_users %}
+                <form method="post" class="picker-row">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="set_picker_password">
+                    <input type="hidden" name="picker_id" value="{{ picker.pk }}">
+                    <div class="picker-info">
+                        <strong>{{ picker.username }}</strong>
+                        <small class="form-hint">
+                            {% if picker.last_login %}
+                                {% blocktrans with last=picker.last_login|date:"j M Y, H:i" %}Last login: {{ last }}{% endblocktrans %}
+                            {% else %}
+                                {% trans "Never logged in" %}
+                            {% endif %}
+                        </small>
+                    </div>
+                    <input type="password" class="form-control" name="picker_password"
+                           placeholder="{% trans 'New password (min 8 characters)' %}"
+                           minlength="8" required autocomplete="new-password">
+                    <button type="submit" class="btn btn-secondary">{% trans "Set password" %}</button>
+                </form>
+                {% empty %}
+                <p class="form-hint">{% trans "No picker accounts yet — create one below." %}</p>
+                {% endfor %}
+
+                <details class="picker-create" {% if not picker_users %}open{% endif %}>
+                    <summary>{% trans "Add a picker account" %}</summary>
+                    <form method="post" class="picker-row" style="margin-top: var(--spacing-md)">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="create_picker">
+                        <input type="text" class="form-control" name="picker_username"
+                               placeholder="{% trans 'Username' %}" required autocomplete="off">
+                        <input type="password" class="form-control" name="picker_password"
+                               placeholder="{% trans 'Password (min 8 characters)' %}"
+                               minlength="8" required autocomplete="new-password">
+                        <button type="submit" class="btn btn-primary">{% trans "Create" %}</button>
+                    </form>
+                </details>
+            </div>
+        </div>
+
         <!-- Company Info Card -->
         <div class="card">
             <div class="card-header">
@@ -189,9 +239,34 @@
     color: var(--text-primary);
 }
 
+.picker-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.picker-row:last-child { border-bottom: none; }
+
+.picker-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+}
+
+.picker-row .form-control { flex: 1; }
+
+.picker-create { margin-top: var(--spacing-md); }
+.picker-create summary { cursor: pointer; color: var(--text-muted); }
+
 @media (max-width: 640px) {
     .form-row {
         flex-direction: column;
+    }
+    .picker-row {
+        flex-wrap: wrap;
     }
 }
 </style>

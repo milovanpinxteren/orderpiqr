@@ -8,8 +8,9 @@ from django.db import transaction
 from django.utils import timezone
 
 from integrations.models import Connection
-from integrations.services.intake import resolve_line
-from integrations.canonical import ExternalLine
+# Full-catalog sync lives in the integrations core; re-exported here because
+# this module has historically been its import path.
+from integrations.services.catalog import enqueue_product_sync, sync_products  # noqa: F401
 from integrations_shopify.client import ShopifyClient
 from integrations_shopify.models import ShopifyShop
 from orderpiqrApp.models import Customer, UserProfile
@@ -95,23 +96,41 @@ def provision_shop(shop_domain):
     return shop, True
 
 
+def _create_group_user(customer, base, group):
+    """Create a user in `group` for `customer` with a unique username derived
+    from `base` and a random password (the merchant sets a real one later)."""
+    username = base
+    suffix = 2
+    while User.objects.filter(username=username).exists():
+        username = f"{base}{suffix}"
+        suffix += 1
+    user = User.objects.create_user(
+        username=username, password=secrets.token_urlsafe(16))
+    user.groups.add(group)
+    UserProfile.objects.create(user=user, customer=customer)
+    return user
+
+
 def _provision_users(customer, store_name):
     """Create the companyadmin and orderpicker users, mirroring signup.
     Passwords are random; the merchant sets real ones from the console."""
     admin_group, _ = Group.objects.get_or_create(name='companyadmin')
     picker_group, _ = Group.objects.get_or_create(name='orderpicker')
+    _create_group_user(customer, f"{store_name}_admin", admin_group)
+    _create_group_user(customer, f"{store_name}_picker", picker_group)
 
-    for base, group in ((f"{store_name}_admin", admin_group),
-                        (f"{store_name}_picker", picker_group)):
-        username = base
-        suffix = 2
-        while User.objects.filter(username=username).exists():
-            username = f"{base}{suffix}"
-            suffix += 1
-        user = User.objects.create_user(
-            username=username, password=secrets.token_urlsafe(16))
-        user.groups.add(group)
-        UserProfile.objects.create(user=user, customer=customer)
+
+def ensure_picker_user(customer, base_name):
+    """Return the customer's first orderpicker user, creating one when the
+    account has none (e.g. a pre-Shopify account that never used pickers)."""
+    picker = (User.objects
+              .filter(userprofile__customer=customer, groups__name='orderpicker')
+              .order_by('pk')
+              .first())
+    if picker:
+        return picker
+    picker_group, _ = Group.objects.get_or_create(name='orderpicker')
+    return _create_group_user(customer, f"{base_name}_picker", picker_group)
 
 
 def activate_shop(shop):
@@ -159,6 +178,14 @@ def link_to_existing_account(shop, target_customer):
     ).delete()
     connection.product_links.all().delete()
 
+    # Drop the event history too: poll dedupe rows (poll-order-*) would
+    # otherwise block the discarded orders from ever being re-imported for
+    # the new customer. Resetting the poll cursor makes the worker re-import
+    # recent open orders, same as on a fresh install.
+    connection.inbox.all().delete()
+    shop.last_synced_at = None
+    shop.save(update_fields=['last_synced_at'])
+
     was_auto = connection.auto_provisioned
     connection.customer = target_customer
     connection.auto_provisioned = False
@@ -175,62 +202,3 @@ def link_to_existing_account(shop, target_customer):
     logger.info("Linked shop %s to existing customer %s",
                 shop.shop_domain, target_customer.pk)
     return connection
-
-
-def sync_products(connection):
-    """Walk the Shopify catalog and resolve every variant against the
-    customer's products using the connection's identifier chain. Under the
-    auto_create policy, unmatched variants become new products (this is how
-    a fresh install imports the catalog). Returns (linked, unresolved)."""
-    from integrations.services.intake import _auto_create_product
-
-    connector = connection.get_connector()
-    config = connection.get_config()
-    auto_create = config['unknown_product_policy'] == 'auto_create'
-    linked = 0
-    unresolved = 0
-    from integrations.models import ProductLink
-
-    for variant in connector.fetch_variants():
-        if ProductLink.objects.filter(
-            connection=connection,
-            external_variant_id=variant.external_variant_id,
-            locked=True,
-        ).exists():
-            linked += 1
-            continue
-        line = ExternalLine(
-            external_variant_id=variant.external_variant_id,
-            external_product_id=variant.external_product_id,
-            quantity=0,
-            title=variant.title,
-            identifiers=variant.identifiers,
-            location=variant.location,
-        )
-        product = resolve_line(connection, line, config)
-        if product is None and auto_create and any(
-                str(v).strip() for v in (variant.identifiers or {}).values()):
-            product = _auto_create_product(connection, line, config)
-        if product is not None:
-            if variant.location and product.location != variant.location:
-                # Location metafield configured -> Shopify is source of truth
-                product.location = variant.location
-                product.save(update_fields=['location'])
-            linked += 1
-        else:
-            unresolved += 1
-            # Record the unresolved variant so the console can list it.
-            ProductLink.objects.update_or_create(
-                connection=connection,
-                external_variant_id=variant.external_variant_id,
-                defaults={
-                    'product': None,
-                    'external_product_id': variant.external_product_id,
-                    'identifier_value': '',
-                    'match_method': '',
-                    'title': variant.title,
-                },
-            )
-    logger.info("Product sync for connection %s: %s linked, %s unresolved",
-                connection.pk, linked, unresolved)
-    return linked, unresolved

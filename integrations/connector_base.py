@@ -31,11 +31,22 @@ class BaseConnector:
         """Yield ExternalVariant for the full catalog (product sync)."""
         raise NotImplementedError
 
+    def count_variants(self):
+        """Total variant count for sync progress reporting, or None if the
+        platform can't provide one cheaply."""
+        return None
+
     def poll(self):
         """Reconciliation: fetch recent orders from the platform and insert
         any missing events into the inbox. Also the only intake path for
         platforms without webhooks."""
         raise NotImplementedError
+
+    def needs_immediate_poll(self):
+        """True when the connection has never been polled (fresh install or
+        just re-linked), so the worker polls now instead of waiting out
+        poll_interval."""
+        return False
 
     # ---- outbound ----------------------------------------------------------
 

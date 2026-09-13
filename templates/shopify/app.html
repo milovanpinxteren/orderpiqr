@@ -68,6 +68,20 @@
         button.secondary { background: var(--secondary); }
         button.secondary:hover { background: #206753; }
         button:disabled { opacity: .6; cursor: default; }
+        .order-list-head, .order-row {
+            display: grid;
+            grid-template-columns: 24px 1fr 90px 110px 110px 50px 110px;
+            gap: 8px; align-items: center; padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .order-list-head { font-weight: 600; font-size: 12px; color: var(--subdued); }
+        .order-row .muted { color: var(--subdued); font-size: 12px; }
+        @media (max-width: 720px) {
+            .order-list-head, .order-row { grid-template-columns: 24px 1fr 90px 110px; }
+            .order-list-head span:nth-child(4), .order-row > *:nth-child(4),
+            .order-list-head span:nth-child(6), .order-row > *:nth-child(6),
+            .order-list-head span:nth-child(5), .order-row > *:nth-child(5) { display: none; }
+        }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
                  background: #333; color: #fff; padding: 10px 18px; border-radius: 5px;
                  opacity: 0; transition: opacity .2s; pointer-events: none; }
@@ -165,9 +179,46 @@
             <div><label>{% trans "Archive the Shopify order after fulfilling" %}</label></div>
             <input type="checkbox" id="cfg-archive">
         </div>
-        <div class="row" style="border-bottom:none; justify-content:flex-end">
-            <button class="secondary" id="btn-sync">{% trans "Re-sync products" %}</button>
-            <button id="btn-save">{% trans "Save settings" %}</button>
+        <div class="row" style="border-bottom:none; justify-content:space-between; flex-wrap:wrap">
+            <div class="hint" id="sync-status"></div>
+            <div style="display:flex; gap:8px">
+                <button class="secondary" id="btn-sync">{% trans "Re-sync products" %}</button>
+                <button id="btn-save">{% trans "Save settings" %}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>{% trans "Shopify orders" %}</h2>
+        <p class="hint">
+            {% trans "Browse the orders in your Shopify store and push the ones you want to pick to OrderPiqr. New paid orders are imported automatically." %}
+        </p>
+        <div class="row" style="border-bottom:1px solid var(--border); flex-wrap:wrap; gap:8px">
+            <select id="orders-filter">
+                <option value="open_unfulfilled">{% trans "Open, unfulfilled" %}</option>
+                <option value="open_unfulfilled_paid">{% trans "Open, unfulfilled & paid" %}</option>
+                <option value="open">{% trans "All open" %}</option>
+                <option value="any">{% trans "All orders" %}</option>
+            </select>
+            <input type="text" id="orders-search" placeholder="{% trans 'Search (e.g. #1001)' %}">
+            <button class="secondary" id="btn-orders-refresh">{% trans "Refresh" %}</button>
+        </div>
+        <div class="order-list-head">
+            <input type="checkbox" id="orders-select-all" title="{% trans 'Select all' %}">
+            <span>{% trans "Order" %}</span>
+            <span>{% trans "Date" %}</span>
+            <span>{% trans "Payment" %}</span>
+            <span>{% trans "Fulfillment" %}</span>
+            <span style="text-align:right">{% trans "Items" %}</span>
+            <span>{% trans "OrderPiqr" %}</span>
+        </div>
+        <div id="orders-list"></div>
+        <div class="row" style="border-bottom:none; justify-content:space-between">
+            <span class="hint" id="orders-count"></span>
+            <div style="display:flex; gap:8px">
+                <button class="secondary" id="btn-orders-more" style="display:none">{% trans "Load more" %}</button>
+                <button id="btn-orders-push" disabled>{% trans "Push selected to OrderPiqr" %}</button>
+            </div>
         </div>
     </div>
 
@@ -298,6 +349,8 @@
             if (res.ok) {
                 toast('Linked to ' + data.customer_name);
                 load();
+                refreshSyncStatus();
+                loadOrders(false);
             } else {
                 toast(data.error || 'Linking failed');
             }
@@ -383,23 +436,215 @@
         } finally { this.disabled = false; }
     });
 
+    // ---- product sync (runs in the background; we poll for progress) ----
+
+    let syncPollTimer = null;
+    let syncWasRunning = false;
+
+    function renderSyncJob(job) {
+        const el = document.getElementById('sync-status');
+        const btn = document.getElementById('btn-sync');
+        if (!job) { el.textContent = ''; btn.disabled = false; return; }
+        const active = job.status === 'pending' || job.status === 'running';
+        btn.disabled = active;
+        if (job.status === 'pending') {
+            el.textContent = 'Sync queued…';
+        } else if (job.status === 'running') {
+            el.textContent = 'Syncing… ' + job.processed.toLocaleString() +
+                (job.total ? ' / ' + job.total.toLocaleString() : '') + ' products';
+        } else if (job.status === 'done') {
+            el.textContent = 'Last sync: ' + job.linked.toLocaleString() + ' linked, ' +
+                job.unresolved.toLocaleString() + ' need mapping';
+        } else if (job.status === 'failed') {
+            el.textContent = 'Sync failed — try again or contact support';
+        }
+        if (active && !syncPollTimer) {
+            syncPollTimer = setTimeout(() => { syncPollTimer = null; refreshSyncStatus(); }, 2500);
+        }
+        if (!active && syncWasRunning) {
+            syncWasRunning = false;
+            load();  // refresh counts once a sync finishes
+        }
+        syncWasRunning = active;
+    }
+
+    async function refreshSyncStatus() {
+        try {
+            const res = await authFetch('/shopify/api/sync-status/');
+            if (!res.ok) return;
+            const data = await res.json();
+            renderSyncJob(data.job);
+        } catch (e) { /* transient; next poll retries */ }
+    }
+
     document.getElementById('btn-sync').addEventListener('click', async function () {
         this.disabled = true;
-        this.textContent = 'Syncing…';
+        const res = await authFetch('/shopify/api/sync-products/', {method: 'POST'});
+        if (res.ok) {
+            const data = await res.json();
+            renderSyncJob(data.job);
+            toast('Product sync started');
+        } else {
+            this.disabled = false;
+            toast('Could not start sync');
+        }
+    });
+
+    // ---- order browser ----
+
+    const ordersState = { orders: [], cursor: null, hasNext: false, selected: new Set() };
+
+    function ordersQueryString(after) {
+        const params = new URLSearchParams();
+        params.set('filter', document.getElementById('orders-filter').value);
+        const q = document.getElementById('orders-search').value.trim();
+        if (q) params.set('q', q);
+        if (after) params.set('after', after);
+        return params.toString();
+    }
+
+    function statusBadge(text, active) {
+        const span = document.createElement('span');
+        span.className = 'badge ' + (active ? 'active' : 'other');
+        span.textContent = text;
+        return span;
+    }
+
+    function renderOrders() {
+        const list = document.getElementById('orders-list');
+        list.innerHTML = '';
+        ordersState.orders.forEach(function (order) {
+            const row = document.createElement('div');
+            row.className = 'order-row';
+
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.disabled = order.imported || order.cancelled;
+            cb.checked = ordersState.selected.has(order.external_order_id);
+            cb.addEventListener('change', function () {
+                if (this.checked) ordersState.selected.add(order.external_order_id);
+                else ordersState.selected.delete(order.external_order_id);
+                updatePushButton();
+            });
+
+            const name = document.createElement('div');
+            name.textContent = order.name;
+
+            const date = document.createElement('div');
+            date.className = 'muted';
+            date.textContent = order.created_at
+                ? new Date(order.created_at).toLocaleDateString() : '';
+
+            const fin = document.createElement('div');
+            fin.className = 'muted';
+            fin.textContent = (order.financial_status || '').toLowerCase().replace(/_/g, ' ');
+
+            const ful = document.createElement('div');
+            ful.className = 'muted';
+            ful.textContent = order.cancelled ? 'cancelled'
+                : (order.fulfillment_status || '').toLowerCase().replace(/_/g, ' ');
+
+            const items = document.createElement('div');
+            items.className = 'muted';
+            items.style.textAlign = 'right';
+            items.textContent = order.item_count;
+
+            const local = document.createElement('div');
+            if (order.imported) {
+                local.appendChild(statusBadge(order.local_status || 'imported', true));
+            } else {
+                local.className = 'muted';
+                local.textContent = '–';
+            }
+
+            row.append(cb, name, date, fin, ful, items, local);
+            list.appendChild(row);
+        });
+        document.getElementById('orders-count').textContent =
+            ordersState.orders.length + ' orders loaded';
+        document.getElementById('btn-orders-more').style.display =
+            ordersState.hasNext ? '' : 'none';
+        updatePushButton();
+    }
+
+    function updatePushButton() {
+        const btn = document.getElementById('btn-orders-push');
+        const n = ordersState.selected.size;
+        btn.disabled = n === 0;
+        btn.textContent = n ? 'Push ' + n + ' to OrderPiqr' : 'Push selected to OrderPiqr';
+    }
+
+    async function loadOrders(append) {
+        const list = document.getElementById('orders-list');
+        if (!append) {
+            ordersState.orders = [];
+            ordersState.cursor = null;
+            ordersState.selected.clear();
+            document.getElementById('orders-select-all').checked = false;
+            list.innerHTML = '<div class="row hint">Loading orders…</div>';
+        }
+        const res = await authFetch('/shopify/api/orders/?' +
+            ordersQueryString(append ? ordersState.cursor : null));
+        if (!res.ok) {
+            list.innerHTML = '<div class="row hint">Could not load orders.</div>';
+            return;
+        }
+        const data = await res.json();
+        ordersState.orders = ordersState.orders.concat(data.orders);
+        ordersState.cursor = data.end_cursor;
+        ordersState.hasNext = data.has_next;
+        renderOrders();
+    }
+
+    document.getElementById('btn-orders-refresh').addEventListener('click', () => loadOrders(false));
+    document.getElementById('orders-filter').addEventListener('change', () => loadOrders(false));
+    document.getElementById('orders-search').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') loadOrders(false);
+    });
+    document.getElementById('btn-orders-more').addEventListener('click', () => loadOrders(true));
+
+    document.getElementById('orders-select-all').addEventListener('change', function () {
+        ordersState.orders.forEach(function (order) {
+            if (order.imported || order.cancelled) return;
+            if (this.checked) ordersState.selected.add(order.external_order_id);
+            else ordersState.selected.delete(order.external_order_id);
+        }, this);
+        renderOrders();
+    });
+
+    document.getElementById('btn-orders-push').addEventListener('click', async function () {
+        const ids = [...ordersState.selected];
+        if (!ids.length) return;
+        this.disabled = true;
+        const totals = { imported: 0, already_imported: 0, needs_mapping: 0, skipped: 0 };
         try {
-            const res = await authFetch('/shopify/api/sync-products/', {method: 'POST'});
-            if (res.ok) {
+            for (let i = 0; i < ids.length; i += 50) {
+                this.textContent = 'Pushing… ' + Math.min(i + 50, ids.length) + '/' + ids.length;
+                const res = await authFetch('/shopify/api/push-orders/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({order_ids: ids.slice(i, i + 50)}),
+                });
+                if (!res.ok) { toast('Push failed'); return; }
                 const data = await res.json();
-                toast(data.linked + ' linked, ' + data.unresolved + ' need mapping');
-                load();
-            } else { toast('Sync failed'); }
+                for (const key in totals) totals[key] += data[key] || 0;
+            }
+            let msg = totals.imported + ' imported';
+            if (totals.already_imported) msg += ', ' + totals.already_imported + ' already in OrderPiqr';
+            if (totals.needs_mapping) msg += ', ' + totals.needs_mapping + ' need product mapping';
+            if (totals.skipped) msg += ', ' + totals.skipped + ' skipped';
+            toast(msg);
+            ordersState.selected.clear();
+            await Promise.all([loadOrders(false), load()]);
         } finally {
             this.disabled = false;
-            this.textContent = 'Re-sync products';
+            updatePushButton();
         }
     });
 
     load();
+    refreshSyncStatus();
+    loadOrders(false);
 })();
 </script>
 </body>

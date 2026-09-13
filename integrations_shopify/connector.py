@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from integrations.canonical import ExternalLine, ExternalOrder, ExternalVariant
 from integrations.connector_base import BaseConnector
-from integrations.models import ProductLink, WebhookInbox
+from integrations.models import ExternalOrderLink, ProductLink, WebhookInbox
 from integrations.registry import register_connector
 from integrations_shopify.client import ShopifyClient
 
@@ -71,6 +71,46 @@ query PollOrders($first: Int!, $after: String, $query: String!) {
   orders(first: $first, after: $after, query: $query, sortKey: UPDATED_AT) {
     pageInfo { hasNextPage endCursor }
     nodes {
+      id
+      name
+      note
+      cancelledAt
+      displayFulfillmentStatus
+      displayFinancialStatus
+      lineItems(first: 100) {
+        nodes {
+          quantity
+          sku
+          title
+          variant { id product { id } }
+        }
+      }
+    }
+  }
+}
+"""
+
+ORDERS_BROWSE_QUERY = """
+query BrowseOrders($first: Int!, $after: String, $query: String) {
+  orders(first: $first, after: $after, query: $query, sortKey: CREATED_AT, reverse: true) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      name
+      createdAt
+      cancelledAt
+      displayFulfillmentStatus
+      displayFinancialStatus
+      currentSubtotalLineItemsQuantity
+    }
+  }
+}
+"""
+
+ORDER_NODES_QUERY = """
+query OrderNodes($ids: [ID!]!) {
+  nodes(ids: $ids) {
+    ... on Order {
       id
       name
       note
@@ -423,6 +463,13 @@ class ShopifyConnector(BaseConnector):
                 break
             after = page['pageInfo']['endCursor']
 
+    def count_variants(self):
+        data = self.client().graphql("{ productVariantsCount { count } }")
+        return (data.get('productVariantsCount') or {}).get('count')
+
+    def needs_immediate_poll(self):
+        return self.shop.last_synced_at is None
+
     def poll(self):
         """Reconciliation backstop: import open, unfulfilled orders updated
         since the last poll that webhooks may have missed."""
@@ -450,7 +497,9 @@ class ShopifyConnector(BaseConnector):
         shop.last_synced_at = poll_started
         shop.save(update_fields=['last_synced_at'])
 
-    def _inbox_from_poll_node(self, node):
+    @staticmethod
+    def _canonical_order_payload(node):
+        """GraphQL order node (with lineItems) -> canonical poll/order payload."""
         external_order_id = gid_tail(node['id'])
         lines = []
         for item in (node.get('lineItems') or {}).get('nodes', []):
@@ -464,18 +513,67 @@ class ShopifyConnector(BaseConnector):
                 'title': item.get('title') or '',
                 'identifiers': {'sku': item.get('sku') or '', 'variant_id': variant_id},
             })
-        payload = {
+        return {
             'external_order_id': external_order_id,
             'order_number': node.get('name') or '',
             'note': node.get('note') or '',
             'status': 'cancelled' if node.get('cancelledAt') else 'open',
             'lines': lines,
         }
-        WebhookInbox.objects.get_or_create(
+
+    def _inbox_from_poll_node(self, node):
+        payload = self._canonical_order_payload(node)
+        external_order_id = payload['external_order_id']
+        row, created = WebhookInbox.objects.get_or_create(
             connection=self.connection,
             external_event_id=f"poll-order-{external_order_id}",
             defaults={'topic': 'poll/order', 'payload': payload},
         )
+        if (not created and row.status in ('processed', 'skipped', 'failed')
+                and payload['status'] == 'open'
+                and not ExternalOrderLink.objects.filter(
+                    connection=self.connection,
+                    external_order_id=external_order_id).exists()):
+            # Dedupe row exists but the local order is gone (e.g. discarded
+            # when the shop was linked to another account): re-import.
+            row.topic = 'poll/order'
+            row.payload = payload
+            row.status = 'pending'
+            row.error = ''
+            row.save(update_fields=['topic', 'payload', 'status', 'error'])
+
+    # ---------------------------------------------------------- order browse
+
+    def browse_orders(self, query='', first=25, after=None):
+        """One page of orders for the console's order browser. Returns
+        (orders, has_next, end_cursor); orders are plain display dicts."""
+        data = self.client().graphql(ORDERS_BROWSE_QUERY, {
+            'first': first, 'after': after, 'query': query or None,
+        })
+        page = data['orders']
+        orders = []
+        for node in page['nodes']:
+            orders.append({
+                'external_order_id': gid_tail(node['id']),
+                'name': node.get('name') or '',
+                'created_at': node.get('createdAt') or '',
+                'cancelled': bool(node.get('cancelledAt')),
+                'fulfillment_status': node.get('displayFulfillmentStatus') or '',
+                'financial_status': node.get('displayFinancialStatus') or '',
+                'item_count': node.get('currentSubtotalLineItemsQuantity') or 0,
+            })
+        info = page['pageInfo']
+        return orders, info['hasNextPage'], info['endCursor']
+
+    def fetch_orders(self, external_order_ids):
+        """Full canonical payloads (with lines) for the given order ids."""
+        payloads = []
+        ids = [order_gid(i) for i in external_order_ids]
+        data = self.client().graphql(ORDER_NODES_QUERY, {'ids': ids})
+        for node in data.get('nodes') or []:
+            if node and node.get('id'):
+                payloads.append(self._canonical_order_payload(node))
+        return payloads
 
     # -------------------------------------------------------------- outbound
 

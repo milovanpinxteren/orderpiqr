@@ -13,8 +13,8 @@ from django.db import transaction
 from django.utils import timezone
 from datetime import timedelta
 
-from integrations.models import Connection, SyncOutbox, WebhookInbox
-from integrations.services import intake
+from integrations.models import Connection, SyncJob, SyncOutbox, WebhookInbox
+from integrations.services import catalog, intake
 
 logger = logging.getLogger(__name__)
 
@@ -51,8 +51,9 @@ class Command(BaseCommand):
     def run_pass(self):
         processed = self.process_inbox()
         executed = self.process_outbox()
+        synced = self.process_sync_jobs()
         self.run_due_polls()
-        return bool(processed or executed)
+        return bool(processed or executed or synced)
 
     # ---- inbox -------------------------------------------------------------
 
@@ -156,6 +157,40 @@ class Command(BaseCommand):
             row.save(update_fields=['status', 'attempts', 'error', 'next_attempt_at', 'updated_at'])
         return len(rows)
 
+    # ---- sync jobs ---------------------------------------------------------
+
+    def process_sync_jobs(self):
+        """Run one queued sync job per pass (a full catalog sync can take
+        minutes; inbox/outbox latency stays bounded this way)."""
+        with transaction.atomic():
+            job = (SyncJob.objects
+                   .select_for_update(skip_locked=True)
+                   .filter(status='pending')
+                   .order_by('created_at')
+                   .first())
+            if job is None:
+                return 0
+            job.status = 'running'
+            job.started_at = timezone.now()
+            job.save(update_fields=['status', 'started_at'])
+
+        try:
+            if job.kind == 'product_sync':
+                linked, unresolved = catalog.sync_products(job.connection, job=job)
+                job.linked = linked
+                job.unresolved = unresolved
+            else:
+                raise NotImplementedError(f"Unsupported sync job kind {job.kind}")
+            job.status = 'done'
+            job.error = ''
+        except Exception as exc:
+            logger.exception("Sync job %s failed", job.pk)
+            job.status = 'failed'
+            job.error = str(exc)[:2000]
+        job.finished_at = timezone.now()
+        job.save(update_fields=['status', 'linked', 'unresolved', 'error', 'finished_at'])
+        return 1
+
     # ---- polls -------------------------------------------------------------
 
     def run_due_polls(self):
@@ -166,7 +201,8 @@ class Command(BaseCommand):
             except LookupError:
                 continue
             last = self._last_poll.get(connection.pk)
-            if last is not None and now - last < connector.poll_interval:
+            if (last is not None and now - last < connector.poll_interval
+                    and not connector.needs_immediate_poll()):
                 continue
             self._last_poll[connection.pk] = now
             try:

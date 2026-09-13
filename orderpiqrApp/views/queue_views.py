@@ -522,7 +522,7 @@ def queue_move_order(request, order_id, direction):
 
             return JsonResponse({
                 'status': 'ok',
-                'message': _('Order moved {direction}').format(direction=direction)
+                'message': _('Order moved up') if direction == 'up' else _('Order moved down')
             })
 
     except Order.DoesNotExist:

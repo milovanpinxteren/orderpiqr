@@ -907,9 +907,15 @@ def devices_list(request):
 # Profile
 # ============================================
 
+def _picker_users(customer):
+    return (User.objects
+            .filter(userprofile__customer=customer, groups__name='orderpicker')
+            .order_by('username'))
+
+
 @company_admin_required
 def profile(request):
-    """View and edit user profile."""
+    """View and edit user profile, plus the customer's picker accounts."""
     context = get_base_context(request, 'profile')
     customer = context['customer']
     user = request.user
@@ -960,8 +966,44 @@ def profile(request):
                 update_session_auth_hash(request, user)  # Keep user logged in
                 messages.success(request, _("Password changed successfully."))
 
+        elif action == 'set_picker_password' and customer:
+            picker_id = request.POST.get('picker_id', '')
+            new_password = request.POST.get('picker_password', '')
+            picker = _picker_users(customer).filter(pk=picker_id).first()
+            if picker is None:
+                messages.error(request, _("Picker account not found."))
+            elif len(new_password) < 8:
+                messages.error(request, _("Password must be at least 8 characters."))
+            else:
+                picker.set_password(new_password)
+                picker.save(update_fields=['password'])
+                messages.success(request, _(
+                    "Password for picker account '{username}' updated."
+                ).format(username=picker.username))
+
+        elif action == 'create_picker' and customer:
+            from django.contrib.auth.models import Group
+            from orderpiqrApp.models import UserProfile
+            username = request.POST.get('picker_username', '').strip()
+            new_password = request.POST.get('picker_password', '')
+            if not username:
+                messages.error(request, _("Username is required."))
+            elif User.objects.filter(username=username).exists():
+                messages.error(request, _("This username is already taken."))
+            elif len(new_password) < 8:
+                messages.error(request, _("Password must be at least 8 characters."))
+            else:
+                picker = User.objects.create_user(username=username, password=new_password)
+                group, _created = Group.objects.get_or_create(name='orderpicker')
+                picker.groups.add(group)
+                UserProfile.objects.create(user=picker, customer=customer)
+                messages.success(request, _(
+                    "Picker account '{username}' created."
+                ).format(username=username))
+
         return redirect('manage_profile')
 
+    context['picker_users'] = list(_picker_users(customer)) if customer else []
     return render(request, 'manage/profile.html', context)
 
 

@@ -164,6 +164,60 @@ class SyncOutbox(models.Model):
         return f"{self.action} #{self.pk} ({self.status})"
 
 
+class SyncJob(models.Model):
+    """A long-running sync task (e.g. full product sync) executed by the
+    worker so it never runs inside a web request. The console polls the job
+    row for progress."""
+
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('running', 'Running'),
+        ('done', 'Done'),
+        ('failed', 'Failed'),
+    ]
+
+    KIND_CHOICES = [
+        ('product_sync', 'Product sync'),
+    ]
+
+    connection = models.ForeignKey(Connection, on_delete=models.CASCADE, related_name='sync_jobs')
+    kind = models.CharField(max_length=32, choices=KIND_CHOICES, default='product_sync')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    # Progress: total is None until the connector has counted the catalog.
+    total = models.PositiveIntegerField(null=True, blank=True)
+    processed = models.PositiveIntegerField(default=0)
+    linked = models.PositiveIntegerField(default=0)
+    unresolved = models.PositiveIntegerField(default=0)
+    error = models.TextField(blank=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    started_at = models.DateTimeField(null=True, blank=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("Sync job")
+        verbose_name_plural = _("Sync jobs")
+        indexes = [
+            models.Index(fields=['status', 'created_at']),
+        ]
+
+    def __str__(self):
+        return f"{self.kind} #{self.pk} ({self.status})"
+
+    def as_dict(self):
+        return {
+            'id': self.pk,
+            'kind': self.kind,
+            'status': self.status,
+            'total': self.total,
+            'processed': self.processed,
+            'linked': self.linked,
+            'unresolved': self.unresolved,
+            'error': self.error,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'finished_at': self.finished_at.isoformat() if self.finished_at else None,
+        }
+
+
 class ProductLink(models.Model):
     """Mapping between an external product variant and an OrderPiqr Product.
     Resolved once (at product sync or first order), then order import is a
