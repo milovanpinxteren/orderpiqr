@@ -5,25 +5,37 @@ from django.http import JsonResponse
 from django.utils import timezone
 import json
 from django.views.decorators.http import require_POST
-from orderpiqrApp.models import Device, Order, PickList, Product, ProductPick, UserProfile
+from orderpiqrApp.models import Device, Order, PickList, Product, ProductPick
+from orderpiqrApp.utils.devices import (
+    get_customer,
+    register_device,
+    resolve_device,
+    resolve_device_unauthenticated,
+)
 from orderpiqrApp.utils.inventory import decrement_inventory_for_picklist
 
 
 def _resolve_device(request, device_fingerprint):
-    """Fetch a device by fingerprint.
+    """Fetch the device for this fingerprint.
 
-    When the requesting user is authenticated, the device must belong to the
-    same customer as the user; a mismatch returns a 403 error response.
+    An authenticated request resolves within the user's own customer. Without a
+    session the fingerprint is all we have, and it may be registered for several
+    customers — that is unresolvable, so it errors instead of guessing.
     Returns (device, error_response) — both can be None (device not found).
     """
-    device = Device.objects.filter(device_fingerprint=device_fingerprint).first()
-    if device and request.user.is_authenticated:
-        profile = UserProfile.objects.filter(user=request.user).first()
-        if profile and device.customer_id != profile.customer_id:
-            return None, JsonResponse({
-                'status': 'error',
-                'message': 'Device does not belong to your company'
-            }, status=403)
+    if request.user.is_authenticated:
+        customer = get_customer(request.user)
+        if customer is None:
+            return None, None
+        return resolve_device(request, payload={'deviceFingerprint': device_fingerprint},
+                              customer=customer, touch=False), None
+
+    device, ambiguous = resolve_device_unauthenticated(device_fingerprint)
+    if ambiguous:
+        return None, JsonResponse({
+            'status': 'error',
+            'message': 'This device is registered for multiple companies. Please log in.'
+        }, status=409)
     return device, None
 
 
@@ -66,23 +78,18 @@ def scan_picklist(request):
                 'message': 'Device not found and user not authenticated'
             }, status=401)
 
-        try:
-            user_profile = UserProfile.objects.get(user=request.user)
-        except UserProfile.DoesNotExist:
+        # Register this device for the picker's own customer. An existing row
+        # for the same fingerprint under another customer is left untouched.
+        device, _created = register_device(
+            request,
+            name=f"Auto-created device ({local_time.strftime('%Y-%m-%d %H:%M')})",
+            fingerprint=device_fingerprint,
+        )
+        if device is None:
             return JsonResponse({
                 'status': 'error',
                 'message': 'User has no customer profile'
             }, status=400)
-
-        device = Device.objects.create(
-            user=request.user,
-            device_fingerprint=device_fingerprint,
-            name=f"Auto-created device ({local_time.strftime('%Y-%m-%d %H:%M')})",
-            description=f"Automatically created for user {request.user.username}",
-            customer=user_profile.customer,
-            last_login=local_time,
-            lists_picked=0
-        )
 
     # Process picklist in a transaction
     try:

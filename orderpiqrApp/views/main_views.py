@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect
 from django.utils.safestring import mark_safe
 from django.urls import reverse
 
-from orderpiqrApp.models import Product, Device, SettingDefinition, CustomerSettingValue, Order
+from orderpiqrApp.models import Product, SettingDefinition, CustomerSettingValue, Order
+from orderpiqrApp.utils.devices import resolve_device
 import json
 
 def index(request):
-    device_fingerprint = request.session.get('device_fingerprint')
-    device = Device.objects.filter(user=request.user, device_fingerprint=device_fingerprint).first()
+    device = resolve_device(request, touch=False)
     if not device:
         # Redirect to name_entry with next parameter to return here after
         return redirect(f"{reverse('name_entry')}?next={request.get_full_path()}")
@@ -20,28 +20,22 @@ def index(request):
     # Check if there's an order to load from the queue
     claimed_order_data = None
     order_code = request.GET.get('order')
-    print(f"[Queue Debug] order_code from GET: {order_code}")
     if order_code:
         order = Order.objects.filter(
             order_code=order_code,
             customer=customer,
             status='in_progress'
         ).first()
-        print(f"[Queue Debug] Found order: {order}")
         if order:
             # Build picklist from order lines
             picklist = []
-            lines = order.lines.select_related('product').all()
-            print(f"[Queue Debug] Order has {lines.count()} lines")
-            for line in lines:
-                print(f"[Queue Debug] Line: {line.quantity}x {line.product.code}")
+            for line in order.lines.select_related('product').all():
                 for _ in range(line.quantity):
                     picklist.append(line.product.code)
             claimed_order_data = {
                 'order_code': order.order_code,
                 'picklist': picklist
             }
-            print(f"[Queue Debug] claimed_order_data: {claimed_order_data}")
 
     context = {
         'product_data': json.dumps(list(product_data)),

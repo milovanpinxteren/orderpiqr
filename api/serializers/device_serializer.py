@@ -3,7 +3,30 @@ from rest_framework import serializers
 from orderpiqrApp.models import Device
 
 
-class DeviceSerializer(serializers.ModelSerializer):
+class FingerprintUniquePerCustomerMixin:
+    """Enforce Device's (device_fingerprint, customer) constraint.
+
+    DRF cannot derive this one itself: ``customer`` is never writable on these
+    serializers — the view fills it from the requesting user — so the constraint
+    would otherwise surface as an IntegrityError instead of a 400.
+    """
+
+    def validate_device_fingerprint(self, value):
+        request = self.context.get('request')
+        customer = getattr(getattr(getattr(request, 'user', None), 'userprofile', None), 'customer', None)
+        if not value or customer is None:
+            return value
+
+        clash = Device.objects.filter(device_fingerprint=value, customer=customer)
+        if self.instance is not None:
+            clash = clash.exclude(pk=self.instance.pk)
+        if clash.exists():
+            raise serializers.ValidationError(
+                'A device with this fingerprint is already registered for your company.')
+        return value
+
+
+class DeviceSerializer(FingerprintUniquePerCustomerMixin, serializers.ModelSerializer):
     """
     Serializer for Device model.
     """
@@ -43,7 +66,7 @@ class DeviceSerializer(serializers.ModelSerializer):
         ]
 
 
-class DeviceCreateSerializer(serializers.ModelSerializer):
+class DeviceCreateSerializer(FingerprintUniquePerCustomerMixin, serializers.ModelSerializer):
     """
     Serializer for creating/registering a new device.
     """

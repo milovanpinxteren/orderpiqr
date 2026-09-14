@@ -5,14 +5,16 @@ from django.db import transaction
 from django.db.models import Count, Max
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from django.db.models import Subquery, OuterRef
 
-from orderpiqrApp.models import Order, Device, UserProfile, PickList, ProductPick
+from orderpiqrApp.models import Order, UserProfile, PickList, ProductPick
 from orderpiqrApp.utils.decorators import company_admin_required
+from orderpiqrApp.utils.devices import register_device, resolve_device
 
 
 def _annotate_picker(queryset):
@@ -112,21 +114,12 @@ def queue_picker(request):
     except UserProfile.DoesNotExist:
         return render(request, 'queue/picker.html', {'error': 'No customer profile found'})
 
-    # Get device for this session
-    device_fingerprint = request.session.get('device_fingerprint')
-    device = Device.objects.filter(
-        user=request.user,
-        device_fingerprint=device_fingerprint
-    ).first()
+    # Get device for this session (registering last_login as a side effect)
+    device = resolve_device(request, customer=customer)
 
-    # Redirect to name_entry if no device registered
+    # Redirect to name_entry if no device registered for this customer
     if not device:
-        from django.urls import reverse
-        return redirect(f"{reverse('name_entry')}?next={reverse('index')}")
-
-    # Update last_login when picker loads the queue page
-    device.last_login = timezone.now()
-    device.save(update_fields=['last_login'])
+        return redirect(f"{reverse('name_entry')}?next={reverse('queue_picker')}")
 
     orders = _annotate_picker(get_queue_orders(customer, include_lines=True))
 
@@ -165,47 +158,31 @@ def queue_claim_order(request, order_id):
     """
     import json
 
-    print(f"[Queue Claim] Starting claim for order_id: {order_id}")
-
     try:
         customer = request.user.userprofile.customer
-        print(f"[Queue Claim] Customer: {customer}")
     except UserProfile.DoesNotExist:
-        print("[Queue Claim] ERROR: No customer profile")
         return JsonResponse({'status': 'error', 'message': _('No customer profile')}, status=400)
 
-    # Get device fingerprint from request
     try:
         data = json.loads(request.body) if request.body else {}
-        device_fingerprint = data.get('deviceFingerprint', '')
-        print(f"[Queue Claim] Device fingerprint from body: {device_fingerprint}")
     except json.JSONDecodeError:
-        device_fingerprint = ''
-        print("[Queue Claim] No device fingerprint in body")
+        data = {}
 
-    device = None
-    if device_fingerprint:
-        device = Device.objects.filter(device_fingerprint=device_fingerprint, customer=customer).first()
-        print(f"[Queue Claim] Device from fingerprint: {device}")
+    device = resolve_device(request, payload=data, customer=customer)
 
     if not device:
-        # Try to get device from session
-        session_fingerprint = request.session.get('device_fingerprint')
-        print(f"[Queue Claim] Session fingerprint: {session_fingerprint}")
-        if session_fingerprint:
-            device = Device.objects.filter(device_fingerprint=session_fingerprint, customer=customer).first()
-            print(f"[Queue Claim] Device from session: {device}")
+        # Self-heal: the picker is authenticated and carrying a fingerprint, so
+        # register the device for this customer rather than dead-ending on an
+        # error that telling them to log in again cannot fix.
+        device, _created = register_device(request, payload=data, customer=customer)
 
     if not device:
-        print("[Queue Claim] ERROR: Device not found")
+        # No fingerprint at all — only the name-entry page can resolve this.
         return JsonResponse({
             'status': 'error',
-            'message': _('Device not found. Please log in again.')
+            'message': _('Device not found. Please log in again.'),
+            'redirect_url': f"{reverse('name_entry')}?next={reverse('queue_picker')}",
         }, status=400)
-
-    # Update last_login on activity
-    device.last_login = timezone.now()
-    device.save(update_fields=['last_login'])
 
     try:
         with transaction.atomic():
@@ -272,11 +249,8 @@ def queue_claim_order(request, order_id):
 
             # Create ProductPick entries from order lines
             picklist_products = []
-            lines = order.lines.select_related('product').all()
-            print(f"[Queue Claim] Order {order.order_code} has {lines.count()} lines")
-            for line in lines:
-                print(f"[Queue Claim] Line: {line.quantity}x {line.product.code}")
-                for i in range(line.quantity):
+            for line in order.lines.select_related('product').all():
+                for _i in range(line.quantity):
                     ProductPick.objects.create(
                         product=line.product,
                         picklist=pick_list,
@@ -284,7 +258,6 @@ def queue_claim_order(request, order_id):
                     )
                     picklist_products.append(line.product.code)
 
-            print(f"[Queue Claim] Returning picklist_products: {picklist_products}")
             return JsonResponse({
                 'status': 'ok',
                 'message': _('Order claimed successfully'),

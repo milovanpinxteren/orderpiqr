@@ -419,7 +419,12 @@ def queue_claim_order(request, order_id):
 
     device = None
     if device_fingerprint:
-        device = Device.objects.filter(device_fingerprint=device_fingerprint).first()
+        # Scoped to the caller's customer: a fingerprint may be registered for
+        # several customers, and only this one's device may claim this order.
+        device = Device.objects.filter(
+            device_fingerprint=device_fingerprint,
+            customer=customer,
+        ).first()
 
     if not device:
         return Response(

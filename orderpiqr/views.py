@@ -1,9 +1,14 @@
-from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
-from orderpiqrApp.models import Device, UserProfile
+from orderpiqrApp.utils.devices import (
+    get_customer,
+    get_fingerprint,
+    register_device,
+    remember_fingerprint,
+    resolve_device,
+)
 from orderpiqrApp.utils.inventory import is_inventory_enabled, is_orderpicking_enabled
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext_lazy as _
@@ -93,13 +98,12 @@ def custom_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            device_fingerprint = request.POST.get('device_fingerprint')
+            device_fingerprint = get_fingerprint(request, request.POST)
+            # Pin the fingerprint regardless of whether a device exists yet, so
+            # the session fallback works on the very first login too.
+            remember_fingerprint(request, device_fingerprint)
             if user.groups.filter(name='orderpicker').exists():
-                device = Device.objects.filter(user=request.user, device_fingerprint=device_fingerprint).first()
-                if device:
-                    device.last_login = datetime.now()
-                    device.save()
-                    request.session['device_fingerprint'] = device_fingerprint
+                if resolve_device(request):
                     return redirect('/')  # Redirect to the homepage or desired page
                 return redirect('name_entry')  # Redirect to a name entry page
             return redirect('/')  # Redirect to root (or wherever you want after login)
@@ -120,11 +124,10 @@ def custom_login(request):
 @login_required
 def picker_choice(request):
     """Show choice between order picking and inventory counting."""
-    device_fingerprint = request.session.get('device_fingerprint')
-    device = Device.objects.filter(user=request.user, device_fingerprint=device_fingerprint).first()
+    device = resolve_device(request, touch=False)
 
     # Get customer and check enabled features
-    customer = getattr(getattr(request.user, 'userprofile', None), 'customer', None)
+    customer = get_customer(request.user)
     orderpicking_enabled = is_orderpicking_enabled(customer)
     inventory_enabled = is_inventory_enabled(customer)
 
@@ -135,6 +138,7 @@ def picker_choice(request):
     })
 
 
+@login_required
 def name_entry(request):
     # Get the 'next' parameter from GET or POST
     next_url = request.POST.get('next') or request.GET.get('next') or '/'
@@ -142,30 +146,18 @@ def name_entry(request):
     if request.method == 'POST':
         # Handle form submission and save the name to Device model
         name = request.POST.get('name')
-        device_fingerprint = request.POST.get('device_fingerprint')
+        device_fingerprint = get_fingerprint(request, request.POST)
 
         if name and device_fingerprint:
-            user_profile = UserProfile.objects.get(user=request.user)
-            customer = user_profile.customer
-            if not Device.objects.filter(device_fingerprint=device_fingerprint).exists():
-                Device.objects.create(
-                    user=request.user,
-                    device_fingerprint=device_fingerprint,
-                    name=name,
-                    description='',
-                    customer=customer,
-                    last_login=datetime.now(),
-                    lists_picked=0
-                )
+            # Registers this device for the picker's own customer. The same
+            # fingerprint may already exist for another customer — that row is
+            # left alone, this one gets its own.
+            device, _created = register_device(
+                request, name=name, fingerprint=device_fingerprint)
+            if device is None:
+                messages.error(request, _('Your account is not linked to a customer.'))
             else:
-                print("Device already registered for this user.")
-                existing = Device.objects.get(device_fingerprint=device_fingerprint)
-                existing.user = request.user
-                existing.description = 'Fingerprint used for multiple users'
-                existing.last_login = datetime.now()
-                existing.save()
-            request.session['device_fingerprint'] = device_fingerprint
-            return redirect(next_url)
+                return redirect(next_url)
 
     return render(request, 'registration/name_entry.html', {'next': next_url})
 

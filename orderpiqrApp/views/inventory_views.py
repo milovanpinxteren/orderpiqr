@@ -4,28 +4,17 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
-from orderpiqrApp.models import Product, Device, InventoryLog
+from orderpiqrApp.models import Product, InventoryLog
+from orderpiqrApp.utils.devices import resolve_device
 from orderpiqrApp.utils.inventory import is_inventory_enabled, modify_inventory
 
 
 def get_device_from_request(request):
-    """Get device for the current session."""
-    device_fingerprint = request.session.get('device_fingerprint')
-    if device_fingerprint:
-        device = Device.objects.filter(
-            user=request.user,
-            device_fingerprint=device_fingerprint
-        ).first()
-        if device:
-            # Update last_login on activity
-            device.last_login = timezone.now()
-            device.save(update_fields=['last_login'])
-        return device
-    return None
+    """Get device for the current session, scoped to the user's customer."""
+    return resolve_device(request)
 
 
 @login_required

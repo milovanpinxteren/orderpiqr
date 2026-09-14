@@ -110,6 +110,11 @@
                     } else {
                         console.log('[Queue Picker] Error response:', data.message);
                         showNotification(data.message, true);
+                        if (data.redirect_url) {
+                            // Device could not be resolved — send the picker to name entry.
+                            setTimeout(() => { window.location.href = data.redirect_url; }, 1500);
+                            return;
+                        }
                         button.disabled = false;
                         button.textContent = '{% trans "Start Picking" %}';
                     }
