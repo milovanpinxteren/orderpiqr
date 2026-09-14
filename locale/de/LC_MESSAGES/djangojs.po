@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-13 12:28+0200\n"
+"POT-Creation-Date: 2026-09-14 09:10+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,27 +59,6 @@ msgid "Open a device to view its details."
 msgstr "Öffnen Sie ein Gerät, um die Details anzuzeigen."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:80
-#| msgid ""
-#| "<h1>🎉 All set! You’ve completed the Orderpiqr tour.</h1><br>        Next "
-#| "steps:<br>        • <b>Add your products</b> in the admin panel.<br>        "
-#| "• <b>Create an order</b> and <b>generate a PDF picklist</b> for your "
-#| "team.<br>        • On your phone, visit <a href='https://app.orderpiqr.nl' "
-#| "target='_blank'>app.orderpiqr.nl</a>         and log in with your order "
-#| "picker account.<br>        • <b>Scan the QR code</b> on your newly created "
-#| "picklist.<br>        • Start picking your first order! <br><br>"
-#| "                <h2>Important information</h2>        We recommend using "
-#| "<b>Google Chrome</b> for full functionality — you can also         "
-#| "<b>install the web app</b> directly from your browser for quick "
-#| "access.<br><br>        On your phone, you can adjust settings such as "
-#| "<b>language</b>, <b>picking order</b>,         and <b>sorting order</b>. If "
-#| "you’d like us to set up default preferences for you, just let us "
-#| "know.<br><br>        If you have any questions or would like additional "
-#| "features, email         <a "
-#| "href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> or schedule a call via"
-#| "         <a href='https://www.orderpiqr.nl' "
-#| "target='_blank'>www.orderpiqr.nl</a>.<br><br>        Your first <b>50 "
-#| "picklists per month are free</b>! After that, you’ll receive a notification"
-#| "         before any billing begins — no subscriptions, no hidden costs."
 msgid ""
 "<h1>🎉 All set! You’ve completed the Orderpiqr tour.</h1><br>        Next "
 "steps:<br>        • <b>Add your products</b> in the admin panel.<br>        "
@@ -494,7 +473,6 @@ msgid "Could not load product data from server"
 msgstr "Produktdaten konnten nicht vom Server geladen werden."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:29
-#| msgid "Cached product data is not usable"
 msgid "No product data found on page"
 msgstr "Keine Produktdaten auf der Seite gefunden"
 
@@ -540,7 +518,6 @@ msgid "Picklist completed!"
 msgstr "Pickliste abgeschlossen!"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:246
-#| msgid "Unexpected error while parsing picklist."
 msgid "Error completing picklist."
 msgstr "Fehler beim Abschließen der Pickliste."
 
@@ -598,6 +575,25 @@ msgstr "Tippe auf die Teilen-Taste"
 msgid "Tap \"Add to Home Screen\""
 msgstr "Tippe auf \"Zum Home-Bildschirm\""
 
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:51
+#, javascript-format
+msgid "All %s matching are selected."
+msgstr "Alle %s Treffer sind ausgewählt."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:54
+msgid "Clear selection"
+msgstr "Auswahl aufheben"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:64
+#, javascript-format
+msgid "Select all %s matching this filter"
+msgstr "Alle %s Treffer dieses Filters auswählen"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:121
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:124
+msgid "An error occurred"
+msgstr "Ein Fehler ist aufgetreten"
+
 #: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:47
 msgid "Manual override: %(product)s confirmed"
 msgstr "Manuelle Bestätigung: %(product)s bestätigt"
@@ -636,7 +632,6 @@ msgid "Picklist added"
 msgstr "Pickliste hinzugefügt"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:108
-#| msgid "Unexpected error while parsing picklist."
 msgid "Error sending picklist."
 msgstr "Fehler beim Senden der Pickliste."
 
@@ -661,21 +656,3 @@ msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Keines der Felder in der Picklistenzeile entspricht einem bekannten "
 "Produktcode."
-
-#~ msgid "Claiming..."
-#~ msgstr "Wird beansprucht..."
-
-#~ msgid "Order claimed! Redirecting..."
-#~ msgstr "Auftrag beansprucht! Weiterleitung..."
-
-#~ msgid "Error claiming order"
-#~ msgstr "Fehler beim Beanspruchen des Auftrags"
-
-#~ msgid "Queue order saved"
-#~ msgstr "Warteschlangenreihenfolge gespeichert"
-
-#~ msgid "Order added to queue"
-#~ msgstr "Auftrag zur Warteschlange hinzugefügt"
-
-#~ msgid "Order removed from queue"
-#~ msgstr "Auftrag aus Warteschlange entfernt"

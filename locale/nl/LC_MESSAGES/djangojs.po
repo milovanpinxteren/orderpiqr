@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-13 12:28+0200\n"
+"POT-Creation-Date: 2026-09-14 09:10+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -485,7 +485,6 @@ msgstr ""
 " blijft bestaan, neem dan contact op met support."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:195
-#| msgid "Could not determine product/quantity structure in picklist."
 msgid "Could not update product pick."
 msgstr "Kon productpick niet bijwerken."
 
@@ -551,6 +550,25 @@ msgstr "Tik op de Deel-knop"
 msgid "Tap \"Add to Home Screen\""
 msgstr "Tik op \"Zet op beginscherm\""
 
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:51
+#, javascript-format
+msgid "All %s matching are selected."
+msgstr "Alle %s overeenkomende resultaten zijn geselecteerd."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:54
+msgid "Clear selection"
+msgstr "Selectie wissen"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:64
+#, javascript-format
+msgid "Select all %s matching this filter"
+msgstr "Selecteer alle %s resultaten die aan dit filter voldoen"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:121
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:124
+msgid "An error occurred"
+msgstr "Er is een fout opgetreden"
+
 #: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:47
 msgid "Manual override: %(product)s confirmed"
 msgstr "Handmatige override: %(product)s bevestigd"
@@ -612,21 +630,3 @@ msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Geen van beide velden in de picklijsregel komt overeen met een bekende "
 "productcode."
-
-#~ msgid "Claiming..."
-#~ msgstr "Claimend..."
-
-#~ msgid "Order claimed! Redirecting..."
-#~ msgstr "Order geclaimd! Doorsturen..."
-
-#~ msgid "Error claiming order"
-#~ msgstr "Fout bij claimen van order"
-
-#~ msgid "Queue order saved"
-#~ msgstr "Wachtrijvolgorde opgeslagen"
-
-#~ msgid "Order added to queue"
-#~ msgstr "Order toegevoegd aan wachtrij"
-
-#~ msgid "Order removed from queue"
-#~ msgstr "Order verwijderd uit wachtrij"

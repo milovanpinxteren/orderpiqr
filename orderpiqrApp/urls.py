@@ -41,6 +41,7 @@ from orderpiqrApp.views.manage_views import (
     products_import,
     products_export,
     orders_list,
+    orders_bulk_action,
     order_create,
     order_edit,
     order_delete,
@@ -100,6 +101,7 @@ urlpatterns = [
 
     # Orders Management
     path('manage/orders/', orders_list, name='manage_orders'),
+    path('manage/orders/bulk-action/', orders_bulk_action, name='manage_orders_bulk_action'),
     path('manage/orders/create/', order_create, name='manage_order_create'),
     path('manage/orders/<int:order_id>/edit/', order_edit, name='manage_order_edit'),
     path('manage/orders/<int:order_id>/delete/', order_delete, name='manage_order_delete'),

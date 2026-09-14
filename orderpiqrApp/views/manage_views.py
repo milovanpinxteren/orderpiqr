@@ -7,9 +7,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.db.models import Count, Q, Sum, Max
 from django.db.models.functions import TruncDate
 from django.utils import timezone
+from django.utils.dateparse import parse_date
 from django.utils.translation import gettext as _
 from datetime import timedelta
 import json
@@ -45,6 +47,14 @@ def get_base_context(request, active_nav='dashboard'):
         'active_nav': active_nav,
         'inventory_enabled': inventory_enabled,
     }
+
+
+def _querystring_without_page(request):
+    """Current GET params minus `page`, for pagination links that must keep
+    every active filter."""
+    params = request.GET.copy()
+    params.pop('page', None)
+    return params.urlencode()
 
 
 # ============================================
@@ -126,6 +136,29 @@ def dashboard(request):
 # Products
 # ============================================
 
+def _filtered_products(customer, params):
+    """Product queryset for the given filter params (search/status/location).
+    Shared by the list view and the bulk endpoint's select-all mode so that
+    "select everything matching this filter" means exactly what the list shows."""
+    products = Product.objects.filter(customer=customer)
+    search = (params.get('search') or '').strip()
+    if search:
+        products = products.filter(
+            Q(code__icontains=search) |
+            Q(description__icontains=search) |
+            Q(location__icontains=search)
+        )
+    status = params.get('status') or ''
+    if status == 'active':
+        products = products.filter(active=True)
+    elif status == 'inactive':
+        products = products.filter(active=False)
+    location = params.get('location') or ''
+    if location:
+        products = products.filter(location=location)
+    return products
+
+
 @company_admin_required
 def products_list(request):
     """List all products with search and filter."""
@@ -135,32 +168,10 @@ def products_list(request):
     if not customer:
         return redirect('manage_dashboard')
 
-    # Get products
-    products = Product.objects.filter(customer=customer)
-
-    # Search
-    search = request.GET.get('search', '').strip()
-    if search:
-        products = products.filter(
-            Q(code__icontains=search) |
-            Q(description__icontains=search) |
-            Q(location__icontains=search)
-        )
-        context['search'] = search
-
-    # Filter by status
-    status_filter = request.GET.get('status', '')
-    if status_filter == 'active':
-        products = products.filter(active=True)
-    elif status_filter == 'inactive':
-        products = products.filter(active=False)
-    context['status_filter'] = status_filter
-
-    # Filter by location
-    location_filter = request.GET.get('location', '')
-    if location_filter:
-        products = products.filter(location=location_filter)
-    context['location_filter'] = location_filter
+    products = _filtered_products(customer, request.GET)
+    context['search'] = request.GET.get('search', '').strip()
+    context['status_filter'] = request.GET.get('status', '')
+    context['location_filter'] = request.GET.get('location', '')
 
     # Get distinct locations for the filter dropdown
     context['locations'] = list(
@@ -182,6 +193,7 @@ def products_list(request):
     page = request.GET.get('page', 1)
     context['products'] = paginator.get_page(page)
     context['paginator'] = paginator
+    context['querystring'] = _querystring_without_page(request)
 
     return render(request, 'manage/products/list.html', context)
 
@@ -315,17 +327,31 @@ def products_bulk_action(request):
         return JsonResponse({'status': 'error', 'message': _("Invalid request.")}, status=400)
 
     action = data.get('action', '')
-    product_ids = data.get('product_ids', [])
 
-    if not product_ids:
+    if data.get('select_all'):
+        # "Select all matching" mode: operate on everything matching the
+        # list's current filters instead of an explicit id list.
+        products = _filtered_products(customer, data.get('filters') or {})
+    else:
+        product_ids = data.get('product_ids', [])
+        if not product_ids:
+            return JsonResponse({'status': 'error', 'message': _("No products selected.")}, status=400)
+        products = Product.objects.filter(customer=customer, product_id__in=product_ids)
+    count = products.count()
+    if not count:
         return JsonResponse({'status': 'error', 'message': _("No products selected.")}, status=400)
 
-    products = Product.objects.filter(customer=customer, product_id__in=product_ids)
-    count = products.count()
-
     if action == 'delete':
-        products.delete()
-        return JsonResponse({'status': 'ok', 'message': _("{count} product(s) deleted.").format(count=count)})
+        # OrderLine.product is on_delete=PROTECT: products referenced by an
+        # order can't be deleted, so skip them instead of failing the batch.
+        deletable = products.annotate(line_count=Count('orderline')).filter(line_count=0)
+        deleted = deletable.count()
+        skipped = count - deleted
+        deletable.delete()
+        message = _("{count} product(s) deleted.").format(count=deleted)
+        if skipped:
+            message += " " + _("{count} product(s) skipped because they are used in orders.").format(count=skipped)
+        return JsonResponse({'status': 'ok', 'message': message})
     elif action == 'activate':
         products.update(active=True)
         return JsonResponse({'status': 'ok', 'message': _("{count} product(s) activated.").format(count=count)})
@@ -508,6 +534,33 @@ def products_export(request):
 # Orders
 # ============================================
 
+def _filtered_orders(customer, params):
+    """Order queryset for the given filter params (search/status/source/date
+    range). Shared by the list view and the bulk endpoint's select-all mode so
+    that "select everything matching this filter" means exactly what the list
+    shows."""
+    orders = Order.objects.filter(customer=customer)
+    search = (params.get('search') or '').strip()
+    if search:
+        orders = orders.filter(
+            Q(order_code__icontains=search) |
+            Q(notes__icontains=search)
+        )
+    status = params.get('status') or ''
+    if status in ['draft', 'queued', 'in_progress', 'completed', 'cancelled']:
+        orders = orders.filter(status=status)
+    source = params.get('source') or ''
+    if source:
+        orders = orders.filter(source=source)
+    date_from = parse_date(params.get('date_from') or '')
+    if date_from:
+        orders = orders.filter(created_at__date__gte=date_from)
+    date_to = parse_date(params.get('date_to') or '')
+    if date_to:
+        orders = orders.filter(created_at__date__lte=date_to)
+    return orders
+
+
 @company_admin_required
 def orders_list(request):
     """List all orders with search and filter."""
@@ -517,25 +570,21 @@ def orders_list(request):
     if not customer:
         return redirect('manage_dashboard')
 
-    # Get orders
-    orders = Order.objects.filter(customer=customer).annotate(
+    orders = _filtered_orders(customer, request.GET).annotate(
         item_count=Sum('lines__quantity')
     )
+    context['search'] = request.GET.get('search', '').strip()
+    context['status_filter'] = request.GET.get('status', '')
+    context['source_filter'] = request.GET.get('source', '')
+    context['date_from'] = request.GET.get('date_from', '')
+    context['date_to'] = request.GET.get('date_to', '')
 
-    # Search
-    search = request.GET.get('search', '').strip()
-    if search:
-        orders = orders.filter(
-            Q(order_code__icontains=search) |
-            Q(notes__icontains=search)
-        )
-        context['search'] = search
-
-    # Filter by status
-    status_filter = request.GET.get('status', '')
-    if status_filter in ['draft', 'queued', 'in_progress', 'completed', 'cancelled']:
-        orders = orders.filter(status=status_filter)
-    context['status_filter'] = status_filter
+    # Distinct sources for the filter dropdown (only shown when there is
+    # more than one, e.g. manual + shopify).
+    context['sources'] = list(
+        Order.objects.filter(customer=customer)
+        .values_list('source', flat=True).distinct().order_by('source')
+    )
 
     # Ordering
     ordering = request.GET.get('order', '-created_at')
@@ -548,8 +597,81 @@ def orders_list(request):
     page = request.GET.get('page', 1)
     context['orders'] = paginator.get_page(page)
     context['paginator'] = paginator
+    context['querystring'] = _querystring_without_page(request)
 
     return render(request, 'manage/orders/list.html', context)
+
+
+@company_admin_required
+def orders_bulk_action(request):
+    """Handle bulk actions on orders (AJAX): delete, add to queue, remove
+    from queue. Accepts either an explicit id list or select_all + the list's
+    current filters. In-progress orders are never touched — someone is
+    picking them — they are counted and reported as skipped."""
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': _("Invalid request method.")}, status=405)
+
+    customer = get_customer_from_user(request.user)
+    if not customer:
+        return JsonResponse({'status': 'error', 'message': _("No customer found.")}, status=400)
+
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'status': 'error', 'message': _("Invalid request.")}, status=400)
+
+    action = data.get('action', '')
+
+    if data.get('select_all'):
+        orders = _filtered_orders(customer, data.get('filters') or {})
+    else:
+        order_ids = data.get('order_ids', [])
+        if not order_ids:
+            return JsonResponse({'status': 'error', 'message': _("No orders selected.")}, status=400)
+        orders = Order.objects.filter(customer=customer, order_id__in=order_ids)
+    count = orders.count()
+    if not count:
+        return JsonResponse({'status': 'error', 'message': _("No orders selected.")}, status=400)
+
+    if action == 'delete':
+        deletable = orders.exclude(status='in_progress')
+        deleted = deletable.count()
+        skipped = count - deleted
+        deletable.delete()
+        message = _("{count} order(s) deleted.").format(count=deleted)
+        if skipped:
+            message += " " + _("{count} in-progress order(s) skipped.").format(count=skipped)
+        return JsonResponse({'status': 'ok', 'message': message})
+
+    elif action == 'add_to_queue':
+        with transaction.atomic():
+            drafts = list(orders.filter(status='draft')
+                          .select_for_update().order_by('created_at'))
+            max_pos = Order.objects.filter(
+                customer=customer,
+                status__in=['queued', 'in_progress']
+            ).aggregate(max_pos=Max('queue_position'))['max_pos'] or 0
+            for position, order in enumerate(drafts, start=max_pos + 1):
+                order.status = 'queued'
+                order.queue_position = position
+            Order.objects.bulk_update(drafts, ['status', 'queue_position'])
+        added = len(drafts)
+        skipped = count - added
+        message = _("{count} order(s) added to the queue.").format(count=added)
+        if skipped:
+            message += " " + _("{count} order(s) skipped (not draft).").format(count=skipped)
+        return JsonResponse({'status': 'ok', 'message': message})
+
+    elif action == 'remove_from_queue':
+        removed = orders.filter(status='queued').update(
+            status='draft', queue_position=None)
+        skipped = count - removed
+        message = _("{count} order(s) removed from the queue.").format(count=removed)
+        if skipped:
+            message += " " + _("{count} order(s) skipped (not queued).").format(count=skipped)
+        return JsonResponse({'status': 'ok', 'message': message})
+
+    return JsonResponse({'status': 'error', 'message': _("Unknown action.")}, status=400)
 
 
 @company_admin_required

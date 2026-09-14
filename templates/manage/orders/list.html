@@ -5,6 +5,10 @@
 {% block page_title %}{% trans "Orders" %}{% endblock %}
 {% block page_subtitle %}<p class="page-subtitle">{% trans "Manage your customer orders" %}</p>{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'orderpiqrApp/css/manage/list.css' %}">
+{% endblock %}
+
 {% block header_actions %}
 <a href="{% url 'manage_orders_import' %}" class="btn btn-secondary hide-mobile">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -42,12 +46,38 @@
             <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>{% trans "Completed" %}</option>
             <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>{% trans "Cancelled" %}</option>
         </select>
+        {% if sources|length > 1 %}
+        <select class="form-control" id="source-filter" onchange="applyFilters()">
+            <option value="">{% trans "All Sources" %}</option>
+            {% for src in sources %}
+            <option value="{{ src }}" {% if source_filter == src %}selected{% endif %}>{{ src|capfirst }}</option>
+            {% endfor %}
+        </select>
+        {% endif %}
+        <input type="date" class="form-control" id="date-from-filter" title="{% trans 'From date' %}"
+               value="{{ date_from|default:'' }}" onchange="applyFilters()">
+        <input type="date" class="form-control" id="date-to-filter" title="{% trans 'To date' %}"
+               value="{{ date_to|default:'' }}" onchange="applyFilters()">
         <select class="form-control" id="order-filter" onchange="applyFilters()">
             <option value="-created_at" {% if ordering == '-created_at' %}selected{% endif %}>{% trans "Newest First" %}</option>
             <option value="created_at" {% if ordering == 'created_at' %}selected{% endif %}>{% trans "Oldest First" %}</option>
             <option value="order_code" {% if ordering == 'order_code' %}selected{% endif %}>{% trans "Code A-Z" %}</option>
             <option value="-order_code" {% if ordering == '-order_code' %}selected{% endif %}>{% trans "Code Z-A" %}</option>
         </select>
+    </div>
+</div>
+
+<!-- Bulk Actions Bar -->
+<div class="bulk-bar" id="bulk-bar">
+    <div class="bulk-bar-inner">
+        <span class="bulk-count"><span id="bulk-count">0</span> {% trans "selected" %}</span>
+        <div class="bulk-actions">
+            <button class="btn btn-sm btn-secondary" onclick="bulkAddToQueue()">{% trans "Add to Queue" %}</button>
+            <button class="btn btn-sm btn-secondary" onclick="bulkRemoveFromQueue()">{% trans "Remove from Queue" %}</button>
+            <button class="btn btn-sm btn-danger" onclick="bulkDelete()">{% trans "Delete" %}</button>
+        </div>
+        <button class="bulk-clear" onclick="ListTools.clearSelection()">✕</button>
+        <div class="bulk-banner" id="bulk-banner"></div>
     </div>
 </div>
 
@@ -59,6 +89,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th class="col-checkbox"><input type="checkbox" id="select-all"></th>
                         <th>{% trans "Order Code" %}</th>
                         <th>{% trans "Items" %}</th>
                         <th>{% trans "Status" %}</th>
@@ -69,6 +100,7 @@
                 <tbody>
                     {% for order in orders %}
                     <tr>
+                        <td class="col-checkbox"><input type="checkbox" class="row-checkbox" value="{{ order.order_id }}"></td>
                         <td>
                             <strong>{{ order.order_code }}</strong>
                             {% if order.notes %}
@@ -107,7 +139,7 @@
                                 </a>
                                 {% if order.status == 'draft' %}
                                 <button type="button" class="btn btn-sm btn-danger"
-                                        onclick="confirmDelete({{ order.order_id }}, '{{ order.order_code }}')"
+                                        onclick="confirmDelete({{ order.order_id }}, '{{ order.order_code|escapejs }}')"
                                         title="{% trans 'Delete' %}">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <polyline points="3 6 5 6 21 6"/>
@@ -127,10 +159,8 @@
         {% if paginator.num_pages > 1 %}
         <div class="pagination">
             {% if orders.has_previous %}
-            <a href="?page=1{% if search %}&search={{ search }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if ordering %}&order={{ ordering }}{% endif %}"
-               class="pagination-btn">&laquo;</a>
-            <a href="?page={{ orders.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if ordering %}&order={{ ordering }}{% endif %}"
-               class="pagination-btn">&lsaquo;</a>
+            <a href="?page=1{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&laquo;</a>
+            <a href="?page={{ orders.previous_page_number }}{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&lsaquo;</a>
             {% endif %}
 
             <span class="pagination-info">
@@ -138,10 +168,8 @@
             </span>
 
             {% if orders.has_next %}
-            <a href="?page={{ orders.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if ordering %}&order={{ ordering }}{% endif %}"
-               class="pagination-btn">&rsaquo;</a>
-            <a href="?page={{ paginator.num_pages }}{% if search %}&search={{ search }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if ordering %}&order={{ ordering }}{% endif %}"
-               class="pagination-btn">&raquo;</a>
+            <a href="?page={{ orders.next_page_number }}{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&rsaquo;</a>
+            <a href="?page={{ paginator.num_pages }}{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&raquo;</a>
             {% endif %}
         </div>
         {% endif %}
@@ -152,7 +180,7 @@
                 <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
                 <rect x="9" y="3" width="6" height="4" rx="1"/>
             </svg>
-            {% if search or status_filter %}
+            {% if search or status_filter or source_filter or date_from or date_to %}
             <h3>{% trans "No orders found" %}</h3>
             <p>{% trans "Try adjusting your search or filter criteria." %}</p>
             <a href="{% url 'manage_orders' %}" class="btn btn-secondary">{% trans "Clear Filters" %}</a>
@@ -188,95 +216,14 @@
 </div>
 
 <style>
-.justify-center { justify-content: center; }
-
 .order-notes-indicator {
     color: var(--text-muted);
     cursor: help;
     vertical-align: middle;
 }
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: var(--z-modal);
-    opacity: 0;
-    visibility: hidden;
-    transition: all var(--transition-fast);
-}
-
-.modal-overlay.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.modal {
-    background: var(--white);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-lg);
-    max-width: 400px;
-    width: 90%;
-    transform: translateY(-20px);
-    transition: transform var(--transition-fast);
-}
-
-.modal-overlay.show .modal {
-    transform: translateY(0);
-}
-
-.modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-bottom: 1px solid var(--border-color);
-}
-
-.modal-header h3 {
-    margin: 0;
-    font-size: 1.1rem;
-}
-
-.modal-close {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--text-secondary);
-    line-height: 1;
-}
-
-.modal-body {
-    padding: var(--spacing-lg);
-}
-
-.modal-body p {
-    margin: 0 0 var(--spacing-sm);
-}
-
-.modal-footer {
-    display: flex;
-    gap: var(--spacing-sm);
-    justify-content: flex-end;
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-top: 1px solid var(--border-color);
-}
-
-.pagination-info {
-    padding: 0 var(--spacing-md);
-    color: var(--text-secondary);
-}
-
-.p-0 { padding: 0 !important; }
 </style>
 
+<script src="{% static 'orderpiqrApp/js/manage/listTools.js' %}"></script>
 <script>
 let deleteOrderId = null;
 
@@ -286,17 +233,26 @@ function handleSearch(event) {
     }
 }
 
+function currentFilters() {
+    const sourceEl = document.getElementById('source-filter');
+    return {
+        search: document.getElementById('search-input').value,
+        status: document.getElementById('status-filter').value,
+        source: sourceEl ? sourceEl.value : '',
+        date_from: document.getElementById('date-from-filter').value,
+        date_to: document.getElementById('date-to-filter').value,
+    };
+}
+
 function applyFilters() {
-    const search = document.getElementById('search-input').value;
-    const status = document.getElementById('status-filter').value;
+    const params = new URLSearchParams();
+    const filters = currentFilters();
+    for (const [key, value] of Object.entries(filters)) {
+        if (value) params.set(key, value);
+    }
     const order = document.getElementById('order-filter').value;
-
-    let url = '{% url "manage_orders" %}?';
-    if (search) url += 'search=' + encodeURIComponent(search) + '&';
-    if (status) url += 'status=' + status + '&';
-    if (order) url += 'order=' + order + '&';
-
-    window.location.href = url.slice(0, -1);
+    if (order) params.set('order', order);
+    window.location.href = '{% url "manage_orders" %}?' + params.toString();
 }
 
 function addToQueue(orderId) {
@@ -321,6 +277,31 @@ function addToQueue(orderId) {
     });
 }
 
+// ---- Bulk actions ----
+{% trans "Delete %s order(s)? Orders currently being picked are skipped. This cannot be undone." as bulk_delete_msg %}
+{% trans "Add %s order(s) to the queue? Only draft orders are added." as bulk_queue_msg %}
+{% trans "Remove %s order(s) from the queue? Only queued orders are affected." as bulk_unqueue_msg %}
+
+function bulkDelete() {
+    ListTools.bulkAction('delete', { confirmMessage: '{{ bulk_delete_msg|escapejs }}' });
+}
+
+function bulkAddToQueue() {
+    ListTools.bulkAction('add_to_queue', { confirmMessage: '{{ bulk_queue_msg|escapejs }}' });
+}
+
+function bulkRemoveFromQueue() {
+    ListTools.bulkAction('remove_from_queue', { confirmMessage: '{{ bulk_unqueue_msg|escapejs }}' });
+}
+
+ListTools.init({
+    bulkUrl: '{% url "manage_orders_bulk_action" %}',
+    idKey: 'order_ids',
+    totalCount: {{ paginator.count|default:0 }},
+    filterParams: currentFilters(),
+});
+
+// ---- Single delete modal ----
 function confirmDelete(orderId, orderCode) {
     deleteOrderId = orderId;
     document.getElementById('delete-order-code').textContent = orderCode;

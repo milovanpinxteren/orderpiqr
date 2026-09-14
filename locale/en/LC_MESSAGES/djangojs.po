@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-13 12:28+0200\n"
+"POT-Creation-Date: 2026-09-14 09:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -468,6 +468,25 @@ msgstr "Tap the Share button"
 msgid "Tap \"Add to Home Screen\""
 msgstr "Tap \"Add to Home Screen\""
 
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:51
+#, javascript-format
+msgid "All %s matching are selected."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:54
+msgid "Clear selection"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:64
+#, javascript-format
+msgid "Select all %s matching this filter"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:121
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:124
+msgid "An error occurred"
+msgstr ""
+
 #: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:47
 msgid "Manual override: %(product)s confirmed"
 msgstr ""
@@ -525,21 +544,3 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:153
 msgid "Neither field in the picklist row matches a known product code."
 msgstr "Neither field in the picklist row matches a known product code."
-
-#~ msgid "Claiming..."
-#~ msgstr "Claiming..."
-
-#~ msgid "Order claimed! Redirecting..."
-#~ msgstr "Order claimed! Redirecting..."
-
-#~ msgid "Error claiming order"
-#~ msgstr "Error claiming order"
-
-#~ msgid "Queue order saved"
-#~ msgstr "Queue order saved"
-
-#~ msgid "Order added to queue"
-#~ msgstr "Order added to queue"
-
-#~ msgid "Order removed from queue"
-#~ msgstr "Order removed from queue"

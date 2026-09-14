@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-13 12:28+0200\n"
+"POT-Creation-Date: 2026-09-14 09:10+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -463,7 +463,6 @@ msgid "Could not load product data from server"
 msgstr "Impossible de charger les données produit depuis le serveur"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:29
-#| msgid "No product data was found, cannot update list"
 msgid "No product data found on page"
 msgstr "Aucune donnée produit trouvée sur la page"
 
@@ -505,12 +504,10 @@ msgid "Could not update product pick."
 msgstr "Impossible de mettre à jour le prélèvement du produit."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:242
-#| msgid "Picklist added"
 msgid "Picklist completed!"
 msgstr "Liste de prélèvement terminée !"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:246
-#| msgid "Error sending picklist."
 msgid "Error completing picklist."
 msgstr "Erreur lors de la finalisation de la liste de prélèvement."
 
@@ -569,6 +566,25 @@ msgstr "Appuyez sur le bouton Partager"
 msgid "Tap \"Add to Home Screen\""
 msgstr "Appuyez sur \"Sur l'écran d'accueil\""
 
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:51
+#, javascript-format
+msgid "All %s matching are selected."
+msgstr "Les %s résultats correspondants sont sélectionnés."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:54
+msgid "Clear selection"
+msgstr "Effacer la sélection"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:64
+#, javascript-format
+msgid "Select all %s matching this filter"
+msgstr "Sélectionner les %s résultats correspondant à ce filtre"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:121
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:124
+msgid "An error occurred"
+msgstr "Une erreur est survenue"
+
 #: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:47
 msgid "Manual override: %(product)s confirmed"
 msgstr "Remplacement manuel : %(product)s confirmé"
@@ -612,7 +628,6 @@ msgid "Error sending picklist."
 msgstr "Erreur lors de l'envoi de la liste de prélèvement."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:128
-#| msgid "Error sending picklist."
 msgid "Unexpected error while parsing picklist."
 msgstr "Erreur inattendue lors de l'analyse de la liste de prélèvement."
 
@@ -633,21 +648,3 @@ msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Aucun champ de la ligne de liste de préparation ne correspond à un code "
 "produit connu."
-
-#~ msgid "Claiming..."
-#~ msgstr "En cours de réclamation..."
-
-#~ msgid "Order claimed! Redirecting..."
-#~ msgstr "Commande réclamée! Redirection..."
-
-#~ msgid "Error claiming order"
-#~ msgstr "Erreur lors de la réclamation de la commande"
-
-#~ msgid "Queue order saved"
-#~ msgstr "Ordre de la file sauvegardé"
-
-#~ msgid "Order added to queue"
-#~ msgstr "Commande ajoutée à la file"
-
-#~ msgid "Order removed from queue"
-#~ msgstr "Commande retirée de la file"

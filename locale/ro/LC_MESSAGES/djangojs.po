@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-13 12:28+0200\n"
+"POT-Creation-Date: 2026-09-14 09:10+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -453,7 +453,6 @@ msgid "Could not load product data from server"
 msgstr "Nu s-au putut încărca datele produselor de pe server"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:29
-#| msgid "No product data was found, cannot update list"
 msgid "No product data found on page"
 msgstr "Nu s-au găsit date despre produse pe pagină"
 
@@ -495,12 +494,10 @@ msgid "Could not update product pick."
 msgstr "Nu s-a putut actualiza preluarea produsului."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:242
-#| msgid "Picklist added"
 msgid "Picklist completed!"
 msgstr "Listă de preluare finalizată!"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:246
-#| msgid "Error sending picklist."
 msgid "Error completing picklist."
 msgstr "Eroare la finalizarea listei de preluare."
 
@@ -558,6 +555,25 @@ msgstr "Apasă butonul Partajare"
 msgid "Tap \"Add to Home Screen\""
 msgstr "Apasă \"Adaugă pe ecranul de pornire\""
 
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:51
+#, javascript-format
+msgid "All %s matching are selected."
+msgstr "Toate cele %s rezultate sunt selectate."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:54
+msgid "Clear selection"
+msgstr "Golește selecția"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:64
+#, javascript-format
+msgid "Select all %s matching this filter"
+msgstr "Selectează toate cele %s rezultate care corespund filtrului"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:121
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:124
+msgid "An error occurred"
+msgstr "A apărut o eroare"
+
 #: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:47
 msgid "Manual override: %(product)s confirmed"
 msgstr "Suprascriere manuală: %(product)s confirmat(ă)"
@@ -600,7 +616,6 @@ msgid "Error sending picklist."
 msgstr "Eroare la trimiterea listei de preluare."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:128
-#| msgid "Error sending picklist."
 msgid "Unexpected error while parsing picklist."
 msgstr "Eroare neașteptată la interpretarea listei de preluare."
 
@@ -621,21 +636,3 @@ msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Niciun câmp din rândul listei de ridicare nu corespunde unui cod de produs "
 "cunoscut."
-
-#~ msgid "Claiming..."
-#~ msgstr "Se revendică..."
-
-#~ msgid "Order claimed! Redirecting..."
-#~ msgstr "Comandă revendicată! Redirecționare..."
-
-#~ msgid "Error claiming order"
-#~ msgstr "Eroare la revendicarea comenzii"
-
-#~ msgid "Queue order saved"
-#~ msgstr "Ordinea cozii salvată"
-
-#~ msgid "Order added to queue"
-#~ msgstr "Comandă adăugată în coadă"
-
-#~ msgid "Order removed from queue"
-#~ msgstr "Comandă eliminată din coadă"

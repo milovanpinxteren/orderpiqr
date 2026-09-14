@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-13 12:28+0200\n"
+"POT-Creation-Date: 2026-09-14 09:10+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -457,7 +457,6 @@ msgid "Could not load product data from server"
 msgstr "Nie udało się załadować danych produktów z serwera"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:29
-#| msgid "No product data was found, cannot update list"
 msgid "No product data found on page"
 msgstr "Nie znaleziono danych produktów na stronie"
 
@@ -499,12 +498,10 @@ msgid "Could not update product pick."
 msgstr "Nie udało się zaktualizować pobrania produktu."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:242
-#| msgid "Picklist added"
 msgid "Picklist completed!"
 msgstr "Lista kompletacyjna ukończona!"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:246
-#| msgid "Error sending picklist."
 msgid "Error completing picklist."
 msgstr "Błąd podczas kończenia listy kompletacyjnej."
 
@@ -562,6 +559,25 @@ msgstr "Kliknij przycisk Udostępnij"
 msgid "Tap \"Add to Home Screen\""
 msgstr "Kliknij \"Dodaj do ekranu głównego\""
 
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:51
+#, javascript-format
+msgid "All %s matching are selected."
+msgstr "Zaznaczono wszystkie pasujące: %s."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:54
+msgid "Clear selection"
+msgstr "Wyczyść zaznaczenie"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:64
+#, javascript-format
+msgid "Select all %s matching this filter"
+msgstr "Zaznacz wszystkie pasujące do filtra: %s"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:121
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:124
+msgid "An error occurred"
+msgstr "Wystąpił błąd"
+
 #: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:47
 msgid "Manual override: %(product)s confirmed"
 msgstr "Ręczne potwierdzenie: %(product)s zatwierdzony"
@@ -604,7 +620,6 @@ msgid "Error sending picklist."
 msgstr "Błąd podczas wysyłania listy kompletacyjnej."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:128
-#| msgid "Error sending picklist."
 msgid "Unexpected error while parsing picklist."
 msgstr "Nieoczekiwany błąd podczas przetwarzania listy kompletacyjnej."
 
@@ -625,21 +640,3 @@ msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Żadne pole w wierszu listy kompletacji nie odpowiada znanemu kodowi "
 "produktu."
-
-#~ msgid "Claiming..."
-#~ msgstr "Rezerwowanie..."
-
-#~ msgid "Order claimed! Redirecting..."
-#~ msgstr "Zamówienie zarezerwowane! Przekierowanie..."
-
-#~ msgid "Error claiming order"
-#~ msgstr "Błąd podczas rezerwacji zamówienia"
-
-#~ msgid "Queue order saved"
-#~ msgstr "Kolejność kolejki zapisana"
-
-#~ msgid "Order added to queue"
-#~ msgstr "Zamówienie dodane do kolejki"
-
-#~ msgid "Order removed from queue"
-#~ msgstr "Zamówienie usunięte z kolejki"
