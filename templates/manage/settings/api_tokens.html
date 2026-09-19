@@ -83,9 +83,9 @@
         </div>
     </div>
 
+    {% url 'api-documentation' as docs_url %}
     <p class="token-help docs-link">
-        {% trans "See the" %} <a href="{% url 'api-documentation' %}">{% trans "API documentation" %}</a>
-        {% trans "for how to push orders with your token." %}
+        {% blocktrans %}See the <a href="{{ docs_url }}">API documentation</a> for how to push orders with your token.{% endblocktrans %}
     </p>
 </div>
 
