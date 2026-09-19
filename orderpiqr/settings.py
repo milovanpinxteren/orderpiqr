@@ -254,7 +254,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 50,
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-
+    # Applies to every API endpoint, but only requests authenticated with a
+    # hashed API token are counted (see api.throttling).
+    'DEFAULT_THROTTLE_CLASSES': [
+        'api.throttling.HashedTokenRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'hashed_token': env('API_TOKEN_THROTTLE_RATE', default='240/min'),
+    },
 }
 
 SPECTACULAR_SETTINGS = {
