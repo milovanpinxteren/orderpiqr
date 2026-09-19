@@ -1,0 +1,102 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Integration settings" %}{% endblock %}
+{% block page_title %}{{ connection.name|default:connection.get_platform_display }}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% trans "Sync settings for this connection" %}</p>{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <form method="post" class="card">
+        {% csrf_token %}
+        <div class="card-header">
+            <h3>{% trans "Sync settings" %}</h3>
+        </div>
+        <div class="card-body">
+            <div class="settings-list">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label" for="auto_queue">{% trans "Queue orders automatically" %}</label>
+                        <p class="setting-help">{% trans "Imported orders go straight into the picking queue. When off, they arrive as drafts." %}</p>
+                    </div>
+                    <div class="setting-input">
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="auto_queue" id="auto_queue"
+                                   {% if config.auto_queue %}checked{% endif %}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label" for="fulfill_on_complete">{% trans "Complete orders in the webshop" %}</label>
+                        <p class="setting-help">{% trans "When a pick is finished, the order is marked as completed in your webshop." %}</p>
+                    </div>
+                    <div class="setting-input">
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="fulfill_on_complete" id="fulfill_on_complete"
+                                   {% if config.fulfill_on_complete %}checked{% endif %}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label" for="fulfill_status">{% trans "Order status after picking" %}</label>
+                        <p class="setting-help">{% trans "The WooCommerce status set when a pick is finished. Default: completed." %}</p>
+                    </div>
+                    <div class="setting-input">
+                        <input type="text" class="form-control" name="fulfill_status" id="fulfill_status"
+                               value="{{ config.fulfill_status }}" placeholder="completed">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="form-actions">
+                <a href="{% url 'manage_integrations' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+                <button type="submit" class="btn btn-primary">{% trans "Save Settings" %}</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+.settings-container { max-width: 800px; }
+.settings-list { display: flex; flex-direction: column; }
+.setting-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg) 0;
+    border-bottom: 1px solid var(--border-color);
+}
+.setting-item:first-child { padding-top: 0; }
+.setting-item:last-child { border-bottom: none; padding-bottom: 0; }
+.setting-info { flex: 1; min-width: 0; }
+.setting-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 4px;
+}
+.setting-help { font-size: 0.875rem; color: var(--text-secondary); margin: 0; }
+.setting-input { flex: 0 0 250px; }
+.setting-input .form-control { width: 100%; }
+.toggle-switch { position: relative; display: inline-block; width: 48px; height: 26px; margin: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+    position: absolute; cursor: pointer; inset: 0;
+    background-color: var(--gray-300); transition: .3s; border-radius: 26px;
+}
+.toggle-slider:before {
+    position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px;
+    background-color: white; transition: .3s; border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.toggle-switch input:checked + .toggle-slider { background-color: var(--primary); }
+.toggle-switch input:checked + .toggle-slider:before { transform: translateX(22px); }
+.form-actions { display: flex; justify-content: flex-end; gap: var(--spacing-sm); }
+</style>
+{% endblock %}
