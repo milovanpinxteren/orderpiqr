@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     'api',
     'integrations',
     'integrations_shopify',
+    'integrations_woocommerce',
     'statici18n',
     'loginas',
     'rest_framework',
@@ -286,6 +287,10 @@ All endpoints require JWT authentication. Obtain a token via `POST /api/token/` 
         {'name': 'orderlines', 'description': 'Order lines - individual items within an order'},
     ]
 }
+
+# Public base URL of this app, used for webhook delivery URLs handed to
+# external platforms. Override in DEBUG for tunnels / host.docker.internal.
+APP_BASE_URL = env('APP_BASE_URL', default='https://app.orderpiqr.nl').rstrip('/')
 
 # Shopify app credentials (from the Partner dashboard / shopify.app.toml)
 SHOPIFY_API_KEY = env('SHOPIFY_API_KEY', default='')
