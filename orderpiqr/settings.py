@@ -44,8 +44,9 @@ DEMO_USER_PASSWORD = env('DEMO_USER_PASSWORD', default=None)
 
 ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', 'app.orderpiqr.nl']
 if DEBUG:
-    # `shopify app dev` tunnels (cloudflare) reach the local dev server
-    ALLOWED_HOSTS += ['127.0.0.1', '.trycloudflare.com']
+    # `shopify app dev` tunnels (cloudflare) reach the local dev server;
+    # host.docker.internal lets a Dockerised WooCommerce store reach it too
+    ALLOWED_HOSTS += ['127.0.0.1', '.trycloudflare.com', 'host.docker.internal']
     CSRF_TRUSTED_ORIGINS = ['https://*.trycloudflare.com']
 
 LOGIN_URL = '/login/'  # Adjust this URL to match your login view or URL pattern
