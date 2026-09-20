@@ -61,7 +61,6 @@
 
         function claimOrder(orderId, button) {
             console.log('[Queue Picker] claimOrder called with orderId:', orderId);
-            alert('Claiming order: ' + orderId);  // Temporary alert for debugging
 
             try {
                 button.disabled = true;
@@ -127,7 +126,7 @@
                 });
             } catch (e) {
                 console.error('[Queue Picker] Exception in claimOrder:', e);
-                alert('Error: ' + e.message);
+                showNotification('{% trans "Error claiming order" %}', true);
             }
         }
 

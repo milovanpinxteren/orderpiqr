@@ -77,6 +77,9 @@ urlpatterns = [
     # Shopify app (embedded console + webhooks); outside i18n, session-token auth
     path('shopify/', include('integrations_shopify.urls')),
 
+    # WooCommerce plugin endpoints (connect/webhooks/status); outside i18n
+    path('woocommerce/', include('integrations_woocommerce.urls')),
+
     # Shorthand: /manage/... -> /orderpiqr/manage/... (LocaleMiddleware then adds
     # the language prefix), so hand-typed manage URLs don't 404
     path('manage/', RedirectView.as_view(url='/orderpiqr/manage/', query_string=True)),

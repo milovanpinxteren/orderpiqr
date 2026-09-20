@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 09:10+0200\n"
+"POT-Creation-Date: 2026-09-19 16:09+0200\n"
 "PO-Revision-Date: 2025-08-08 14:00+0200\n"
 "Last-Translator: Milo van Pinxteren <milo@example.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -109,6 +109,7 @@ msgstr "Externe orderkoppelingen"
 
 #: .\orderpiqrApp\admin\email_admin.py:33 .\orderpiqrApp\models\orders.py:23
 #: .\templates\manage\dashboard.html:208
+#: .\templates\manage\integrations\list.html:26
 #: .\templates\manage\orders\list.html:95
 #: .\templates\manage\picklists\detail.html:102
 #: .\templates\manage\picklists\list.html:34
@@ -149,17 +150,18 @@ msgid "Change"
 msgstr "Wijziging"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
-#: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:9
+#: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
 #: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:110
 #: .\templates\manage\inventory\logs.html:80
 #: .\templates\manage\products\form.html:123
 #: .\templates\manage\products\form.html:163
 #: .\templates\manage\profile.html:165
+#: .\templates\manage\settings\api_tokens.html:51
 msgid "User"
 msgstr "Gebruiker"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:65
-#: .\orderpiqrApp\models\devices.py:19 .\orderpiqrApp\models\inventory.py:45
+#: .\orderpiqrApp\models\devices.py:27 .\orderpiqrApp\models\inventory.py:45
 #: .\orderpiqrApp\models\picklists.py:14
 #: .\templates\manage\picklists\detail.html:42
 #: .\templates\manage\picklists\list.html:32
@@ -213,7 +215,7 @@ msgid "%(count)s order(s) removed from queue."
 msgstr "%(count)s order(s) verwijderd uit wachtrij."
 
 #: .\orderpiqrApp\admin\order_admin.py:124
-#: .\orderpiqrApp\admin\order_admin.py:328
+#: .\orderpiqrApp\admin\order_admin.py:328 .\orderpiqr\views.py:158
 msgid "Your account is not linked to a customer."
 msgstr "Uw account is niet gekoppeld aan een klant."
 
@@ -319,12 +321,12 @@ msgstr "Het product \"%(description)s\" is succesvol toegevoegd."
 msgid "User is not allowed to save products."
 msgstr "Gebruiker mag geen producten opslaan."
 
-#: .\orderpiqrApp\models\customers.py:8 .\orderpiqrApp\models\devices.py:12
+#: .\orderpiqrApp\models\customers.py:8 .\orderpiqrApp\models\devices.py:20
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 msgid "Name"
 msgstr "Naam"
 
-#: .\orderpiqrApp\models\customers.py:9 .\orderpiqrApp\models\devices.py:13
+#: .\orderpiqrApp\models\customers.py:9 .\orderpiqrApp\models\devices.py:21
 #: .\orderpiqrApp\models\products.py:10 .\templates\index.html:92
 #: .\templates\manage\orders\import.html:59
 #: .\templates\manage\products\form.html:28
@@ -335,7 +337,7 @@ msgid "Description"
 msgstr "Omschrijving"
 
 #: .\orderpiqrApp\models\customers.py:12 .\orderpiqrApp\models\customers.py:21
-#: .\orderpiqrApp\models\devices.py:14 .\orderpiqrApp\models\orders.py:18
+#: .\orderpiqrApp\models\devices.py:22 .\orderpiqrApp\models\orders.py:18
 #: .\orderpiqrApp\models\picklists.py:11
 #: .\orderpiqrApp\models\preferences.py:68
 #: .\orderpiqrApp\models\products.py:12
@@ -354,19 +356,19 @@ msgstr "Gebruikersprofiel"
 msgid "User Profiles"
 msgstr "Gebruikersprofielen"
 
-#: .\orderpiqrApp\models\devices.py:11
+#: .\orderpiqrApp\models\devices.py:19
 msgid "Device Fingerprint"
 msgstr "Apparaatvingerafdruk"
 
-#: .\orderpiqrApp\models\devices.py:15 .\templates\manage\profile.html:174
+#: .\orderpiqrApp\models\devices.py:23 .\templates\manage\profile.html:174
 msgid "Last Login"
 msgstr "Laatste login"
 
-#: .\orderpiqrApp\models\devices.py:16
+#: .\orderpiqrApp\models\devices.py:24
 msgid "Lists Picked"
 msgstr "Lijsten gepickt"
 
-#: .\orderpiqrApp\models\devices.py:20 .\templates\manage\base.html:113
+#: .\orderpiqrApp\models\devices.py:28 .\templates\manage\base.html:113
 #: .\templates\manage\devices\list.html:4
 #: .\templates\manage\devices\list.html:5
 msgid "Devices"
@@ -735,6 +737,7 @@ msgid "Additional description or guidance for this setting."
 msgstr "Extra beschrijving of toelichting voor deze instelling."
 
 #: .\orderpiqrApp\models\preferences.py:27
+#: .\templates\manage\settings\api_tokens.html:52
 msgid "Type"
 msgstr "Type"
 
@@ -880,59 +883,89 @@ msgstr ""
 "We ondervinden technische problemen. Probeer het over enkele ogenblikken "
 "opnieuw."
 
-#: .\orderpiqrApp\views\inventory_views.py:39
+#: .\orderpiqrApp\views\integration_views.py:32
+#: .\orderpiqrApp\views\integration_views.py:71
+#: .\orderpiqrApp\views\integration_views.py:158
+#: .\orderpiqrApp\views\manage_views.py:71
+msgid "No customer profile found for your account."
+msgstr "Geen klantprofiel gevonden voor uw account."
+
+#: .\orderpiqrApp\views\integration_views.py:87
+msgid "Integration paused. Incoming orders are on hold until you resume it."
+msgstr ""
+"Integratie gepauzeerd. Inkomende orders worden vastgehouden totdat u de "
+"integratie hervat."
+
+#: .\orderpiqrApp\views\integration_views.py:91
+msgid "Integration resumed."
+msgstr "Integratie hervat."
+
+#: .\orderpiqrApp\views\integration_views.py:109
+msgid "Integration disconnected."
+msgstr "Integratie losgekoppeld."
+
+#: .\orderpiqrApp\views\integration_views.py:131
+msgid "Integration settings saved."
+msgstr "Integratie-instellingen opgeslagen."
+
+#: .\orderpiqrApp\views\integration_views.py:175
+msgid "API token created. Copy it now – it will not be shown again."
+msgstr ""
+"API-token aangemaakt. Kopieer het nu – het wordt niet opnieuw getoond."
+
+#: .\orderpiqrApp\views\integration_views.py:181
+msgid "API token revoked."
+msgstr "API-token ingetrokken."
+
+#: .\orderpiqrApp\views\inventory_views.py:28
 msgid "No customer profile found"
 msgstr "Geen klantprofiel gevonden"
 
-#: .\orderpiqrApp\views\inventory_views.py:42
+#: .\orderpiqrApp\views\inventory_views.py:31
 msgid "Inventory management is not enabled"
 msgstr "Voorraadbeheer is niet ingeschakeld"
 
-#: .\orderpiqrApp\views\inventory_views.py:78
-#: .\orderpiqrApp\views\inventory_views.py:116
-#: .\orderpiqrApp\views\inventory_views.py:162
+#: .\orderpiqrApp\views\inventory_views.py:67
+#: .\orderpiqrApp\views\inventory_views.py:105
+#: .\orderpiqrApp\views\inventory_views.py:151
 msgid "No customer found"
 msgstr "Geen klant gevonden"
 
-#: .\orderpiqrApp\views\inventory_views.py:81
-#: .\orderpiqrApp\views\inventory_views.py:119
-#: .\orderpiqrApp\views\inventory_views.py:165
+#: .\orderpiqrApp\views\inventory_views.py:70
+#: .\orderpiqrApp\views\inventory_views.py:108
+#: .\orderpiqrApp\views\inventory_views.py:154
 msgid "Inventory management not enabled"
 msgstr "Voorraadbeheer niet ingeschakeld"
 
-#: .\orderpiqrApp\views\inventory_views.py:140
-#: .\orderpiqrApp\views\inventory_views.py:201
+#: .\orderpiqrApp\views\inventory_views.py:129
+#: .\orderpiqrApp\views\inventory_views.py:190
 #: .\templates\inventory\picker.html:212
 msgid "Product not found"
 msgstr "Product niet gevonden"
 
-#: .\orderpiqrApp\views\inventory_views.py:170
+#: .\orderpiqrApp\views\inventory_views.py:159
 msgid "Invalid request"
 msgstr "Ongeldige aanvraag"
 
-#: .\orderpiqrApp\views\inventory_views.py:180
+#: .\orderpiqrApp\views\inventory_views.py:169
 msgid "Missing required fields"
 msgstr "Verplichte velden ontbreken"
 
-#: .\orderpiqrApp\views\inventory_views.py:184
+#: .\orderpiqrApp\views\inventory_views.py:173
 msgid "Invalid change type"
 msgstr "Ongeldig wijzigingstype"
 
-#: .\orderpiqrApp\views\inventory_views.py:188
+#: .\orderpiqrApp\views\inventory_views.py:177
 msgid "Invalid reason"
 msgstr "Ongeldige reden"
 
-#: .\orderpiqrApp\views\inventory_views.py:193
+#: .\orderpiqrApp\views\inventory_views.py:182
 msgid "Value must be a number"
 msgstr "Waarde moet een getal zijn"
 
-#: .\orderpiqrApp\views\inventory_views.py:217
+#: .\orderpiqrApp\views\inventory_views.py:206
 msgid "Inventory updated"
 msgstr "Voorraad bijgewerkt"
-
-#: .\orderpiqrApp\views\manage_views.py:71
-msgid "No customer profile found for your account."
-msgstr "Geen klantprofiel gevonden voor uw account."
 
 #: .\orderpiqrApp\views\manage_views.py:218
 #: .\orderpiqrApp\views\manage_views.py:272
@@ -1281,103 +1314,103 @@ msgstr "Product niet gevonden."
 msgid "You have been logged out successfully."
 msgstr "U bent succesvol uitgelogd."
 
-#: .\orderpiqrApp\views\queue_views.py:175
+#: .\orderpiqrApp\views\queue_views.py:164
 msgid "No customer profile"
 msgstr "Geen klantprofiel"
 
-#: .\orderpiqrApp\views\queue_views.py:203
+#: .\orderpiqrApp\views\queue_views.py:183
 msgid "Device not found. Please log in again."
 msgstr "Apparaat niet gevonden. Log opnieuw in."
 
-#: .\orderpiqrApp\views\queue_views.py:222
+#: .\orderpiqrApp\views\queue_views.py:199
 msgid "This order is already being picked"
 msgstr "Deze order wordt al gepickt"
 
-#: .\orderpiqrApp\views\queue_views.py:237
+#: .\orderpiqrApp\views\queue_views.py:214
 msgid "This order has already been completed"
 msgstr "Deze order is al voltooid"
 
-#: .\orderpiqrApp\views\queue_views.py:243
+#: .\orderpiqrApp\views\queue_views.py:220
 msgid "This order is not available for picking"
 msgstr "Deze order is niet beschikbaar om te picken"
 
-#: .\orderpiqrApp\views\queue_views.py:290
+#: .\orderpiqrApp\views\queue_views.py:263
 msgid "Order claimed successfully"
 msgstr "Order succesvol geclaimd"
 
-#: .\orderpiqrApp\views\queue_views.py:299
-#: .\orderpiqrApp\views\queue_views.py:405
-#: .\orderpiqrApp\views\queue_views.py:439
-#: .\orderpiqrApp\views\queue_views.py:529
-#: .\orderpiqrApp\views\queue_views.py:572
+#: .\orderpiqrApp\views\queue_views.py:272
+#: .\orderpiqrApp\views\queue_views.py:378
+#: .\orderpiqrApp\views\queue_views.py:412
+#: .\orderpiqrApp\views\queue_views.py:502
+#: .\orderpiqrApp\views\queue_views.py:545
 msgid "Order not found"
 msgstr "Order niet gevonden"
 
-#: .\orderpiqrApp\views\queue_views.py:374
-#: .\orderpiqrApp\views\queue_views.py:414
-#: .\orderpiqrApp\views\queue_views.py:450
-#: .\orderpiqrApp\views\queue_views.py:488
-#: .\orderpiqrApp\views\queue_views.py:538
+#: .\orderpiqrApp\views\queue_views.py:347
+#: .\orderpiqrApp\views\queue_views.py:387
+#: .\orderpiqrApp\views\queue_views.py:423
+#: .\orderpiqrApp\views\queue_views.py:461
+#: .\orderpiqrApp\views\queue_views.py:511
 msgid "No customer"
 msgstr "Geen klant"
 
-#: .\orderpiqrApp\views\queue_views.py:386
+#: .\orderpiqrApp\views\queue_views.py:359
 msgid "Only draft orders can be added to queue"
 msgstr "Alleen conceptorders kunnen aan de wachtrij worden toegevoegd"
 
-#: .\orderpiqrApp\views\queue_views.py:401
+#: .\orderpiqrApp\views\queue_views.py:374
 #: .\templates\manage\orders\list.html:269
 #: .\templates\manage\queue\list.html:441 .\templates\queue\manage.html:172
 msgid "Order added to queue"
 msgstr "Order toegevoegd aan wachtrij"
 
-#: .\orderpiqrApp\views\queue_views.py:426
+#: .\orderpiqrApp\views\queue_views.py:399
 msgid "Order is not in queue"
 msgstr "Order staat niet in de wachtrij"
 
-#: .\orderpiqrApp\views\queue_views.py:435
+#: .\orderpiqrApp\views\queue_views.py:408
 #: .\templates\manage\queue\list.html:459 .\templates\queue\manage.html:190
 msgid "Order removed from queue"
 msgstr "Order uit wachtrij verwijderd"
 
-#: .\orderpiqrApp\views\queue_views.py:456
+#: .\orderpiqrApp\views\queue_views.py:429
 msgid "Invalid JSON"
 msgstr "Ongeldige JSON"
 
-#: .\orderpiqrApp\views\queue_views.py:459
+#: .\orderpiqrApp\views\queue_views.py:432
 msgid "No order IDs provided"
 msgstr "Geen order-ID's opgegeven"
 
-#: .\orderpiqrApp\views\queue_views.py:472
+#: .\orderpiqrApp\views\queue_views.py:445
 msgid "Queue reordered"
 msgstr "Wachtrijvolgorde aangepast"
 
-#: .\orderpiqrApp\views\queue_views.py:478
+#: .\orderpiqrApp\views\queue_views.py:451
 msgid "Error reordering: {}"
 msgstr "Fout bij het herordenen: {}"
 
-#: .\orderpiqrApp\views\queue_views.py:491
+#: .\orderpiqrApp\views\queue_views.py:464
 msgid "Invalid direction"
 msgstr "Ongeldige richting"
 
-#: .\orderpiqrApp\views\queue_views.py:525
+#: .\orderpiqrApp\views\queue_views.py:498
 msgid "Order moved up"
 msgstr "Order omhoog verplaatst"
 
-#: .\orderpiqrApp\views\queue_views.py:525
+#: .\orderpiqrApp\views\queue_views.py:498
 msgid "Order moved down"
 msgstr "Order omlaag verplaatst"
 
-#: .\orderpiqrApp\views\queue_views.py:550
+#: .\orderpiqrApp\views\queue_views.py:523
 msgid "Order is not in progress"
 msgstr "Order is niet in behandeling"
 
-#: .\orderpiqrApp\views\queue_views.py:568
+#: .\orderpiqrApp\views\queue_views.py:541
 #: .\templates\manage\queue\list.html:478
 msgid "Order unlocked"
 msgstr "Order ontgrendeld"
 
-#: .\orderpiqr\views.py:39
+#: .\orderpiqr\views.py:44
 msgid "No account found with this email address."
 msgstr "Geen account gevonden met dit e-mailadres."
 
@@ -1554,7 +1587,7 @@ msgstr "Vaste scanvolgorde"
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
-#: .\templates\index.html:104 .\templates\manage\base.html:221
+#: .\templates\index.html:104 .\templates\manage\base.html:234
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
 msgstr "Log uit"
@@ -1667,7 +1700,7 @@ msgid "Error updating inventory"
 msgstr "Fout bij bijwerken voorraad"
 
 #: .\templates\manage\base.html:8 .\templates\manage\base.html:58
-#: .\templates\manage\base.html:178 .\templates\manage\dashboard.html:4
+#: .\templates\manage\base.html:191 .\templates\manage\dashboard.html:4
 #: .\templates\manage\dashboard.html:5
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -1692,26 +1725,39 @@ msgstr "Operaties"
 msgid "Developer"
 msgstr "Ontwikkelaar"
 
-#: .\templates\manage\base.html:124
+#: .\templates\manage\base.html:123
+#: .\templates\manage\settings\api_tokens.html:4
+#: .\templates\manage\settings\api_tokens.html:5
+msgid "API Tokens"
+msgstr "API-tokens"
+
+#: .\templates\manage\base.html:130
 msgid "API Docs"
 msgstr "API-documentatie"
 
-#: .\templates\manage\base.html:131
+#: .\templates\manage\base.html:137
 msgid "API Reference"
 msgstr "API-referentie"
 
-#: .\templates\manage\base.html:136 .\templates\manage\base.html:142
-#: .\templates\manage\base.html:219 .\templates\manage\settings.html:4
-#: .\templates\manage\settings.html:5
+#: .\templates\manage\base.html:142 .\templates\manage\base.html:155
+#: .\templates\manage\base.html:232
+#: .\templates\manage\integrations\list.html:57
+#: .\templates\manage\settings.html:4 .\templates\manage\settings.html:5
 msgid "Settings"
 msgstr "Instellingen"
 
-#: .\templates\manage\base.html:149 .\templates\manage\base.html:218
+#: .\templates\manage\base.html:148
+#: .\templates\manage\integrations\list.html:4
+#: .\templates\manage\integrations\list.html:5
+msgid "Integrations"
+msgstr "Integraties"
+
+#: .\templates\manage\base.html:162 .\templates\manage\base.html:231
 #: .\templates\manage\profile.html:4 .\templates\manage\profile.html:5
 msgid "Profile"
 msgstr "Profiel"
 
-#: .\templates\manage\base.html:171
+#: .\templates\manage\base.html:184
 msgid "Open menu"
 msgstr "Menu openen"
 
@@ -1834,6 +1880,7 @@ msgstr "Bekijk alles"
 #: .\templates\manage\orders\list.html:96
 #: .\templates\manage\picklists\detail.html:62
 #: .\templates\manage\picklists\list.html:35
+#: .\templates\manage\settings\api_tokens.html:53
 msgid "Created"
 msgstr "Aangemaakt"
 
@@ -1935,6 +1982,209 @@ msgstr "Het apparaat wordt automatisch geregistreerd"
 msgid "They can then claim orders from the queue"
 msgstr "Ze kunnen dan orders claimen uit de wachtrij"
 
+#: .\templates\manage\integrations\config.html:4
+msgid "Integration settings"
+msgstr "Integratie-instellingen"
+
+#: .\templates\manage\integrations\config.html:6
+msgid "Sync settings for this connection"
+msgstr "Synchronisatie-instellingen voor deze koppeling"
+
+#: .\templates\manage\integrations\config.html:13
+#: .\templates\shopify\app.html:129
+msgid "Sync settings"
+msgstr "Synchronisatie-instellingen"
+
+#: .\templates\manage\integrations\config.html:19
+msgid "Queue orders automatically"
+msgstr "Orders automatisch in de wachtrij plaatsen"
+
+#: .\templates\manage\integrations\config.html:20
+msgid ""
+"Imported orders go straight into the picking queue. When off, they arrive as"
+" drafts."
+msgstr ""
+"Geïmporteerde orders gaan direct naar de pickwachtrij. Indien uitgeschakeld "
+"komen ze binnen als concept."
+
+#: .\templates\manage\integrations\config.html:32
+msgid "Complete orders in the webshop"
+msgstr "Orders voltooien in de webshop"
+
+#: .\templates\manage\integrations\config.html:33
+msgid ""
+"When a pick is finished, the order is marked as completed in your webshop."
+msgstr ""
+"Wanneer een pick is afgerond, wordt de order in uw webshop als voltooid "
+"gemarkeerd."
+
+#: .\templates\manage\integrations\config.html:45
+msgid "Order status after picking"
+msgstr "Orderstatus na het picken"
+
+#: .\templates\manage\integrations\config.html:46
+msgid ""
+"The WooCommerce status set when a pick is finished. Default: completed."
+msgstr ""
+"De WooCommerce-status die wordt ingesteld wanneer een pick is afgerond. "
+"Standaard: completed."
+
+#: .\templates\manage\integrations\config.html:57
+#: .\templates\manage\inventory\add_correction.html:72
+#: .\templates\manage\inventory\logs.html:62
+#: .\templates\manage\orders\form.html:126
+#: .\templates\manage\orders\import.html:34
+#: .\templates\manage\orders\list.html:212
+#: .\templates\manage\products\form.html:61
+#: .\templates\manage\products\import.html:34
+#: .\templates\manage\products\list.html:224
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: .\templates\manage\integrations\config.html:58
+#: .\templates\manage\settings.html:77
+msgid "Save Settings"
+msgstr "Instellingen opslaan"
+
+#: .\templates\manage\integrations\list.html:6
+msgid "Connect your webshop and sync orders automatically"
+msgstr "Koppel uw webshop en synchroniseer orders automatisch"
+
+#: .\templates\manage\integrations\list.html:11
+#: .\templates\manage\integrations\list.html:93
+#: .\templates\manage\integrations\pairing_key.html:4
+#: .\templates\manage\integrations\pairing_key.html:5
+msgid "Connect WooCommerce"
+msgstr "WooCommerce koppelen"
+
+#: .\templates\manage\integrations\list.html:24
+msgid "Store"
+msgstr "Winkel"
+
+#: .\templates\manage\integrations\list.html:25
+msgid "Platform"
+msgstr "Platform"
+
+#: .\templates\manage\integrations\list.html:27
+msgid "Orders synced"
+msgstr "Orders gesynchroniseerd"
+
+#: .\templates\manage\integrations\list.html:28
+msgid "Products linked"
+msgstr "Producten gekoppeld"
+
+#: .\templates\manage\integrations\list.html:29
+msgid "Last event"
+msgstr "Laatste gebeurtenis"
+
+#: .\templates\manage\integrations\list.html:30
+#: .\templates\manage\orders\list.html:97
+#: .\templates\manage\picklists\list.html:36
+#: .\templates\manage\products\list.html:103
+#: .\templates\manage\settings\api_tokens.html:54
+msgid "Actions"
+msgstr "Acties"
+
+#: .\templates\manage\integrations\list.html:53
+msgid "Manage in Shopify"
+msgstr "Beheren in Shopify"
+
+#: .\templates\manage\integrations\list.html:62
+msgid "Pause"
+msgstr "Pauzeren"
+
+#: .\templates\manage\integrations\list.html:64
+msgid "Resume"
+msgstr "Hervatten"
+
+#: .\templates\manage\integrations\list.html:68
+msgid "Disconnect this store? Orders will no longer be imported."
+msgstr "Deze winkel loskoppelen? Orders worden dan niet meer geïmporteerd."
+
+#: .\templates\manage\integrations\list.html:70
+msgid "Disconnect"
+msgstr "Loskoppelen"
+
+#: .\templates\manage\integrations\list.html:89
+msgid "No integrations yet"
+msgstr "Nog geen integraties"
+
+#: .\templates\manage\integrations\list.html:90
+msgid ""
+"Connect your WooCommerce store to import orders into the picking queue "
+"automatically."
+msgstr ""
+"Koppel uw WooCommerce-winkel om orders automatisch in de pickwachtrij te "
+"importeren."
+
+#: .\templates\manage\integrations\list.html:96
+msgid ""
+"Using Shopify? Install the OrderPiqr app from the Shopify App Store instead."
+msgstr ""
+"Gebruikt u Shopify? Installeer dan de OrderPiqr-app uit de Shopify App "
+"Store."
+
+#: .\templates\manage\integrations\pairing_key.html:6
+msgid "Pair your WooCommerce store with OrderPiqr"
+msgstr "Koppel uw WooCommerce-winkel aan OrderPiqr"
+
+#: .\templates\manage\integrations\pairing_key.html:12
+msgid "Your pairing key"
+msgstr "Uw koppelsleutel"
+
+#: .\templates\manage\integrations\pairing_key.html:16
+msgid ""
+"This key is shown only once and expires in 24 hours. It can be used a single"
+" time."
+msgstr ""
+"Deze sleutel wordt maar één keer getoond en verloopt na 24 uur. De sleutel "
+"is eenmalig te gebruiken."
+
+#: .\templates\manage\integrations\pairing_key.html:21
+#: .\templates\manage\settings\api_tokens.html:19
+msgid "Copy"
+msgstr "Kopiëren"
+
+#: .\templates\manage\integrations\pairing_key.html:27
+msgid "Install the plugin"
+msgstr "Installeer de plugin"
+
+#: .\templates\manage\integrations\pairing_key.html:28
+msgid ""
+"In your WordPress admin, go to Plugins → Add New and install the “OrderPiqr”"
+" plugin from WordPress.org."
+msgstr ""
+"Ga in uw WordPress-beheer naar Plugins → Nieuwe plugin en installeer de "
+"“OrderPiqr”-plugin van WordPress.org."
+
+#: .\templates\manage\integrations\pairing_key.html:31
+msgid "Open the OrderPiqr settings"
+msgstr "Open de OrderPiqr-instellingen"
+
+#: .\templates\manage\integrations\pairing_key.html:32
+msgid "Go to WooCommerce → OrderPiqr in your WordPress admin."
+msgstr "Ga naar WooCommerce → OrderPiqr in uw WordPress-beheer."
+
+#: .\templates\manage\integrations\pairing_key.html:35
+msgid "Paste the pairing key"
+msgstr "Plak de koppelsleutel"
+
+#: .\templates\manage\integrations\pairing_key.html:36
+msgid ""
+"Paste the key above and click Connect. Your products and open orders will "
+"start syncing automatically."
+msgstr ""
+"Plak de bovenstaande sleutel en klik op Verbinden. Uw producten en "
+"openstaande orders worden daarna automatisch gesynchroniseerd."
+
+#: .\templates\manage\integrations\pairing_key.html:41
+msgid "Back to integrations"
+msgstr "Terug naar integraties"
+
+#: .\templates\manage\integrations\pairing_key.html:80
+msgid "Pairing key copied to clipboard"
+msgstr "Koppelsleutel gekopieerd naar klembord"
+
 #: .\templates\manage\inventory\add_correction.html:4
 #: .\templates\manage\inventory\add_correction.html:5
 msgid "Add Inventory Correction"
@@ -1972,17 +2222,6 @@ msgstr "Voer aantal in"
 #: .\templates\manage\inventory\add_correction.html:68
 msgid "Add any additional notes..."
 msgstr "Voeg extra notities toe..."
-
-#: .\templates\manage\inventory\add_correction.html:72
-#: .\templates\manage\inventory\logs.html:62
-#: .\templates\manage\orders\form.html:126
-#: .\templates\manage\orders\import.html:34
-#: .\templates\manage\orders\list.html:212
-#: .\templates\manage\products\form.html:61
-#: .\templates\manage\products\import.html:34
-#: .\templates\manage\products\list.html:224
-msgid "Cancel"
-msgstr "Annuleren"
 
 #: .\templates\manage\inventory\add_correction.html:73
 #: .\templates\manage\inventory\logs.html:13
@@ -2321,12 +2560,6 @@ msgstr "Verwijderen"
 #: .\templates\queue\_order_cards.html:24 .\templates\shopify\app.html:212
 msgid "Items"
 msgstr "Items"
-
-#: .\templates\manage\orders\list.html:97
-#: .\templates\manage\picklists\list.html:36
-#: .\templates\manage\products\list.html:103
-msgid "Actions"
-msgstr "Acties"
 
 #: .\templates\manage\orders\list.html:134
 #: .\templates\manage\products\list.html:149
@@ -2886,9 +3119,68 @@ msgstr "Geen instellingen geconfigureerd"
 msgid "There are no configurable settings available yet."
 msgstr "Er zijn nog geen configureerbare instellingen beschikbaar."
 
-#: .\templates\manage\settings.html:77
-msgid "Save Settings"
-msgstr "Instellingen opslaan"
+#: .\templates\manage\settings\api_tokens.html:6
+msgid "Tokens for connecting external systems to the OrderPiqr API"
+msgstr "Tokens om externe systemen met de OrderPiqr-API te verbinden"
+
+#: .\templates\manage\settings\api_tokens.html:13
+msgid "Your new API token"
+msgstr "Uw nieuwe API-token"
+
+#: .\templates\manage\settings\api_tokens.html:16
+msgid "Copy this token now – it will not be shown again."
+msgstr "Kopieer dit token nu – het wordt niet opnieuw getoond."
+
+#: .\templates\manage\settings\api_tokens.html:22
+msgid "Send it in the Authorization header:"
+msgstr "Stuur het mee in de Authorization-header:"
+
+#: .\templates\manage\settings\api_tokens.html:30
+msgid "Active tokens"
+msgstr "Actieve tokens"
+
+#: .\templates\manage\settings\api_tokens.html:40
+msgid ""
+"Creating a token replaces your existing token of the same type. Continue?"
+msgstr ""
+"Als u een token aanmaakt, vervangt dit uw bestaande token van hetzelfde "
+"type. Doorgaan?"
+
+#: .\templates\manage\settings\api_tokens.html:41
+msgid "Create token"
+msgstr "Token aanmaken"
+
+#: .\templates\manage\settings\api_tokens.html:65
+msgid "Revoke this token? Systems using it will lose access immediately."
+msgstr ""
+"Dit token intrekken? Systemen die het gebruiken verliezen direct toegang."
+
+#: .\templates\manage\settings\api_tokens.html:69
+msgid "Revoke"
+msgstr "Intrekken"
+
+#: .\templates\manage\settings\api_tokens.html:79
+msgid "No API tokens"
+msgstr "Geen API-tokens"
+
+#: .\templates\manage\settings\api_tokens.html:80
+msgid "Create a token to let external systems push orders to OrderPiqr."
+msgstr ""
+"Maak een token aan zodat externe systemen orders naar OrderPiqr kunnen "
+"sturen."
+
+#: .\templates\manage\settings\api_tokens.html:88
+#, python-format
+msgid ""
+"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push "
+"orders with your token."
+msgstr ""
+"Zie de <a href=\"%(docs_url)s\">API-documentatie</a> voor het aanleveren van"
+" orders met uw token."
+
+#: .\templates\manage\settings\api_tokens.html:129
+msgid "Token copied to clipboard"
+msgstr "Token gekopieerd naar klembord"
 
 #: .\templates\offline.html:65
 msgid "You're offline"
@@ -2927,13 +3219,13 @@ msgstr "1 picken"
 msgid "No orders in queue"
 msgstr "Geen orders in de wachtrij"
 
-#: .\templates\queue\_picker_orders.html:35 .\templates\queue\picker.html:114
-#: .\templates\queue\picker.html:121
+#: .\templates\queue\_picker_orders.html:35 .\templates\queue\picker.html:119
+#: .\templates\queue\picker.html:126
 msgid "Start Picking"
 msgstr "Start met picken"
 
-#: .\templates\queue\_picker_orders.html:45 .\templates\queue\picker.html:160
-#: .\templates\queue\picker.html:166
+#: .\templates\queue\_picker_orders.html:45 .\templates\queue\picker.html:165
+#: .\templates\queue\picker.html:171
 msgid "Take Over"
 msgstr "Overnemen"
 
@@ -2969,7 +3261,7 @@ msgstr "Geen voltooide orders"
 msgid "Pick Queue"
 msgstr "Pickwachtrij"
 
-#: .\templates\queue\picker.html:68 .\templates\queue\picker.html:134
+#: .\templates\queue\picker.html:68 .\templates\queue\picker.html:139
 msgid "Claiming..."
 msgstr "Claimen..."
 
@@ -2977,11 +3269,11 @@ msgstr "Claimen..."
 msgid "Order claimed! Redirecting..."
 msgstr "Order geclaimd! Doorverwijzen..."
 
-#: .\templates\queue\picker.html:119 .\templates\queue\picker.html:164
+#: .\templates\queue\picker.html:124 .\templates\queue\picker.html:169
 msgid "Error claiming order"
 msgstr "Fout bij claimen order"
 
-#: .\templates\queue\picker.html:130
+#: .\templates\queue\picker.html:135
 msgid ""
 "This order is being picked by someone else. Are you sure you want to take it"
 " over? Their progress will be lost."
@@ -3412,10 +3704,6 @@ msgstr "Producten die gekoppeld moeten worden"
 msgid "Open the picker app"
 msgstr "Open de picker-app"
 
-#: .\templates\shopify\app.html:129
-msgid "Sync settings"
-msgstr "Synchronisatie-instellingen"
-
 #: .\templates\shopify\app.html:132
 msgid "Product matching"
 msgstr "Productmatching"
@@ -3607,3 +3895,7 @@ msgstr "Toegang voor pickers"
 #: .\templates\shopify\app.html:246
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr "Uw magazijnmedewerkers loggen met dit account in op de picker-app:"
+
+#, fuzzy
+#~ msgid "API documentation"
+#~ msgstr "Alle locaties"

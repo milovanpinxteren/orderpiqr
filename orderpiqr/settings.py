@@ -44,8 +44,9 @@ DEMO_USER_PASSWORD = env('DEMO_USER_PASSWORD', default=None)
 
 ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', 'app.orderpiqr.nl']
 if DEBUG:
-    # `shopify app dev` tunnels (cloudflare) reach the local dev server
-    ALLOWED_HOSTS += ['127.0.0.1', '.trycloudflare.com']
+    # `shopify app dev` tunnels (cloudflare) reach the local dev server;
+    # host.docker.internal lets a Dockerised WooCommerce store reach it too
+    ALLOWED_HOSTS += ['127.0.0.1', '.trycloudflare.com', 'host.docker.internal']
     CSRF_TRUSTED_ORIGINS = ['https://*.trycloudflare.com']
 
 LOGIN_URL = '/login/'  # Adjust this URL to match your login view or URL pattern
@@ -77,6 +78,7 @@ INSTALLED_APPS = [
     'api',
     'integrations',
     'integrations_shopify',
+    'integrations_woocommerce',
     'statici18n',
     'loginas',
     'rest_framework',
@@ -253,7 +255,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 50,
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-
+    # Applies to every API endpoint, but only requests authenticated with a
+    # hashed API token are counted (see api.throttling).
+    'DEFAULT_THROTTLE_CLASSES': [
+        'api.throttling.HashedTokenRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'hashed_token': env('API_TOKEN_THROTTLE_RATE', default='240/min'),
+    },
 }
 
 SPECTACULAR_SETTINGS = {
@@ -286,6 +295,10 @@ All endpoints require JWT authentication. Obtain a token via `POST /api/token/` 
         {'name': 'orderlines', 'description': 'Order lines - individual items within an order'},
     ]
 }
+
+# Public base URL of this app, used for webhook delivery URLs handed to
+# external platforms. Override in DEBUG for tunnels / host.docker.internal.
+APP_BASE_URL = env('APP_BASE_URL', default='https://app.orderpiqr.nl').rstrip('/')
 
 # Shopify app credentials (from the Partner dashboard / shopify.app.toml)
 SHOPIFY_API_KEY = env('SHOPIFY_API_KEY', default='')

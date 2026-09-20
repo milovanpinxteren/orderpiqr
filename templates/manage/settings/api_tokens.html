@@ -1,0 +1,133 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "API Tokens" %}{% endblock %}
+{% block page_title %}{% trans "API Tokens" %}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% trans "Tokens for connecting external systems to the OrderPiqr API" %}</p>{% endblock %}
+
+{% block content %}
+<div class="tokens-container">
+    {% if new_token %}
+    <div class="card new-token-card">
+        <div class="card-header">
+            <h3>{% trans "Your new API token" %}</h3>
+        </div>
+        <div class="card-body">
+            <p class="token-warning">{% trans "Copy this token now – it will not be shown again." %}</p>
+            <div class="token-row">
+                <code id="new-token" class="token-value">{{ new_token }}</code>
+                <button type="button" class="btn btn-secondary" onclick="copyToken()">{% trans "Copy" %}</button>
+            </div>
+            <p class="token-help">
+                {% trans "Send it in the Authorization header:" %} <code>Authorization: Token {{ new_token|slice:":12" }}…</code>
+            </p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <div class="card-header header-with-action">
+            <h3>{% trans "Active tokens" %}</h3>
+            <form method="post" class="create-form">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="create">
+                <select name="stage" class="form-control">
+                    {% for value, label in stages %}
+                    <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary"
+                        onclick="return confirm('{% trans "Creating a token replaces your existing token of the same type. Continue?" %}');">
+                    {% trans "Create token" %}
+                </button>
+            </form>
+        </div>
+        <div class="card-body no-padding">
+            {% if tokens %}
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "User" %}</th>
+                            <th>{% trans "Type" %}</th>
+                            <th>{% trans "Created" %}</th>
+                            <th class="actions-col">{% trans "Actions" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for token in tokens %}
+                        <tr>
+                            <td>{{ token.user.username }}</td>
+                            <td>{{ token.get_stage_display }}</td>
+                            <td>{{ token.created|date:"d M Y H:i" }}</td>
+                            <td class="actions-col">
+                                <form method="post" class="inline-form"
+                                      onsubmit="return confirm('{% trans "Revoke this token? Systems using it will lose access immediately." %}');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="revoke">
+                                    <input type="hidden" name="key_hash" value="{{ token.key_hash }}">
+                                    <button type="submit" class="btn btn-sm btn-danger">{% trans "Revoke" %}</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <h3>{% trans "No API tokens" %}</h3>
+                <p>{% trans "Create a token to let external systems push orders to OrderPiqr." %}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% url 'api-documentation' as docs_url %}
+    <p class="token-help docs-link">
+        {% blocktrans %}See the <a href="{{ docs_url }}">API documentation</a> for how to push orders with your token.{% endblocktrans %}
+    </p>
+</div>
+
+<style>
+.tokens-container { max-width: 800px; }
+.tokens-container .no-padding { padding: 0; }
+.tokens-container .table-wrapper { overflow-x: auto; }
+.tokens-container .inline-form { display: inline-block; }
+.tokens-container .actions-col { white-space: nowrap; }
+.header-with-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+}
+.create-form { display: flex; gap: var(--spacing-sm); align-items: center; }
+.new-token-card { margin-bottom: var(--spacing-lg); border-color: var(--primary); }
+.token-warning { color: var(--text-secondary); margin-bottom: var(--spacing-md); }
+.token-row {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+.token-value {
+    flex: 1;
+    padding: 12px 16px;
+    background: var(--gray-100);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    word-break: break-all;
+}
+.token-help { font-size: 0.875rem; color: var(--text-secondary); }
+.docs-link { margin-top: var(--spacing-md); }
+</style>
+
+<script>
+function copyToken() {
+    const token = document.getElementById('new-token').textContent.trim();
+    navigator.clipboard.writeText(token).then(() => {
+        showNotification("{% trans 'Token copied to clipboard' %}");
+    });
+}
+</script>
+{% endblock %}

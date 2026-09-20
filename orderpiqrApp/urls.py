@@ -58,6 +58,14 @@ from orderpiqrApp.views.manage_views import (
     inventory_add_correction,
     inventory_logs_bulk_delete,
 )
+from orderpiqrApp.views.integration_views import (
+    integrations_list,
+    integrations_connect_woocommerce,
+    integration_toggle,
+    integration_disconnect,
+    integration_config,
+    api_tokens,
+)
 from orderpiqrApp.views.inventory_views import (
     inventory_picker,
     inventory_product_search,
@@ -117,9 +125,21 @@ urlpatterns = [
     # Devices (Read-only)
     path('manage/devices/', devices_list, name='manage_devices'),
 
+    # Integrations
+    path('manage/integrations/', integrations_list, name='manage_integrations'),
+    path('manage/integrations/connect/woocommerce/', integrations_connect_woocommerce,
+         name='manage_integrations_connect_woocommerce'),
+    path('manage/integrations/<int:connection_id>/toggle/', integration_toggle,
+         name='manage_integration_toggle'),
+    path('manage/integrations/<int:connection_id>/disconnect/', integration_disconnect,
+         name='manage_integration_disconnect'),
+    path('manage/integrations/<int:connection_id>/config/', integration_config,
+         name='manage_integration_config'),
+
     # Profile & Settings
     path('manage/profile/', profile, name='manage_profile'),
     path('manage/settings/', settings_view, name='manage_settings'),
+    path('manage/settings/api-tokens/', api_tokens, name='manage_api_tokens'),
     path('manage/logout/', logout_view, name='manage_logout'),
 
     # Inventory Management (Admin)

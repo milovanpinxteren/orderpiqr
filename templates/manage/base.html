@@ -116,6 +116,12 @@
 
             <div class="nav-section">
                 <span class="nav-label">{% trans "Developer" %}</span>
+                <a href="{% url 'manage_api_tokens' %}" class="nav-item {% if active_nav == 'api_tokens' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+                    </svg>
+                    <span>{% trans "API Tokens" %}</span>
+                </a>
                 <a href="{% url 'swagger-ui' %}" class="nav-item {% if active_nav == 'api-docs' %}active{% endif %}" target="_blank">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="16 18 22 12 16 6"/>
@@ -134,6 +140,13 @@
 
             <div class="nav-section">
                 <span class="nav-label">{% trans "Settings" %}</span>
+                <a href="{% url 'manage_integrations' %}" class="nav-item {% if active_nav == 'integrations' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+                        <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+                    </svg>
+                    <span>{% trans "Integrations" %}</span>
+                </a>
                 <a href="{% url 'manage_settings' %}" class="nav-item {% if active_nav == 'settings' %}active{% endif %}">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="3"/>

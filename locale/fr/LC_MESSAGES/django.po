@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 09:10+0200\n"
+"POT-Creation-Date: 2026-09-19 16:09+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Français <fr@li.org>\n"
@@ -108,6 +108,7 @@ msgstr "Liens de commandes externes"
 
 #: .\orderpiqrApp\admin\email_admin.py:33 .\orderpiqrApp\models\orders.py:23
 #: .\templates\manage\dashboard.html:208
+#: .\templates\manage\integrations\list.html:26
 #: .\templates\manage\orders\list.html:95
 #: .\templates\manage\picklists\detail.html:102
 #: .\templates\manage\picklists\list.html:34
@@ -148,17 +149,18 @@ msgid "Change"
 msgstr "Modification"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
-#: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:9
+#: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
 #: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:110
 #: .\templates\manage\inventory\logs.html:80
 #: .\templates\manage\products\form.html:123
 #: .\templates\manage\products\form.html:163
 #: .\templates\manage\profile.html:165
+#: .\templates\manage\settings\api_tokens.html:51
 msgid "User"
 msgstr "Utilisateur"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:65
-#: .\orderpiqrApp\models\devices.py:19 .\orderpiqrApp\models\inventory.py:45
+#: .\orderpiqrApp\models\devices.py:27 .\orderpiqrApp\models\inventory.py:45
 #: .\orderpiqrApp\models\picklists.py:14
 #: .\templates\manage\picklists\detail.html:42
 #: .\templates\manage\picklists\list.html:32
@@ -212,7 +214,7 @@ msgid "%(count)s order(s) removed from queue."
 msgstr "%(count)s commande(s) retirée(s) de la file."
 
 #: .\orderpiqrApp\admin\order_admin.py:124
-#: .\orderpiqrApp\admin\order_admin.py:328
+#: .\orderpiqrApp\admin\order_admin.py:328 .\orderpiqr\views.py:158
 msgid "Your account is not linked to a customer."
 msgstr "Votre compte n'est pas lié à un client."
 
@@ -317,12 +319,12 @@ msgstr "Le produit \"%(description)s\" a été ajouté avec succès."
 msgid "User is not allowed to save products."
 msgstr "L'utilisateur n'est pas autorisé à enregistrer des produits."
 
-#: .\orderpiqrApp\models\customers.py:8 .\orderpiqrApp\models\devices.py:12
+#: .\orderpiqrApp\models\customers.py:8 .\orderpiqrApp\models\devices.py:20
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 msgid "Name"
 msgstr "Nom"
 
-#: .\orderpiqrApp\models\customers.py:9 .\orderpiqrApp\models\devices.py:13
+#: .\orderpiqrApp\models\customers.py:9 .\orderpiqrApp\models\devices.py:21
 #: .\orderpiqrApp\models\products.py:10 .\templates\index.html:92
 #: .\templates\manage\orders\import.html:59
 #: .\templates\manage\products\form.html:28
@@ -333,7 +335,7 @@ msgid "Description"
 msgstr "Description"
 
 #: .\orderpiqrApp\models\customers.py:12 .\orderpiqrApp\models\customers.py:21
-#: .\orderpiqrApp\models\devices.py:14 .\orderpiqrApp\models\orders.py:18
+#: .\orderpiqrApp\models\devices.py:22 .\orderpiqrApp\models\orders.py:18
 #: .\orderpiqrApp\models\picklists.py:11
 #: .\orderpiqrApp\models\preferences.py:68
 #: .\orderpiqrApp\models\products.py:12
@@ -352,19 +354,19 @@ msgstr "Profil utilisateur"
 msgid "User Profiles"
 msgstr "Profils utilisateur"
 
-#: .\orderpiqrApp\models\devices.py:11
+#: .\orderpiqrApp\models\devices.py:19
 msgid "Device Fingerprint"
 msgstr "Empreinte de l'appareil"
 
-#: .\orderpiqrApp\models\devices.py:15 .\templates\manage\profile.html:174
+#: .\orderpiqrApp\models\devices.py:23 .\templates\manage\profile.html:174
 msgid "Last Login"
 msgstr "Dernière connexion"
 
-#: .\orderpiqrApp\models\devices.py:16
+#: .\orderpiqrApp\models\devices.py:24
 msgid "Lists Picked"
 msgstr "Listes préparées"
 
-#: .\orderpiqrApp\models\devices.py:20 .\templates\manage\base.html:113
+#: .\orderpiqrApp\models\devices.py:28 .\templates\manage\base.html:113
 #: .\templates\manage\devices\list.html:4
 #: .\templates\manage\devices\list.html:5
 msgid "Devices"
@@ -733,6 +735,7 @@ msgid "Additional description or guidance for this setting."
 msgstr "Description ou conseil supplémentaire pour ce paramètre."
 
 #: .\orderpiqrApp\models\preferences.py:27
+#: .\templates\manage\settings\api_tokens.html:52
 msgid "Type"
 msgstr "Type"
 
@@ -882,59 +885,88 @@ msgstr ""
 "Nous rencontrons des problèmes techniques. Veuillez réessayer dans quelques "
 "instants."
 
-#: .\orderpiqrApp\views\inventory_views.py:39
+#: .\orderpiqrApp\views\integration_views.py:32
+#: .\orderpiqrApp\views\integration_views.py:71
+#: .\orderpiqrApp\views\integration_views.py:158
+#: .\orderpiqrApp\views\manage_views.py:71
+msgid "No customer profile found for your account."
+msgstr "Aucun profil client trouvé pour votre compte."
+
+#: .\orderpiqrApp\views\integration_views.py:87
+msgid "Integration paused. Incoming orders are on hold until you resume it."
+msgstr ""
+"Intégration mise en pause. Les commandes entrantes sont retenues jusqu’à la "
+"reprise."
+
+#: .\orderpiqrApp\views\integration_views.py:91
+msgid "Integration resumed."
+msgstr "Intégration reprise."
+
+#: .\orderpiqrApp\views\integration_views.py:109
+msgid "Integration disconnected."
+msgstr "Intégration déconnectée."
+
+#: .\orderpiqrApp\views\integration_views.py:131
+msgid "Integration settings saved."
+msgstr "Paramètres de l’intégration enregistrés."
+
+#: .\orderpiqrApp\views\integration_views.py:175
+msgid "API token created. Copy it now – it will not be shown again."
+msgstr "Jeton API créé. Copiez-le maintenant – il ne sera plus affiché."
+
+#: .\orderpiqrApp\views\integration_views.py:181
+msgid "API token revoked."
+msgstr "Jeton API révoqué."
+
+#: .\orderpiqrApp\views\inventory_views.py:28
 msgid "No customer profile found"
 msgstr "Aucun profil client trouvé"
 
-#: .\orderpiqrApp\views\inventory_views.py:42
+#: .\orderpiqrApp\views\inventory_views.py:31
 msgid "Inventory management is not enabled"
 msgstr "La gestion d'inventaire n'est pas activée"
 
-#: .\orderpiqrApp\views\inventory_views.py:78
-#: .\orderpiqrApp\views\inventory_views.py:116
-#: .\orderpiqrApp\views\inventory_views.py:162
+#: .\orderpiqrApp\views\inventory_views.py:67
+#: .\orderpiqrApp\views\inventory_views.py:105
+#: .\orderpiqrApp\views\inventory_views.py:151
 msgid "No customer found"
 msgstr "Aucun client trouvé"
 
-#: .\orderpiqrApp\views\inventory_views.py:81
-#: .\orderpiqrApp\views\inventory_views.py:119
-#: .\orderpiqrApp\views\inventory_views.py:165
+#: .\orderpiqrApp\views\inventory_views.py:70
+#: .\orderpiqrApp\views\inventory_views.py:108
+#: .\orderpiqrApp\views\inventory_views.py:154
 msgid "Inventory management not enabled"
 msgstr "Gestion d'inventaire non activée"
 
-#: .\orderpiqrApp\views\inventory_views.py:140
-#: .\orderpiqrApp\views\inventory_views.py:201
+#: .\orderpiqrApp\views\inventory_views.py:129
+#: .\orderpiqrApp\views\inventory_views.py:190
 #: .\templates\inventory\picker.html:212
 msgid "Product not found"
 msgstr "Produit introuvable"
 
-#: .\orderpiqrApp\views\inventory_views.py:170
+#: .\orderpiqrApp\views\inventory_views.py:159
 msgid "Invalid request"
 msgstr "Requête invalide"
 
-#: .\orderpiqrApp\views\inventory_views.py:180
+#: .\orderpiqrApp\views\inventory_views.py:169
 msgid "Missing required fields"
 msgstr "Champs requis manquants"
 
-#: .\orderpiqrApp\views\inventory_views.py:184
+#: .\orderpiqrApp\views\inventory_views.py:173
 msgid "Invalid change type"
 msgstr "Type de modification invalide"
 
-#: .\orderpiqrApp\views\inventory_views.py:188
+#: .\orderpiqrApp\views\inventory_views.py:177
 msgid "Invalid reason"
 msgstr "Raison invalide"
 
-#: .\orderpiqrApp\views\inventory_views.py:193
+#: .\orderpiqrApp\views\inventory_views.py:182
 msgid "Value must be a number"
 msgstr "La valeur doit être un nombre"
 
-#: .\orderpiqrApp\views\inventory_views.py:217
+#: .\orderpiqrApp\views\inventory_views.py:206
 msgid "Inventory updated"
 msgstr "Inventaire mis à jour"
-
-#: .\orderpiqrApp\views\manage_views.py:71
-msgid "No customer profile found for your account."
-msgstr "Aucun profil client trouvé pour votre compte."
 
 #: .\orderpiqrApp\views\manage_views.py:218
 #: .\orderpiqrApp\views\manage_views.py:272
@@ -1283,103 +1315,103 @@ msgstr "Produit introuvable."
 msgid "You have been logged out successfully."
 msgstr "Vous avez été déconnecté avec succès."
 
-#: .\orderpiqrApp\views\queue_views.py:175
+#: .\orderpiqrApp\views\queue_views.py:164
 msgid "No customer profile"
 msgstr "Aucun profil client"
 
-#: .\orderpiqrApp\views\queue_views.py:203
+#: .\orderpiqrApp\views\queue_views.py:183
 msgid "Device not found. Please log in again."
 msgstr "Appareil introuvable. Veuillez vous reconnecter."
 
-#: .\orderpiqrApp\views\queue_views.py:222
+#: .\orderpiqrApp\views\queue_views.py:199
 msgid "This order is already being picked"
 msgstr "Cette commande est déjà en cours de prélèvement"
 
-#: .\orderpiqrApp\views\queue_views.py:237
+#: .\orderpiqrApp\views\queue_views.py:214
 msgid "This order has already been completed"
 msgstr "Cette commande a déjà été terminée"
 
-#: .\orderpiqrApp\views\queue_views.py:243
+#: .\orderpiqrApp\views\queue_views.py:220
 msgid "This order is not available for picking"
 msgstr "Cette commande n'est pas disponible pour le prélèvement"
 
-#: .\orderpiqrApp\views\queue_views.py:290
+#: .\orderpiqrApp\views\queue_views.py:263
 msgid "Order claimed successfully"
 msgstr "Commande réclamée avec succès"
 
-#: .\orderpiqrApp\views\queue_views.py:299
-#: .\orderpiqrApp\views\queue_views.py:405
-#: .\orderpiqrApp\views\queue_views.py:439
-#: .\orderpiqrApp\views\queue_views.py:529
-#: .\orderpiqrApp\views\queue_views.py:572
+#: .\orderpiqrApp\views\queue_views.py:272
+#: .\orderpiqrApp\views\queue_views.py:378
+#: .\orderpiqrApp\views\queue_views.py:412
+#: .\orderpiqrApp\views\queue_views.py:502
+#: .\orderpiqrApp\views\queue_views.py:545
 msgid "Order not found"
 msgstr "Commande introuvable"
 
-#: .\orderpiqrApp\views\queue_views.py:374
-#: .\orderpiqrApp\views\queue_views.py:414
-#: .\orderpiqrApp\views\queue_views.py:450
-#: .\orderpiqrApp\views\queue_views.py:488
-#: .\orderpiqrApp\views\queue_views.py:538
+#: .\orderpiqrApp\views\queue_views.py:347
+#: .\orderpiqrApp\views\queue_views.py:387
+#: .\orderpiqrApp\views\queue_views.py:423
+#: .\orderpiqrApp\views\queue_views.py:461
+#: .\orderpiqrApp\views\queue_views.py:511
 msgid "No customer"
 msgstr "Aucun client"
 
-#: .\orderpiqrApp\views\queue_views.py:386
+#: .\orderpiqrApp\views\queue_views.py:359
 msgid "Only draft orders can be added to queue"
 msgstr "Seules les commandes en brouillon peuvent être ajoutées à la file"
 
-#: .\orderpiqrApp\views\queue_views.py:401
+#: .\orderpiqrApp\views\queue_views.py:374
 #: .\templates\manage\orders\list.html:269
 #: .\templates\manage\queue\list.html:441 .\templates\queue\manage.html:172
 msgid "Order added to queue"
 msgstr "Commande ajoutée à la file"
 
-#: .\orderpiqrApp\views\queue_views.py:426
+#: .\orderpiqrApp\views\queue_views.py:399
 msgid "Order is not in queue"
 msgstr "La commande n'est pas dans la file"
 
-#: .\orderpiqrApp\views\queue_views.py:435
+#: .\orderpiqrApp\views\queue_views.py:408
 #: .\templates\manage\queue\list.html:459 .\templates\queue\manage.html:190
 msgid "Order removed from queue"
 msgstr "Commande retirée de la file"
 
-#: .\orderpiqrApp\views\queue_views.py:456
+#: .\orderpiqrApp\views\queue_views.py:429
 msgid "Invalid JSON"
 msgstr "JSON invalide"
 
-#: .\orderpiqrApp\views\queue_views.py:459
+#: .\orderpiqrApp\views\queue_views.py:432
 msgid "No order IDs provided"
 msgstr "Aucun identifiant de commande fourni"
 
-#: .\orderpiqrApp\views\queue_views.py:472
+#: .\orderpiqrApp\views\queue_views.py:445
 msgid "Queue reordered"
 msgstr "File réordonnée"
 
-#: .\orderpiqrApp\views\queue_views.py:478
+#: .\orderpiqrApp\views\queue_views.py:451
 msgid "Error reordering: {}"
 msgstr "Erreur lors de la réorganisation : {}"
 
-#: .\orderpiqrApp\views\queue_views.py:491
+#: .\orderpiqrApp\views\queue_views.py:464
 msgid "Invalid direction"
 msgstr "Direction invalide"
 
-#: .\orderpiqrApp\views\queue_views.py:525
+#: .\orderpiqrApp\views\queue_views.py:498
 msgid "Order moved up"
 msgstr "Commande déplacée vers le haut"
 
-#: .\orderpiqrApp\views\queue_views.py:525
+#: .\orderpiqrApp\views\queue_views.py:498
 msgid "Order moved down"
 msgstr "Commande déplacée vers le bas"
 
-#: .\orderpiqrApp\views\queue_views.py:550
+#: .\orderpiqrApp\views\queue_views.py:523
 msgid "Order is not in progress"
 msgstr "La commande n'est pas en cours"
 
-#: .\orderpiqrApp\views\queue_views.py:568
+#: .\orderpiqrApp\views\queue_views.py:541
 #: .\templates\manage\queue\list.html:478
 msgid "Order unlocked"
 msgstr "Commande déverrouillée"
 
-#: .\orderpiqr\views.py:39
+#: .\orderpiqr\views.py:44
 msgid "No account found with this email address."
 msgstr "Aucun compte trouvé avec cette adresse e-mail."
 
@@ -1560,7 +1592,7 @@ msgstr "Importance de l'ordre"
 msgid "Enabled"
 msgstr "Activé"
 
-#: .\templates\index.html:104 .\templates\manage\base.html:221
+#: .\templates\index.html:104 .\templates\manage\base.html:234
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
 msgstr "Se déconnecter"
@@ -1673,7 +1705,7 @@ msgid "Error updating inventory"
 msgstr "Erreur lors de la mise à jour de l'inventaire"
 
 #: .\templates\manage\base.html:8 .\templates\manage\base.html:58
-#: .\templates\manage\base.html:178 .\templates\manage\dashboard.html:4
+#: .\templates\manage\base.html:191 .\templates\manage\dashboard.html:4
 #: .\templates\manage\dashboard.html:5
 msgid "Dashboard"
 msgstr "Tableau de bord"
@@ -1698,26 +1730,39 @@ msgstr "Opérations"
 msgid "Developer"
 msgstr "Développeur"
 
-#: .\templates\manage\base.html:124
+#: .\templates\manage\base.html:123
+#: .\templates\manage\settings\api_tokens.html:4
+#: .\templates\manage\settings\api_tokens.html:5
+msgid "API Tokens"
+msgstr "Jetons API"
+
+#: .\templates\manage\base.html:130
 msgid "API Docs"
 msgstr "Documentation API"
 
-#: .\templates\manage\base.html:131
+#: .\templates\manage\base.html:137
 msgid "API Reference"
 msgstr "Référence API"
 
-#: .\templates\manage\base.html:136 .\templates\manage\base.html:142
-#: .\templates\manage\base.html:219 .\templates\manage\settings.html:4
-#: .\templates\manage\settings.html:5
+#: .\templates\manage\base.html:142 .\templates\manage\base.html:155
+#: .\templates\manage\base.html:232
+#: .\templates\manage\integrations\list.html:57
+#: .\templates\manage\settings.html:4 .\templates\manage\settings.html:5
 msgid "Settings"
 msgstr "Paramètres"
 
-#: .\templates\manage\base.html:149 .\templates\manage\base.html:218
+#: .\templates\manage\base.html:148
+#: .\templates\manage\integrations\list.html:4
+#: .\templates\manage\integrations\list.html:5
+msgid "Integrations"
+msgstr "Intégrations"
+
+#: .\templates\manage\base.html:162 .\templates\manage\base.html:231
 #: .\templates\manage\profile.html:4 .\templates\manage\profile.html:5
 msgid "Profile"
 msgstr "Profil"
 
-#: .\templates\manage\base.html:171
+#: .\templates\manage\base.html:184
 msgid "Open menu"
 msgstr "Ouvrir le menu"
 
@@ -1840,6 +1885,7 @@ msgstr "Tout voir"
 #: .\templates\manage\orders\list.html:96
 #: .\templates\manage\picklists\detail.html:62
 #: .\templates\manage\picklists\list.html:35
+#: .\templates\manage\settings\api_tokens.html:53
 msgid "Created"
 msgstr "Créé"
 
@@ -1941,6 +1987,211 @@ msgstr "L'appareil est automatiquement enregistré"
 msgid "They can then claim orders from the queue"
 msgstr "Il peut ensuite réclamer des commandes de la file"
 
+#: .\templates\manage\integrations\config.html:4
+msgid "Integration settings"
+msgstr "Paramètres de l’intégration"
+
+#: .\templates\manage\integrations\config.html:6
+msgid "Sync settings for this connection"
+msgstr "Paramètres de synchronisation pour cette connexion"
+
+#: .\templates\manage\integrations\config.html:13
+#: .\templates\shopify\app.html:129
+msgid "Sync settings"
+msgstr "Paramètres de synchronisation"
+
+#: .\templates\manage\integrations\config.html:19
+msgid "Queue orders automatically"
+msgstr "Mettre les commandes en file automatiquement"
+
+#: .\templates\manage\integrations\config.html:20
+msgid ""
+"Imported orders go straight into the picking queue. When off, they arrive as"
+" drafts."
+msgstr ""
+"Les commandes importées vont directement dans la file de préparation. Si "
+"désactivé, elles arrivent en brouillon."
+
+#: .\templates\manage\integrations\config.html:32
+msgid "Complete orders in the webshop"
+msgstr "Terminer les commandes dans la boutique"
+
+#: .\templates\manage\integrations\config.html:33
+msgid ""
+"When a pick is finished, the order is marked as completed in your webshop."
+msgstr ""
+"Quand une préparation est terminée, la commande est marquée comme terminée "
+"dans votre boutique."
+
+#: .\templates\manage\integrations\config.html:45
+msgid "Order status after picking"
+msgstr "Statut de la commande après préparation"
+
+#: .\templates\manage\integrations\config.html:46
+msgid ""
+"The WooCommerce status set when a pick is finished. Default: completed."
+msgstr ""
+"Le statut WooCommerce appliqué quand une préparation est terminée. Par "
+"défaut : completed."
+
+#: .\templates\manage\integrations\config.html:57
+#: .\templates\manage\inventory\add_correction.html:72
+#: .\templates\manage\inventory\logs.html:62
+#: .\templates\manage\orders\form.html:126
+#: .\templates\manage\orders\import.html:34
+#: .\templates\manage\orders\list.html:212
+#: .\templates\manage\products\form.html:61
+#: .\templates\manage\products\import.html:34
+#: .\templates\manage\products\list.html:224
+msgid "Cancel"
+msgstr "Annuler"
+
+#: .\templates\manage\integrations\config.html:58
+#: .\templates\manage\settings.html:77
+msgid "Save Settings"
+msgstr "Enregistrer les paramètres"
+
+#: .\templates\manage\integrations\list.html:6
+msgid "Connect your webshop and sync orders automatically"
+msgstr ""
+"Connectez votre boutique et synchronisez les commandes automatiquement"
+
+#: .\templates\manage\integrations\list.html:11
+#: .\templates\manage\integrations\list.html:93
+#: .\templates\manage\integrations\pairing_key.html:4
+#: .\templates\manage\integrations\pairing_key.html:5
+msgid "Connect WooCommerce"
+msgstr "Connecter WooCommerce"
+
+#: .\templates\manage\integrations\list.html:24
+msgid "Store"
+msgstr "Boutique"
+
+#: .\templates\manage\integrations\list.html:25
+msgid "Platform"
+msgstr "Plateforme"
+
+#: .\templates\manage\integrations\list.html:27
+msgid "Orders synced"
+msgstr "Commandes synchronisées"
+
+#: .\templates\manage\integrations\list.html:28
+msgid "Products linked"
+msgstr "Produits liés"
+
+#: .\templates\manage\integrations\list.html:29
+msgid "Last event"
+msgstr "Dernier événement"
+
+#: .\templates\manage\integrations\list.html:30
+#: .\templates\manage\orders\list.html:97
+#: .\templates\manage\picklists\list.html:36
+#: .\templates\manage\products\list.html:103
+#: .\templates\manage\settings\api_tokens.html:54
+msgid "Actions"
+msgstr "Actions"
+
+#: .\templates\manage\integrations\list.html:53
+msgid "Manage in Shopify"
+msgstr "Gérer dans Shopify"
+
+#: .\templates\manage\integrations\list.html:62
+msgid "Pause"
+msgstr "Mettre en pause"
+
+#: .\templates\manage\integrations\list.html:64
+msgid "Resume"
+msgstr "Reprendre"
+
+#: .\templates\manage\integrations\list.html:68
+msgid "Disconnect this store? Orders will no longer be imported."
+msgstr "Déconnecter cette boutique ? Les commandes ne seront plus importées."
+
+#: .\templates\manage\integrations\list.html:70
+msgid "Disconnect"
+msgstr "Déconnecter"
+
+#: .\templates\manage\integrations\list.html:89
+msgid "No integrations yet"
+msgstr "Aucune intégration pour l’instant"
+
+#: .\templates\manage\integrations\list.html:90
+msgid ""
+"Connect your WooCommerce store to import orders into the picking queue "
+"automatically."
+msgstr ""
+"Connectez votre boutique WooCommerce pour importer automatiquement les "
+"commandes dans la file de préparation."
+
+#: .\templates\manage\integrations\list.html:96
+msgid ""
+"Using Shopify? Install the OrderPiqr app from the Shopify App Store instead."
+msgstr ""
+"Vous utilisez Shopify ? Installez plutôt l’application OrderPiqr depuis le "
+"Shopify App Store."
+
+#: .\templates\manage\integrations\pairing_key.html:6
+msgid "Pair your WooCommerce store with OrderPiqr"
+msgstr "Associez votre boutique WooCommerce à OrderPiqr"
+
+#: .\templates\manage\integrations\pairing_key.html:12
+msgid "Your pairing key"
+msgstr "Votre clé d’association"
+
+#: .\templates\manage\integrations\pairing_key.html:16
+msgid ""
+"This key is shown only once and expires in 24 hours. It can be used a single"
+" time."
+msgstr ""
+"Cette clé n’est affichée qu’une seule fois et expire après 24 heures. Elle "
+"ne peut être utilisée qu’une seule fois."
+
+#: .\templates\manage\integrations\pairing_key.html:21
+#: .\templates\manage\settings\api_tokens.html:19
+msgid "Copy"
+msgstr "Copier"
+
+#: .\templates\manage\integrations\pairing_key.html:27
+msgid "Install the plugin"
+msgstr "Installez le plugin"
+
+#: .\templates\manage\integrations\pairing_key.html:28
+msgid ""
+"In your WordPress admin, go to Plugins → Add New and install the “OrderPiqr”"
+" plugin from WordPress.org."
+msgstr ""
+"Dans l’administration WordPress, allez dans Extensions → Ajouter et "
+"installez l’extension « OrderPiqr » depuis WordPress.org."
+
+#: .\templates\manage\integrations\pairing_key.html:31
+msgid "Open the OrderPiqr settings"
+msgstr "Ouvrez les réglages OrderPiqr"
+
+#: .\templates\manage\integrations\pairing_key.html:32
+msgid "Go to WooCommerce → OrderPiqr in your WordPress admin."
+msgstr ""
+"Allez dans WooCommerce → OrderPiqr dans votre administration WordPress."
+
+#: .\templates\manage\integrations\pairing_key.html:35
+msgid "Paste the pairing key"
+msgstr "Collez la clé d’association"
+
+#: .\templates\manage\integrations\pairing_key.html:36
+msgid ""
+"Paste the key above and click Connect. Your products and open orders will "
+"start syncing automatically."
+msgstr ""
+"Collez la clé ci-dessus et cliquez sur Connecter. Vos produits et commandes "
+"ouvertes seront ensuite synchronisés automatiquement."
+
+#: .\templates\manage\integrations\pairing_key.html:41
+msgid "Back to integrations"
+msgstr "Retour aux intégrations"
+
+#: .\templates\manage\integrations\pairing_key.html:80
+msgid "Pairing key copied to clipboard"
+msgstr "Clé d’association copiée dans le presse-papiers"
+
 #: .\templates\manage\inventory\add_correction.html:4
 #: .\templates\manage\inventory\add_correction.html:5
 msgid "Add Inventory Correction"
@@ -1978,17 +2229,6 @@ msgstr "Entrer la quantité"
 #: .\templates\manage\inventory\add_correction.html:68
 msgid "Add any additional notes..."
 msgstr "Ajouter des notes supplémentaires..."
-
-#: .\templates\manage\inventory\add_correction.html:72
-#: .\templates\manage\inventory\logs.html:62
-#: .\templates\manage\orders\form.html:126
-#: .\templates\manage\orders\import.html:34
-#: .\templates\manage\orders\list.html:212
-#: .\templates\manage\products\form.html:61
-#: .\templates\manage\products\import.html:34
-#: .\templates\manage\products\list.html:224
-msgid "Cancel"
-msgstr "Annuler"
 
 #: .\templates\manage\inventory\add_correction.html:73
 #: .\templates\manage\inventory\logs.html:13
@@ -2330,12 +2570,6 @@ msgstr "Supprimer"
 #: .\templates\queue\_order_cards.html:24 .\templates\shopify\app.html:212
 msgid "Items"
 msgstr "Articles"
-
-#: .\templates\manage\orders\list.html:97
-#: .\templates\manage\picklists\list.html:36
-#: .\templates\manage\products\list.html:103
-msgid "Actions"
-msgstr "Actions"
 
 #: .\templates\manage\orders\list.html:134
 #: .\templates\manage\products\list.html:149
@@ -2896,9 +3130,69 @@ msgstr "Aucun paramètre configuré"
 msgid "There are no configurable settings available yet."
 msgstr "Il n'y a pas encore de paramètres configurables disponibles."
 
-#: .\templates\manage\settings.html:77
-msgid "Save Settings"
-msgstr "Enregistrer les paramètres"
+#: .\templates\manage\settings\api_tokens.html:6
+msgid "Tokens for connecting external systems to the OrderPiqr API"
+msgstr "Jetons pour connecter des systèmes externes à l’API OrderPiqr"
+
+#: .\templates\manage\settings\api_tokens.html:13
+msgid "Your new API token"
+msgstr "Votre nouveau jeton API"
+
+#: .\templates\manage\settings\api_tokens.html:16
+msgid "Copy this token now – it will not be shown again."
+msgstr "Copiez ce jeton maintenant – il ne sera plus affiché."
+
+#: .\templates\manage\settings\api_tokens.html:22
+msgid "Send it in the Authorization header:"
+msgstr "Envoyez-le dans l’en-tête Authorization :"
+
+#: .\templates\manage\settings\api_tokens.html:30
+msgid "Active tokens"
+msgstr "Jetons actifs"
+
+#: .\templates\manage\settings\api_tokens.html:40
+msgid ""
+"Creating a token replaces your existing token of the same type. Continue?"
+msgstr ""
+"La création d’un jeton remplace votre jeton existant du même type. Continuer"
+" ?"
+
+#: .\templates\manage\settings\api_tokens.html:41
+msgid "Create token"
+msgstr "Créer un jeton"
+
+#: .\templates\manage\settings\api_tokens.html:65
+msgid "Revoke this token? Systems using it will lose access immediately."
+msgstr ""
+"Révoquer ce jeton ? Les systèmes qui l’utilisent perdront immédiatement "
+"l’accès."
+
+#: .\templates\manage\settings\api_tokens.html:69
+msgid "Revoke"
+msgstr "Révoquer"
+
+#: .\templates\manage\settings\api_tokens.html:79
+msgid "No API tokens"
+msgstr "Aucun jeton API"
+
+#: .\templates\manage\settings\api_tokens.html:80
+msgid "Create a token to let external systems push orders to OrderPiqr."
+msgstr ""
+"Créez un jeton pour permettre à des systèmes externes d’envoyer des "
+"commandes à OrderPiqr."
+
+#: .\templates\manage\settings\api_tokens.html:88
+#, python-format
+msgid ""
+"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push "
+"orders with your token."
+msgstr ""
+"Consultez la <a href=\"%(docs_url)s\">documentation de l’API</a> pour savoir"
+" comment envoyer des commandes avec votre jeton."
+
+#: .\templates\manage\settings\api_tokens.html:129
+msgid "Token copied to clipboard"
+msgstr "Jeton copié dans le presse-papiers"
 
 #: .\templates\offline.html:65
 msgid "You're offline"
@@ -2937,13 +3231,13 @@ msgstr "Prélever 1"
 msgid "No orders in queue"
 msgstr "Aucune commande dans la file"
 
-#: .\templates\queue\_picker_orders.html:35 .\templates\queue\picker.html:114
-#: .\templates\queue\picker.html:121
+#: .\templates\queue\_picker_orders.html:35 .\templates\queue\picker.html:119
+#: .\templates\queue\picker.html:126
 msgid "Start Picking"
 msgstr "Commencer la préparation"
 
-#: .\templates\queue\_picker_orders.html:45 .\templates\queue\picker.html:160
-#: .\templates\queue\picker.html:166
+#: .\templates\queue\_picker_orders.html:45 .\templates\queue\picker.html:165
+#: .\templates\queue\picker.html:171
 msgid "Take Over"
 msgstr "Reprendre"
 
@@ -2979,7 +3273,7 @@ msgstr "Aucune commande terminée"
 msgid "Pick Queue"
 msgstr "File de préparation"
 
-#: .\templates\queue\picker.html:68 .\templates\queue\picker.html:134
+#: .\templates\queue\picker.html:68 .\templates\queue\picker.html:139
 msgid "Claiming..."
 msgstr "Réclamation en cours..."
 
@@ -2987,11 +3281,11 @@ msgstr "Réclamation en cours..."
 msgid "Order claimed! Redirecting..."
 msgstr "Commande réclamée ! Redirection..."
 
-#: .\templates\queue\picker.html:119 .\templates\queue\picker.html:164
+#: .\templates\queue\picker.html:124 .\templates\queue\picker.html:169
 msgid "Error claiming order"
 msgstr "Erreur lors de la réclamation de la commande"
 
-#: .\templates\queue\picker.html:130
+#: .\templates\queue\picker.html:135
 msgid ""
 "This order is being picked by someone else. Are you sure you want to take it"
 " over? Their progress will be lost."
@@ -3435,10 +3729,6 @@ msgstr "Produits à associer"
 msgid "Open the picker app"
 msgstr "Ouvrir l'application préparateur"
 
-#: .\templates\shopify\app.html:129
-msgid "Sync settings"
-msgstr "Paramètres de synchronisation"
-
 #: .\templates\shopify\app.html:132
 msgid "Product matching"
 msgstr "Correspondance des produits"
@@ -3633,3 +3923,7 @@ msgid "Your warehouse staff log into the picker app with this account:"
 msgstr ""
 "Votre personnel d'entrepôt se connecte à l'application préparateur avec ce "
 "compte :"
+
+#, fuzzy
+#~ msgid "API documentation"
+#~ msgstr "Tous les emplacements"
