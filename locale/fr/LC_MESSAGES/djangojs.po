@@ -522,9 +522,13 @@ msgstr "Aucune donnée produit trouvée, impossible de mettre à jour la liste."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:278
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:305
-msgid "<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining"
-msgstr ""
-"<strong>%(remaining)s</strong> sur <strong>%(total)s</strong> restant(s)"
+msgid "Picked %(picked)s of %(total)s"
+msgstr "%(picked)s sur %(total)s prélevé(s)"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:278
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:305
+msgid "<strong>%(remaining)s</strong> remaining"
+msgstr "<strong>%(remaining)s</strong> restant(s)"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:344
 msgid "Could not update bulk product pick."

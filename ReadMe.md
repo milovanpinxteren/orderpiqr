@@ -16,6 +16,7 @@ LANGUAGES = [
     ('fr', 'Français'),
     ('ro', 'Română'),
     ('pl', 'Polski'),
+    ('uk', 'Українська'),
 ]
 ```
 

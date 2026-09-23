@@ -1,46 +1,46 @@
+# Ukrainian translation for Orderpiqr
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 10:48+0200\n"
-"PO-Revision-Date: 2025-05-31 15:00+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: xx\n"
+"POT-Creation-Date: 2026-09-23 11:03+0200\n"
+"PO-Revision-Date: 2026-09-23 11:00+0200\n"
+"Last-Translator: Milo van Pinxteren <milo@example.com>\n"
+"Language-Team: Ukrainian <uk@li.org>\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: .\drf_hashed_token\admin.py:10
 msgid "Hashed auth tokens"
-msgstr "Tokenuri de autentificare hash"
+msgstr "Хешовані токени автентифікації"
 
 #: .\drf_hashed_token\authentication.py:47
 #, python-format
 msgid "Invalid token. Only tokens prefixed with '%(stage)s_' are accepted."
-msgstr ""
-"Token invalid. Sunt acceptate doar tokenurile cu prefixul '%(stage)s_'."
+msgstr "Недійсний токен. Приймаються лише токени з префіксом «%(stage)s_»."
 
 #: .\drf_hashed_token\authentication.py:53
 msgid "Invalid token prefix."
-msgstr "Prefix de token invalid."
+msgstr "Недійсний префікс токена."
 
 #: .\drf_hashed_token\authentication.py:58
 msgid "Invalid token."
-msgstr "Token invalid."
+msgstr "Недійсний токен."
 
 #: .\drf_hashed_token\authentication.py:60
 msgid "User inactive or deleted."
-msgstr "Utilizator inactiv sau șters."
+msgstr "Користувача деактивовано або видалено."
 
 #: .\integrations\models.py:23 .\templates\manage\picklists\detail.html:36
 #: .\templates\manage\picklists\detail.html:129
 #: .\templates\manage\picklists\list.html:14
 #: .\templates\manage\picklists\list.html:76
 msgid "Pending"
-msgstr "În așteptare"
+msgstr "Очікує"
 
 #: .\integrations\models.py:24 .\orderpiqrApp\models\products.py:13
 #: .\templates\manage\products\form.html:52
@@ -48,63 +48,63 @@ msgstr "În așteptare"
 #: .\templates\manage\products\list.html:141
 #: .\templates\manage\products\list.html:460
 msgid "Active"
-msgstr "Activ"
+msgstr "Активно"
 
 #: .\integrations\models.py:25
 msgid "Paused"
-msgstr "În pauză"
+msgstr "Призупинено"
 
 #: .\integrations\models.py:26
 msgid "Disconnected"
-msgstr "Deconectat"
+msgstr "Відключено"
 
 #: .\integrations\models.py:43
 msgid "Connection"
-msgstr "Conexiune"
+msgstr "Підключення"
 
 #: .\integrations\models.py:44
 msgid "Connections"
-msgstr "Conexiuni"
+msgstr "Підключення"
 
 #: .\integrations\models.py:109
 msgid "Inbound event"
-msgstr "Eveniment de intrare"
+msgstr "Вхідна подія"
 
 #: .\integrations\models.py:110
 msgid "Inbound events"
-msgstr "Evenimente de intrare"
+msgstr "Вхідні події"
 
 #: .\integrations\models.py:157
 msgid "Outbound task"
-msgstr "Sarcină de ieșire"
+msgstr "Вихідне завдання"
 
 #: .\integrations\models.py:158
 msgid "Outbound tasks"
-msgstr "Sarcini de ieșire"
+msgstr "Вихідні завдання"
 
 #: .\integrations\models.py:197
 msgid "Sync job"
-msgstr "Job de sincronizare"
+msgstr "Завдання синхронізації"
 
 #: .\integrations\models.py:198
 msgid "Sync jobs"
-msgstr "Joburi de sincronizare"
+msgstr "Завдання синхронізації"
 
 #: .\integrations\models.py:249
 msgid "Product link"
-msgstr "Legătură produs"
+msgstr "Зв’язок товару"
 
 #: .\integrations\models.py:250
 msgid "Product links"
-msgstr "Legături produs"
+msgstr "Зв’язки товарів"
 
 #: .\integrations\models.py:275
 msgid "External order link"
-msgstr "Legătură comandă externă"
+msgstr "Зовнішній зв’язок замовлення"
 
 #: .\integrations\models.py:276
 msgid "External order links"
-msgstr "Legături comenzi externe"
+msgstr "Зовнішні зв’язки замовлень"
 
 #: .\orderpiqrApp\admin\email_admin.py:33 .\orderpiqrApp\models\orders.py:23
 #: .\templates\manage\dashboard.html:208
@@ -115,19 +115,19 @@ msgstr "Legături comenzi externe"
 #: .\templates\manage\products\form.html:45
 #: .\templates\manage\products\list.html:102
 msgid "Status"
-msgstr "Stare"
+msgstr "Статус"
 
 #: .\orderpiqrApp\admin\email_admin.py:43
 msgid "HTML Preview"
-msgstr "Previzualizare HTML"
+msgstr "Попередній перегляд HTML"
 
 #: .\orderpiqrApp\admin\email_admin.py:46
 msgid "Delivery"
-msgstr "Livrare"
+msgstr "Доставка"
 
 #: .\orderpiqrApp\admin\email_admin.py:49
 msgid "Message"
-msgstr "Mesaj"
+msgstr "Повідомлення"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:33
 #: .\orderpiqrApp\admin\inventory_admin.py:69
@@ -139,14 +139,14 @@ msgstr "Mesaj"
 #: .\templates\manage\orders\form.html:357
 #: .\templates\manage\picklists\detail.html:99
 msgid "Product"
-msgstr "Produs"
+msgstr "Товар"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:51
 #: .\templates\manage\inventory\logs.html:78
 #: .\templates\manage\products\form.html:121
 #: .\templates\manage\products\form.html:161
 msgid "Change"
-msgstr "Modificare"
+msgstr "Зміна"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
 #: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
@@ -157,7 +157,7 @@ msgstr "Modificare"
 #: .\templates\manage\profile.html:206
 #: .\templates\manage\settings\api_tokens.html:51
 msgid "User"
-msgstr "Utilizator"
+msgstr "Користувач"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:65
 #: .\orderpiqrApp\models\devices.py:27 .\orderpiqrApp\models\inventory.py:45
@@ -165,164 +165,161 @@ msgstr "Utilizator"
 #: .\templates\manage\picklists\detail.html:42
 #: .\templates\manage\picklists\list.html:32
 msgid "Device"
-msgstr "Dispozitiv"
+msgstr "Пристрій"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:72
 msgid "Change Details"
-msgstr "Detalii modificare"
+msgstr "Деталі зміни"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:75
 msgid "Metadata"
-msgstr "Metadate"
+msgstr "Метадані"
 
 #: .\orderpiqrApp\admin\order_admin.py:35
 msgid "Generate QR PDF for selected Orders"
-msgstr "Generează PDF QR pentru comenzile selectate"
+msgstr "Створити QR-PDF для вибраних замовлень"
 
 #: .\orderpiqrApp\admin\order_admin.py:38
 #: .\orderpiqrApp\views\manage_views.py:631
 #: .\orderpiqrApp\views\manage_views.py:635
 msgid "No orders selected."
-msgstr "Nicio comandă selectată."
+msgstr "Не вибрано жодного замовлення."
 
 #: .\orderpiqrApp\admin\order_admin.py:47
 #, python-format
 msgid "Failed to generate QR batch: %(error)s"
-msgstr "Eșec la generarea lotului QR: %(error)s"
+msgstr "Не вдалося створити пакет QR-кодів: %(error)s"
 
 #: .\orderpiqrApp\admin\order_admin.py:49
 msgid "Add selected orders to queue"
-msgstr "Adaugă comenzile selectate în coadă"
+msgstr "Додати вибрані замовлення до черги"
 
 #: .\orderpiqrApp\admin\order_admin.py:75
 #, python-format
 msgid "%(count)s order(s) added to queue."
-msgstr "%(count)s comandă(comenzi) adăugată(e) în coadă."
+msgstr "Замовлень додано до черги: %(count)s."
 
 #: .\orderpiqrApp\admin\order_admin.py:77
 #, python-format
 msgid "%(count)s order(s) skipped (not in draft status)."
-msgstr "%(count)s comandă(comenzi) omisă(e) (nu este în stare de schiță)."
+msgstr "Замовлень пропущено (не у статусі чернетки): %(count)s."
 
 #: .\orderpiqrApp\admin\order_admin.py:79
 msgid "Remove selected orders from queue"
-msgstr "Elimină comenzile selectate din coadă"
+msgstr "Вилучити вибрані замовлення з черги"
 
 #: .\orderpiqrApp\admin\order_admin.py:89
 #, python-format
 msgid "%(count)s order(s) removed from queue."
-msgstr "%(count)s comandă(comenzi) eliminată(e) din coadă."
+msgstr "Замовлень вилучено з черги: %(count)s."
 
 #: .\orderpiqrApp\admin\order_admin.py:124
 #: .\orderpiqrApp\admin\order_admin.py:328 .\orderpiqr\views.py:199
 msgid "Your account is not linked to a customer."
-msgstr "Contul dumneavoastră nu este asociat cu un client."
+msgstr "Ваш обліковий запис не пов’язано з клієнтом."
 
 #: .\orderpiqrApp\admin\order_admin.py:148
 #, python-format
 msgid "Missing required column: \"%(column)s\""
-msgstr "Coloană obligatorie lipsă: \"%(column)s\""
+msgstr "Відсутній обов’язковий стовпець: «%(column)s»"
 
 #: .\orderpiqrApp\admin\order_admin.py:164
 #, python-format
 msgid "Missing value for \"order_code\" in row %(row)d"
-msgstr "Valoare lipsă pentru \"order_code\" la rândul %(row)d"
+msgstr "Відсутнє значення «order_code» у рядку %(row)d"
 
 #: .\orderpiqrApp\admin\order_admin.py:170
 #, python-format
 msgid "Invalid quantity for product code \"%(code)s\" in row %(row)d"
-msgstr ""
-"Cantitate invalidă pentru codul produsului \"%(code)s\" la rândul %(row)d"
+msgstr "Недійсна кількість для коду товару «%(code)s» у рядку %(row)d"
 
 #: .\orderpiqrApp\admin\order_admin.py:177
 #, python-format
 msgid "Unknown product code \"%(code)s\" in row %(row)d"
-msgstr "Cod produs necunoscut \"%(code)s\" la rândul %(row)d"
+msgstr "Невідомий код товару «%(code)s» у рядку %(row)d"
 
 #: .\orderpiqrApp\admin\order_admin.py:255
 #, python-format
 msgid "%(orders)s orders and %(lines)s lines added."
-msgstr "%(orders)s comenzi și %(lines)s linii adăugate."
+msgstr "Додано замовлень: %(orders)s, рядків: %(lines)s."
 
 #: .\orderpiqrApp\admin\order_admin.py:262
 #, python-format
 msgid "Overwritten orders: %(codes)s."
-msgstr "Comenzi suprascrise: %(codes)s."
+msgstr "Перезаписані замовлення: %(codes)s."
 
 #: .\orderpiqrApp\admin\order_admin.py:270
 #, python-format
 msgid "Error processing file: %(msg)s"
-msgstr "Eroare la procesarea fișierului: %(msg)s"
+msgstr "Помилка обробки файлу: %(msg)s"
 
 #: .\orderpiqrApp\admin\preferences_admin.py:14
 msgid "General Info"
-msgstr "Informații generale"
+msgstr "Загальна інформація"
 
 #: .\orderpiqrApp\admin\preferences_admin.py:17
 msgid "Advanced"
-msgstr "Avansat"
+msgstr "Додатково"
 
 #: .\orderpiqrApp\admin\product_admin.py:38
 #, python-format
 msgid "Missing required column \"%(field)s\""
-msgstr "Lipsește coloana obligatorie \"%(field)s\""
+msgstr "Відсутній обов’язковий стовпець «%(field)s»"
 
 #: .\orderpiqrApp\admin\product_admin.py:65
 #, python-format
 msgid "Missing value for \"%(field)s\" in row %(row)d"
-msgstr "Valoare lipsă pentru \"%(field)s\" la rândul %(row)d"
+msgstr "Відсутнє значення «%(field)s» у рядку %(row)d"
 
 #: .\orderpiqrApp\admin\product_admin.py:140
 msgid "Unsupported file format, only .csv and .xlsx are supported"
-msgstr "Format de fișier nesuportat, doar .csv și .xlsx sunt suportate"
+msgstr "Непідтримуваний формат файлу, підтримуються лише .csv та .xlsx"
 
 #: .\orderpiqrApp\admin\product_admin.py:142
 #, python-format
 msgid "%(added)d products added, %(overwritten)d products overwritten."
-msgstr "%(added)d produse adăugate, %(overwritten)d produse suprascrise."
+msgstr "Додано товарів: %(added)d, перезаписано: %(overwritten)d."
 
 #: .\orderpiqrApp\admin\product_admin.py:148
 #, python-format
 msgid "Error processing file: %(error)s"
-msgstr "Eroare la procesarea fișierului: %(error)s"
+msgstr "Помилка обробки файлу: %(error)s"
 
 #: .\orderpiqrApp\admin\product_admin.py:151
 msgid "No file uploaded."
-msgstr "Niciun fișier încărcat."
+msgstr "Файл не завантажено."
 
 #: .\orderpiqrApp\admin\product_admin.py:153
 msgid "Upload CSV or XLSX File"
-msgstr "Încarcă fișier CSV sau XLSX"
+msgstr "Завантажити файл CSV або XLSX"
 
 #: .\orderpiqrApp\admin\product_admin.py:165
 msgid "Invalid form submission."
-msgstr "Trimitere formular invalidă."
+msgstr "Недійсні дані форми."
 
 #: .\orderpiqrApp\admin\product_admin.py:184
 #, python-format
 msgid "A product with the code \"%(code)s\" already exists for this customer."
-msgstr "Un produs cu codul \"%(code)s\" există deja pentru acest client."
+msgstr "Товар із кодом «%(code)s» уже існує для цього клієнта."
 
 #: .\orderpiqrApp\admin\product_admin.py:188
 #, python-format
-msgid ""
-"A product with the code \"%(code)s\" already exists, cannot add duplicate."
-msgstr ""
-"Un produs cu codul \"%(code)s\" există deja, nu se poate adăuga duplicat."
+msgid "A product with the code \"%(code)s\" already exists, cannot add duplicate."
+msgstr "Товар із кодом «%(code)s» уже існує, неможливо додати дублікат."
 
 #: .\orderpiqrApp\admin\product_admin.py:194
 #, python-format
 msgid "The product \"%(description)s\" was added successfully."
-msgstr "Produsul \"%(description)s\" a fost adăugat cu succes."
+msgstr "Товар «%(description)s» успішно додано."
 
 #: .\orderpiqrApp\admin\product_admin.py:199
 msgid "User is not allowed to save products."
-msgstr "Utilizatorul nu are permisiunea să salveze produse."
+msgstr "Користувачу не дозволено зберігати товари."
 
 #: .\orderpiqrApp\models\customers.py:8 .\orderpiqrApp\models\devices.py:20
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 msgid "Name"
-msgstr "Nume"
+msgstr "Назва"
 
 #: .\orderpiqrApp\models\customers.py:9 .\orderpiqrApp\models\devices.py:21
 #: .\orderpiqrApp\models\products.py:10 .\templates\index.html:92
@@ -331,48 +328,48 @@ msgstr "Nume"
 #: .\templates\manage\products\import.html:59
 #: .\templates\manage\products\list.html:96 .\templates\manage\profile.html:192
 msgid "Description"
-msgstr "Descriere"
+msgstr "Опис"
 
 #: .\orderpiqrApp\models\customers.py:12 .\orderpiqrApp\models\customers.py:21
 #: .\orderpiqrApp\models\devices.py:22 .\orderpiqrApp\models\login_tokens.py:31
 #: .\orderpiqrApp\models\orders.py:18 .\orderpiqrApp\models\picklists.py:11
 #: .\orderpiqrApp\models\preferences.py:68 .\orderpiqrApp\models\products.py:12
 msgid "Customer"
-msgstr "Client"
+msgstr "Клієнт"
 
 #: .\orderpiqrApp\models\customers.py:13
 msgid "Customers"
-msgstr "Clienți"
+msgstr "Клієнти"
 
 #: .\orderpiqrApp\models\customers.py:24
 msgid "User Profile"
-msgstr "Profil utilizator"
+msgstr "Профіль користувача"
 
 #: .\orderpiqrApp\models\customers.py:25
 msgid "User Profiles"
-msgstr "Profiluri utilizator"
+msgstr "Профілі користувачів"
 
 #: .\orderpiqrApp\models\devices.py:19
 msgid "Device Fingerprint"
-msgstr "Amprentă dispozitiv"
+msgstr "Відбиток пристрою"
 
 #: .\orderpiqrApp\models\devices.py:23 .\templates\manage\profile.html:215
 msgid "Last Login"
-msgstr "Ultima autentificare"
+msgstr "Останній вхід"
 
 #: .\orderpiqrApp\models\devices.py:24
 msgid "Lists Picked"
-msgstr "Liste selectate"
+msgstr "Скомплектовано листів"
 
 #: .\orderpiqrApp\models\devices.py:28 .\templates\manage\base.html:113
 #: .\templates\manage\devices\list.html:4
 #: .\templates\manage\devices\list.html:5
 msgid "Devices"
-msgstr "Dispozitive"
+msgstr "Пристрої"
 
 #: .\orderpiqrApp\models\email_log.py:7
 msgid "Sent"
-msgstr "Trimis"
+msgstr "Надіслано"
 
 #: .\orderpiqrApp\models\email_log.py:8
 #: .\templates\manage\picklists\detail.html:32
@@ -380,71 +377,71 @@ msgstr "Trimis"
 #: .\templates\manage\picklists\list.html:17
 #: .\templates\manage\picklists\list.html:72
 msgid "Failed"
-msgstr "Eșuat"
+msgstr "Помилка"
 
 #: .\orderpiqrApp\models\email_log.py:13
 msgid "Comma-separated recipients"
-msgstr "Destinatari separați prin virgulă"
+msgstr "Отримувачі через кому"
 
 #: .\orderpiqrApp\models\email_log.py:18
 msgid "e.g. password_reset, welcome"
-msgstr "ex. password_reset, welcome"
+msgstr "напр. password_reset, welcome"
 
 #: .\orderpiqrApp\models\email_log.py:23
 msgid "Email Log"
-msgstr "Jurnal email"
+msgstr "Журнал електронної пошти"
 
 #: .\orderpiqrApp\models\email_log.py:24
 msgid "Email Logs"
-msgstr "Jurnale email"
+msgstr "Журнали електронної пошти"
 
 #: .\orderpiqrApp\models\inventory.py:15
 msgid "Set (absolute)"
-msgstr "Setează (absolut)"
+msgstr "Встановити (абсолютне)"
 
 #: .\orderpiqrApp\models\inventory.py:16
 msgid "Adjust (relative)"
-msgstr "Ajustează (relativ)"
+msgstr "Скоригувати (відносне)"
 
 #: .\orderpiqrApp\models\inventory.py:19
 msgid "Stock Count"
-msgstr "Numărătoare stoc"
+msgstr "Інвентаризація"
 
 #: .\orderpiqrApp\models\inventory.py:20
 msgid "Goods Received"
-msgstr "Marfă recepționată"
+msgstr "Надходження товару"
 
 #: .\orderpiqrApp\models\inventory.py:21
 msgid "Damaged"
-msgstr "Deteriorat"
+msgstr "Пошкоджено"
 
 #: .\orderpiqrApp\models\inventory.py:22
 msgid "Customer Return"
-msgstr "Retur client"
+msgstr "Повернення від клієнта"
 
 #: .\orderpiqrApp\models\inventory.py:23
 msgid "Correction"
-msgstr "Corecție"
+msgstr "Коригування"
 
 #: .\orderpiqrApp\models\inventory.py:24
 msgid "Order Picked"
-msgstr "Comandă pregătită"
+msgstr "Замовлення скомплектовано"
 
 #: .\orderpiqrApp\models\inventory.py:25
 msgid "Other"
-msgstr "Altele"
+msgstr "Інше"
 
 #: .\orderpiqrApp\models\inventory.py:47
 msgid "Old Quantity"
-msgstr "Cantitate veche"
+msgstr "Попередня кількість"
 
 #: .\orderpiqrApp\models\inventory.py:48
 msgid "New Quantity"
-msgstr "Cantitate nouă"
+msgstr "Нова кількість"
 
 #: .\orderpiqrApp\models\inventory.py:50
 msgid "Change Type"
-msgstr "Tip modificare"
+msgstr "Тип зміни"
 
 #: .\orderpiqrApp\models\inventory.py:55 .\templates\inventory\picker.html:106
 #: .\templates\manage\inventory\add_correction.html:55
@@ -452,7 +449,7 @@ msgstr "Tip modificare"
 #: .\templates\manage\products\form.html:122
 #: .\templates\manage\products\form.html:162
 msgid "Reason"
-msgstr "Motiv"
+msgstr "Причина"
 
 #: .\orderpiqrApp\models\inventory.py:59 .\orderpiqrApp\models\orders.py:21
 #: .\orderpiqrApp\models\picklists.py:21 .\orderpiqrApp\models\picklists.py:51
@@ -462,63 +459,63 @@ msgstr "Motiv"
 #: .\templates\manage\picklists\detail.html:80
 #: .\templates\queue\_order_cards.html:44
 msgid "Notes"
-msgstr "Note"
+msgstr "Примітки"
 
 #: .\orderpiqrApp\models\inventory.py:60 .\orderpiqrApp\models\picklists.py:15
 msgid "Created At"
-msgstr "Creat la"
+msgstr "Дата створення"
 
 #: .\orderpiqrApp\models\inventory.py:61
 msgid "Deleted"
-msgstr "Șters"
+msgstr "Видалено"
 
 #: .\orderpiqrApp\models\inventory.py:62
 msgid "Deleted At"
-msgstr "Șters la"
+msgstr "Дата видалення"
 
 #: .\orderpiqrApp\models\inventory.py:69
 msgid "Deleted By"
-msgstr "Șterge"
+msgstr "Ким видалено"
 
 #: .\orderpiqrApp\models\inventory.py:78
 msgid "Source Picklist"
-msgstr "Lista de preluare sursă"
+msgstr "Вихідний лист комплектації"
 
 #: .\orderpiqrApp\models\inventory.py:79
 msgid ""
 "If this change was caused by order completion, reference to the picklist."
 msgstr ""
-"Dacă această modificare a fost cauzată de finalizarea unei comenzi, "
-"referință către lista de preluare."
+"Якщо цю зміну спричинило завершення замовлення — посилання на лист "
+"комплектації."
 
 #: .\orderpiqrApp\models\inventory.py:83 .\templates\manage\base.html:76
 #: .\templates\manage\inventory\logs.html:4
 #: .\templates\manage\inventory\logs.html:5
 msgid "Inventory Log"
-msgstr "Jurnal inventar"
+msgstr "Журнал запасів"
 
 #: .\orderpiqrApp\models\inventory.py:84
 msgid "Inventory Logs"
-msgstr "Jurnale inventar"
+msgstr "Журнали запасів"
 
 #: .\orderpiqrApp\models\inventory.py:93
 #, python-format
 msgid "Inventory change: %(product)s %(old)s -> %(new)s"
-msgstr "Modificare inventar: %(product)s %(old)s -> %(new)s"
+msgstr "Зміна запасів: %(product)s %(old)s -> %(new)s"
 
 #: .\orderpiqrApp\models\login_tokens.py:30
 #: .\templates\manage\picklists\detail.html:52
 #: .\templates\manage\picklists\list.html:33
 msgid "Picker"
-msgstr "Ordinea de colectare"
+msgstr "Комплектувальник"
 
 #: .\orderpiqrApp\models\login_tokens.py:32
 msgid "Token Hash"
-msgstr "Hash token"
+msgstr "Хеш токена"
 
 #: .\orderpiqrApp\models\login_tokens.py:35
 msgid "Created By"
-msgstr "Creat de"
+msgstr "Ким створено"
 
 #: .\orderpiqrApp\models\login_tokens.py:36
 #: .\templates\manage\dashboard.html:209 .\templates\manage\orders\list.html:96
@@ -526,42 +523,42 @@ msgstr "Creat de"
 #: .\templates\manage\picklists\list.html:35
 #: .\templates\manage\settings\api_tokens.html:53
 msgid "Created"
-msgstr "Creat"
+msgstr "Створено"
 
 #: .\orderpiqrApp\models\login_tokens.py:37
 msgid "Expires At"
-msgstr "Expiră la"
+msgstr "Термін дії до"
 
 #: .\orderpiqrApp\models\login_tokens.py:38
 msgid "Revoked At"
-msgstr "Revocat la"
+msgstr "Дата відкликання"
 
 #: .\orderpiqrApp\models\login_tokens.py:39
 msgid "Last Used At"
-msgstr "Ultima utilizare"
+msgstr "Останнє використання"
 
 #: .\orderpiqrApp\models\login_tokens.py:40
 msgid "Times Used"
-msgstr "Număr de utilizări"
+msgstr "Кількість використань"
 
 #: .\orderpiqrApp\models\login_tokens.py:43
 msgid "Picker Login QR"
-msgstr "Cod QR de autentificare pentru operator"
+msgstr "QR-код входу комплектувальника"
 
 #: .\orderpiqrApp\models\login_tokens.py:44
 msgid "Picker Login QRs"
-msgstr "Coduri QR de autentificare pentru operatori"
+msgstr "QR-коди входу комплектувальників"
 
 #: .\orderpiqrApp\models\orders.py:10 .\templates\manage\orders\list.html:43
 msgid "Draft"
-msgstr "Schiță"
+msgstr "Чернетка"
 
 #: .\orderpiqrApp\models\orders.py:11 .\templates\manage\orders\list.html:44
 #: .\templates\manage\queue\_queue_list.html:29
 #: .\templates\queue\_manage_queue_list.html:21
 #: .\templates\queue\_order_cards.html:53
 msgid "Queued"
-msgstr "În coadă"
+msgstr "У черзі"
 
 #: .\orderpiqrApp\models\orders.py:12 .\templates\manage\orders\list.html:45
 #: .\templates\manage\picklists\detail.html:34
@@ -572,7 +569,7 @@ msgstr "În coadă"
 #: .\templates\queue\_order_cards.html:56
 #: .\templates\queue\_picker_orders.html:42
 msgid "In Progress"
-msgstr "În curs"
+msgstr "Виконується"
 
 #: .\orderpiqrApp\models\orders.py:13 .\templates\manage\orders\list.html:46
 #: .\templates\manage\picklists\detail.html:30
@@ -581,54 +578,54 @@ msgstr "În curs"
 #: .\templates\queue\_order_cards.html:59
 #: .\templates\queue\_picker_orders.html:49
 msgid "Completed"
-msgstr "Finalizat"
+msgstr "Завершено"
 
 #: .\orderpiqrApp\models\orders.py:14 .\templates\manage\orders\list.html:47
 msgid "Cancelled"
-msgstr "Anulat"
+msgstr "Скасовано"
 
 #: .\orderpiqrApp\models\orders.py:19 .\templates\manage\orders\form.html:20
 #: .\templates\manage\orders\list.html:93
 msgid "Order Code"
-msgstr "Cod comandă"
+msgstr "Код замовлення"
 
 #: .\orderpiqrApp\models\orders.py:29
 msgid "Queue Position"
-msgstr "Poziție în coadă"
+msgstr "Позиція в черзі"
 
 #: .\orderpiqrApp\models\orders.py:32
 msgid "Position in the picking queue. Lower numbers are picked first."
-msgstr "Poziția în coada de ridicare. Numerele mai mici sunt ridicate primele."
+msgstr "Позиція в черзі комплектації. Менші номери комплектуються першими."
 
 #: .\orderpiqrApp\models\orders.py:35
 msgid "Completed At"
-msgstr "Finalizat la"
+msgstr "Дата завершення"
 
 #: .\orderpiqrApp\models\orders.py:40
 msgid "Source"
-msgstr "Sursă"
+msgstr "Джерело"
 
 #: .\orderpiqrApp\models\orders.py:44
 msgid ""
 "Where this order came from: manual, csv, api, or an integration platform "
 "(e.g. shopify)."
 msgstr ""
-"De unde provine această comandă: manual, csv, api sau o platformă de "
-"integrare (de ex. shopify)."
+"Звідки надійшло це замовлення: manual, csv, api або платформа інтеграції "
+"(напр. shopify)."
 
 #: .\orderpiqrApp\models\orders.py:48 .\orderpiqrApp\models\orders.py:63
 #: .\templates\manage\dashboard.html:207
 #: .\templates\manage\picklists\detail.html:9
 #: .\templates\manage\picklists\list.html:31 .\templates\shopify\app.html:208
 msgid "Order"
-msgstr "Comandă"
+msgstr "Замовлення"
 
 #: .\orderpiqrApp\models\orders.py:49 .\templates\manage\base.html:82
 #: .\templates\manage\base.html:89 .\templates\manage\orders\list.html:4
 #: .\templates\manage\orders\list.html:5
 #: .\templates\manage\products\list.html:101
 msgid "Orders"
-msgstr "Comenzi"
+msgstr "Замовлення"
 
 #: .\orderpiqrApp\models\orders.py:65 .\orderpiqrApp\models\picklists.py:48
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
@@ -636,108 +633,108 @@ msgstr "Comenzi"
 #: .\templates\manage\orders\form.html:366
 #: .\templates\manage\picklists\detail.html:101
 msgid "Quantity"
-msgstr "Cantitate"
+msgstr "Кількість"
 
 #: .\orderpiqrApp\models\orders.py:68
 msgid "Order Line"
-msgstr "Linie comandă"
+msgstr "Рядок замовлення"
 
 #: .\orderpiqrApp\models\orders.py:69 .\templates\manage\orders\form.html:50
 msgid "Order Lines"
-msgstr "Linii comandă"
+msgstr "Рядки замовлення"
 
 #: .\orderpiqrApp\models\orders.py:72
 #, python-format
 msgid "Order %(order)s, Product: %(quantity)s x %(product)s"
-msgstr "Comanda %(order)s, Produs: %(quantity)s x %(product)s"
+msgstr "Замовлення %(order)s, товар: %(quantity)s x %(product)s"
 
 #: .\orderpiqrApp\models\picklists.py:12
 msgid "Source Order"
-msgstr "Comandă sursă"
+msgstr "Вихідне замовлення"
 
 #: .\orderpiqrApp\models\picklists.py:13
 msgid "Picklist Code"
-msgstr "Cod listă de preluare"
+msgstr "Код листа комплектації"
 
 #: .\orderpiqrApp\models\picklists.py:16
 msgid "Updated At"
-msgstr "Actualizat la"
+msgstr "Дата оновлення"
 
 #: .\orderpiqrApp\models\picklists.py:17
 msgid "Pick Started"
-msgstr "Preluare începută"
+msgstr "Початок комплектації"
 
 #: .\orderpiqrApp\models\picklists.py:18
 #: .\templates\manage\picklists\detail.html:67
 msgid "Pick Time"
-msgstr "Timp preluare"
+msgstr "Час комплектації"
 
 #: .\orderpiqrApp\models\picklists.py:19 .\orderpiqrApp\models\picklists.py:49
 msgid "Time Taken"
-msgstr "Durată"
+msgstr "Витрачений час"
 
 #: .\orderpiqrApp\models\picklists.py:20 .\orderpiqrApp\models\picklists.py:50
 msgid "Successful"
-msgstr "Reușit"
+msgstr "Успішно"
 
 #: .\orderpiqrApp\models\picklists.py:24 .\orderpiqrApp\models\picklists.py:47
 msgid "Pick List"
-msgstr "Listă de preluare"
+msgstr "Лист комплектації"
 
 #: .\orderpiqrApp\models\picklists.py:25 .\templates\manage\base.html:106
 #: .\templates\manage\picklists\list.html:4
 #: .\templates\manage\picklists\list.html:5
 msgid "Pick Lists"
-msgstr "Liste de preluare"
+msgstr "Листи комплектації"
 
 #: .\orderpiqrApp\models\picklists.py:35
 #, python-format
 msgid "PickList %(id)s for Device %(device)s"
-msgstr "Listă de preluare %(id)s pentru dispozitivul %(device)s"
+msgstr "Лист комплектації %(id)s для пристрою %(device)s"
 
 #: .\orderpiqrApp\models\picklists.py:54
 msgid "Product Pick"
-msgstr "Preluare produs"
+msgstr "Комплектація товару"
 
 #: .\orderpiqrApp\models\picklists.py:55
 #: .\templates\manage\picklists\detail.html:90
 msgid "Product Picks"
-msgstr "Preluări produs"
+msgstr "Комплектації товарів"
 
 #: .\orderpiqrApp\models\picklists.py:58
 #, python-format
 msgid "Pick of %(product)s in PickList %(picklist_id)s"
-msgstr "Preluare a %(product)s în lista %(picklist_id)s"
+msgstr "Комплектація %(product)s у листі комплектації %(picklist_id)s"
 
 #: .\orderpiqrApp\models\preferences.py:9
 msgid "String"
-msgstr "Text"
+msgstr "Рядок"
 
 #: .\orderpiqrApp\models\preferences.py:10
 msgid "Boolean"
-msgstr "Boolean"
+msgstr "Логічне значення"
 
 #: .\orderpiqrApp\models\preferences.py:11
 msgid "Integer"
-msgstr "Număr întreg"
+msgstr "Ціле число"
 
 #: .\orderpiqrApp\models\preferences.py:12
 msgid "Float"
-msgstr "Număr zecimal"
+msgstr "Дробове число"
 
 #: .\orderpiqrApp\models\preferences.py:13
 #: .\templates\manage\products\form.html:120
 #: .\templates\manage\products\form.html:160 .\templates\shopify\app.html:209
 msgid "Date"
-msgstr "Dată"
+msgstr "Дата"
 
 #: .\orderpiqrApp\models\preferences.py:14
 msgid "DateTime"
-msgstr "Dată și oră"
+msgstr "Дата та час"
 
 #: .\orderpiqrApp\models\preferences.py:15
 msgid "Color (HEX)"
-msgstr "Culoare (HEX)"
+msgstr "Колір (HEX)"
 
 #: .\orderpiqrApp\models\preferences.py:16
 msgid "URL"
@@ -745,7 +742,7 @@ msgstr "URL"
 
 #: .\orderpiqrApp\models\preferences.py:17
 msgid "Image"
-msgstr "Imagine"
+msgstr "Зображення"
 
 #: .\orderpiqrApp\models\preferences.py:18
 msgid "JSON"
@@ -753,82 +750,83 @@ msgstr "JSON"
 
 #: .\orderpiqrApp\models\preferences.py:20
 msgid "Key"
-msgstr "Cheie"
+msgstr "Ключ"
 
 #: .\orderpiqrApp\models\preferences.py:21
 msgid "Internal name for this setting (e.g. 'language', 'sort_by_location')."
 msgstr ""
-"Nume intern pentru această setare (ex. 'language', 'sort_by_location')."
+"Внутрішня назва цього параметра (напр. 'language', 'sort_by_location')."
 
 #: .\orderpiqrApp\models\preferences.py:22
 msgid "Label"
-msgstr "Etichetă"
+msgstr "Підпис"
 
 #: .\orderpiqrApp\models\preferences.py:23
 msgid "Human-readable label shown in admin or forms (e.g. 'Language')."
-msgstr "Etichetă lizibilă afișată în administrare sau formulare (ex. 'Limbă')."
+msgstr ""
+"Зрозумілий підпис, що показується в адмінці або формах (напр. 'Language')."
 
 #: .\orderpiqrApp\models\preferences.py:24
 msgid "Help text"
-msgstr "Text de ajutor"
+msgstr "Текст підказки"
 
 #: .\orderpiqrApp\models\preferences.py:25
 msgid "Additional description or guidance for this setting."
-msgstr "Descriere sau îndrumări suplimentare pentru această setare."
+msgstr "Додатковий опис або вказівки щодо цього параметра."
 
 #: .\orderpiqrApp\models\preferences.py:27
 #: .\templates\manage\settings\api_tokens.html:52
 msgid "Type"
-msgstr "Tip"
+msgstr "Тип"
 
 #: .\orderpiqrApp\models\preferences.py:28
 msgid "The type of this setting (e.g. boolean, integer, string)."
-msgstr "Tipul acestei setări (ex. boolean, număr întreg, text)."
+msgstr "Тип цього параметра (напр. boolean, integer, string)."
 
 #: .\orderpiqrApp\models\preferences.py:29
 msgid "Default value"
-msgstr "Valoare implicită"
+msgstr "Значення за замовчуванням"
 
 #: .\orderpiqrApp\models\preferences.py:30
 msgid "Used if customer-specific value is not set."
-msgstr "Folosit dacă valoarea specifică clientului nu este setată."
+msgstr "Використовується, якщо не задано значення для клієнта."
 
 #: .\orderpiqrApp\models\preferences.py:31
 msgid "Options"
-msgstr "Opțiuni"
+msgstr "Варіанти"
 
 #: .\orderpiqrApp\models\preferences.py:32
 msgid ""
-"For 'choice' type settings: list of {value, label} options. E.g. "
-"[{\"value\": \"original\", \"label\": \"Original order\"}]"
+"For 'choice' type settings: list of {value, label} options. E.g. [{\"value\":"
+" \"original\", \"label\": \"Original order\"}]"
 msgstr ""
-"Pentru setările de tip 'alegere': listă de opțiuni {value, label}. Ex. "
-"[{\"value\": \"original\", \"label\": \"Ordine originală\"}]"
+"Для параметрів типу 'choice': список варіантів {value, label}. Напр. "
+"[{\"value\": \"original\", \"label\": \"Original order\"}]"
 
 #: .\orderpiqrApp\models\preferences.py:70
 msgid "Setting"
-msgstr "Setare"
+msgstr "Параметр"
 
 #: .\orderpiqrApp\models\preferences.py:71
 msgid "Value"
-msgstr "Valoare"
+msgstr "Значення"
 
 #: .\orderpiqrApp\models\preferences.py:71
 msgid "The value set for this customer."
-msgstr "Valoarea setată pentru acest client."
+msgstr "Значення, задане для цього клієнта."
 
 #: .\orderpiqrApp\models\preferences.py:75
 msgid "Customer setting value"
-msgstr "Valoare setare client"
+msgstr "Значення параметра клієнта"
 
 #: .\orderpiqrApp\models\preferences.py:76
 msgid "Customer setting values"
-msgstr "Valori setări client"
+msgstr "Значення параметрів клієнта"
 
 #: .\orderpiqrApp\models\products.py:9 .\templates\index.html:127
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
-msgstr "Cod produs"
+msgstr "Код товару"
 
 #: .\orderpiqrApp\models\products.py:11
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:91
@@ -837,29 +835,29 @@ msgstr "Cod produs"
 #: .\templates\manage\products\form.html:37
 #: .\templates\manage\products\list.html:97
 msgid "Location"
-msgstr "Locație"
+msgstr "Розташування"
 
 #: .\orderpiqrApp\models\products.py:15
 msgid "Inventory Quantity"
-msgstr "Cantitate inventar"
+msgstr "Кількість на складі"
 
 #: .\orderpiqrApp\models\products.py:17
 msgid "Current stock quantity for this product."
-msgstr "Cantitatea de stoc curentă pentru acest produs."
+msgstr "Поточна кількість цього товару на складі."
 
 #: .\orderpiqrApp\models\products.py:22 .\templates\manage\base.html:68
 #: .\templates\manage\dashboard.html:14 .\templates\manage\products\list.html:4
 #: .\templates\manage\products\list.html:5
 msgid "Products"
-msgstr "Produse"
+msgstr "Товари"
 
 #: .\orderpiqrApp\utils\csv_import.py:53
 msgid "The file is larger than 5MB. Please split it into smaller files."
-msgstr "Fișierul depășește 5MB. Vă rugăm să îl împărțiți în fișiere mai mici."
+msgstr "Файл більший за 5 МБ. Розділіть його на менші файли."
 
 #: .\orderpiqrApp\utils\csv_import.py:57 .\orderpiqrApp\utils\csv_import.py:64
 msgid "The file is empty."
-msgstr "Fișierul este gol."
+msgstr "Файл порожній."
 
 #: .\orderpiqrApp\utils\csv_import.py:78
 #, python-brace-format
@@ -867,170 +865,167 @@ msgid ""
 "Could not find the required column(s) {missing}. Found columns: {found}. "
 "Please use the format shown below."
 msgstr ""
-"Nu s-au găsit coloanele obligatorii {missing}. Coloane găsite: {found}. Vă "
-"rugăm să folosiți formatul de mai jos."
+"Не знайдено обов’язкові стовпці {missing}. Знайдені стовпці: {found}. "
+"Скористайтеся форматом, наведеним нижче."
 
 #: .\orderpiqrApp\utils\csv_import.py:96
 msgid "The file contains no data rows below the header."
-msgstr "Fișierul nu conține rânduri de date sub antet."
+msgstr "Файл не містить рядків з даними під заголовком."
 
 #: .\orderpiqrApp\utils\inventory.py:159
 #, python-format
 msgid "Auto-decremented from order %(order_code)s"
-msgstr "Scăzut automat din comanda %(order_code)s"
+msgstr "Автоматично списано за замовленням %(order_code)s"
 
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 #: .\templates\manage\products\list.html:95
 msgid "Code"
-msgstr "Cod"
+msgstr "Код"
 
 #: .\orderpiqrApp\views\auth\signup_view.py:59
 msgid ""
 "Your company and users were created. Welcome! Start by adding your products, "
 "then create orders and manage your queue."
 msgstr ""
-"Compania și utilizatorii dumneavoastră au fost creați. Bun venit! Începeți "
-"prin a adăuga produsele, apoi creați comenzi și gestionați coada."
+"Вашу компанію та користувачів створено. Вітаємо! Почніть із додавання "
+"товарів, потім створіть замовлення та керуйте чергою."
 
 #: .\orderpiqrApp\views\auth\signup_view.py:66
 msgid ""
 "That username or email is already in use. Please choose a different one."
-msgstr ""
-"Acest nume de utilizator sau email este deja folosit. Vă rugăm să alegeți "
-"altul."
+msgstr "Це ім’я користувача або email уже використовується. Виберіть інше."
 
 #: .\orderpiqrApp\views\auth\signup_view.py:70
 msgid ""
 "Some of the submitted data is invalid or too long. Please review and try "
 "again."
 msgstr ""
-"Unele date trimise sunt invalide sau prea lungi. Vă rugăm să revizuiți și să "
-"încercați din nou."
+"Частина надісланих даних недійсна або задовга. Перевірте та спробуйте ще раз."
 
 #: .\orderpiqrApp\views\auth\signup_view.py:78
 msgid "Please correct the highlighted errors and try again."
-msgstr "Vă rugăm să corectați erorile evidențiate și să încercați din nou."
+msgstr "Виправте виділені помилки та спробуйте ще раз."
 
 #: .\orderpiqrApp\views\auth\signup_view.py:83
 msgid ""
-"Some of the submitted information is missing or invalid. Please check and "
-"try again."
+"Some of the submitted information is missing or invalid. Please check and try"
+" again."
 msgstr ""
-"Unele informații trimise lipsesc sau sunt invalide. Vă rugăm să verificați "
-"și să încercați din nou."
+"Частина наданої інформації відсутня або недійсна. Перевірте та спробуйте ще "
+"раз."
 
 #: .\orderpiqrApp\views\auth\signup_view.py:86
 msgid "We’re experiencing technical issues. Please try again shortly."
-msgstr ""
-"Întâmpinăm probleme tehnice. Vă rugăm să încercați din nou în scurt timp."
+msgstr "У нас технічні неполадки. Спробуйте ще раз трохи згодом."
 
 #: .\orderpiqrApp\views\integration_views.py:32
 #: .\orderpiqrApp\views\integration_views.py:71
 #: .\orderpiqrApp\views\integration_views.py:158
 #: .\orderpiqrApp\views\manage_views.py:72
 msgid "No customer profile found for your account."
-msgstr "Niciun profil de client găsit pentru contul dumneavoastră."
+msgstr "Для вашого облікового запису не знайдено профілю клієнта."
 
 #: .\orderpiqrApp\views\integration_views.py:87
 msgid "Integration paused. Incoming orders are on hold until you resume it."
 msgstr ""
-"Integrare suspendată. Comenzile primite sunt reținute până când o reluați."
+"Інтеграцію призупинено. Вхідні замовлення очікують, доки ви її не відновите."
 
 #: .\orderpiqrApp\views\integration_views.py:91
 msgid "Integration resumed."
-msgstr "Integrare reluată."
+msgstr "Інтеграцію відновлено."
 
 #: .\orderpiqrApp\views\integration_views.py:109
 msgid "Integration disconnected."
-msgstr "Integrare deconectată."
+msgstr "Інтеграцію відключено."
 
 #: .\orderpiqrApp\views\integration_views.py:131
 msgid "Integration settings saved."
-msgstr "Setările integrării au fost salvate."
+msgstr "Налаштування інтеграції збережено."
 
 #: .\orderpiqrApp\views\integration_views.py:175
 msgid "API token created. Copy it now – it will not be shown again."
-msgstr "Token API creat. Copiați-l acum – nu va mai fi afișat."
+msgstr ""
+"Токен API створено. Скопіюйте його зараз — він більше не відображатиметься."
 
 #: .\orderpiqrApp\views\integration_views.py:181
 msgid "API token revoked."
-msgstr "Token API revocat."
+msgstr "Токен API відкликано."
 
 #: .\orderpiqrApp\views\inventory_views.py:28
 msgid "No customer profile found"
-msgstr "Niciun profil de client găsit"
+msgstr "Профіль клієнта не знайдено"
 
 #: .\orderpiqrApp\views\inventory_views.py:31
 msgid "Inventory management is not enabled"
-msgstr "Gestionarea inventarului nu este activată"
+msgstr "Керування запасами не увімкнено"
 
 #: .\orderpiqrApp\views\inventory_views.py:67
 #: .\orderpiqrApp\views\inventory_views.py:105
 #: .\orderpiqrApp\views\inventory_views.py:151
 msgid "No customer found"
-msgstr "Niciun client găsit"
+msgstr "Клієнта не знайдено"
 
 #: .\orderpiqrApp\views\inventory_views.py:70
 #: .\orderpiqrApp\views\inventory_views.py:108
 #: .\orderpiqrApp\views\inventory_views.py:154
 msgid "Inventory management not enabled"
-msgstr "Gestionarea inventarului nu este activată"
+msgstr "Керування запасами не увімкнено"
 
 #: .\orderpiqrApp\views\inventory_views.py:129
 #: .\orderpiqrApp\views\inventory_views.py:190
 #: .\templates\inventory\picker.html:212
 msgid "Product not found"
-msgstr "Produs negăsit"
+msgstr "Товар не знайдено"
 
 #: .\orderpiqrApp\views\inventory_views.py:159
 msgid "Invalid request"
-msgstr "Cerere invalidă"
+msgstr "Недійсний запит"
 
 #: .\orderpiqrApp\views\inventory_views.py:169
 msgid "Missing required fields"
-msgstr "Câmpuri obligatorii lipsă"
+msgstr "Відсутні обов’язкові поля"
 
 #: .\orderpiqrApp\views\inventory_views.py:173
 msgid "Invalid change type"
-msgstr "Tip de modificare invalid"
+msgstr "Недійсний тип зміни"
 
 #: .\orderpiqrApp\views\inventory_views.py:177
 msgid "Invalid reason"
-msgstr "Motiv invalid"
+msgstr "Недійсна причина"
 
 #: .\orderpiqrApp\views\inventory_views.py:182
 msgid "Value must be a number"
-msgstr "Valoarea trebuie să fie un număr"
+msgstr "Значення має бути числом"
 
 #: .\orderpiqrApp\views\inventory_views.py:206
 msgid "Inventory updated"
-msgstr "Inventar actualizat"
+msgstr "Запаси оновлено"
 
 #: .\orderpiqrApp\views\manage_views.py:219
 #: .\orderpiqrApp\views\manage_views.py:273
 msgid "Product code is required."
-msgstr "Codul produsului este obligatoriu."
+msgstr "Код товару обов’язковий."
 
 #: .\orderpiqrApp\views\manage_views.py:221
 #: .\orderpiqrApp\views\manage_views.py:275
 #: .\orderpiqrApp\views\manage_views.py:423
 msgid "A product with this code already exists."
-msgstr "Un produs cu acest cod există deja."
+msgstr "Товар із таким кодом уже існує."
 
 #: .\orderpiqrApp\views\manage_views.py:223
 #: .\orderpiqrApp\views\manage_views.py:277
 msgid "Description is required."
-msgstr "Descrierea este obligatorie."
+msgstr "Опис обов’язковий."
 
 #: .\orderpiqrApp\views\manage_views.py:238
 #, python-brace-format
 msgid "Product '{code}' created successfully."
-msgstr "Produsul '{code}' a fost creat cu succes."
+msgstr "Товар '{code}' успішно створено."
 
 #: .\orderpiqrApp\views\manage_views.py:291
 #, python-brace-format
 msgid "Product '{code}' updated successfully."
-msgstr "Produsul '{code}' a fost actualizat cu succes."
+msgstr "Товар '{code}' успішно оновлено."
 
 #: .\orderpiqrApp\views\manage_views.py:303
 #: .\orderpiqrApp\views\manage_views.py:323
@@ -1039,12 +1034,12 @@ msgstr "Produsul '{code}' a fost actualizat cu succes."
 #: .\orderpiqrApp\views\manage_views.py:818
 #: .\orderpiqrApp\views\manage_views.py:1321
 msgid "No customer found."
-msgstr "Niciun client găsit."
+msgstr "Клієнта не знайдено."
 
 #: .\orderpiqrApp\views\manage_views.py:310
 #, python-brace-format
 msgid "Product '{code}' deleted."
-msgstr "Produsul '{code}' a fost șters."
+msgstr "Товар '{code}' видалено."
 
 #: .\orderpiqrApp\views\manage_views.py:312
 #: .\orderpiqrApp\views\manage_views.py:319
@@ -1053,342 +1048,345 @@ msgstr "Produsul '{code}' a fost șters."
 #: .\orderpiqrApp\views\manage_views.py:827
 #: .\orderpiqrApp\views\manage_views.py:1317
 msgid "Invalid request method."
-msgstr "Metodă de cerere invalidă."
+msgstr "Недійсний метод запиту."
 
 #: .\orderpiqrApp\views\manage_views.py:328
 #: .\orderpiqrApp\views\manage_views.py:385
 #: .\orderpiqrApp\views\manage_views.py:622
 #: .\orderpiqrApp\views\manage_views.py:1330
 msgid "Invalid request."
-msgstr "Cerere invalidă."
+msgstr "Недійсний запит."
 
 #: .\orderpiqrApp\views\manage_views.py:339
 #: .\orderpiqrApp\views\manage_views.py:343
 msgid "No products selected."
-msgstr "Niciun produs selectat."
+msgstr "Не вибрано жодного товару."
 
 #: .\orderpiqrApp\views\manage_views.py:352
 #, python-brace-format
 msgid "{count} product(s) deleted."
-msgstr "{count} produs(e) șters(e)."
+msgstr "Видалено товарів: {count}."
 
 #: .\orderpiqrApp\views\manage_views.py:354
 #, python-brace-format
 msgid "{count} product(s) skipped because they are used in orders."
-msgstr "{count} produse omise deoarece sunt folosite în comenzi."
+msgstr ""
+"Пропущено товарів, оскільки вони використовуються в замовленнях: {count}."
 
 #: .\orderpiqrApp\views\manage_views.py:358
 #, python-brace-format
 msgid "{count} product(s) activated."
-msgstr "{count} produs(e) activat(e)."
+msgstr "Активовано товарів: {count}."
 
 #: .\orderpiqrApp\views\manage_views.py:361
 #, python-brace-format
 msgid "{count} product(s) deactivated."
-msgstr "{count} produs(e) dezactivat(e)."
+msgstr "Деактивовано товарів: {count}."
 
 #: .\orderpiqrApp\views\manage_views.py:365
 #, python-brace-format
 msgid "{count} product(s) updated."
-msgstr "{count} produs(e) actualizat(e)."
+msgstr "Оновлено товарів: {count}."
 
 #: .\orderpiqrApp\views\manage_views.py:367
 #: .\orderpiqrApp\views\manage_views.py:675
 msgid "Unknown action."
-msgstr "Acțiune necunoscută."
+msgstr "Невідома дія."
 
 #: .\orderpiqrApp\views\manage_views.py:392
 msgid "Invalid field."
-msgstr "Câmp invalid."
+msgstr "Недійсне поле."
 
 #: .\orderpiqrApp\views\manage_views.py:397
 #: .\orderpiqrApp\views\manage_views.py:1324
 #: .\orderpiqrApp\views\manage_views.py:1379
 #: .\orderpiqrApp\views\manage_views.py:1445
 msgid "Inventory management is not enabled."
-msgstr "Gestionarea inventarului nu este activată."
+msgstr "Керування запасами не увімкнено."
 
 #: .\orderpiqrApp\views\manage_views.py:401
 msgid "Quantity cannot be negative."
-msgstr "Cantitatea nu poate fi negativă."
+msgstr "Кількість не може бути від’ємною."
 
 #: .\orderpiqrApp\views\manage_views.py:403
 #: .\orderpiqrApp\views\manage_views.py:1478
 msgid "Invalid quantity value."
-msgstr "Valoare cantitate invalidă."
+msgstr "Недійсне значення кількості."
 
 #: .\orderpiqrApp\views\manage_views.py:412
 msgid "Inline edit from admin panel"
-msgstr "Editare inline din panoul de administrare"
+msgstr "Швидке редагування з панелі адміністратора"
 
 #: .\orderpiqrApp\views\manage_views.py:414
 msgid "Inventory updated."
-msgstr "Inventar actualizat."
+msgstr "Запаси оновлено."
 
 #: .\orderpiqrApp\views\manage_views.py:421
 msgid "This field cannot be empty."
-msgstr "Acest câmp nu poate fi gol."
+msgstr "Це поле не може бути порожнім."
 
 #: .\orderpiqrApp\views\manage_views.py:428
 msgid "Updated."
-msgstr "Actualizat."
+msgstr "Оновлено."
 
 #: .\orderpiqrApp\views\manage_views.py:443
 #: .\orderpiqrApp\views\manage_views.py:842
 msgid "Please select a CSV file."
-msgstr "Vă rugăm să selectați un fișier CSV."
+msgstr "Виберіть файл CSV."
 
 #: .\orderpiqrApp\views\manage_views.py:447
 #: .\orderpiqrApp\views\manage_views.py:846
 msgid "Please upload a valid CSV file."
-msgstr "Vă rugăm să încărcați un fișier CSV valid."
+msgstr "Завантажте дійсний файл CSV."
 
 #: .\orderpiqrApp\views\manage_views.py:484
 msgid ""
 "No products were imported: every row is missing a product code or "
 "description. Please check the CSV format below."
 msgstr ""
-"Nu a fost importat niciun produs: fiecărui rând îi lipsește codul produsului "
-"sau descrierea. Vă rugăm să verificați formatul CSV de mai jos."
+"Жодного товару не імпортовано: у кожному рядку бракує коду товару або опису. "
+"Перевірте формат CSV нижче."
 
 #: .\orderpiqrApp\views\manage_views.py:489
 #, python-brace-format
 msgid "Import completed: {created} created, {updated} updated."
-msgstr "Import finalizat: {created} create, {updated} actualizate."
+msgstr "Імпорт завершено: створено {created}, оновлено {updated}."
 
 #: .\orderpiqrApp\views\manage_views.py:494
 #, python-brace-format
 msgid ""
-"{count} row(s) were skipped because the product code or description was "
-"empty (rows: {rows})."
+"{count} row(s) were skipped because the product code or description was empty"
+" (rows: {rows})."
 msgstr ""
-"{count} rând(uri) au fost omise deoarece codul produsului sau descrierea era "
-"goală (rânduri: {rows})."
+"Пропущено рядків через порожній код товару або опис: {count} (рядки: {rows})."
 
 #: .\orderpiqrApp\views\manage_views.py:502
 #: .\orderpiqrApp\views\manage_views.py:923
 #, python-brace-format
 msgid "Error processing CSV: {error}"
-msgstr "Eroare la procesarea CSV: {error}"
+msgstr "Помилка обробки CSV: {error}"
 
 #: .\orderpiqrApp\views\manage_views.py:642
 #, python-brace-format
 msgid "{count} order(s) deleted."
-msgstr "{count} comenzi șterse."
+msgstr "Видалено замовлень: {count}."
 
 #: .\orderpiqrApp\views\manage_views.py:644
 #, python-brace-format
 msgid "{count} in-progress order(s) skipped."
-msgstr "{count} comenzi în curs omise."
+msgstr "Пропущено замовлень у виконанні: {count}."
 
 #: .\orderpiqrApp\views\manage_views.py:661
 #, python-brace-format
 msgid "{count} order(s) added to the queue."
-msgstr "{count} comenzi adăugate în coadă."
+msgstr "Додано замовлень до черги: {count}."
 
 #: .\orderpiqrApp\views\manage_views.py:663
 #, python-brace-format
 msgid "{count} order(s) skipped (not draft)."
-msgstr "{count} comenzi omise (nu sunt ciornă)."
+msgstr "Пропущено замовлень (не чернетки): {count}."
 
 #: .\orderpiqrApp\views\manage_views.py:670
 #, python-brace-format
 msgid "{count} order(s) removed from the queue."
-msgstr "{count} comenzi eliminate din coadă."
+msgstr "Вилучено замовлень з черги: {count}."
 
 #: .\orderpiqrApp\views\manage_views.py:672
 #, python-brace-format
 msgid "{count} order(s) skipped (not queued)."
-msgstr "{count} comenzi omise (nu sunt în coadă)."
+msgstr "Пропущено замовлень (не в черзі): {count}."
 
 #: .\orderpiqrApp\views\manage_views.py:701
 #: .\orderpiqrApp\views\manage_views.py:775
 msgid "Order code is required."
-msgstr "Codul comenzii este obligatoriu."
+msgstr "Код замовлення обов’язковий."
 
 #: .\orderpiqrApp\views\manage_views.py:703
 #: .\orderpiqrApp\views\manage_views.py:777
 msgid "An order with this code already exists."
-msgstr "O comandă cu acest cod există deja."
+msgstr "Замовлення з таким кодом уже існує."
 
 #: .\orderpiqrApp\views\manage_views.py:706
 #: .\orderpiqrApp\views\manage_views.py:780
 msgid "At least one product is required."
-msgstr "Cel puțin un produs este obligatoriu."
+msgstr "Потрібен щонайменше один товар."
 
 #: .\orderpiqrApp\views\manage_views.py:742
 #, python-brace-format
 msgid "Order '{code}' created successfully."
-msgstr "Comanda '{code}' a fost creată cu succes."
+msgstr "Замовлення '{code}' успішно створено."
 
 #: .\orderpiqrApp\views\manage_views.py:806
 #, python-brace-format
 msgid "Order '{code}' updated successfully."
-msgstr "Comanda '{code}' a fost actualizată cu succes."
+msgstr "Замовлення '{code}' успішно оновлено."
 
 #: .\orderpiqrApp\views\manage_views.py:825
 #, python-brace-format
 msgid "Order '{code}' deleted."
-msgstr "Comanda '{code}' a fost ștearsă."
+msgstr "Замовлення '{code}' видалено."
 
 #: .\orderpiqrApp\views\manage_views.py:865
 #, python-brace-format
 msgid "row {row}: missing order code or product code"
-msgstr "rândul {row}: lipsește codul comenzii sau codul produsului"
+msgstr "рядок {row}: відсутній код замовлення або код товару"
 
 #: .\orderpiqrApp\views\manage_views.py:881
 #, python-brace-format
 msgid "order {order} already exists"
-msgstr "comanda {order} există deja"
+msgstr "замовлення {order} уже існує"
 
 #: .\orderpiqrApp\views\manage_views.py:902
 #, python-brace-format
 msgid "order {order}: unknown product {product}"
-msgstr "comanda {order}: produs necunoscut {product}"
+msgstr "замовлення {order}: невідомий товар {product}"
 
 #: .\orderpiqrApp\views\manage_views.py:907
 #, python-brace-format
 msgid "No orders were imported: {reasons}"
-msgstr "Nu a fost importată nicio comandă: {reasons}"
+msgstr "Жодного замовлення не імпортовано: {reasons}"
 
 #: .\orderpiqrApp\views\manage_views.py:908
 msgid "the file contains no valid rows."
-msgstr "fișierul nu conține rânduri valide."
+msgstr "файл не містить дійсних рядків."
 
 #: .\orderpiqrApp\views\manage_views.py:911
 #, python-brace-format
 msgid "Import completed: {orders} orders created with {lines} lines."
-msgstr "Import finalizat: {orders} comenzi create cu {lines} linii."
+msgstr "Імпорт завершено: створено замовлень — {orders}, рядків — {lines}."
 
 #: .\orderpiqrApp\views\manage_views.py:915
 #, python-brace-format
 msgid "Some rows could not be imported: {reasons}"
-msgstr "Unele rânduri nu au putut fi importate: {reasons}"
+msgstr "Деякі рядки не вдалося імпортувати: {reasons}"
 
 #: .\orderpiqrApp\views\manage_views.py:1059
 msgid "First name is required."
-msgstr "Prenumele este obligatoriu."
+msgstr "Ім’я обов’язкове."
 
 #: .\orderpiqrApp\views\manage_views.py:1061
 msgid "Email is required."
-msgstr "Email-ul este obligatoriu."
+msgstr "Email обов’язковий."
 
 #: .\orderpiqrApp\views\manage_views.py:1071
 msgid "Profile updated successfully."
-msgstr "Profilul a fost actualizat cu succes."
+msgstr "Профіль успішно оновлено."
 
 #: .\orderpiqrApp\views\manage_views.py:1080
 msgid "Current password is incorrect."
-msgstr "Parola curentă este incorectă."
+msgstr "Поточний пароль неправильний."
 
 #: .\orderpiqrApp\views\manage_views.py:1082
 msgid "New password must be at least 8 characters."
-msgstr "Noua parolă trebuie să aibă cel puțin 8 caractere."
+msgstr "Новий пароль має містити щонайменше 8 символів."
 
 #: .\orderpiqrApp\views\manage_views.py:1084
 msgid "New passwords do not match."
-msgstr "Noile parole nu se potrivesc."
+msgstr "Нові паролі не збігаються."
 
 #: .\orderpiqrApp\views\manage_views.py:1093
 msgid "Password changed successfully."
-msgstr "Parola a fost schimbată cu succes."
+msgstr "Пароль успішно змінено."
 
 #: .\orderpiqrApp\views\manage_views.py:1100
 #: .\orderpiqrApp\views\manage_views.py:1135
 #: .\orderpiqrApp\views\manage_views.py:1151
 msgid "Picker account not found."
-msgstr "Contul de operator nu a fost găsit."
+msgstr "Обліковий запис комплектувальника не знайдено."
 
 #: .\orderpiqrApp\views\manage_views.py:1102
 #: .\orderpiqrApp\views\manage_views.py:1120
 msgid "Password must be at least 8 characters."
-msgstr "Parola trebuie să aibă cel puțin 8 caractere."
+msgstr "Пароль має містити щонайменше 8 символів."
 
 #: .\orderpiqrApp\views\manage_views.py:1107
 #, python-brace-format
 msgid "Password for picker account '{username}' updated."
-msgstr "Parola pentru contul de operator '{username}' a fost actualizată."
+msgstr "Пароль для облікового запису комплектувальника '{username}' оновлено."
 
 #: .\orderpiqrApp\views\manage_views.py:1116
 msgid "Username is required."
-msgstr "Numele de utilizator este obligatoriu."
+msgstr "Ім’я користувача обов’язкове."
 
 #: .\orderpiqrApp\views\manage_views.py:1118
 msgid "This username is already taken."
-msgstr "Acest nume de utilizator este deja folosit."
+msgstr "Це ім’я користувача вже зайняте."
 
 #: .\orderpiqrApp\views\manage_views.py:1127
 #, python-brace-format
 msgid "Picker account '{username}' created."
-msgstr "Contul de operator '{username}' a fost creat."
+msgstr "Обліковий запис комплектувальника '{username}' створено."
 
 #: .\orderpiqrApp\views\manage_views.py:1144
 #, python-brace-format
 msgid ""
 "Login QR created for '{username}'. Print it now – it cannot be shown again."
-msgstr "Cod QR de autentificare creat pentru '{username}'. Tipăriţi-l acum – nu va mai fi afișat."
+msgstr ""
+"QR-код входу для '{username}' створено. Роздрукуйте його зараз — він більше "
+"не відображатиметься."
 
 #: .\orderpiqrApp\views\manage_views.py:1157
 #, python-brace-format
 msgid "Login QR for '{username}' revoked. Printed copies no longer work."
-msgstr "Codul QR de autentificare pentru '{username}' a fost revocat. Copiile tipărite nu mai funcţionează."
+msgstr ""
+"QR-код входу для '{username}' відкликано. Роздруковані копії більше не діють."
 
 #: .\orderpiqrApp\views\manage_views.py:1240
 msgid "Settings saved successfully."
-msgstr "Setările au fost salvate cu succes."
+msgstr "Налаштування успішно збережено."
 
 #: .\orderpiqrApp\views\manage_views.py:1260
 msgid "Inventory management is not enabled for your account."
-msgstr "Gestionarea inventarului nu este activată pentru contul dumneavoastră."
+msgstr "Керування запасами не увімкнено для вашого облікового запису."
 
 #: .\orderpiqrApp\views\manage_views.py:1333
 msgid "No logs selected."
-msgstr "Nicio înregistrare selectată."
+msgstr "Не вибрано жодного запису журналу."
 
 #: .\orderpiqrApp\views\manage_views.py:1343
 msgid "No valid logs found."
-msgstr "Nicio înregistrare validă găsită."
+msgstr "Дійсних записів журналу не знайдено."
 
 #: .\orderpiqrApp\views\manage_views.py:1366
 #, python-format
 msgid "%(count)d log(s) deleted and inventory reverted."
-msgstr "%(count)d înregistrare(ări) ștearsă(șterse) și inventarul restabilit."
+msgstr "Видалено записів журналу: %(count)d, запаси відновлено."
 
 #: .\orderpiqrApp\views\manage_views.py:1472
 msgid "Inventory correction added successfully."
-msgstr "Corecție de inventar adăugată cu succes."
+msgstr "Коригування запасів успішно додано."
 
 #: .\orderpiqrApp\views\manage_views.py:1476
 msgid "Product not found."
-msgstr "Produs negăsit."
+msgstr "Товар не знайдено."
 
 #: .\orderpiqrApp\views\manage_views.py:1491
 msgid "You have been logged out successfully."
-msgstr "Ați fost deconectat cu succes."
+msgstr "Ви успішно вийшли з системи."
 
 #: .\orderpiqrApp\views\queue_views.py:164
 msgid "No customer profile"
-msgstr "Niciun profil de client"
+msgstr "Немає профілю клієнта"
 
 #: .\orderpiqrApp\views\queue_views.py:183
 msgid "Device not found. Please log in again."
-msgstr "Dispozitivul nu a fost găsit. Vă rugăm să vă autentificați din nou."
+msgstr "Пристрій не знайдено. Увійдіть ще раз."
 
 #: .\orderpiqrApp\views\queue_views.py:199
 msgid "This order is already being picked"
-msgstr "Această comandă este deja în curs de preluare"
+msgstr "Це замовлення вже комплектується"
 
 #: .\orderpiqrApp\views\queue_views.py:214
 msgid "This order has already been completed"
-msgstr "Această comandă a fost deja finalizată"
+msgstr "Це замовлення вже завершено"
 
 #: .\orderpiqrApp\views\queue_views.py:220
 msgid "This order is not available for picking"
-msgstr "Această comandă nu este disponibilă pentru preluare"
+msgstr "Це замовлення недоступне для комплектації"
 
 #: .\orderpiqrApp\views\queue_views.py:263
 msgid "Order claimed successfully"
-msgstr "Comandă revendicată cu succes"
+msgstr "Замовлення успішно взято в роботу"
 
 #: .\orderpiqrApp\views\queue_views.py:272
 #: .\orderpiqrApp\views\queue_views.py:378
@@ -1396,7 +1394,7 @@ msgstr "Comandă revendicată cu succes"
 #: .\orderpiqrApp\views\queue_views.py:502
 #: .\orderpiqrApp\views\queue_views.py:545
 msgid "Order not found"
-msgstr "Comandă negăsită"
+msgstr "Замовлення не знайдено"
 
 #: .\orderpiqrApp\views\queue_views.py:347
 #: .\orderpiqrApp\views\queue_views.py:387
@@ -1404,466 +1402,463 @@ msgstr "Comandă negăsită"
 #: .\orderpiqrApp\views\queue_views.py:461
 #: .\orderpiqrApp\views\queue_views.py:511
 msgid "No customer"
-msgstr "Niciun client"
+msgstr "Немає клієнта"
 
 #: .\orderpiqrApp\views\queue_views.py:359
 msgid "Only draft orders can be added to queue"
-msgstr "Doar comenzile ciornă pot fi adăugate în coadă"
+msgstr "До черги можна додавати лише чернетки замовлень"
 
 #: .\orderpiqrApp\views\queue_views.py:374
 #: .\templates\manage\orders\list.html:269
 #: .\templates\manage\queue\list.html:441 .\templates\queue\manage.html:172
 msgid "Order added to queue"
-msgstr "%(count)s comandă(comenzi) adăugată(e) în coadă."
+msgstr "Замовлення додано до черги"
 
 #: .\orderpiqrApp\views\queue_views.py:399
 msgid "Order is not in queue"
-msgstr "Comanda nu este în coadă"
+msgstr "Замовлення не в черзі"
 
 #: .\orderpiqrApp\views\queue_views.py:408
 #: .\templates\manage\queue\list.html:459 .\templates\queue\manage.html:190
 msgid "Order removed from queue"
-msgstr "%(count)s comandă(comenzi) eliminată(e) din coadă."
+msgstr "Замовлення вилучено з черги"
 
 #: .\orderpiqrApp\views\queue_views.py:429
 msgid "Invalid JSON"
-msgstr "JSON invalid"
+msgstr "Недійсний JSON"
 
 #: .\orderpiqrApp\views\queue_views.py:432
 msgid "No order IDs provided"
-msgstr "Nu s-au furnizat ID-uri de comandă"
+msgstr "Не вказано ідентифікаторів замовлень"
 
 #: .\orderpiqrApp\views\queue_views.py:445
 msgid "Queue reordered"
-msgstr "Coada reordonată"
+msgstr "Порядок черги змінено"
 
 #: .\orderpiqrApp\views\queue_views.py:451
 msgid "Error reordering: {}"
-msgstr "Eroare la reordonare: {}"
+msgstr "Помилка зміни порядку: {}"
 
 #: .\orderpiqrApp\views\queue_views.py:464
 msgid "Invalid direction"
-msgstr "Direcție invalidă"
+msgstr "Недійсний напрямок"
 
 #: .\orderpiqrApp\views\queue_views.py:498
 msgid "Order moved up"
-msgstr "Comanda a fost mutată în sus"
+msgstr "Замовлення переміщено вгору"
 
 #: .\orderpiqrApp\views\queue_views.py:498
 msgid "Order moved down"
-msgstr "Comanda a fost mutată în jos"
+msgstr "Замовлення переміщено вниз"
 
 #: .\orderpiqrApp\views\queue_views.py:523
 msgid "Order is not in progress"
-msgstr "Comanda nu este în curs"
+msgstr "Замовлення не виконується"
 
 #: .\orderpiqrApp\views\queue_views.py:541
 #: .\templates\manage\queue\list.html:478
 msgid "Order unlocked"
-msgstr "Comandă deblocată"
+msgstr "Замовлення розблоковано"
 
 #: .\orderpiqr\views.py:46
 msgid "No account found with this email address."
-msgstr "Nu s-a găsit niciun cont cu această adresă de email."
+msgstr "Облікового запису з цією адресою email не знайдено."
 
 #: .\templates\400.html:4 .\templates\400.html:18
 msgid "Bad Request"
-msgstr "Cerere invalidă"
+msgstr "Некоректний запит"
 
 #: .\templates\400.html:21
 msgid ""
 "The server could not understand your request. This might be due to invalid "
 "data or a malformed request."
 msgstr ""
-"Serverul nu a putut procesa cererea dumneavoastră. Acest lucru poate fi "
-"cauzat de date invalide sau o cerere malformată."
+"Сервер не зміг обробити ваш запит. Можливо, дані недійсні або запит "
+"сформовано неправильно."
 
 #: .\templates\403.html:4 .\templates\403.html:18
 msgid "Access Denied"
-msgstr "Acces interzis"
+msgstr "Доступ заборонено"
 
 #: .\templates\403.html:21
 msgid ""
-"You don't have permission to access this page. Please make sure you're "
-"logged in with the correct account."
+"You don't have permission to access this page. Please make sure you're logged"
+" in with the correct account."
 msgstr ""
-"Nu aveți permisiunea de a accesa această pagină. Vă rugăm să vă asigurați că "
-"sunteți conectat cu contul corect."
+"У вас немає дозволу на доступ до цієї сторінки. Переконайтеся, що ви увійшли "
+"з правильним обліковим записом."
 
 #: .\templates\403.html:31
 msgid "Sign In"
-msgstr "Autentificare"
+msgstr "Увійти"
 
 #: .\templates\403.html:38 .\templates\500.html:40
 #: .\templates\errors\base_error.html:270
 msgid "Go to Homepage"
-msgstr "Mergi la pagina principală"
+msgstr "На головну сторінку"
 
 #: .\templates\404.html:4 .\templates\404.html:18
 msgid "Page Not Found"
-msgstr "Pagină negăsită"
+msgstr "Сторінку не знайдено"
 
 #: .\templates\404.html:21
 msgid ""
-"The page you're looking for doesn't exist or has been moved. Please check "
-"the URL or navigate back to the homepage."
+"The page you're looking for doesn't exist or has been moved. Please check the"
+" URL or navigate back to the homepage."
 msgstr ""
-"Pagina pe care o căutați nu există sau a fost mutată. Vă rugăm să verificați "
-"URL-ul sau să reveniți la pagina principală."
+"Сторінка, яку ви шукаєте, не існує або її переміщено. Перевірте URL або "
+"поверніться на головну сторінку."
 
 #: .\templates\500.html:4 .\templates\500.html:21
 msgid "Server Error"
-msgstr "Eroare de server"
+msgstr "Помилка сервера"
 
 #: .\templates\500.html:24
 msgid ""
-"Something went wrong on our end. Our team has been notified and we're "
-"working to fix the issue. Please try again in a few minutes."
+"Something went wrong on our end. Our team has been notified and we're working"
+" to fix the issue. Please try again in a few minutes."
 msgstr ""
-"Ceva nu a funcționat corect de partea noastră. Echipa noastră a fost "
-"notificată și lucrăm la rezolvarea problemei. Vă rugăm să încercați din nou "
-"în câteva minute."
+"Щось пішло не так на нашому боці. Нашу команду вже сповіщено, і ми працюємо "
+"над усуненням проблеми. Спробуйте ще раз за кілька хвилин."
 
 #: .\templates\500.html:33
 msgid "Try Again"
-msgstr "Încercați din nou"
+msgstr "Спробувати ще раз"
 
 #: .\templates\admin\base_site.html:36 .\templates\admin\base_site.html:37
 #: .\templates\admin\base_site.html:42
 msgid "Start tour"
-msgstr "Începe turul"
+msgstr "Почати тур"
 
 #: .\templates\admin\custom_index.html:8
 msgid "Picklists scanned this month"
-msgstr "Liste de preluare scanate în această lună"
+msgstr "Відскановано листів комплектації цього місяця"
 
 #: .\templates\admin\custom_index.html:34
 msgid "Cumulative picklists"
-msgstr "Liste de preluare cumulative"
+msgstr "Усього листів комплектації"
 
 #: .\templates\admin\orderpiqrApp\order\change_list.html:42
 #: .\templates\manage\queue\list.html:4 .\templates\manage\queue\list.html:5
 #: .\templates\queue\manage.html:18
 msgid "Queue Management"
-msgstr "Gestionare coadă"
+msgstr "Керування чергою"
 
 #: .\templates\admin\orderpiqrApp\order\change_list.html:43
 msgid "Manage the picking queue - add orders, reorder, and monitor progress"
 msgstr ""
-"Gestionați coada de ridicare - adăugați comenzi, reordonați și monitorizați "
-"progresul"
+"Керуйте чергою комплектації — додавайте замовлення, змінюйте порядок і стежте"
+" за прогресом"
 
 #: .\templates\admin\orderpiqrApp\order\change_list.html:45
 msgid "Open Queue Manager"
-msgstr "Deschide managerul cozii"
+msgstr "Відкрити менеджер черги"
 
 #: .\templates\admin\orderpiqrApp\order\change_list.html:48
 msgid "Upload Order CSV/XLSX"
-msgstr "Încarcă fișierul comandă CSV/XLSX"
+msgstr "Завантажити CSV/XLSX замовлень"
 
 #: .\templates\admin\orderpiqrApp\order\change_list.html:50
 #: .\templates\admin\orderpiqrApp\product\change_list.html:12
 msgid "Please upload a CSV or XLSX file that includes the following columns:"
-msgstr ""
-"Vă rugăm să încărcați un fișier CSV sau XLSX care conține următoarele "
-"coloane:"
+msgstr "Завантажте файл CSV або XLSX, що містить такі стовпці:"
 
 #: .\templates\admin\orderpiqrApp\order\change_list.html:52
 msgid ""
 "With each row representing a product/pick. The order code is repeated for "
 "each product"
 msgstr ""
-"Cu fiecare rând reprezentând un produs/preluare. Codul comenzii este repetat "
-"pentru fiecare produs"
+"Кожен рядок відповідає товару/позиції комплектації. Код замовлення "
+"повторюється для кожного товару"
 
 #: .\templates\admin\orderpiqrApp\order\change_list.html:53
 #: .\templates\admin\orderpiqrApp\product\change_list.html:14
 msgid ""
 "Or manually add a product using the button at the top right of the page."
 msgstr ""
-"Sau adăugați manual un produs folosind butonul din colțul din dreapta sus al "
-"paginii."
+"Або додайте товар вручну за допомогою кнопки у верхньому правому куті "
+"сторінки."
 
 #: .\templates\admin\orderpiqrApp\order\change_list.html:61
 #: .\templates\admin\orderpiqrApp\product\change_list.html:22
 msgid "Upload File"
-msgstr "Încarcă fișierul"
+msgstr "Завантажити файл"
 
 #: .\templates\admin\orderpiqrApp\product\change_list.html:10
 msgid "Upload Product CSV/XLSX"
-msgstr "Încarcă fișierul produs CSV/XLSX"
+msgstr "Завантажити CSV/XLSX товарів"
 
 #: .\templates\errors\base_error.html:277 .\templates\offline.html:69
 msgid "Go Back"
-msgstr "Înapoi"
+msgstr "Назад"
 
 #: .\templates\errors\base_error.html:287
 msgid ""
 "If this problem persists, please contact <a "
 "href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
 msgstr ""
-"Dacă această problemă persistă, vă rugăm să contactați <a "
+"Якщо проблема не зникає, зверніться на <a "
 "href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
 
 #: .\templates\index.html:51
 msgid "Welcome to Orderpiqr!"
-msgstr "Bun venit la Orderpiqr!"
+msgstr "Ласкаво просимо до Orderpiqr!"
 
 #: .\templates\index.html:65 .\templates\manage\dashboard.html:70
 msgid "Quick Actions"
-msgstr "Acțiuni rapide"
+msgstr "Швидкі дії"
 
 #: .\templates\index.html:72 .\templates\queue\display.html:13
 #: .\templates\queue\display.html:17 .\templates\queue\picker.html:21
 msgid "Order Queue"
-msgstr "Coadă comenzi"
+msgstr "Черга замовлень"
 
 #: .\templates\index.html:79 .\templates\inventory\picker.html:14
 #: .\templates\inventory\picker.html:21 .\templates\manage\base.html:63
 #: .\templates\manage\products\form.html:73
 msgid "Inventory"
-msgstr "Inventar"
+msgstr "Запаси"
 
 #: .\templates\index.html:86
 msgid "Preferences"
-msgstr "Preferințe"
+msgstr "Уподобання"
 
 #: .\templates\index.html:88
 msgid "Sort Picklist"
-msgstr "Sortează lista"
+msgstr "Сортування листа комплектації"
 
 #: .\templates\index.html:90
 msgid "Original"
-msgstr "Original"
+msgstr "Початковий"
 
 #: .\templates\index.html:96
 msgid "Order Importance"
-msgstr "Importanța comenzii"
+msgstr "Пріоритет замовлення"
 
 #: .\templates\index.html:96
 msgid "Enabled"
-msgstr "Activat"
+msgstr "Увімкнено"
 
 #: .\templates\index.html:104 .\templates\manage\base.html:234
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
-msgstr "Deconectare"
+msgstr "Вийти"
 
 #: .\templates\index.html:115
 msgid "This app is best viewed on your phone"
-msgstr "Această aplicație este optimizată pentru vizualizare pe telefon"
+msgstr "Цей застосунок найкраще переглядати на телефоні"
 
 #: .\templates\index.html:122 .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
 #: .\templates\manage\picklists\list.html:30
 msgid "Picklist"
-msgstr "Listă de preluare"
+msgstr "Лист комплектації"
 
 #: .\templates\index.html:128
 msgid "Product Name"
-msgstr "Nume produs"
+msgstr "Назва товару"
 
 #: .\templates\inventory\picker.html:19 .\templates\queue\picker.html:19
 msgid "Scanner"
-msgstr "Scanner"
+msgstr "Сканер"
 
 #: .\templates\inventory\picker.html:43
 msgid "Scan"
-msgstr "Scanare"
+msgstr "Сканувати"
 
 #: .\templates\inventory\picker.html:50
 msgid "Search"
-msgstr "Căutare"
+msgstr "Пошук"
 
 #: .\templates\inventory\picker.html:64
 msgid "Type product code or description..."
-msgstr "Introduceți codul sau descrierea produsului..."
+msgstr "Введіть код або опис товару..."
 
 #: .\templates\inventory\picker.html:87
 #: .\templates\manage\inventory\add_correction.html:36
 #: .\templates\manage\products\form.html:86
 msgid "Set To"
-msgstr "Setează la"
+msgstr "Встановити на"
 
 #: .\templates\inventory\picker.html:88
 #: .\templates\manage\inventory\add_correction.html:41
 #: .\templates\manage\products\form.html:87
 msgid "Adjust By"
-msgstr "Ajustează cu"
+msgstr "Змінити на"
 
 #: .\templates\inventory\picker.html:98 .\templates\inventory\picker.html:288
 #: .\templates\manage\inventory\add_correction.html:20
 #: .\templates\manage\products\list.html:99
 msgid "Stock"
-msgstr "Stoc"
+msgstr "Запас"
 
 #: .\templates\inventory\picker.html:117
 #: .\templates\manage\inventory\add_correction.html:66
 #: .\templates\manage\products\form.html:103
 msgid "Notes (optional)"
-msgstr "Note (opțional)"
+msgstr "Примітки (необов’язково)"
 
 #: .\templates\inventory\picker.html:118
 msgid "Add notes..."
-msgstr "Adaugă note..."
+msgstr "Додайте примітки..."
 
 #: .\templates\inventory\picker.html:121 .\templates\inventory\picker.html:485
 #: .\templates\inventory\picker.html:491
 msgid "Update Inventory"
-msgstr "Actualizează inventar"
+msgstr "Оновити запаси"
 
 #: .\templates\inventory\picker.html:133
 msgid "Tap to continue"
-msgstr "Apăsați pentru a continua"
+msgstr "Торкніться, щоб продовжити"
 
 #: .\templates\inventory\picker.html:210
 msgid "Product found"
-msgstr "Produs găsit"
+msgstr "Товар знайдено"
 
 #: .\templates\inventory\picker.html:260
 #: .\templates\manage\orders\form.html:463
 #: .\templates\manage\products\list.html:196
 msgid "No products found"
-msgstr "Niciun produs găsit"
+msgstr "Товарів не знайдено"
 
 #: .\templates\inventory\picker.html:325
 msgid "No location"
-msgstr "Fără locație"
+msgstr "Без розташування"
 
 #: .\templates\inventory\picker.html:428
 #: .\templates\manage\inventory\add_correction.html:214
 #: .\templates\manage\products\form.html:497
 msgid "no change"
-msgstr "nicio modificare"
+msgstr "без змін"
 
 #: .\templates\inventory\picker.html:435
 msgid "Please select a product first"
-msgstr "Vă rugăm să selectați mai întâi un produs"
+msgstr "Спочатку виберіть товар"
 
 #: .\templates\inventory\picker.html:441
 #: .\templates\manage\products\form.html:510
 msgid "Please enter a valid quantity"
-msgstr "Vă rugăm să introduceți o cantitate validă"
+msgstr "Введіть коректну кількість"
 
 #: .\templates\inventory\picker.html:449
 #: .\templates\manage\products\form.html:515
 msgid "Updating..."
-msgstr "Se actualizează..."
+msgstr "Оновлення..."
 
 #: .\templates\inventory\picker.html:489
 #: .\templates\manage\products\form.html:556
 #: .\templates\manage\products\form.html:564
 msgid "Error updating inventory"
-msgstr "Eroare la actualizarea inventarului"
+msgstr "Помилка оновлення запасів"
 
 #: .\templates\manage\base.html:8 .\templates\manage\base.html:58
 #: .\templates\manage\base.html:191 .\templates\manage\dashboard.html:4
 #: .\templates\manage\dashboard.html:5
 msgid "Dashboard"
-msgstr "Tablou de bord"
+msgstr "Панель керування"
 
 #: .\templates\manage\base.html:41
 msgid "Close menu"
-msgstr "Închide meniul"
+msgstr "Закрити меню"
 
 #: .\templates\manage\base.html:50
 msgid "Main"
-msgstr "Principal"
+msgstr "Головне"
 
 #: .\templates\manage\base.html:96
 msgid "Queue"
-msgstr "Coadă"
+msgstr "Черга"
 
 #: .\templates\manage\base.html:101
 msgid "Operations"
-msgstr "Operațiuni"
+msgstr "Операції"
 
 #: .\templates\manage\base.html:118
 msgid "Developer"
-msgstr "Dezvoltator"
+msgstr "Розробникам"
 
 #: .\templates\manage\base.html:123
 #: .\templates\manage\settings\api_tokens.html:4
 #: .\templates\manage\settings\api_tokens.html:5
 msgid "API Tokens"
-msgstr "Tokenuri API"
+msgstr "Токени API"
 
 #: .\templates\manage\base.html:130
 msgid "API Docs"
-msgstr "Documentație API"
+msgstr "Документація API"
 
 #: .\templates\manage\base.html:137
 msgid "API Reference"
-msgstr "Referință API"
+msgstr "Довідник API"
 
 #: .\templates\manage\base.html:142 .\templates\manage\base.html:155
 #: .\templates\manage\base.html:232
 #: .\templates\manage\integrations\list.html:57
 #: .\templates\manage\settings.html:4 .\templates\manage\settings.html:5
 msgid "Settings"
-msgstr "Setări"
+msgstr "Налаштування"
 
 #: .\templates\manage\base.html:148 .\templates\manage\integrations\list.html:4
 #: .\templates\manage\integrations\list.html:5
 msgid "Integrations"
-msgstr "Integrări"
+msgstr "Інтеграції"
 
 #: .\templates\manage\base.html:162 .\templates\manage\base.html:231
 #: .\templates\manage\profile.html:4 .\templates\manage\profile.html:5
 msgid "Profile"
-msgstr "Profil"
+msgstr "Профіль"
 
 #: .\templates\manage\base.html:184
 msgid "Open menu"
-msgstr "Deschide meniul"
+msgstr "Відкрити меню"
 
 #: .\templates\manage\dashboard.html:6 .\templates\registration\login.html:10
 msgid "Welcome back"
-msgstr "Bine ați revenit"
+msgstr "З поверненням"
 
 #: .\templates\manage\dashboard.html:22
 msgid "active"
-msgstr "activ"
+msgstr "активні"
 
 #: .\templates\manage\dashboard.html:27
 msgid "Orders Today"
-msgstr "Comenzi astăzi"
+msgstr "Замовлень сьогодні"
 
 #: .\templates\manage\dashboard.html:36
 msgid "this week"
-msgstr "săptămâna aceasta"
+msgstr "цього тижня"
 
 #: .\templates\manage\dashboard.html:41
 msgid "In Queue"
-msgstr "În coadă"
+msgstr "У черзі"
 
 #: .\templates\manage\dashboard.html:49
 msgid "draft"
-msgstr "schiță"
+msgstr "чернетки"
 
 #: .\templates\manage\dashboard.html:54
 msgid "Completed Today"
-msgstr "Finalizate astăzi"
+msgstr "Завершено сьогодні"
 
 #: .\templates\manage\dashboard.html:63
 msgid "active picklists"
-msgstr "liste de preluare active"
+msgstr "активних листів комплектації"
 
 #: .\templates\manage\dashboard.html:81 .\templates\manage\products\form.html:4
 #: .\templates\manage\products\form.html:5
 #: .\templates\manage\products\list.html:29
 #: .\templates\manage\products\list.html:203
 msgid "Add Product"
-msgstr "Adaugă produs"
+msgstr "Додати товар"
 
 #: .\templates\manage\dashboard.html:82 .\templates\manage\products\form.html:8
 msgid "Create a new product in your inventory"
-msgstr "Creează un produs nou în inventar"
+msgstr "Створіть новий товар у своєму каталозі"
 
 #: .\templates\manage\dashboard.html:84 .\templates\manage\dashboard.html:99
 #: .\templates\manage\dashboard.html:113
 msgid "Step"
-msgstr "Pas"
+msgstr "Крок"
 
 #: .\templates\manage\dashboard.html:96 .\templates\manage\dashboard.html:232
 #: .\templates\manage\orders\form.html:4 .\templates\manage\orders\form.html:5
@@ -1872,63 +1867,63 @@ msgstr "Pas"
 #: .\templates\manage\orders\list.html:191
 #: .\templates\manage\queue\list.html:85
 msgid "Create Order"
-msgstr "Creează comandă"
+msgstr "Створити замовлення"
 
 #: .\templates\manage\dashboard.html:97 .\templates\manage\orders\form.html:8
 msgid "Add a new order with products"
-msgstr "Adaugă o comandă nouă cu produse"
+msgstr "Додайте нове замовлення з товарами"
 
 #: .\templates\manage\dashboard.html:110 .\templates\queue\manage.html:11
 msgid "Manage Queue"
-msgstr "Gestionează coada"
+msgstr "Керувати чергою"
 
 #: .\templates\manage\dashboard.html:111
 msgid "Add orders to the picking queue"
-msgstr "Adaugă comenzi în coada de preluare"
+msgstr "Додайте замовлення до черги комплектації"
 
 #: .\templates\manage\dashboard.html:122
 msgid "Open Views"
-msgstr "Vizualizări deschise"
+msgstr "Відкрити подання"
 
 #: .\templates\manage\dashboard.html:135
 msgid "Queue Display"
-msgstr "Afișaj coadă"
+msgstr "Екран черги"
 
 #: .\templates\manage\dashboard.html:136
 msgid ""
 "Full-screen view for warehouse screens. Shows QR codes for pickers to scan."
 msgstr ""
-"Vizualizare pe ecran complet pentru ecranele din depozit. Afișează coduri QR "
-"pentru scanare."
+"Повноекранне подання для складських екранів. Показує QR-коди для сканування "
+"комплектувальниками."
 
 #: .\templates\manage\dashboard.html:155 .\templates\manage\queue\list.html:25
 #: .\templates\queue\manage.html:26
 msgid "Picker View"
-msgstr "Vizualizare ridicător"
+msgstr "Подання комплектувальника"
 
 #: .\templates\manage\dashboard.html:156
 msgid ""
 "Mobile-friendly view for order pickers. Share the picker login with your "
 "team."
 msgstr ""
-"Vizualizare optimizată pentru mobil pentru operatori depozit. Distribuiți "
-"autentificarea operatorilor echipei dumneavoastră."
+"Зручне для мобільних подання для комплектувальників. Поділіться даними для "
+"входу зі своєю командою."
 
 #: .\templates\manage\dashboard.html:178
 msgid "Inventory Picker"
-msgstr "Inventariere mobilă"
+msgstr "Мобільний облік запасів"
 
 #: .\templates\manage\dashboard.html:179
 msgid "Mobile view for counting and updating stock levels."
-msgstr "Vizualizare mobilă pentru numărarea și actualizarea stocurilor."
+msgstr "Мобільне подання для підрахунку та оновлення рівнів запасів."
 
 #: .\templates\manage\dashboard.html:198
 msgid "Recent Orders"
-msgstr "Comenzi recente"
+msgstr "Останні замовлення"
 
 #: .\templates\manage\dashboard.html:199 .\templates\manage\dashboard.html:242
 msgid "View All"
-msgstr "Vezi toate"
+msgstr "Переглянути всі"
 
 #: .\templates\manage\dashboard.html:223
 #: .\templates\manage\devices\list.html:44
@@ -1936,142 +1931,142 @@ msgstr "Vezi toate"
 #: .\templates\manage\picklists\list.html:79
 #: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:94
 msgid "ago"
-msgstr "în urmă"
+msgstr "тому"
 
 #: .\templates\manage\dashboard.html:231
 msgid "No orders yet. Create your first order!"
-msgstr "Încă nu există comenzi. Creați prima comandă!"
+msgstr "Замовлень ще немає. Створіть своє перше замовлення!"
 
 #: .\templates\manage\dashboard.html:241
 msgid "Device Status"
-msgstr "Stare dispozitive"
+msgstr "Стан пристроїв"
 
 #: .\templates\manage\dashboard.html:248
 msgid "Total Devices"
-msgstr "Total dispozitive"
+msgstr "Усього пристроїв"
 
 #: .\templates\manage\dashboard.html:252
 msgid "Active Now"
-msgstr "Activ acum"
+msgstr "Активні зараз"
 
 #: .\templates\manage\dashboard.html:257
 msgid "No devices registered yet."
-msgstr "Niciun dispozitiv înregistrat încă."
+msgstr "Пристроїв ще не зареєстровано."
 
 #: .\templates\manage\dashboard.html:258
 msgid ""
 "Devices are automatically registered when pickers scan their first QR code."
 msgstr ""
-"Dispozitivele sunt înregistrate automat când operatorii scanează primul cod "
-"QR."
+"Пристрої реєструються автоматично, коли комплектувальники сканують свій "
+"перший QR-код."
 
 #: .\templates\manage\dashboard.html:268
 msgid "Orders This Week"
-msgstr "Comenzi săptămâna aceasta"
+msgstr "Замовлень цього тижня"
 
 #: .\templates\manage\devices\list.html:6
 msgid "View registered picking devices"
-msgstr "Vizualizează dispozitivele de preluare înregistrate"
+msgstr "Переглянути зареєстровані пристрої комплектації"
 
 #: .\templates\manage\devices\list.html:24
 msgid "Online"
-msgstr "Online"
+msgstr "Онлайн"
 
 #: .\templates\manage\devices\list.html:27
 msgid "Offline"
-msgstr "Offline"
+msgstr "Офлайн"
 
 #: .\templates\manage\devices\list.html:37
 msgid "Picks"
-msgstr "Preluări"
+msgstr "Комплектацій"
 
 #: .\templates\manage\devices\list.html:41
 msgid "Last Seen"
-msgstr "Văzut ultima dată"
+msgstr "Востаннє в мережі"
 
 #: .\templates\manage\devices\list.html:46
 msgid "Never"
-msgstr "Niciodată"
+msgstr "Ніколи"
 
 #: .\templates\manage\devices\list.html:52
 #: .\templates\manage\products\import.html:106
 msgid "Note"
-msgstr "Note"
+msgstr "Примітка"
 
 #: .\templates\manage\devices\list.html:69
 msgid "No devices registered"
-msgstr "Niciun dispozitiv înregistrat"
+msgstr "Пристроїв не зареєстровано"
 
 #: .\templates\manage\devices\list.html:70
 msgid "Devices are automatically registered when pickers access the system."
 msgstr ""
-"Dispozitivele sunt înregistrate automat când operatorii accesează sistemul."
+"Пристрої реєструються автоматично, коли комплектувальники входять у систему."
 
 #: .\templates\manage\devices\list.html:77
 msgid "How it works"
-msgstr "Cum funcționează"
+msgstr "Як це працює"
 
 #: .\templates\manage\devices\list.html:79
 msgid "A picker opens the queue on their mobile device"
-msgstr "Un operator deschide coada pe dispozitivul mobil"
+msgstr "Комплектувальник відкриває чергу на своєму мобільному пристрої"
 
 #: .\templates\manage\devices\list.html:80
 msgid "They enter their name to identify themselves"
-msgstr "Ei introduc numele lor pentru identificare"
+msgstr "Вводить своє ім’я для ідентифікації"
 
 #: .\templates\manage\devices\list.html:81
 msgid "The device is automatically registered"
-msgstr "Dispozitivul este înregistrat automat"
+msgstr "Пристрій реєструється автоматично"
 
 #: .\templates\manage\devices\list.html:82
 msgid "They can then claim orders from the queue"
-msgstr "Apoi pot revendica comenzi din coadă"
+msgstr "Після цього він може брати замовлення з черги"
 
 #: .\templates\manage\integrations\config.html:4
 msgid "Integration settings"
-msgstr "Setări integrare"
+msgstr "Налаштування інтеграції"
 
 #: .\templates\manage\integrations\config.html:6
 msgid "Sync settings for this connection"
-msgstr "Setări de sincronizare pentru această conexiune"
+msgstr "Налаштування синхронізації для цього підключення"
 
 #: .\templates\manage\integrations\config.html:13
 #: .\templates\shopify\app.html:129
 msgid "Sync settings"
-msgstr "Setări de sincronizare"
+msgstr "Налаштування синхронізації"
 
 #: .\templates\manage\integrations\config.html:19
 msgid "Queue orders automatically"
-msgstr "Adaugă comenzile automat în coadă"
+msgstr "Автоматично ставити замовлення в чергу"
 
 #: .\templates\manage\integrations\config.html:20
 msgid ""
 "Imported orders go straight into the picking queue. When off, they arrive as "
 "drafts."
 msgstr ""
-"Comenzile importate intră direct în coada de picking. Dacă este dezactivat, "
-"sosesc ca ciorne."
+"Імпортовані замовлення одразу потрапляють у чергу комплектації. Якщо "
+"вимкнено, вони надходять як чернетки."
 
 #: .\templates\manage\integrations\config.html:32
 msgid "Complete orders in the webshop"
-msgstr "Finalizează comenzile în magazinul online"
+msgstr "Завершувати замовлення в інтернет-магазині"
 
 #: .\templates\manage\integrations\config.html:33
 msgid ""
 "When a pick is finished, the order is marked as completed in your webshop."
 msgstr ""
-"Când un picking este finalizat, comanda este marcată ca finalizată în "
-"magazinul dvs."
+"Коли комплектацію завершено, замовлення позначається як виконане у вашому "
+"інтернет-магазині."
 
 #: .\templates\manage\integrations\config.html:45
 msgid "Order status after picking"
-msgstr "Statusul comenzii după picking"
+msgstr "Статус замовлення після комплектації"
 
 #: .\templates\manage\integrations\config.html:46
 msgid "The WooCommerce status set when a pick is finished. Default: completed."
 msgstr ""
-"Statusul WooCommerce setat când un picking este finalizat. Implicit: "
-"completed."
+"Статус WooCommerce, який встановлюється після завершення комплектації. За "
+"замовчуванням: completed."
 
 #: .\templates\manage\integrations\config.html:57
 #: .\templates\manage\inventory\add_correction.html:72
@@ -2083,43 +2078,44 @@ msgstr ""
 #: .\templates\manage\products\import.html:34
 #: .\templates\manage\products\list.html:224
 msgid "Cancel"
-msgstr "Anulează"
+msgstr "Скасувати"
 
 #: .\templates\manage\integrations\config.html:58
 #: .\templates\manage\settings.html:77
 msgid "Save Settings"
-msgstr "Salvează setările"
+msgstr "Зберегти налаштування"
 
 #: .\templates\manage\integrations\list.html:6
 msgid "Connect your webshop and sync orders automatically"
-msgstr "Conectați-vă magazinul online și sincronizați comenzile automat"
+msgstr ""
+"Підключіть свій інтернет-магазин і синхронізуйте замовлення автоматично"
 
 #: .\templates\manage\integrations\list.html:11
 #: .\templates\manage\integrations\list.html:93
 #: .\templates\manage\integrations\pairing_key.html:4
 #: .\templates\manage\integrations\pairing_key.html:5
 msgid "Connect WooCommerce"
-msgstr "Conectează WooCommerce"
+msgstr "Підключити WooCommerce"
 
 #: .\templates\manage\integrations\list.html:24
 msgid "Store"
-msgstr "Magazin"
+msgstr "Магазин"
 
 #: .\templates\manage\integrations\list.html:25
 msgid "Platform"
-msgstr "Platformă"
+msgstr "Платформа"
 
 #: .\templates\manage\integrations\list.html:27
 msgid "Orders synced"
-msgstr "Comenzi sincronizate"
+msgstr "Синхронізовано замовлень"
 
 #: .\templates\manage\integrations\list.html:28
 msgid "Products linked"
-msgstr "Produse asociate"
+msgstr "Пов’язано товарів"
 
 #: .\templates\manage\integrations\list.html:29
 msgid "Last event"
-msgstr "Ultimul eveniment"
+msgstr "Остання подія"
 
 #: .\templates\manage\integrations\list.html:30
 #: .\templates\manage\orders\list.html:97
@@ -2127,470 +2123,469 @@ msgstr "Ultimul eveniment"
 #: .\templates\manage\products\list.html:103
 #: .\templates\manage\settings\api_tokens.html:54
 msgid "Actions"
-msgstr "Locație"
+msgstr "Дії"
 
 #: .\templates\manage\integrations\list.html:53
 msgid "Manage in Shopify"
-msgstr "Gestionează în Shopify"
+msgstr "Керувати в Shopify"
 
 #: .\templates\manage\integrations\list.html:62
 msgid "Pause"
-msgstr "Suspendă"
+msgstr "Призупинити"
 
 #: .\templates\manage\integrations\list.html:64
 msgid "Resume"
-msgstr "Reia"
+msgstr "Відновити"
 
 #: .\templates\manage\integrations\list.html:68
 msgid "Disconnect this store? Orders will no longer be imported."
-msgstr "Deconectați acest magazin? Comenzile nu vor mai fi importate."
+msgstr "Відключити цей магазин? Замовлення більше не імпортуватимуться."
 
 #: .\templates\manage\integrations\list.html:70
 msgid "Disconnect"
-msgstr "Deconectează"
+msgstr "Відключити"
 
 #: .\templates\manage\integrations\list.html:89
 msgid "No integrations yet"
-msgstr "Nicio integrare încă"
+msgstr "Інтеграцій поки немає"
 
 #: .\templates\manage\integrations\list.html:90
 msgid ""
 "Connect your WooCommerce store to import orders into the picking queue "
 "automatically."
 msgstr ""
-"Conectați-vă magazinul WooCommerce pentru a importa comenzile automat în "
-"coada de picking."
+"Підключіть свій магазин WooCommerce, щоб автоматично імпортувати замовлення в"
+" чергу комплектації."
 
 #: .\templates\manage\integrations\list.html:96
 msgid ""
 "Using Shopify? Install the OrderPiqr app from the Shopify App Store instead."
 msgstr ""
-"Folosiți Shopify? Instalați în schimb aplicația OrderPiqr din Shopify App "
-"Store."
+"Користуєтесь Shopify? Натомість установіть застосунок OrderPiqr із Shopify "
+"App Store."
 
 #: .\templates\manage\integrations\pairing_key.html:6
 msgid "Pair your WooCommerce store with OrderPiqr"
-msgstr "Asociați-vă magazinul WooCommerce cu OrderPiqr"
+msgstr "Підключіть свій магазин WooCommerce до OrderPiqr"
 
 #: .\templates\manage\integrations\pairing_key.html:12
 msgid "Your pairing key"
-msgstr "Cheia dvs. de asociere"
+msgstr "Ваш ключ підключення"
 
 #: .\templates\manage\integrations\pairing_key.html:16
 msgid ""
 "This key is shown only once and expires in 24 hours. It can be used a single "
 "time."
 msgstr ""
-"Această cheie este afișată o singură dată și expiră după 24 de ore. Poate fi "
-"folosită o singură dată."
+"Цей ключ показується лише один раз і діє 24 години. Його можна використати "
+"лише раз."
 
 #: .\templates\manage\integrations\pairing_key.html:21
 #: .\templates\manage\settings\api_tokens.html:19
 msgid "Copy"
-msgstr "Copiază"
+msgstr "Копіювати"
 
 #: .\templates\manage\integrations\pairing_key.html:27
 msgid "Install the plugin"
-msgstr "Instalați pluginul"
+msgstr "Установіть плагін"
 
 #: .\templates\manage\integrations\pairing_key.html:28
 msgid ""
 "In your WordPress admin, go to Plugins → Add New and install the “OrderPiqr” "
 "plugin from WordPress.org."
 msgstr ""
-"În administrarea WordPress, mergeți la Module → Adaugă modul nou și "
-"instalați pluginul „OrderPiqr” de pe WordPress.org."
+"У панелі адміністратора WordPress перейдіть до Плагіни → Додати новий і "
+"встановіть плагін «OrderPiqr» з WordPress.org."
 
 #: .\templates\manage\integrations\pairing_key.html:31
 msgid "Open the OrderPiqr settings"
-msgstr "Deschideți setările OrderPiqr"
+msgstr "Відкрийте налаштування OrderPiqr"
 
 #: .\templates\manage\integrations\pairing_key.html:32
 msgid "Go to WooCommerce → OrderPiqr in your WordPress admin."
-msgstr "Mergeți la WooCommerce → OrderPiqr în administrarea WordPress."
+msgstr ""
+"Перейдіть до WooCommerce → OrderPiqr у панелі адміністратора WordPress."
 
 #: .\templates\manage\integrations\pairing_key.html:35
 msgid "Paste the pairing key"
-msgstr "Lipiți cheia de asociere"
+msgstr "Вставте ключ підключення"
 
 #: .\templates\manage\integrations\pairing_key.html:36
 msgid ""
 "Paste the key above and click Connect. Your products and open orders will "
 "start syncing automatically."
 msgstr ""
-"Lipiți cheia de mai sus și apăsați Conectare. Produsele și comenzile "
-"deschise se vor sincroniza automat."
+"Вставте наведений вище ключ і натисніть «Підключити». Ваші товари та відкриті"
+" замовлення почнуть синхронізуватися автоматично."
 
 #: .\templates\manage\integrations\pairing_key.html:41
 msgid "Back to integrations"
-msgstr "Înapoi la integrări"
+msgstr "Назад до інтеграцій"
 
 #: .\templates\manage\integrations\pairing_key.html:80
 msgid "Pairing key copied to clipboard"
-msgstr "Cheia de asociere a fost copiată în clipboard"
+msgstr "Ключ підключення скопійовано в буфер обміну"
 
 #: .\templates\manage\inventory\add_correction.html:4
 #: .\templates\manage\inventory\add_correction.html:5
 msgid "Add Inventory Correction"
-msgstr "Adaugă corecție inventar"
+msgstr "Додати коригування запасів"
 
 #: .\templates\manage\inventory\add_correction.html:6
 msgid "Create a correction entry for a product"
-msgstr "Creează o intrare de corecție pentru un produs"
+msgstr "Створіть запис коригування для товару"
 
 #: .\templates\manage\inventory\add_correction.html:17
 msgid "Select a product..."
-msgstr "Selectează un produs..."
+msgstr "Виберіть товар..."
 
 #: .\templates\manage\inventory\add_correction.html:27
 #: .\templates\manage\products\form.html:79
 msgid "Current Stock"
-msgstr "Stoc curent"
+msgstr "Поточний запас"
 
 #: .\templates\manage\inventory\add_correction.html:32
 msgid "Modification Type"
-msgstr "Tip modificare"
+msgstr "Тип зміни"
 
 #: .\templates\manage\inventory\add_correction.html:37
 msgid "Set inventory to an absolute value"
-msgstr "Setează inventarul la o valoare absolută"
+msgstr "Встановити абсолютне значення запасу"
 
 #: .\templates\manage\inventory\add_correction.html:42
 msgid "Add or subtract from current inventory"
-msgstr "Adaugă sau scade din inventarul curent"
+msgstr "Додати до поточного запасу або відняти від нього"
 
 #: .\templates\manage\inventory\add_correction.html:50
 msgid "Enter quantity"
-msgstr "Introduceți cantitatea"
+msgstr "Введіть кількість"
 
 #: .\templates\manage\inventory\add_correction.html:68
 msgid "Add any additional notes..."
-msgstr "Adaugă note suplimentare..."
+msgstr "Додайте додаткові примітки..."
 
 #: .\templates\manage\inventory\add_correction.html:73
 #: .\templates\manage\inventory\logs.html:13
 #: .\templates\manage\inventory\logs.html:153
 msgid "Add Correction"
-msgstr "Adaugă corecție"
+msgstr "Додати коригування"
 
 #: .\templates\manage\inventory\add_correction.html:195
 msgid "Select a product first"
-msgstr "Selectați mai întâi un produs"
+msgstr "Спочатку виберіть товар"
 
 #: .\templates\manage\inventory\logs.html:6
 msgid "Track all inventory changes"
-msgstr "Urmărește toate modificările de inventar"
+msgstr "Відстежуйте всі зміни запасів"
 
 #: .\templates\manage\inventory\logs.html:19
 msgid "Export CSV"
-msgstr "Exportă CSV"
+msgstr "Експорт CSV"
 
 #: .\templates\manage\inventory\logs.html:29
 #: .\templates\manage\products\list.html:42
 msgid "Search products..."
-msgstr "Caută produse..."
+msgstr "Пошук товарів..."
 
 #: .\templates\manage\inventory\logs.html:37
 msgid "All Reasons"
-msgstr "Toate motivele"
+msgstr "Усі причини"
 
 #: .\templates\manage\inventory\logs.html:44
 msgid "From"
-msgstr "De la"
+msgstr "Від"
 
 #: .\templates\manage\inventory\logs.html:47
 msgid "To"
-msgstr "Până la"
+msgstr "До"
 
 #: .\templates\manage\inventory\logs.html:49
 msgid "Filter"
-msgstr "Filtrează"
+msgstr "Фільтрувати"
 
 #: .\templates\manage\inventory\logs.html:50
 msgid "Clear"
-msgstr "Șterge"
+msgstr "Очистити"
 
 #: .\templates\manage\inventory\logs.html:55
 #: .\templates\manage\orders\list.html:73
 #: .\templates\manage\products\list.html:74
 msgid "selected"
-msgstr "selectate"
+msgstr "вибрано"
 
 #: .\templates\manage\inventory\logs.html:60
 msgid "Delete Selected"
-msgstr "Șterge selectate"
+msgstr "Видалити вибрані"
 
 #: .\templates\manage\inventory\logs.html:76
 msgid "Date/Time"
-msgstr "Dată/Oră"
+msgstr "Дата/час"
 
 #: .\templates\manage\inventory\logs.html:136
 #: .\templates\manage\orders\list.html:167
 #: .\templates\manage\picklists\list.html:106
 #: .\templates\manage\products\list.html:180
 msgid "Page"
-msgstr "Pagina"
+msgstr "Сторінка"
 
 #: .\templates\manage\inventory\logs.html:136
 #: .\templates\manage\orders\list.html:167
 #: .\templates\manage\picklists\list.html:106
 #: .\templates\manage\products\list.html:180
 msgid "of"
-msgstr "din"
+msgstr "з"
 
 #: .\templates\manage\inventory\logs.html:151
 msgid "No inventory changes yet"
-msgstr "Nicio modificare de inventar încă"
+msgstr "Змін запасів ще немає"
 
 #: .\templates\manage\inventory\logs.html:152
 msgid "Inventory changes will appear here once products are updated."
-msgstr "Modificările de inventar vor apărea aici după actualizarea produselor."
+msgstr "Зміни запасів з’являться тут після оновлення товарів."
 
 #: .\templates\manage\inventory\logs.html:313
 msgid "All Products"
-msgstr "Toate produsele"
+msgstr "Усі товари"
 
 #: .\templates\manage\inventory\logs.html:406
 msgid "Are you sure you want to delete"
-msgstr "Sigur doriți să ștergeți"
+msgstr "Ви впевнені, що хочете видалити"
 
 #: .\templates\manage\inventory\logs.html:406
 msgid "log entries? The inventory changes will be reverted."
-msgstr "înregistrări din jurnal? Modificările de inventar vor fi anulate."
+msgstr "записів журналу? Зміни запасів буде скасовано."
 
 #: .\templates\manage\inventory\logs.html:430
 #: .\templates\manage\inventory\logs.html:435
 msgid "Error deleting logs"
-msgstr "Eroare la ștergerea înregistrărilor"
+msgstr "Помилка видалення записів журналу"
 
 #: .\templates\manage\orders\form.html:4 .\templates\manage\orders\form.html:5
 msgid "Edit Order"
-msgstr "Editează comandă"
+msgstr "Редагувати замовлення"
 
 #: .\templates\manage\orders\form.html:9
 msgid "Update order details"
-msgstr "Actualizează detaliile comenzii"
+msgstr "Оновіть дані замовлення"
 
 #: .\templates\manage\orders\form.html:23
 msgid "e.g., ORD-2024-001"
-msgstr "ex., CMD-2024-001"
+msgstr "напр. ORD-2024-001"
 
 #: .\templates\manage\orders\form.html:33
 msgid "Add to queue immediately"
-msgstr "Adaugă în coadă imediat"
+msgstr "Одразу додати до черги"
 
 #: .\templates\manage\orders\form.html:43
 msgid "Optional notes for this order"
-msgstr "Note opționale pentru această comandă"
+msgstr "Необов’язкові примітки до цього замовлення"
 
 #: .\templates\manage\orders\form.html:55
 msgid "Add Line"
-msgstr "Adaugă linie"
+msgstr "Додати рядок"
 
 #: .\templates\manage\orders\form.html:61
 msgid "Qty"
-msgstr "Cant."
+msgstr "К-сть"
 
 #: .\templates\manage\orders\form.html:75
 msgid "Search product..."
-msgstr "Caută produs..."
+msgstr "Пошук товару..."
 
 #: .\templates\manage\orders\form.html:102
 #: .\templates\manage\orders\form.html:409
 msgid "Search product by code or description..."
-msgstr "Caută produs după cod sau descriere..."
+msgstr "Пошук товару за кодом або описом..."
 
 #: .\templates\manage\orders\form.html:128
 #: .\templates\manage\products\form.html:63 .\templates\manage\profile.html:47
 msgid "Save Changes"
-msgstr "Salvează modificările"
+msgstr "Зберегти зміни"
 
 #: .\templates\manage\orders\form.html:439
 msgid "An order must have at least one product"
-msgstr "O comandă trebuie să aibă cel puțin un produs"
+msgstr "Замовлення має містити щонайменше один товар"
 
 #: .\templates\manage\orders\form.html:619
 msgid "Please select a product for all order lines"
-msgstr "Vă rugăm să selectați un produs pentru toate liniile comenzii"
+msgstr "Виберіть товар для всіх рядків замовлення"
 
 #: .\templates\manage\orders\import.html:4
 #: .\templates\manage\orders\import.html:5
 #: .\templates\manage\orders\import.html:39
 msgid "Import Orders"
-msgstr "Importă comenzi"
+msgstr "Імпорт замовлень"
 
 #: .\templates\manage\orders\import.html:6
 msgid "Upload a CSV file to import orders"
-msgstr "Încarcă un fișier CSV pentru a importa comenzi"
+msgstr "Завантажте файл CSV, щоб імпортувати замовлення"
 
 #: .\templates\manage\orders\import.html:12
 #: .\templates\manage\products\import.html:12
 msgid "Upload CSV File"
-msgstr "Încarcă fișier CSV"
+msgstr "Завантажити файл CSV"
 
 #: .\templates\manage\orders\import.html:18
 #: .\templates\manage\products\import.html:18
 msgid "Select CSV File"
-msgstr "Selectează fișier CSV"
+msgstr "Виберіть файл CSV"
 
 #: .\templates\manage\orders\import.html:27
 #: .\templates\manage\products\import.html:27
 msgid "Drag and drop your CSV file here, or click to select"
-msgstr "Trageți și plasați fișierul CSV aici sau faceți clic pentru a selecta"
+msgstr "Перетягніть файл CSV сюди або натисніть, щоб вибрати"
 
 #: .\templates\manage\orders\import.html:28
 #: .\templates\manage\orders\import.html:242
 #: .\templates\manage\products\import.html:28
 #: .\templates\manage\products\import.html:223
 msgid "Maximum file size: 5MB"
-msgstr "Dimensiune maximă fișier: 5MB"
+msgstr "Максимальний розмір файлу: 5 МБ"
 
 #: .\templates\manage\orders\import.html:48
 #: .\templates\manage\products\import.html:48
 msgid "CSV Format"
-msgstr "Format CSV"
+msgstr "Формат CSV"
 
 #: .\templates\manage\orders\import.html:51
 #: .\templates\manage\products\import.html:51
 msgid "Your CSV file should have the following columns:"
-msgstr "Fișierul CSV trebuie să conțină următoarele coloane:"
+msgstr "Ваш файл CSV повинен містити такі стовпці:"
 
 #: .\templates\manage\orders\import.html:57
 #: .\templates\manage\products\import.html:57
 msgid "Column"
-msgstr "Coloană"
+msgstr "Стовпець"
 
 #: .\templates\manage\orders\import.html:58
 #: .\templates\manage\products\import.html:58
 msgid "Required"
-msgstr "Obligatoriu"
+msgstr "Обов’язково"
 
 #: .\templates\manage\orders\import.html:65
 #: .\templates\manage\orders\import.html:70
 #: .\templates\manage\products\import.html:65
 #: .\templates\manage\products\import.html:70
 msgid "Yes"
-msgstr "Da"
+msgstr "Так"
 
 #: .\templates\manage\orders\import.html:66
 msgid "Unique order identifier"
-msgstr "Identificator unic comandă"
+msgstr "Унікальний ідентифікатор замовлення"
 
 #: .\templates\manage\orders\import.html:71
 msgid "Product code (must exist in your inventory)"
-msgstr "Cod produs (trebuie să existe în inventar)"
+msgstr "Код товару (має існувати у вашому каталозі)"
 
 #: .\templates\manage\orders\import.html:75
 #: .\templates\manage\orders\import.html:80
 #: .\templates\manage\products\import.html:75
 #: .\templates\manage\products\import.html:80
 msgid "No"
-msgstr "Nu"
+msgstr "Ні"
 
 #: .\templates\manage\orders\import.html:76
 msgid "Quantity (default: 1)"
-msgstr "Cantitate (implicit: 1)"
+msgstr "Кількість (за замовчуванням: 1)"
 
 #: .\templates\manage\orders\import.html:81
 msgid "Order notes (only from first line)"
-msgstr "Note comandă (doar din prima linie)"
+msgstr "Примітки до замовлення (лише з першого рядка)"
 
 #: .\templates\manage\orders\import.html:87
 #: .\templates\manage\products\import.html:87
 msgid "Example CSV"
-msgstr "Exemplu CSV"
+msgstr "Приклад CSV"
 
 #: .\templates\manage\orders\import.html:95
 #: .\templates\manage\products\import.html:94
 msgid "Download example CSV"
-msgstr "Descarcă exemplu CSV"
+msgstr "Завантажити приклад CSV"
 
 #: .\templates\manage\orders\import.html:98
 msgid ""
 "Comma and semicolon separated files both work, and common column names such "
 "as Order Number, SKU or Quantity are recognized automatically."
 msgstr ""
-"Funcționează atât fișierele separate prin virgulă, cât și cele prin punct și "
-"virgulă, iar numele uzuale de coloane precum Order Number, SKU sau Quantity "
-"sunt recunoscute automat."
+"Підтримуються файли з розділювачем «кома» і «крапка з комою», а поширені "
+"назви стовпців, як-от Order Number, SKU або Quantity, розпізнаються "
+"автоматично."
 
 #: .\templates\manage\orders\import.html:109
 msgid "Multiple rows with the same order_code will be combined into one order"
-msgstr ""
-"Mai multe rânduri cu același order_code vor fi combinate într-o singură "
-"comandă"
+msgstr "Кілька рядків з однаковим order_code буде об’єднано в одне замовлення"
 
 #: .\templates\manage\orders\import.html:110
 msgid "Product codes must already exist in your inventory"
-msgstr "Codurile produselor trebuie să existe deja în inventar"
+msgstr "Коди товарів мають уже існувати у вашому каталозі"
 
 #: .\templates\manage\orders\import.html:111
 msgid "Orders with duplicate codes will be skipped"
-msgstr "Comenzile cu coduri duplicate vor fi omise"
+msgstr "Замовлення з дубльованими кодами буде пропущено"
 
 #: .\templates\manage\orders\import.html:112
 msgid "Imported orders will have 'draft' status"
-msgstr "Comenzile importate vor avea statusul 'schiță'"
+msgstr "Імпортовані замовлення матимуть статус 'draft'"
 
 #: .\templates\manage\orders\list.html:6
 msgid "Manage your customer orders"
-msgstr "Gestionează comenzile clienților"
+msgstr "Керуйте замовленнями своїх клієнтів"
 
 #: .\templates\manage\orders\list.html:17
 #: .\templates\manage\products\list.html:23
 msgid "Import"
-msgstr "Import"
+msgstr "Імпорт"
 
 #: .\templates\manage\orders\list.html:36
 msgid "Search orders..."
-msgstr "Caută comenzi..."
+msgstr "Пошук замовлень..."
 
 #: .\templates\manage\orders\list.html:42
 #: .\templates\manage\picklists\list.html:13
 #: .\templates\manage\products\list.html:48
 msgid "All Status"
-msgstr "Toate stările"
+msgstr "Усі статуси"
 
 #: .\templates\manage\orders\list.html:51
 msgid "All Sources"
-msgstr "Toate sursele"
+msgstr "Усі джерела"
 
 #: .\templates\manage\orders\list.html:57
 msgid "From date"
-msgstr "De la data"
+msgstr "Дата з"
 
 #: .\templates\manage\orders\list.html:59
 msgid "To date"
-msgstr "Până la data"
+msgstr "Дата по"
 
 #: .\templates\manage\orders\list.html:62
 #: .\templates\manage\products\list.html:65
 msgid "Newest First"
-msgstr "Cele mai recente"
+msgstr "Спочатку найновіші"
 
 #: .\templates\manage\orders\list.html:63
 #: .\templates\manage\products\list.html:66
 msgid "Oldest First"
-msgstr "Cele mai vechi"
+msgstr "Спочатку найстаріші"
 
 #: .\templates\manage\orders\list.html:64
 #: .\templates\manage\products\list.html:61
 msgid "Code A-Z"
-msgstr "Cod A-Z"
+msgstr "Код A-Z"
 
 #: .\templates\manage\orders\list.html:65
 #: .\templates\manage\products\list.html:62
 msgid "Code Z-A"
-msgstr "Cod Z-A"
+msgstr "Код Z-A"
 
 #: .\templates\manage\orders\list.html:75
 #: .\templates\manage\orders\list.html:127 .\templates\queue\manage.html:66
 msgid "Add to Queue"
-msgstr "Adaugă în coadă"
+msgstr "Додати до черги"
 
 #: .\templates\manage\orders\list.html:76
 msgid "Remove from Queue"
-msgstr "Elimină din coadă"
+msgstr "Вилучити з черги"
 
 #: .\templates\manage\orders\list.html:77
 #: .\templates\manage\orders\list.html:143
@@ -2599,67 +2594,67 @@ msgstr "Elimină din coadă"
 #: .\templates\manage\products\list.html:157
 #: .\templates\manage\products\list.html:225
 msgid "Delete"
-msgstr "Șterge"
+msgstr "Видалити"
 
 #: .\templates\manage\orders\list.html:94
 #: .\templates\queue\_order_cards.html:24 .\templates\shopify\app.html:212
 msgid "Items"
-msgstr "Articole"
+msgstr "Позицій"
 
 #: .\templates\manage\orders\list.html:134
 #: .\templates\manage\products\list.html:149
 msgid "Edit"
-msgstr "Editează"
+msgstr "Редагувати"
 
 #: .\templates\manage\orders\list.html:184
 msgid "No orders found"
-msgstr "Nicio comandă în coadă"
+msgstr "Замовлень не знайдено"
 
 #: .\templates\manage\orders\list.html:185
 #: .\templates\manage\products\list.html:197
 msgid "Try adjusting your search or filter criteria."
-msgstr "Încercați să ajustați criteriile de căutare sau filtrare."
+msgstr "Спробуйте змінити критерії пошуку або фільтрування."
 
 #: .\templates\manage\orders\list.html:186
 #: .\templates\manage\products\list.html:198
 msgid "Clear Filters"
-msgstr "Șterge filtrele"
+msgstr "Очистити фільтри"
 
 #: .\templates\manage\orders\list.html:188
 msgid "No orders yet"
-msgstr "Nicio comandă în coadă"
+msgstr "Замовлень ще немає"
 
 #: .\templates\manage\orders\list.html:189
 msgid "Get started by creating your first order or importing from a CSV file."
-msgstr "Începeți prin a crea prima comandă sau importați dintr-un fișier CSV."
+msgstr "Почніть зі створення першого замовлення або імпорту з файлу CSV."
 
 #: .\templates\manage\orders\list.html:192
 #: .\templates\manage\products\list.html:204
 msgid "Import CSV"
-msgstr "Importă CSV"
+msgstr "Імпорт CSV"
 
 #: .\templates\manage\orders\list.html:204
 msgid "Delete Order"
-msgstr "Bun venit la Orderpiqr!"
+msgstr "Видалити замовлення"
 
 #: .\templates\manage\orders\list.html:208
 msgid "Are you sure you want to delete order"
-msgstr "Sigur doriți să ștergeți comanda"
+msgstr "Ви впевнені, що хочете видалити замовлення"
 
 #: .\templates\manage\orders\list.html:209
 #: .\templates\manage\products\list.html:221
 msgid "This action cannot be undone."
-msgstr "Această acțiune nu poate fi anulată."
+msgstr "Цю дію неможливо скасувати."
 
 #: .\templates\manage\orders\list.html:272
 msgid "Error adding to queue"
-msgstr "Adaugă în coadă"
+msgstr "Помилка додавання до черги"
 
 #: .\templates\manage\orders\list.html:276
 #: .\templates\manage\orders\list.html:335
 #: .\templates\manage\products\list.html:336
 msgid "An error occurred"
-msgstr "A apărut o eroare"
+msgstr "Сталася помилка"
 
 #: .\templates\manage\orders\list.html:281
 #, python-format
@@ -2667,37 +2662,37 @@ msgid ""
 "Delete %%s order(s)? Orders currently being picked are skipped. This cannot "
 "be undone."
 msgstr ""
-"Ștergeți %%s comenzi? Comenzile în curs de pregătire sunt omise. Această "
-"acțiune nu poate fi anulată."
+"Видалити замовлень: %%s? Замовлення, які зараз комплектуються, буде "
+"пропущено. Цю дію неможливо скасувати."
 
 #: .\templates\manage\orders\list.html:282
 #, python-format
 msgid "Add %%s order(s) to the queue? Only draft orders are added."
-msgstr "Adăugați %%s comenzi în coadă? Doar comenzile ciornă sunt adăugate."
+msgstr "Додати замовлень до черги: %%s? Додаються лише чернетки."
 
 #: .\templates\manage\orders\list.html:283
 #, python-format
 msgid "Remove %%s order(s) from the queue? Only queued orders are affected."
 msgstr ""
-"Eliminați %%s comenzi din coadă? Sunt afectate doar comenzile din coadă."
+"Вилучити замовлень з черги: %%s? Дія стосується лише замовлень у черзі."
 
 #: .\templates\manage\picklists\detail.html:19
 msgid "Back to List"
-msgstr "Listă de preluare"
+msgstr "Назад до списку"
 
 #: .\templates\manage\picklists\detail.html:28
 msgid "Picklist Information"
-msgstr "Cod listă de preluare"
+msgstr "Інформація про лист комплектації"
 
 #: .\templates\manage\picklists\detail.html:57
 #: .\templates\manage\picklists\list.html:65
 msgid "Unassigned"
-msgstr "Neatribuit"
+msgstr "Не призначено"
 
 #: .\templates\manage\picklists\detail.html:73
 #: .\templates\manage\picklists\detail.html:103
 msgid "Duration"
-msgstr "Descriere"
+msgstr "Тривалість"
 
 #: .\templates\manage\picklists\detail.html:91
 #: .\templates\manage\queue\_queue_list.html:12
@@ -2706,210 +2701,209 @@ msgstr "Descriere"
 #: .\templates\queue\_picker_orders.html:16 .\templates\queue\manage.html:63
 #: .\templates\queue\manage.html:91
 msgid "items"
-msgstr "articole"
+msgstr "позицій"
 
 #: .\templates\manage\picklists\detail.html:125
 msgid "Picked"
-msgstr "Liste selectate"
+msgstr "Скомплектовано"
 
 #: .\templates\manage\picklists\detail.html:146
 msgid "No products in this picklist."
-msgstr "Preluare a %(product)s în lista %(picklist_id)s"
+msgstr "У цьому листі комплектації немає товарів."
 
 #: .\templates\manage\picklists\list.html:6
 msgid "View picking operations"
-msgstr "Vezi operațiuni de preluare"
+msgstr "Переглянути операції комплектації"
 
 #: .\templates\manage\picklists\list.html:83
 msgid "View Details"
-msgstr "Vezi detalii"
+msgstr "Переглянути деталі"
 
 #: .\templates\manage\picklists\list.html:121
 msgid "No pick lists yet"
-msgstr "Cod listă de preluare"
+msgstr "Листів комплектації ще немає"
 
 #: .\templates\manage\picklists\list.html:122
 msgid ""
 "Pick lists are created automatically when pickers claim orders from the "
 "queue."
 msgstr ""
-"Listele de preluare sunt create automat când operatorii revendică comenzi "
-"din coadă."
+"Листи комплектації створюються автоматично, коли комплектувальники беруть "
+"замовлення з черги."
 
 #: .\templates\manage\picklists\list.html:123
 msgid "Go to Queue"
-msgstr "Adaugă în coadă"
+msgstr "Перейти до черги"
 
 #: .\templates\manage\products\form.html:4
 #: .\templates\manage\products\form.html:5
 msgid "Edit Product"
-msgstr "Produs"
+msgstr "Редагувати товар"
 
 #: .\templates\manage\products\form.html:9
 msgid "Update product details"
-msgstr "Actualizează detaliile produsului"
+msgstr "Оновіть дані товару"
 
 #: .\templates\manage\products\form.html:22
 msgid "e.g., SKU-001"
-msgstr "ex., SKU-001"
+msgstr "напр. SKU-001"
 
 #: .\templates\manage\products\form.html:24
 msgid "A unique identifier for this product"
-msgstr "Un identificator unic pentru acest produs"
+msgstr "Унікальний ідентифікатор цього товару"
 
 #: .\templates\manage\products\form.html:31
 msgid "e.g., Blue Widget - Large"
-msgstr "ex., Widget albastru - Mare"
+msgstr "напр. Синій віджет — великий"
 
 #: .\templates\manage\products\form.html:33
 msgid "A short description of the product"
-msgstr "O descriere scurtă a produsului"
+msgstr "Короткий опис товару"
 
 #: .\templates\manage\products\form.html:40
 msgid "e.g., Aisle 3, Shelf B"
-msgstr "ex., Culoar 3, Raft B"
+msgstr "напр. Ряд 3, полиця B"
 
 #: .\templates\manage\products\form.html:41
 msgid "Where this product is stored in your warehouse"
-msgstr "Unde este stocat acest produs în depozit"
+msgstr "Де цей товар зберігається на вашому складі"
 
 #: .\templates\manage\products\form.html:54
 msgid "Inactive products won't appear in new orders"
-msgstr "Produsele inactive nu vor apărea în comenzi noi"
+msgstr "Неактивні товари не відображатимуться в нових замовленнях"
 
 #: .\templates\manage\products\form.html:63
 msgid "Create Product"
-msgstr "Produs"
+msgstr "Створити товар"
 
 #: .\templates\manage\products\form.html:108
 #: .\templates\manage\products\form.html:560
 #: .\templates\manage\products\form.html:566
 msgid "Update Stock"
-msgstr "Actualizează stoc"
+msgstr "Оновити запас"
 
 #: .\templates\manage\products\form.html:116
 #: .\templates\manage\products\form.html:156
 msgid "Recent Changes"
-msgstr "Modificări recente"
+msgstr "Останні зміни"
 
 #: .\templates\manage\products\form.html:151
 msgid "View all inventory changes"
-msgstr "Vezi toate modificările de inventar"
+msgstr "Переглянути всі зміни запасів"
 
 #: .\templates\manage\products\form.html:169
 msgid "No inventory changes recorded yet."
-msgstr "Nicio modificare de inventar înregistrată încă."
+msgstr "Змін запасів ще не зафіксовано."
 
 #: .\templates\manage\products\form.html:605
 msgid "You"
-msgstr "Dvs."
+msgstr "Ви"
 
 #: .\templates\manage\products\import.html:4
 #: .\templates\manage\products\import.html:5
 #: .\templates\manage\products\import.html:39
 msgid "Import Products"
-msgstr "Produse"
+msgstr "Імпорт товарів"
 
 #: .\templates\manage\products\import.html:6
 msgid "Upload a CSV file to import products"
-msgstr "Încarcă un fișier CSV pentru a importa produse"
+msgstr "Завантажте файл CSV, щоб імпортувати товари"
 
 #: .\templates\manage\products\import.html:66
 msgid "Unique product code"
-msgstr "Cod produs"
+msgstr "Унікальний код товару"
 
 #: .\templates\manage\products\import.html:71
 msgid "Product description"
-msgstr "Descriere produs"
+msgstr "Опис товару"
 
 #: .\templates\manage\products\import.html:76
 msgid "Warehouse location"
-msgstr "Locație depozit"
+msgstr "Розташування на складі"
 
 #: .\templates\manage\products\import.html:81
 msgid "true/false (default: true)"
-msgstr "adevărat/fals (implicit: adevărat)"
+msgstr "true/false (за замовчуванням: true)"
 
 #: .\templates\manage\products\import.html:97
 msgid ""
 "Comma and semicolon separated files both work, and common column names such "
 "as SKU, Barcode or Title are recognized automatically."
 msgstr ""
-"Funcționează atât fișierele separate prin virgulă, cât și cele prin punct și "
-"virgulă, iar numele uzuale de coloane precum SKU, Barcode sau Title sunt "
-"recunoscute automat."
+"Підтримуються файли з розділювачем «кома» і «крапка з комою», а поширені "
+"назви стовпців, як-от SKU, Barcode або Title, розпізнаються автоматично."
 
 #: .\templates\manage\products\import.html:107
 msgid ""
 "If a product with the same code already exists, it will be updated with the "
 "new values."
 msgstr ""
-"Dacă un produs cu același cod există deja, va fi actualizat cu noile valori."
+"Якщо товар із таким самим кодом уже існує, його буде оновлено новими "
+"значеннями."
 
 #: .\templates\manage\products\list.html:6
 msgid "Manage your product inventory"
-msgstr "Gestionează inventarul de produse"
+msgstr "Керуйте своїм каталогом товарів"
 
 #: .\templates\manage\products\list.html:17
 msgid "Export"
-msgstr "Export"
+msgstr "Експорт"
 
 #: .\templates\manage\products\list.html:50
 #: .\templates\manage\products\list.html:143
 #: .\templates\manage\products\list.html:460
 msgid "Inactive"
-msgstr "Activ"
+msgstr "Неактивні"
 
 #: .\templates\manage\products\list.html:54
 msgid "All Locations"
-msgstr "Toate locațiile"
+msgstr "Усі розташування"
 
 #: .\templates\manage\products\list.html:63
 msgid "Description A-Z"
-msgstr "Descriere"
+msgstr "Опис А-Я"
 
 #: .\templates\manage\products\list.html:64
 msgid "Location A-Z"
-msgstr "Locație"
+msgstr "Розташування А-Я"
 
 #: .\templates\manage\products\list.html:76
 msgid "Activate"
-msgstr "Activează"
+msgstr "Активувати"
 
 #: .\templates\manage\products\list.html:77
 msgid "Deactivate"
-msgstr "Dezactivează"
+msgstr "Деактивувати"
 
 #: .\templates\manage\products\list.html:78
 msgid "Set Location"
-msgstr "Setează locația"
+msgstr "Задати розташування"
 
 #: .\templates\manage\products\list.html:141
 #: .\templates\manage\products\list.html:462
 msgid "Click to deactivate"
-msgstr "Clic pentru dezactivare"
+msgstr "Натисніть, щоб деактивувати"
 
 #: .\templates\manage\products\list.html:143
 #: .\templates\manage\products\list.html:462
 msgid "Click to activate"
-msgstr "Clic pentru activare"
+msgstr "Натисніть, щоб активувати"
 
 #: .\templates\manage\products\list.html:200
 msgid "No products yet"
-msgstr "Produse"
+msgstr "Товарів ще немає"
 
 #: .\templates\manage\products\list.html:201
 msgid "Get started by adding your first product or importing from a CSV file."
-msgstr ""
-"Începeți prin a adăuga primul produs sau importați dintr-un fișier CSV."
+msgstr "Почніть з додавання першого товару або імпорту з файлу CSV."
 
 #: .\templates\manage\products\list.html:216
 msgid "Delete Product"
-msgstr "Produs"
+msgstr "Видалити товар"
 
 #: .\templates\manage\products\list.html:220
 msgid "Are you sure you want to delete product"
-msgstr "Sigur doriți să ștergeți produsul"
+msgstr "Ви впевнені, що хочете видалити товар"
 
 #: .\templates\manage\products\list.html:281
 #, python-format
@@ -2917,39 +2911,39 @@ msgid ""
 "Delete %%s product(s)? Products used in orders are skipped. This cannot be "
 "undone."
 msgstr ""
-"Ștergeți %%s produse? Produsele folosite în comenzi sunt omise. Această "
-"acțiune nu poate fi anulată."
+"Видалити товарів: %%s? Товари, використані в замовленнях, буде пропущено. Цю "
+"дію неможливо скасувати."
 
 #: .\templates\manage\products\list.html:293
 msgid "Enter new location for selected products:"
-msgstr "Introduceți noua locație pentru produsele selectate:"
+msgstr "Введіть нове розташування для вибраних товарів:"
 
 #: .\templates\manage\profile.html:6
 msgid "Manage your account settings"
-msgstr "Gestionează setările contului"
+msgstr "Керуйте налаштуваннями свого облікового запису"
 
 #: .\templates\manage\profile.html:14
 msgid "Account Information"
-msgstr "Informații cont"
+msgstr "Інформація про обліковий запис"
 
 #: .\templates\manage\profile.html:22 .\templates\manage\profile.html:169
 #: .\templates\registration\login.html:35
 #: .\templates\registration\signup.html:95
 #: .\templates\registration\signup.html:168
 msgid "Username"
-msgstr "Utilizator"
+msgstr "Ім’я користувача"
 
 #: .\templates\manage\profile.html:24
 msgid "Username cannot be changed."
-msgstr "Numele de utilizator nu poate fi schimbat."
+msgstr "Ім’я користувача змінити не можна."
 
 #: .\templates\manage\profile.html:29
 msgid "First Name"
-msgstr "Nume produs"
+msgstr "Ім’я"
 
 #: .\templates\manage\profile.html:34
 msgid "Last Name"
-msgstr "Nume"
+msgstr "Прізвище"
 
 #: .\templates\manage\profile.html:41 .\templates\registration\signup.html:108
 #: .\templates\registration\signup.html:181
@@ -2958,603 +2952,610 @@ msgstr "Email"
 
 #: .\templates\manage\profile.html:56 .\templates\manage\profile.html:82
 msgid "Change Password"
-msgstr "Schimbă parola"
+msgstr "Змінити пароль"
 
 #: .\templates\manage\profile.html:64
 msgid "Current Password"
-msgstr "Parolă curentă"
+msgstr "Поточний пароль"
 
 #: .\templates\manage\profile.html:69
 #: .\templates\registration\password_reset_confirm.html:33
 msgid "New Password"
-msgstr "Parolă nouă"
+msgstr "Новий пароль"
 
 #: .\templates\manage\profile.html:72
 msgid "Minimum 8 characters."
-msgstr "Minim 8 caractere."
+msgstr "Щонайменше 8 символів."
 
 #: .\templates\manage\profile.html:76
 #: .\templates\registration\password_reset_confirm.html:45
 msgid "Confirm New Password"
-msgstr "Confirmă parola nouă"
+msgstr "Підтвердьте новий пароль"
 
 #: .\templates\manage\profile.html:91
 msgid "Picker Accounts"
-msgstr "Conturi de operator"
+msgstr "Облікові записи комплектувальників"
 
 #: .\templates\manage\profile.html:95
 msgid ""
 "Your warehouse staff log into the picker app with these accounts. Set a "
-"password here and hand it to your team — pickers cannot change it "
-"themselves. A login QR lets someone sign in by scanning instead of typing, "
-"which is the quickest way to get a new picker started."
-msgstr "Personalul din depozit se autentifică în aplicaţia de picking cu aceste conturi. Setaţi aici o parolă și transmiteţi-o echipei — operatorii nu o pot schimba singuri. Un cod QR de autentificare permite conectarea prin scanare în loc de tastare, cea mai rapidă modalitate de a porni un operator nou."
+"password here and hand it to your team — pickers cannot change it themselves."
+" A login QR lets someone sign in by scanning instead of typing, which is the "
+"quickest way to get a new picker started."
+msgstr ""
+"Ваші складські працівники входять у застосунок комплектувальника за допомогою"
+" цих облікових записів. Задайте тут пароль і передайте його своїй команді — "
+"комплектувальники не можуть змінити його самостійно. QR-код входу дозволяє "
+"увійти скануванням замість введення даних, і це найшвидший спосіб розпочати "
+"роботу з новим комплектувальником."
 
 #: .\templates\manage\profile.html:100
 #, python-format
 msgid "Login QR for %(name)s"
-msgstr "Cod QR de autentificare pentru %(name)s"
+msgstr "QR-код входу для %(name)s"
 
 #: .\templates\manage\profile.html:102
 msgid "Login QR code"
-msgstr "Cod QR de autentificare"
+msgstr "QR-код входу"
 
 #: .\templates\manage\profile.html:104
 msgid "Scan with the phone camera, then tap Continue."
-msgstr "Scanaţi cu camera telefonului, apoi apăsaţi Continuă."
+msgstr "Відскануйте камерою телефона, потім торкніться «Продовжити»."
 
 #: .\templates\manage\profile.html:107
 #, python-format
 msgid "%(company)s · valid until %(until)s"
-msgstr "%(company)s · valabil până la %(until)s"
+msgstr "%(company)s · дійсний до %(until)s"
 
 #: .\templates\manage\profile.html:110
 msgid "Print"
-msgstr "Tipărește"
+msgstr "Друк"
 
 #: .\templates\manage\profile.html:112
 msgid ""
 "Anyone who scans this code can sign in as this picker — keep the print-out "
 "inside the warehouse. It cannot be shown again after you leave this page."
-msgstr "Oricine scanează acest cod se poate autentifica drept acest operator — păstraţi tipăritura în interiorul depozitului. Nu va mai fi afișat după ce părăsiţi această pagină."
+msgstr ""
+"Будь-хто, хто відсканує цей код, зможе увійти як цей комплектувальник — "
+"зберігайте роздруківку в межах складу. Після того як ви залишите цю сторінку,"
+" код більше не відображатиметься."
 
 #: .\templates\manage\profile.html:124
 #, python-format
 msgid "Last login: %(last)s"
-msgstr "Ultima autentificare: %(last)s"
+msgstr "Останній вхід: %(last)s"
 
 #: .\templates\manage\profile.html:126
 msgid "Never logged in"
-msgstr "Nicio autentificare până acum"
+msgstr "Жодного разу не входив"
 
 #: .\templates\manage\profile.html:131
 #, python-format
 msgid "Login QR active · %(days)s days left"
-msgstr "Cod QR de autentificare activ · %(days)s zile rămase"
+msgstr "QR-код входу активний · залишилося днів: %(days)s"
 
 #: .\templates\manage\profile.html:133
 msgid "No login QR"
-msgstr "Niciun cod QR de autentificare"
+msgstr "Немає QR-коду входу"
 
 #: .\templates\manage\profile.html:142 .\templates\shopify\app.html:250
 msgid "New password (min 8 characters)"
-msgstr "Parolă nouă (min. 8 caractere)"
+msgstr "Новий пароль (мін. 8 символів)"
 
 #: .\templates\manage\profile.html:144 .\templates\shopify\app.html:251
 msgid "Set password"
-msgstr "Setează parola"
+msgstr "Задати пароль"
 
 #: .\templates\manage\profile.html:150
 msgid "New login QR"
-msgstr "Cod QR de autentificare nou"
+msgstr "Новий QR-код входу"
 
 #: .\templates\manage\profile.html:150
 msgid "Login QR"
-msgstr "Cod QR de autentificare"
+msgstr "QR-код входу"
 
 #: .\templates\manage\profile.html:154
 #: .\templates\manage\settings\api_tokens.html:69
 msgid "Revoke"
-msgstr "Revocă"
+msgstr "Відкликати"
 
 #: .\templates\manage\profile.html:160
 msgid "No picker accounts yet — create one below."
-msgstr "Nu există încă conturi de operator — creați unul mai jos."
+msgstr "Облікових записів комплектувальників ще немає — створіть нижче."
 
 #: .\templates\manage\profile.html:164
 msgid "Add a picker account"
-msgstr "Adaugă un cont de operator"
+msgstr "Додати обліковий запис комплектувальника"
 
 #: .\templates\manage\profile.html:171
 msgid "Password (min 8 characters)"
-msgstr "Parolă (min. 8 caractere)"
+msgstr "Пароль (мін. 8 символів)"
 
 #: .\templates\manage\profile.html:173
 msgid "Create"
-msgstr "Creează"
+msgstr "Створити"
 
 #: .\templates\manage\profile.html:182 .\templates\registration\signup.html:67
 msgid "Company Information"
-msgstr "Informații companie"
+msgstr "Інформація про компанію"
 
 #: .\templates\manage\profile.html:187
 msgid "Company"
-msgstr "Companie"
+msgstr "Компанія"
 
 #: .\templates\manage\profile.html:197
 msgid "Role"
-msgstr "Rol"
+msgstr "Роль"
 
 #: .\templates\manage\profile.html:200
 msgid "Administrator"
-msgstr "Administrator"
+msgstr "Адміністратор"
 
 #: .\templates\manage\profile.html:202
 msgid "Staff"
-msgstr "Personal"
+msgstr "Персонал"
 
 #: .\templates\manage\profile.html:204
 msgid "Company Admin"
-msgstr "Administrator companie"
+msgstr "Адміністратор компанії"
 
 #: .\templates\manage\profile.html:211
 msgid "Member Since"
-msgstr "Membru din"
+msgstr "Учасник з"
 
 #: .\templates\manage\queue\_queue_list.html:8
 #: .\templates\queue\_manage_queue_list.html:8
 msgid "Drag to reorder"
-msgstr "Trageți pentru a reordona"
+msgstr "Перетягніть, щоб змінити порядок"
 
 #: .\templates\manage\queue\_queue_list.html:26
 msgid "Picked by"
-msgstr "Preluat de"
+msgstr "Комплектує"
 
 #: .\templates\manage\queue\_queue_list.html:34
 msgid "Unlock order"
-msgstr "Deblochează comanda"
+msgstr "Розблокувати замовлення"
 
 #: .\templates\manage\queue\_queue_list.html:36
 #: .\templates\queue\_manage_queue_list.html:25
 msgid "Move up"
-msgstr "Mută sus"
+msgstr "Перемістити вгору"
 
 #: .\templates\manage\queue\_queue_list.html:37
 #: .\templates\queue\_manage_queue_list.html:26
 msgid "Move down"
-msgstr "Mută jos"
+msgstr "Перемістити вниз"
 
 #: .\templates\manage\queue\_queue_list.html:38
 #: .\templates\queue\_manage_queue_list.html:27
 msgid "Remove from queue"
-msgstr "Elimină comenzile selectate din coadă"
+msgstr "Вилучити з черги"
 
 #: .\templates\manage\queue\_queue_list.html:48
 #: .\templates\queue\_manage_queue_list.html:34
 msgid "Queue is empty"
-msgstr "Gestionare coadă"
+msgstr "Черга порожня"
 
 #: .\templates\manage\queue\_queue_list.html:49
 #: .\templates\queue\_manage_queue_list.html:35
 msgid "Add orders from the available list"
-msgstr "Adaugă comenzi din lista disponibilă"
+msgstr "Додайте замовлення зі списку доступних"
 
 #: .\templates\manage\queue\list.html:6
 msgid "Manage and reorder your order queue"
-msgstr "Gestionează și reordonează coada de comenzi"
+msgstr "Керуйте чергою замовлень і змінюйте її порядок"
 
 #: .\templates\manage\queue\list.html:18 .\templates\queue\manage.html:23
 msgid "Display View"
-msgstr "Vizualizare afișaj"
+msgstr "Екранне подання"
 
 #: .\templates\manage\queue\list.html:38 .\templates\queue\manage.html:39
 msgid "Current Queue"
-msgstr "Coadă curentă"
+msgstr "Поточна черга"
 
 #: .\templates\manage\queue\list.html:39 .\templates\manage\queue\list.html:54
 #: .\templates\queue\manage.html:40 .\templates\queue\manage.html:54
 msgid "orders"
-msgstr "comenzi"
+msgstr "замовлень"
 
 #: .\templates\manage\queue\list.html:53 .\templates\queue\manage.html:53
 msgid "Available Orders"
-msgstr "Comenzi disponibile"
+msgstr "Доступні замовлення"
 
 #: .\templates\manage\queue\list.html:77
 msgid "Add"
-msgstr "Adaugă"
+msgstr "Додати"
 
 #: .\templates\manage\queue\list.html:84
 msgid "No draft orders available"
-msgstr "Nicio comandă schiță disponibilă"
+msgstr "Немає доступних чернеток замовлень"
 
 #: .\templates\manage\queue\list.html:94 .\templates\queue\manage.html:82
 msgid "Recently Completed"
-msgstr "Finalizate recent"
+msgstr "Нещодавно завершені"
 
 #: .\templates\manage\queue\list.html:113
 msgid "No completed orders yet"
-msgstr "Nicio comandă finalizată"
+msgstr "Завершених замовлень ще немає"
 
 #: .\templates\manage\queue\list.html:424 .\templates\queue\manage.html:155
 msgid "Queue order saved"
-msgstr "Ordinea cozii salvată"
+msgstr "Порядок черги збережено"
 
 #: .\templates\manage\queue\list.html:468
 msgid "Unlock this order? The picker will lose their progress."
-msgstr "Deblocați această comandă? Operatorul își va pierde progresul."
+msgstr "Розблокувати це замовлення? Комплектувальник втратить свій прогрес."
 
 #: .\templates\manage\settings.html:6
 msgid "Configure your company preferences"
-msgstr "Configurează preferințele companiei"
+msgstr "Налаштуйте параметри своєї компанії"
 
 #: .\templates\manage\settings.html:13
 msgid "Company Settings"
-msgstr "Setări companie"
+msgstr "Налаштування компанії"
 
 #: .\templates\manage\settings.html:58 .\templates\manage\settings.html:69
 msgid "No settings configured"
-msgstr "Nicio setare configurată"
+msgstr "Налаштувань не задано"
 
 #: .\templates\manage\settings.html:59 .\templates\manage\settings.html:70
 msgid "There are no configurable settings available yet."
-msgstr "Nu există încă setări configurabile disponibile."
+msgstr "Доступних для налаштування параметрів поки немає."
 
 #: .\templates\manage\settings\api_tokens.html:6
 msgid "Tokens for connecting external systems to the OrderPiqr API"
-msgstr "Tokenuri pentru conectarea sistemelor externe la API-ul OrderPiqr"
+msgstr "Токени для підключення зовнішніх систем до API OrderPiqr"
 
 #: .\templates\manage\settings\api_tokens.html:13
 msgid "Your new API token"
-msgstr "Noul dvs. token API"
+msgstr "Ваш новий токен API"
 
 #: .\templates\manage\settings\api_tokens.html:16
 msgid "Copy this token now – it will not be shown again."
-msgstr "Copiați acest token acum – nu va mai fi afișat."
+msgstr "Скопіюйте цей токен зараз — він більше не відображатиметься."
 
 #: .\templates\manage\settings\api_tokens.html:22
 msgid "Send it in the Authorization header:"
-msgstr "Trimiteți-l în antetul Authorization:"
+msgstr "Надсилайте його в заголовку Authorization:"
 
 #: .\templates\manage\settings\api_tokens.html:30
 msgid "Active tokens"
-msgstr "Tokenuri active"
+msgstr "Активні токени"
 
 #: .\templates\manage\settings\api_tokens.html:40
 msgid ""
 "Creating a token replaces your existing token of the same type. Continue?"
 msgstr ""
-"Crearea unui token înlocuiește tokenul existent de același tip. Continuați?"
+"Створення токена замінить ваш наявний токен такого самого типу. Продовжити?"
 
 #: .\templates\manage\settings\api_tokens.html:41
 msgid "Create token"
-msgstr "Creează token"
+msgstr "Створити токен"
 
 #: .\templates\manage\settings\api_tokens.html:65
 msgid "Revoke this token? Systems using it will lose access immediately."
 msgstr ""
-"Revocați acest token? Sistemele care îl folosesc pierd imediat accesul."
+"Відкликати цей токен? Системи, які його використовують, одразу втратять "
+"доступ."
 
 #: .\templates\manage\settings\api_tokens.html:79
 msgid "No API tokens"
-msgstr "Niciun token API"
+msgstr "Немає токенів API"
 
 #: .\templates\manage\settings\api_tokens.html:80
 msgid "Create a token to let external systems push orders to OrderPiqr."
 msgstr ""
-"Creați un token pentru ca sistemele externe să poată trimite comenzi către "
-"OrderPiqr."
+"Створіть токен, щоб зовнішні системи могли надсилати замовлення в OrderPiqr."
 
 #: .\templates\manage\settings\api_tokens.html:88
 #, python-format
 msgid ""
-"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push "
-"orders with your token."
+"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push orders"
+" with your token."
 msgstr ""
-"Consultați <a href=\"%(docs_url)s\">documentația API</a> pentru a afla cum "
-"trimiteți comenzi cu tokenul dvs."
+"Дивіться <a href=\"%(docs_url)s\">документацію API</a>, щоб дізнатися, як "
+"надсилати замовлення за допомогою свого токена."
 
 #: .\templates\manage\settings\api_tokens.html:129
 msgid "Token copied to clipboard"
-msgstr "Token copiat în clipboard"
+msgstr "Токен скопійовано в буфер обміну"
 
 #: .\templates\offline.html:65
 msgid "You're offline"
-msgstr "Sunteți offline"
+msgstr "Ви офлайн"
 
 #: .\templates\offline.html:66
 msgid "Sorry, content is unavailable right now."
-msgstr "Ne pare rău, conținutul nu este disponibil momentan."
+msgstr "На жаль, вміст зараз недоступний."
 
 #: .\templates\offline.html:68
 msgid "Retry"
-msgstr "Reîncercați"
+msgstr "Повторити"
 
-#: .\templates\partials\scan_confirmation_overlay.html:9
+#: .\templates\partials\scan_confirmation_overlay.html:11
 msgid "Tap to scan next item"
-msgstr "Apăsați pentru a scana următorul articol"
+msgstr "Торкніться, щоб відсканувати наступну позицію"
 
-#: .\templates\partials\scan_confirmation_overlay.html:22
+#: .\templates\partials\scan_confirmation_overlay.html:26
 msgid "Pick a specific quantity"
-msgstr "Alege o cantitate specifică"
+msgstr "Скомплектувати певну кількість"
 
-#: .\templates\partials\scan_confirmation_overlay.html:32
+#: .\templates\partials\scan_confirmation_overlay.html:36
 msgid "Confirm"
-msgstr "Confirmă"
+msgstr "Підтвердити"
 
-#: .\templates\partials\scan_confirmation_overlay.html:38
+#: .\templates\partials\scan_confirmation_overlay.html:42
 msgid "Pick All"
-msgstr "Preia tot"
+msgstr "Скомплектувати все"
 
-#: .\templates\partials\scan_confirmation_overlay.html:41
+#: .\templates\partials\scan_confirmation_overlay.html:45
 msgid "Pick 1"
-msgstr "Preia 1"
+msgstr "Скомплектувати 1"
 
 #: .\templates\queue\_order_cards.html:67
 #: .\templates\queue\_picker_orders.html:59
 msgid "No orders in queue"
-msgstr "Nicio comandă în coadă"
+msgstr "У черзі немає замовлень"
 
 #: .\templates\queue\_picker_orders.html:35 .\templates\queue\picker.html:118
 #: .\templates\queue\picker.html:125
 msgid "Start Picking"
-msgstr "Începe ridicarea"
+msgstr "Почати комплектацію"
 
 #: .\templates\queue\_picker_orders.html:45 .\templates\queue\picker.html:164
 #: .\templates\queue\picker.html:170
 msgid "Take Over"
-msgstr "Preia"
+msgstr "Перехопити"
 
 #: .\templates\queue\_picker_orders.html:60
 msgid "New orders will appear here automatically"
-msgstr "Comenzile noi vor apărea aici automat"
+msgstr "Нові замовлення з’являтимуться тут автоматично"
 
 #: .\templates\queue\manage.html:16
 msgid "Admin"
-msgstr "Administrare"
+msgstr "Адміністрування"
 
 #: .\templates\queue\manage.html:22
 msgid "Open tablet display view"
-msgstr "Deschide vizualizarea tabletă"
+msgstr "Відкрити подання для планшета"
 
 #: .\templates\queue\manage.html:25
 msgid "Open mobile picker view"
-msgstr "Deschide vizualizarea mobilă"
+msgstr "Відкрити мобільне подання комплектувальника"
 
 #: .\templates\queue\manage.html:73
 msgid "No available orders"
-msgstr "Nicio comandă disponibilă"
+msgstr "Немає доступних замовлень"
 
 #: .\templates\queue\manage.html:74
 msgid "Create orders in the admin to add them here"
-msgstr "Creați comenzi în administrare pentru a le adăuga aici"
+msgstr "Створіть замовлення в панелі адміністратора, щоб вони з’явилися тут"
 
 #: .\templates\queue\manage.html:101
 msgid "No completed orders"
-msgstr "Nicio comandă finalizată"
+msgstr "Немає завершених замовлень"
 
 #: .\templates\queue\picker.html:14
 msgid "Pick Queue"
-msgstr "Coadă ridicare"
+msgstr "Черга комплектації"
 
 #: .\templates\queue\picker.html:67 .\templates\queue\picker.html:138
 msgid "Claiming..."
-msgstr "Revendicare..."
+msgstr "Беремо в роботу..."
 
 #: .\templates\queue\picker.html:92
 msgid "Order claimed! Redirecting..."
-msgstr "Comandă revendicată! Redirecționare..."
+msgstr "Замовлення взято в роботу! Перенаправлення..."
 
 #: .\templates\queue\picker.html:123 .\templates\queue\picker.html:129
 #: .\templates\queue\picker.html:168
 msgid "Error claiming order"
-msgstr "Eroare la revendicarea comenzii"
+msgstr "Помилка взяття замовлення в роботу"
 
 #: .\templates\queue\picker.html:134
 msgid ""
 "This order is being picked by someone else. Are you sure you want to take it "
 "over? Their progress will be lost."
 msgstr ""
-"Această comandă este preluată de altcineva. Sigur doriți să o preluați "
-"dumneavoastră? Progresul acestuia se va pierde."
+"Це замовлення комплектує інша людина. Ви впевнені, що хочете його перехопити?"
+" Її прогрес буде втрачено."
 
 #: .\templates\registration\login.html:4
 msgid "Login"
-msgstr "Autentificare"
+msgstr "Вхід"
 
 #: .\templates\registration\login.html:11
 msgid "Sign in to your OrderPiqR account"
-msgstr "Autentificați-vă în contul OrderPiqR"
+msgstr "Увійдіть до свого облікового запису OrderPiqR"
 
 #: .\templates\registration\login.html:41
 msgid "Enter your username"
-msgstr "Introduceți numele dumneavoastră"
+msgstr "Введіть своє ім’я користувача"
 
 #: .\templates\registration\login.html:50
 #: .\templates\registration\signup.html:124
 #: .\templates\registration\signup.html:197 .\templates\shopify\app.html:238
 msgid "Password"
-msgstr "Parolă"
+msgstr "Пароль"
 
 #: .\templates\registration\login.html:55
 msgid "Enter your password"
-msgstr "Introduceți numele dumneavoastră"
+msgstr "Введіть свій пароль"
 
 #: .\templates\registration\login.html:65
 msgid "Remember me"
-msgstr "Ține-mă minte"
+msgstr "Запам’ятати мене"
 
 #: .\templates\registration\login.html:67
 msgid "Forgot password?"
-msgstr "Ați uitat parola?"
+msgstr "Забули пароль?"
 
 #: .\templates\registration\login.html:72
 #: .\templates\registration\qr_login.html:4
 #: .\templates\registration\signup.html:233
 msgid "Sign in"
-msgstr "Autentificare"
+msgstr "Увійти"
 
 #: .\templates\registration\login.html:79
 msgid "New to OrderPiqR?"
-msgstr "Bun venit la Orderpiqr!"
+msgstr "Уперше в OrderPiqR?"
 
 #: .\templates\registration\login.html:80
 msgid "Create your account"
-msgstr "Creați-vă contul"
+msgstr "Створіть обліковий запис"
 
 #: .\templates\registration\name_entry.html:4
 msgid "Enter Your Name"
-msgstr "Introduceți numele dumneavoastră"
+msgstr "Введіть своє ім’я"
 
 #: .\templates\registration\name_entry.html:10
 msgid "Welcome!"
-msgstr "Bun venit!"
+msgstr "Вітаємо!"
 
 #: .\templates\registration\name_entry.html:11
 msgid "Please enter your name to register this device"
-msgstr "Vă rugăm să introduceți numele pentru a înregistra acest dispozitiv"
+msgstr "Введіть своє ім’я, щоб зареєструвати цей пристрій"
 
 #: .\templates\registration\name_entry.html:20
 msgid "Your Name"
-msgstr "Introduceți numele dumneavoastră"
+msgstr "Ваше ім’я"
 
 #: .\templates\registration\name_entry.html:25
 msgid "Enter your name"
-msgstr "Introduceți numele dumneavoastră"
+msgstr "Введіть своє ім’я"
 
 #: .\templates\registration\name_entry.html:28
 msgid "This name will be shown when you pick orders"
-msgstr "Acest nume va fi afișat când preluați comenzi"
+msgstr "Це ім’я відображатиметься, коли ви комплектуєте замовлення"
 
 #: .\templates\registration\name_entry.html:33
 #: .\templates\registration\qr_login.html:41
 msgid "Continue"
-msgstr "Continuă"
+msgstr "Продовжити"
 
 #: .\templates\registration\name_entry.html:44
 msgid "This device will be registered for order picking"
-msgstr "Acest dispozitiv va fi înregistrat pentru preluarea comenzilor"
+msgstr "Цей пристрій буде зареєстровано для комплектації замовлень"
 
 #: .\templates\registration\password_reset.html:4
 #: .\templates\registration\password_reset_confirm.html:56
 msgid "Reset Password"
-msgstr "Resetează parola"
+msgstr "Скидання пароля"
 
 #: .\templates\registration\password_reset.html:10
 msgid "Reset your password"
-msgstr "Resetați parola"
+msgstr "Скиньте свій пароль"
 
 #: .\templates\registration\password_reset.html:11
 msgid ""
 "Enter your email address and we'll send you a link to reset your password"
 msgstr ""
-"Introduceți adresa de email și vă vom trimite un link pentru resetarea "
-"parolei"
+"Введіть свою адресу email, і ми надішлемо вам посилання для скидання пароля"
 
 #: .\templates\registration\password_reset.html:32
 msgid "Email Address"
-msgstr "Adresă email"
+msgstr "Адреса email"
 
 #: .\templates\registration\password_reset.html:37
 msgid "Enter your email address"
-msgstr "Introduceți numele dumneavoastră"
+msgstr "Введіть свою адресу email"
 
 #: .\templates\registration\password_reset.html:44
 msgid "Send Reset Link"
-msgstr "Trimite link de resetare"
+msgstr "Надіслати посилання"
 
 #: .\templates\registration\password_reset.html:51
 #: .\templates\registration\password_reset_confirm.html:73
 #: .\templates\registration\password_reset_done.html:30
 msgid "Back to login"
-msgstr "Ultima autentificare"
+msgstr "Назад до входу"
 
 #: .\templates\registration\password_reset_complete.html:4
 msgid "Password Reset Complete"
-msgstr "Finalizate recent"
+msgstr "Скидання пароля завершено"
 
 #: .\templates\registration\password_reset_complete.html:15
 msgid "Password reset complete!"
-msgstr "Resetare parolă completă!"
+msgstr "Скидання пароля завершено!"
 
 #: .\templates\registration\password_reset_complete.html:16
 msgid "Your password has been successfully changed"
-msgstr "Parola a fost schimbată cu succes"
+msgstr "Ваш пароль успішно змінено"
 
 #: .\templates\registration\password_reset_complete.html:21
 msgid "You can now use your new password to log in to your account."
-msgstr "Acum puteți folosi noua parolă pentru a vă autentifica în cont."
+msgstr "Тепер ви можете входити до свого облікового запису з новим паролем."
 
 #: .\templates\registration\password_reset_complete.html:24
 msgid "Go to Login"
-msgstr "Ultima autentificare"
+msgstr "Перейти до входу"
 
 #: .\templates\registration\password_reset_confirm.html:4
 msgid "Set New Password"
-msgstr "Setează parolă nouă"
+msgstr "Встановити новий пароль"
 
 #: .\templates\registration\password_reset_confirm.html:10
 msgid "Set new password"
-msgstr "Setează parolă nouă"
+msgstr "Встановіть новий пароль"
 
 #: .\templates\registration\password_reset_confirm.html:11
 msgid "Enter your new password below"
-msgstr "Introduceți noua parolă mai jos"
+msgstr "Введіть свій новий пароль нижче"
 
 #: .\templates\registration\password_reset_confirm.html:38
 msgid "Enter new password"
-msgstr "Introduceți parola nouă"
+msgstr "Введіть новий пароль"
 
 #: .\templates\registration\password_reset_confirm.html:41
 msgid "Minimum 8 characters"
-msgstr "Minim 8 caractere"
+msgstr "Щонайменше 8 символів"
 
 #: .\templates\registration\password_reset_confirm.html:50
 msgid "Confirm new password"
-msgstr "Confirmă parola nouă"
+msgstr "Підтвердьте новий пароль"
 
 #: .\templates\registration\password_reset_confirm.html:62
 msgid ""
 "This password reset link is invalid or has expired. Please request a new one."
 msgstr ""
-"Acest link de resetare parolă este invalid sau a expirat. Vă rugăm să "
-"solicitați unul nou."
+"Це посилання для скидання пароля недійсне або його термін дії минув. "
+"Запросіть нове."
 
 #: .\templates\registration\password_reset_confirm.html:66
 msgid "Request New Link"
-msgstr "Solicită link nou"
+msgstr "Запросити нове посилання"
 
 #: .\templates\registration\password_reset_done.html:4
 msgid "Password Reset Sent"
-msgstr "Resetare parolă trimisă"
+msgstr "Посилання для скидання пароля надіслано"
 
 #: .\templates\registration\password_reset_done.html:15
 msgid "Check your email"
-msgstr "Verificați emailul"
+msgstr "Перевірте свою пошту"
 
 #: .\templates\registration\password_reset_done.html:16
 msgid "We've sent you instructions to reset your password"
-msgstr "V-am trimis instrucțiuni pentru resetarea parolei"
+msgstr "Ми надіслали вам інструкції для скидання пароля"
 
 #: .\templates\registration\password_reset_done.html:21
 msgid ""
 "If an account exists with the email address you entered, you will receive a "
 "password reset link shortly."
 msgstr ""
-"Dacă există un cont cu adresa de email introdusă, veți primi în curând un "
-"link de resetare parolă."
+"Якщо обліковий запис із вказаною адресою email існує, ви незабаром отримаєте "
+"посилання для скидання пароля."
 
 #: .\templates\registration\password_reset_done.html:24
 msgid "Didn't receive the email? Check your spam folder or"
-msgstr "Nu ați primit emailul? Verificați folderul spam sau"
+msgstr "Не отримали лист? Перевірте теку зі спамом або"
 
 #: .\templates\registration\password_reset_done.html:25
 msgid "try again"
-msgstr "încercați din nou"
+msgstr "спробуйте ще раз"
 
 #: .\templates\registration\password_reset_email.html:2
 msgid "Hello,"
-msgstr "Bună ziua,"
+msgstr "Вітаємо,"
 
 #: .\templates\registration\password_reset_email.html:4
 #, python-format
@@ -3562,411 +3563,413 @@ msgid ""
 "You're receiving this email because you requested a password reset for your "
 "OrderPiqR account (%(username)s)."
 msgstr ""
-"Primiți acest email deoarece ați solicitat resetarea parolei pentru contul "
-"dumneavoastră OrderPiqR (%(username)s)."
+"Ви отримали цей лист, тому що запросили скидання пароля для свого облікового "
+"запису OrderPiqR (%(username)s)."
 
 #: .\templates\registration\password_reset_email.html:6
 msgid "Please click the link below to set a new password:"
-msgstr ""
-"Vă rugăm să faceți clic pe linkul de mai jos pentru a seta o parolă nouă:"
+msgstr "Натисніть посилання нижче, щоб встановити новий пароль:"
 
 #: .\templates\registration\password_reset_email.html:10
 msgid "This link will expire in 24 hours."
-msgstr "Acest link va expira în 24 de ore."
+msgstr "Термін дії цього посилання спливає через 24 години."
 
 #: .\templates\registration\password_reset_email.html:12
 msgid ""
 "If you didn't request this password reset, you can safely ignore this email. "
 "Your password will not be changed."
 msgstr ""
-"Dacă nu ați solicitat această resetare parolă, puteți ignora acest email în "
-"siguranță. Parola nu va fi schimbată."
+"Якщо ви не запитували скидання пароля, просто проігноруйте цей лист. Ваш "
+"пароль не буде змінено."
 
 #: .\templates\registration\password_reset_email.html:14
 msgid "Best regards,"
-msgstr "Cu respect,"
+msgstr "З повагою,"
 
 #: .\templates\registration\password_reset_email.html:15
 msgid "The OrderPiqR Team"
-msgstr "Echipa OrderPiqR"
+msgstr "Команда OrderPiqR"
 
 #: .\templates\registration\password_reset_subject.txt:1
 msgid "Reset your OrderPiqR password"
-msgstr "Resetați parola OrderPiqR"
+msgstr "Скидання пароля OrderPiqR"
 
 #: .\templates\registration\picker_choice.html:12
 msgid "Choose Mode"
-msgstr "Alegeți modul"
+msgstr "Виберіть режим"
 
 #: .\templates\registration\picker_choice.html:124
 msgid "What would you like to do?"
-msgstr "Ce doriți să faceți?"
+msgstr "Що ви хочете зробити?"
 
 #: .\templates\registration\picker_choice.html:134
 msgid "Order Picking"
-msgstr "Preluare comenzi"
+msgstr "Комплектація замовлень"
 
 #: .\templates\registration\picker_choice.html:135
 msgid "Pick orders from the queue"
-msgstr "Preluați comenzi din coadă"
+msgstr "Комплектуйте замовлення з черги"
 
 #: .\templates\registration\picker_choice.html:142
 msgid "Inventory Counting"
-msgstr "Numărare inventar"
+msgstr "Підрахунок запасів"
 
 #: .\templates\registration\picker_choice.html:143
 msgid "Count and update stock levels"
-msgstr "Numărați și actualizați stocurile"
+msgstr "Підраховуйте й оновлюйте рівні запасів"
 
 #: .\templates\registration\qr_login.html:11
 msgid "This code no longer works"
-msgstr "Acest cod nu mai funcţionează"
+msgstr "Цей код більше не працює"
 
 #: .\templates\registration\qr_login.html:12
 msgid "It may have expired or been replaced."
-msgstr "Este posibil să fi expirat sau să fi fost înlocuit."
+msgstr "Можливо, термін його дії минув або його замінено."
 
 #: .\templates\registration\qr_login.html:14
 msgid "Sign in to start picking"
-msgstr "Autentificaţi-vă pentru a începe pickingul"
+msgstr "Увійдіть, щоб почати комплектацію"
 
 #: .\templates\registration\qr_login.html:22
 msgid ""
 "Ask your manager for a new login code, or sign in with your username and "
 "password."
-msgstr "Cereţi managerului un cod de autentificare nou sau autentificaţi-vă cu numele de utilizator și parola."
+msgstr ""
+"Попросіть у свого керівника новий код входу або увійдіть за іменем "
+"користувача та паролем."
 
 #: .\templates\registration\qr_login.html:25
 #: .\templates\registration\qr_login.html:46
 msgid "Sign in with a password"
-msgstr "Autentificare cu parolă"
+msgstr "Увійти за паролем"
 
 #: .\templates\registration\qr_login.html:30
 #, python-format
 msgid ""
 "You are currently signed in as %(name)s. Continuing will sign that account "
 "out on this device."
-msgstr "Sunteţi conectat în prezent ca %(name)s. Dacă continuaţi, acel cont va fi deconectat de pe acest dispozitiv."
+msgstr ""
+"Зараз ви увійшли як %(name)s. Якщо продовжити, цей обліковий запис буде "
+"виведено з системи на цьому пристрої."
 
 #: .\templates\registration\qr_login.html:35
 msgid "Signing in as"
-msgstr "Autentificare ca"
+msgstr "Вхід як"
 
 #: .\templates\registration\qr_login.html:45
 msgid "Not your account?"
-msgstr "Nu este contul dumneavoastră?"
+msgstr "Не ваш обліковий запис?"
 
 #: .\templates\registration\signup.html:4
 msgid "Sign Up"
-msgstr "Înregistrare"
+msgstr "Реєстрація"
 
 #: .\templates\registration\signup.html:11
 msgid "Create your workspace"
-msgstr "Creați spațiul de lucru"
+msgstr "Створіть свій робочий простір"
 
 #: .\templates\registration\signup.html:12
 msgid "Get started with OrderPiqR in just a few minutes"
-msgstr "Începeți cu OrderPiqR în doar câteva minute"
+msgstr "Почніть роботу з OrderPiqR лише за кілька хвилин"
 
 #: .\templates\registration\signup.html:17
 msgid "How OrderPiqR works"
-msgstr "Cum funcționează OrderPiqR"
+msgstr "Як працює OrderPiqR"
 
 #: .\templates\registration\signup.html:27
 msgid "Admin Account"
-msgstr "Cont administrator"
+msgstr "Обліковий запис адміністратора"
 
 #: .\templates\registration\signup.html:28
 msgid ""
 "For managers: add products, create orders, manage the queue, and track "
 "progress."
 msgstr ""
-"Pentru manageri: adăugați produse, creați comenzi, gestionați coada și "
-"urmăriți progresul."
+"Для керівників: додавайте товари, створюйте замовлення, керуйте чергою та "
+"стежте за прогресом."
 
 #: .\templates\registration\signup.html:41
 msgid "Picker Account"
-msgstr "Cont operator"
+msgstr "Обліковий запис комплектувальника"
 
 #: .\templates\registration\signup.html:42
 msgid ""
 "One shared login for all warehouse staff. Each picker enters their name on "
 "first use - their device is then remembered."
 msgstr ""
-"O singură autentificare partajată pentru tot personalul depozitului. Fiecare "
-"operator își introduce numele la prima utilizare - dispozitivul lor este "
-"apoi reținut."
+"Один спільний вхід для всіх складських працівників. Кожен комплектувальник "
+"вводить своє ім’я під час першого використання — після цього його пристрій "
+"запам’ятовується."
 
 #: .\templates\registration\signup.html:47
 msgid ""
 "You only need these two accounts. When pickers log in on a new device, they "
 "enter their name once and the device is automatically linked to them."
 msgstr ""
-"Aveți nevoie doar de aceste două conturi. Când operatorii se autentifică pe "
-"un dispozitiv nou, își introduc numele o dată și dispozitivul este asociat "
-"automat cu ei."
+"Вам потрібні лише ці два облікові записи. Коли комплектувальники входять на "
+"новому пристрої, вони один раз вводять своє ім’я, і пристрій автоматично "
+"прив’язується до них."
 
 #: .\templates\registration\signup.html:71
 msgid "Company Name"
-msgstr "Nume companie"
+msgstr "Назва компанії"
 
 #: .\templates\registration\signup.html:77
 msgid "Enter your company name"
-msgstr "Introduceți numele dumneavoastră"
+msgstr "Введіть назву своєї компанії"
 
 #: .\templates\registration\signup.html:89
 msgid "Administrator Account"
-msgstr "Cont administrator"
+msgstr "Обліковий запис адміністратора"
 
 #: .\templates\registration\signup.html:91
 msgid ""
 "Your personal login for the management dashboard. Use this to add products, "
 "create orders, manage the queue, and configure settings."
 msgstr ""
-"Autentificarea personală pentru tabloul de bord de management. Folosiți "
-"aceasta pentru a adăuga produse, crea comenzi, gestiona coada și configura "
-"setările."
+"Ваш особистий вхід до панелі керування. Використовуйте його, щоб додавати "
+"товари, створювати замовлення, керувати чергою та налаштовувати систему."
 
 #: .\templates\registration\signup.html:101
 msgid "admin"
-msgstr "Administrare"
+msgstr "admin"
 
 #: .\templates\registration\signup.html:114
 msgid "admin@company.com"
-msgstr "admin@companie.ro"
+msgstr "admin@company.com"
 
 #: .\templates\registration\signup.html:129
 #: .\templates\registration\signup.html:202
 msgid "Create a password"
-msgstr "Creați o parolă"
+msgstr "Створіть пароль"
 
 #: .\templates\registration\signup.html:136
 #: .\templates\registration\signup.html:209
 msgid "Confirm Password"
-msgstr "Confirmă parola"
+msgstr "Підтвердження пароля"
 
 #: .\templates\registration\signup.html:141
 #: .\templates\registration\signup.html:214
 msgid "Confirm password"
-msgstr "Confirmă parola"
+msgstr "Підтвердьте пароль"
 
 #: .\templates\registration\signup.html:154
 msgid "Shared Picker Account"
-msgstr "Cont operator partajat"
+msgstr "Спільний обліковий запис комплектувальника"
 
 #: .\templates\registration\signup.html:157
 msgid "This is a shared login for all your warehouse pickers."
-msgstr ""
-"Aceasta este o autentificare partajată pentru toți operatorii depozitului."
+msgstr "Це спільний вхід для всіх ваших складських комплектувальників."
 
 #: .\templates\registration\signup.html:159
 msgid "Share these credentials with your team"
-msgstr "Distribuiți aceste credențiale echipei"
+msgstr "Поділіться цими даними для входу зі своєю командою"
 
 #: .\templates\registration\signup.html:160
 msgid "When a picker logs in for the first time, they enter their name"
-msgstr ""
-"Când un operator se autentifică pentru prima dată, își introduce numele"
+msgstr "Коли комплектувальник входить уперше, він вводить своє ім’я"
 
 #: .\templates\registration\signup.html:161
 msgid "Their device is then remembered - no need to enter their name again"
 msgstr ""
-"Dispozitivul lor este apoi reținut - nu mai este nevoie să își introducă "
-"numele din nou"
+"Після цього його пристрій запам’ятовується — вводити ім’я повторно не "
+"потрібно"
 
 #: .\templates\registration\signup.html:162
 msgid "You can see which picker is using which device in the dashboard"
 msgstr ""
-"Puteți vedea care operator folosește care dispozitiv în tabloul de bord"
+"У панелі керування ви бачите, який комплектувальник користується яким "
+"пристроєм"
 
 #: .\templates\registration\signup.html:174
 msgid "picker"
-msgstr "operator"
+msgstr "picker"
 
 #: .\templates\registration\signup.html:187
 msgid "picker@company.com"
-msgstr "operator@companie.ro"
+msgstr "picker@company.com"
 
 #: .\templates\registration\signup.html:225
 msgid "Create Company & Accounts"
-msgstr "Creează companie și conturi"
+msgstr "Створити компанію та облікові записи"
 
 #: .\templates\registration\signup.html:232
 msgid "Already have an account?"
-msgstr "Aveți deja un cont?"
+msgstr "Уже маєте обліковий запис?"
 
 #: .\templates\shopify\app.html:100
 msgid "No active plan"
-msgstr "Niciun plan activ"
+msgstr "Немає активного тарифу"
 
 #: .\templates\shopify\app.html:102
 msgid ""
 "This store has no active OrderPiqr subscription. Choose a plan to keep order "
 "sync running — billing is handled by Shopify."
 msgstr ""
-"Acest magazin nu are un abonament OrderPiqr activ. Alegeți un plan pentru ca "
-"sincronizarea comenzilor să continue — facturarea este gestionată de Shopify."
+"Цей магазин не має активної підписки OrderPiqr. Виберіть тариф, щоб "
+"синхронізація замовлень продовжувала працювати — оплата здійснюється через "
+"Shopify."
 
 #: .\templates\shopify\app.html:105
 msgid "Choose a plan"
-msgstr "Alegeți un plan"
+msgstr "Вибрати тариф"
 
 #: .\templates\shopify\app.html:110
 msgid "Overview"
-msgstr "Prezentare generală"
+msgstr "Огляд"
 
 #: .\templates\shopify\app.html:114
 msgid "Orders ready to pick"
-msgstr "Comenzi gata de preluare"
+msgstr "Замовлення, готові до комплектації"
 
 #: .\templates\shopify\app.html:118 .\templates\shopify\app.html:226
 msgid "Products needing mapping"
-msgstr "Produse care necesită asociere"
+msgstr "Товари, що потребують зіставлення"
 
 #: .\templates\shopify\app.html:123
 msgid "Open the picker app"
-msgstr "Deschide aplicația de preluare"
+msgstr "Відкрити застосунок комплектувальника"
 
 #: .\templates\shopify\app.html:132
 msgid "Product matching"
-msgstr "Potrivire produse"
+msgstr "Зіставлення товарів"
 
 #: .\templates\shopify\app.html:133
 msgid "Which Shopify field matches your product codes"
-msgstr "Ce câmp Shopify corespunde codurilor dumneavoastră de produs"
+msgstr "Яке поле Shopify відповідає вашим кодам товарів"
 
 #: .\templates\shopify\app.html:136
 msgid "Barcode, then SKU"
-msgstr "Cod de bare, apoi SKU"
+msgstr "Штрихкод, потім SKU"
 
 #: .\templates\shopify\app.html:137
 msgid "SKU, then barcode"
-msgstr "SKU, apoi cod de bare"
+msgstr "SKU, потім штрихкод"
 
 #: .\templates\shopify\app.html:138
 msgid "Barcode only"
-msgstr "Doar cod de bare"
+msgstr "Лише штрихкод"
 
 #: .\templates\shopify\app.html:139
 msgid "SKU only"
-msgstr "Doar SKU"
+msgstr "Лише SKU"
 
 #: .\templates\shopify\app.html:140
 msgid "Metafield"
-msgstr "Metafield"
+msgstr "Метаполе"
 
 #: .\templates\shopify\app.html:141
 msgid "Metafield, then barcode/SKU"
-msgstr "Metafield, apoi cod de bare/SKU"
+msgstr "Метаполе, потім штрихкод/SKU"
 
 #: .\templates\shopify\app.html:145
 msgid "Metafield (namespace.key)"
-msgstr "Metafield (namespace.key)"
+msgstr "Метаполе (namespace.key)"
 
 #: .\templates\shopify\app.html:150
 msgid "Warehouse location metafield (optional)"
-msgstr "Metafield pentru locația din depozit (opțional)"
+msgstr "Метаполе складського розташування (необов’язково)"
 
 #: .\templates\shopify\app.html:151
 msgid ""
 "If your products carry their warehouse location in a metafield, OrderPiqr "
 "keeps product locations in sync with it."
 msgstr ""
-"Dacă produsele dumneavoastră au locația din depozit într-un metafield, "
-"OrderPiqr menține locațiile produselor sincronizate cu acesta."
+"Якщо ваші товари зберігають своє складське розташування в метаполі, OrderPiqr"
+" синхронізує розташування товарів із ним."
 
 #: .\templates\shopify\app.html:157
 msgid "Unknown products"
-msgstr "Produse necunoscute"
+msgstr "Невідомі товари"
 
 #: .\templates\shopify\app.html:158
 msgid "When an order contains a product OrderPiqr doesn't know"
-msgstr "Când o comandă conține un produs necunoscut pentru OrderPiqr"
+msgstr "Коли замовлення містить товар, невідомий OrderPiqr"
 
 #: .\templates\shopify\app.html:161
 msgid "Create it automatically"
-msgstr "Creează-l automat"
+msgstr "Створити його автоматично"
 
 #: .\templates\shopify\app.html:162
 msgid "Hold order for review"
-msgstr "Reține comanda pentru verificare"
+msgstr "Затримати замовлення для перевірки"
 
 #: .\templates\shopify\app.html:163
 msgid "Skip that line"
-msgstr "Omite acea linie"
+msgstr "Пропустити цей рядок"
 
 #: .\templates\shopify\app.html:167
 msgid "New orders go straight to the picking queue"
-msgstr "Comenzile noi merg direct în coada de preluare"
+msgstr "Нові замовлення одразу потрапляють у чергу комплектації"
 
 #: .\templates\shopify\app.html:171
 msgid "Mark order fulfilled in Shopify when picked"
-msgstr "Marchează comanda ca onorată în Shopify după preluare"
+msgstr "Позначати замовлення як виконане в Shopify після комплектації"
 
 #: .\templates\shopify\app.html:175
 msgid "Send Shopify's shipping notification to the customer"
-msgstr "Trimite clientului notificarea de expediere din Shopify"
+msgstr "Надсилати клієнту сповіщення Shopify про відправлення"
 
 #: .\templates\shopify\app.html:179
 msgid "Archive the Shopify order after fulfilling"
-msgstr "Arhivează comanda Shopify după onorare"
+msgstr "Архівувати замовлення Shopify після виконання"
 
 #: .\templates\shopify\app.html:185
 msgid "Re-sync products"
-msgstr "Resincronizează produsele"
+msgstr "Повторно синхронізувати товари"
 
 #: .\templates\shopify\app.html:186
 msgid "Save settings"
-msgstr "Salvează setările"
+msgstr "Зберегти налаштування"
 
 #: .\templates\shopify\app.html:192
 msgid "Shopify orders"
-msgstr "Comenzi Shopify"
+msgstr "Замовлення Shopify"
 
 #: .\templates\shopify\app.html:194
 msgid ""
-"Browse the orders in your Shopify store and push the ones you want to pick "
-"to OrderPiqr. New paid orders are imported automatically."
+"Browse the orders in your Shopify store and push the ones you want to pick to"
+" OrderPiqr. New paid orders are imported automatically."
 msgstr ""
-"Răsfoiți comenzile din magazinul dumneavoastră Shopify și trimiteți-le în "
-"OrderPiqr pe cele pe care doriți să le preluați. Comenzile noi plătite sunt "
-"importate automat."
+"Переглядайте замовлення у своєму магазині Shopify та надсилайте до OrderPiqr "
+"ті, які хочете скомплектувати. Нові оплачені замовлення імпортуються "
+"автоматично."
 
 #: .\templates\shopify\app.html:198
 msgid "Open, unfulfilled"
-msgstr "Deschise, neonorate"
+msgstr "Відкриті, невиконані"
 
 #: .\templates\shopify\app.html:199
 msgid "Open, unfulfilled & paid"
-msgstr "Deschise, neonorate și plătite"
+msgstr "Відкриті, невиконані та оплачені"
 
 #: .\templates\shopify\app.html:200
 msgid "All open"
-msgstr "Toate cele deschise"
+msgstr "Усі відкриті"
 
 #: .\templates\shopify\app.html:201
 msgid "All orders"
-msgstr "Toate comenzile"
+msgstr "Усі замовлення"
 
 #: .\templates\shopify\app.html:203
 msgid "Search (e.g. #1001)"
-msgstr "Căutare (de ex. #1001)"
+msgstr "Пошук (напр. #1001)"
 
 #: .\templates\shopify\app.html:204
 msgid "Refresh"
-msgstr "Reîmprospătează"
+msgstr "Оновити"
 
 #: .\templates\shopify\app.html:207
 msgid "Select all"
-msgstr "Selectează tot"
+msgstr "Вибрати все"
 
 #: .\templates\shopify\app.html:210
 msgid "Payment"
-msgstr "Plată"
+msgstr "Оплата"
 
 #: .\templates\shopify\app.html:211
 msgid "Fulfillment"
-msgstr "Onorare"
+msgstr "Виконання"
 
 #: .\templates\shopify\app.html:213
 msgid "OrderPiqr"
@@ -3974,23 +3977,23 @@ msgstr "OrderPiqr"
 
 #: .\templates\shopify\app.html:219
 msgid "Load more"
-msgstr "Încarcă mai multe"
+msgstr "Завантажити ще"
 
 #: .\templates\shopify\app.html:220
 msgid "Push selected to OrderPiqr"
-msgstr "Trimite selecția în OrderPiqr"
+msgstr "Надіслати вибрані до OrderPiqr"
 
 #: .\templates\shopify\app.html:227
 msgid ""
 "These Shopify products couldn't be matched. Enter the OrderPiqr product code "
 "to link them."
 msgstr ""
-"Aceste produse Shopify nu au putut fi potrivite. Introduceți codul de produs "
-"OrderPiqr pentru a le lega."
+"Ці товари Shopify не вдалося зіставити. Введіть код товару OrderPiqr, щоб "
+"пов’язати їх."
 
 #: .\templates\shopify\app.html:232
 msgid "Already using OrderPiqr?"
-msgstr "Folosiți deja OrderPiqr?"
+msgstr "Уже користуєтесь OrderPiqr?"
 
 #: .\templates\shopify\app.html:234
 msgid ""
@@ -3998,24 +4001,25 @@ msgid ""
 "your company already has an account on orderpiqr.nl, link this store to it — "
 "your existing products and settings will be used instead."
 msgstr ""
-"Acest magazin a primit un spațiu de lucru OrderPiqr nou la instalarea "
-"aplicației. Dacă firma dumneavoastră are deja un cont pe orderpiqr.nl, "
-"legați acest magazin de el — se vor folosi în schimb produsele și setările "
-"existente."
+"Під час встановлення застосунку для цього магазину було створено новий "
+"робочий простір OrderPiqr. Якщо ваша компанія вже має обліковий запис на "
+"orderpiqr.nl, прив’яжіть цей магазин до нього — тоді використовуватимуться "
+"ваші наявні товари та налаштування."
 
 #: .\templates\shopify\app.html:237
 msgid "Admin username"
-msgstr "Nume utilizator administrator"
+msgstr "Ім’я користувача адміністратора"
 
 #: .\templates\shopify\app.html:239
 msgid "Link account"
-msgstr "Leagă contul"
+msgstr "Прив’язати обліковий запис"
 
 #: .\templates\shopify\app.html:244
 msgid "Picker access"
-msgstr "Acces operator"
+msgstr "Доступ комплектувальника"
 
 #: .\templates\shopify\app.html:246
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr ""
-"Personalul din depozit se autentifică în aplicația de preluare cu acest cont:"
+"Ваші складські працівники входять у застосунок комплектувальника за допомогою"
+" цього облікового запису:"

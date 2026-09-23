@@ -507,8 +507,13 @@ msgstr "Geen productgegevens gevonden, lijst kan niet worden bijgewerkt."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:278
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:305
-msgid "<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining"
-msgstr "<strong>%(remaining)s</strong> van <strong>%(total)s</strong> over"
+msgid "Picked %(picked)s of %(total)s"
+msgstr "%(picked)s van %(total)s gepickt"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:278
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:305
+msgid "<strong>%(remaining)s</strong> remaining"
+msgstr "Nog <strong>%(remaining)s</strong> te gaan"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:344
 msgid "Could not update bulk product pick."

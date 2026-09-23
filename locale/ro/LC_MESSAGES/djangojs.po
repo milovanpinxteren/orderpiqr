@@ -512,8 +512,13 @@ msgstr "Nu au fost găsite date despre produse, nu se poate actualiza lista."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:278
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:305
-msgid "<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining"
-msgstr "<strong>%(remaining)s</strong> din <strong>%(total)s</strong> rămase"
+msgid "Picked %(picked)s of %(total)s"
+msgstr "%(picked)s din %(total)s preluate"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:278
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:305
+msgid "<strong>%(remaining)s</strong> remaining"
+msgstr "Au mai rămas <strong>%(remaining)s</strong>"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:344
 msgid "Could not update bulk product pick."
