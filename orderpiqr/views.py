@@ -10,6 +10,8 @@ from orderpiqrApp.utils.devices import (
     resolve_device,
 )
 from orderpiqrApp.utils.inventory import is_inventory_enabled, is_orderpicking_enabled
+from orderpiqrApp.utils.login_qr import resolve_token
+from django.views.decorators.cache import never_cache
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext_lazy as _
 from django.http import FileResponse, Http404, JsonResponse
@@ -119,6 +121,45 @@ def custom_login(request):
 
         form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
+
+
+@never_cache
+def qr_login(request, token):
+    """Redeem a scanned picker login QR.
+
+    GET only renders a confirmation; the session is created on POST. Logging in
+    on GET would be a login-CSRF vector — any page could embed the URL as an
+    <img> and silently swap the visitor's session for a picker one.
+
+    After login this hands straight back to the normal device flow: a phone
+    that has never been registered lands on name entry, a known one goes to the
+    picker app.
+    """
+    login_token = resolve_token(token)
+
+    if login_token is None:
+        response = render(request, 'registration/qr_login.html', {'invalid': True}, status=403)
+        response['Referrer-Policy'] = 'no-referrer'
+        return response
+
+    if request.method == 'POST':
+        login(request, login_token.user)  # cycles the session key
+        login_token.mark_used()
+        remember_fingerprint(request, get_fingerprint(request, request.POST))
+        if resolve_device(request):
+            return redirect('/')
+        return redirect('name_entry')
+
+    response = render(request, 'registration/qr_login.html', {
+        'token': login_token,
+        'picker': login_token.user,
+        'customer': login_token.customer,
+        # A shared tablet may already hold someone else's session; warn before
+        # we replace it.
+        'current_user': request.user if request.user.is_authenticated else None,
+    })
+    response['Referrer-Policy'] = 'no-referrer'
+    return response
 
 
 @login_required

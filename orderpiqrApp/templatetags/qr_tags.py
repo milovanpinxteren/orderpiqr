@@ -7,6 +7,25 @@ from django import template
 register = template.Library()
 
 
+def _render_qr(content, box_size=10, border=2, error_correction=qrcode.constants.ERROR_CORRECT_L):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=error_correction,
+        box_size=box_size,
+        border=border,
+    )
+    qr.add_data(content)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    buffer = BytesIO()
+    img.save(buffer, format='PNG')
+    img_str = base64.b64encode(buffer.getvalue()).decode()
+
+    return f"data:image/png;base64,{img_str}"
+
+
 @register.simple_tag
 def qr_code_base64(order):
     """
@@ -18,19 +37,16 @@ def qr_code_base64(order):
         lines.append(f"{line.quantity}\t{line.product.code}")
     qr_content = "\n".join(lines)
 
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=2,
+    return _render_qr(qr_content)
+
+
+@register.simple_tag
+def qr_code_data_url(content, box_size=8):
+    """QR for any string — used for login QRs, which are printed and taped up.
+
+    Medium error correction so a smudged or partly covered sheet still scans.
+    """
+    return _render_qr(
+        content, box_size=box_size, border=3,
+        error_correction=qrcode.constants.ERROR_CORRECT_M,
     )
-    qr.add_data(qr_content)
-    qr.make(fit=True)
-
-    img = qr.make_image(fill_color="black", back_color="white")
-
-    buffer = BytesIO()
-    img.save(buffer, format='PNG')
-    img_str = base64.b64encode(buffer.getvalue()).decode()
-
-    return f"data:image/png;base64,{img_str}"

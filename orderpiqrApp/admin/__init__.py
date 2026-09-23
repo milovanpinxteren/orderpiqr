@@ -1,5 +1,6 @@
 from .customer_admin import *
 from .device_admin import *
+from .login_token_admin import *
 from .general_admin import *
 from .order_admin import *
 from .picklist_admin import *

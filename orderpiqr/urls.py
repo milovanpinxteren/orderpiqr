@@ -25,6 +25,9 @@ urlpatterns = [
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     path('signup/', signup, name='signup'),
     path('login/', custom_login, name='login'),
+    # Scannable picker login. Kept short and outside i18n_patterns so the QR
+    # stays low-density; the page itself carries the language switcher.
+    path('q/<str:token>/', qr_login, name='qr_login'),
     path('name-entry/', name_entry, name='name_entry'),
     path('picker-choice/', picker_choice, name='picker_choice'),
 

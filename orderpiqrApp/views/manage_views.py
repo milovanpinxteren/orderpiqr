@@ -26,6 +26,7 @@ from orderpiqrApp.utils.csv_import import (
     CSVImportError, read_csv_rows, parse_bool, PRODUCT_CSV_FIELDS, ORDER_CSV_FIELDS,
 )
 from orderpiqrApp.utils.inventory import is_inventory_enabled, modify_inventory
+from orderpiqrApp.utils.login_qr import active_token, issue_token, login_url
 from orderpiqrApp.models import Product, Order, OrderLine, PickList, Device, CustomerSettingValue, SettingDefinition, InventoryLog
 from django.contrib.auth.models import User
 
@@ -1041,6 +1042,9 @@ def profile(request):
     context = get_base_context(request, 'profile')
     customer = context['customer']
     user = request.user
+    # Set only by 'create_picker_qr': the raw token is never stored, so the
+    # page must render it once instead of redirecting.
+    new_qr = None
 
     if request.method == 'POST':
         action = request.POST.get('action', 'update_profile')
@@ -1123,9 +1127,45 @@ def profile(request):
                     "Picker account '{username}' created."
                 ).format(username=username))
 
-        return redirect('manage_profile')
+        elif action == 'create_picker_qr' and customer:
+            # _picker_users already scopes to this customer and the orderpicker
+            # group, so an id from another tenant simply finds nothing.
+            picker = _picker_users(customer).filter(pk=request.POST.get('picker_id', '')).first()
+            if picker is None:
+                messages.error(request, _("Picker account not found."))
+            else:
+                token, raw_token = issue_token(picker, customer, created_by=user)
+                new_qr = {
+                    'picker': picker,
+                    'token': token,
+                    'url': login_url(raw_token),
+                }
+                messages.success(request, _(
+                    "Login QR created for '{username}'. Print it now – it cannot be "
+                    "shown again."
+                ).format(username=picker.username))
 
-    context['picker_users'] = list(_picker_users(customer)) if customer else []
+        elif action == 'revoke_picker_qr' and customer:
+            picker = _picker_users(customer).filter(pk=request.POST.get('picker_id', '')).first()
+            if picker is None:
+                messages.error(request, _("Picker account not found."))
+            else:
+                token = active_token(picker)
+                if token is not None:
+                    token.revoke()
+                messages.success(request, _(
+                    "Login QR for '{username}' revoked. Printed copies no longer work."
+                ).format(username=picker.username))
+
+        if new_qr is None:
+            return redirect('manage_profile')
+
+    pickers = list(_picker_users(customer)) if customer else []
+    for picker in pickers:
+        picker.active_qr = active_token(picker)
+
+    context['picker_users'] = pickers
+    context['new_qr'] = new_qr
     return render(request, 'manage/profile.html', context)
 
 

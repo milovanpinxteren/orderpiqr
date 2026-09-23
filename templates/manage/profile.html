@@ -1,5 +1,5 @@
 {% extends "manage/base.html" %}
-{% load static i18n %}
+{% load static i18n qr_tags %}
 
 {% block title %}{% trans "Profile" %}{% endblock %}
 {% block page_title %}{% trans "Profile" %}{% endblock %}
@@ -92,14 +92,31 @@
             </div>
             <div class="card-body">
                 <p class="form-hint" style="margin-top:0">
-                    {% trans "Your warehouse staff log into the picker app with these accounts. Set a password here and hand it to your team — pickers cannot change it themselves." %}
+                    {% trans "Your warehouse staff log into the picker app with these accounts. Set a password here and hand it to your team — pickers cannot change it themselves. A login QR lets someone sign in by scanning instead of typing, which is the quickest way to get a new picker started." %}
                 </p>
 
+                {% if new_qr %}
+                <div class="qr-sheet" id="qr-sheet">
+                    <h4 class="qr-sheet-title">{% blocktrans with name=new_qr.picker.username %}Login QR for {{ name }}{% endblocktrans %}</h4>
+                    <img class="qr-sheet-image" src="{% qr_code_data_url new_qr.url %}"
+                         alt="{% trans 'Login QR code' %}">
+                    <p class="qr-sheet-steps">
+                        {% trans "Scan with the phone camera, then tap Continue." %}
+                    </p>
+                    <p class="qr-sheet-meta">
+                        {% blocktrans with company=customer.name until=new_qr.token.expires_at|date:"j M Y" %}{{ company }} · valid until {{ until }}{% endblocktrans %}
+                    </p>
+                    <div class="qr-sheet-actions">
+                        <button type="button" class="btn btn-primary" onclick="window.print()">{% trans "Print" %}</button>
+                        <small class="form-hint">
+                            {% trans "Anyone who scans this code can sign in as this picker — keep the print-out inside the warehouse. It cannot be shown again after you leave this page." %}
+                        </small>
+                    </div>
+                </div>
+                {% endif %}
+
                 {% for picker in picker_users %}
-                <form method="post" class="picker-row">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="set_picker_password">
-                    <input type="hidden" name="picker_id" value="{{ picker.pk }}">
+                <div class="picker-row">
                     <div class="picker-info">
                         <strong>{{ picker.username }}</strong>
                         <small class="form-hint">
@@ -109,12 +126,36 @@
                                 {% trans "Never logged in" %}
                             {% endif %}
                         </small>
+                        <small class="form-hint">
+                            {% if picker.active_qr %}
+                                {% blocktrans with days=picker.active_qr.days_remaining %}Login QR active · {{ days }} days left{% endblocktrans %}
+                            {% else %}
+                                {% trans "No login QR" %}
+                            {% endif %}
+                        </small>
                     </div>
-                    <input type="password" class="form-control" name="picker_password"
-                           placeholder="{% trans 'New password (min 8 characters)' %}"
-                           minlength="8" required autocomplete="new-password">
-                    <button type="submit" class="btn btn-secondary">{% trans "Set password" %}</button>
-                </form>
+                    <form method="post" class="picker-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="set_picker_password">
+                        <input type="hidden" name="picker_id" value="{{ picker.pk }}">
+                        <input type="password" class="form-control" name="picker_password"
+                               placeholder="{% trans 'New password (min 8 characters)' %}"
+                               minlength="8" required autocomplete="new-password">
+                        <button type="submit" class="btn btn-secondary">{% trans "Set password" %}</button>
+                    </form>
+                    <form method="post" class="picker-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="picker_id" value="{{ picker.pk }}">
+                        <button type="submit" name="action" value="create_picker_qr" class="btn btn-secondary">
+                            {% if picker.active_qr %}{% trans "New login QR" %}{% else %}{% trans "Login QR" %}{% endif %}
+                        </button>
+                        {% if picker.active_qr %}
+                        <button type="submit" name="action" value="revoke_picker_qr" class="btn btn-link">
+                            {% trans "Revoke" %}
+                        </button>
+                        {% endif %}
+                    </form>
+                </div>
                 {% empty %}
                 <p class="form-hint">{% trans "No picker accounts yet — create one below." %}</p>
                 {% endfor %}
@@ -256,10 +297,52 @@
     min-width: 140px;
 }
 
+.picker-form {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex: 1;
+}
+
+.picker-form:last-child { flex: 0 0 auto; }
+
 .picker-row .form-control { flex: 1; }
 
 .picker-create { margin-top: var(--spacing-md); }
 .picker-create summary { cursor: pointer; color: var(--text-muted); }
+
+/* One-time QR panel — also the print layout, see @media print below. */
+.qr-sheet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    border: 2px solid var(--primary);
+    border-radius: var(--border-radius-lg);
+    text-align: center;
+}
+
+.qr-sheet-title { margin: 0; }
+
+.qr-sheet-image {
+    width: 260px;
+    max-width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+}
+
+.qr-sheet-steps { margin: 0; font-weight: 600; }
+.qr-sheet-meta { margin: 0; color: var(--text-muted); font-size: 0.875rem; }
+
+.qr-sheet-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    max-width: 420px;
+}
 
 @media (max-width: 640px) {
     .form-row {
@@ -268,6 +351,30 @@
     .picker-row {
         flex-wrap: wrap;
     }
+    .picker-form {
+        flex-basis: 100%;
+    }
+}
+
+/* Printing this page yields the QR sheet alone — it gets taped to a wall. */
+@media print {
+    /* Collapse the page's own flow: hiding it with visibility alone keeps its
+       full height and emits blank trailing pages. The sheet is fixed, so it is
+       out of flow and survives the clip. */
+    html, body { height: 0; overflow: hidden; }
+    body * { visibility: hidden; }
+    #qr-sheet, #qr-sheet * { visibility: visible; }
+    /* Fixed, not absolute: it must anchor to the page box, not to whichever
+       layout ancestor happens to be positioned. */
+    #qr-sheet {
+        position: fixed;
+        inset: 0;
+        margin: 0;
+        border: none;
+        justify-content: center;
+    }
+    .qr-sheet-actions { display: none; }
+    .qr-sheet-image { width: 340px; }
 }
 </style>
 {% endblock %}

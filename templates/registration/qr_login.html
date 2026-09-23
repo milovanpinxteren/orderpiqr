@@ -1,0 +1,103 @@
+{% extends "registration/base_auth.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Sign in" %} - OrderPiqR{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <div class="auth-header">
+        <img src="{% static 'orderpiqrApp/img/favicon.png' %}" alt="OrderPiqR" class="auth-logo">
+        {% if invalid %}
+            <h1 class="auth-title">{% trans "This code no longer works" %}</h1>
+            <p class="auth-subtitle">{% trans "It may have expired or been replaced." %}</p>
+        {% else %}
+            <h1 class="auth-title">{% trans "Sign in to start picking" %}</h1>
+            <p class="auth-subtitle">{{ customer.name }}</p>
+        {% endif %}
+    </div>
+
+    <div class="auth-body">
+        {% if invalid %}
+            <p class="form-hint" style="margin-top:0">
+                {% trans "Ask your manager for a new login code, or sign in with your username and password." %}
+            </p>
+            <a href="{% url 'login' %}" class="btn btn-primary" style="margin-top:20px">
+                {% trans "Sign in with a password" %}
+            </a>
+        {% else %}
+            {% if current_user and current_user != picker %}
+            <div class="alert alert-warning">
+                {% blocktrans with name=current_user.username %}You are currently signed in as {{ name }}. Continuing will sign that account out on this device.{% endblocktrans %}
+            </div>
+            {% endif %}
+
+            <div class="qr-identity">
+                <span class="qr-identity-label">{% trans "Signing in as" %}</span>
+                <strong class="qr-identity-name">{{ picker.username }}</strong>
+            </div>
+
+            <form method="post" id="qr-login-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">{% trans "Continue" %}</button>
+            </form>
+
+            <p class="form-hint" style="text-align:center">
+                {% trans "Not your account?" %}
+                <a href="{% url 'login' %}">{% trans "Sign in with a password" %}</a>
+            </p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.qr-identity {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    margin-bottom: 20px;
+    background: var(--primary-light);
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+.qr-identity-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.qr-identity-name {
+    font-size: 1.125rem;
+    color: var(--text-primary);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+{% if not invalid %}
+<script type="text/javascript">
+    (function() {
+        const STORAGE_KEY = 'orderpiqr_device_id';
+        let deviceId = localStorage.getItem(STORAGE_KEY);
+        if (!deviceId) {
+            deviceId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+                ? crypto.randomUUID()
+                : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            localStorage.setItem(STORAGE_KEY, deviceId);
+        }
+        const form = document.getElementById('qr-login-form');
+        const fingerprintInput = document.createElement('input');
+        fingerprintInput.type = 'hidden';
+        fingerprintInput.name = 'device_fingerprint';
+        fingerprintInput.value = deviceId;
+        form.appendChild(fingerprintInput);
+    })();
+</script>
+{% endif %}
+{% endblock %}
