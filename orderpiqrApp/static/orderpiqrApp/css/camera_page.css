@@ -420,6 +420,28 @@ button:hover {
     word-break: break-word;
 }
 
+.pick-progress {
+    font-size: 0.95rem;
+    color: #888;
+    margin: 0 0 6px;
+}
+
+.pick-progress-track {
+    height: 6px;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 auto 12px;
+    max-width: 200px;
+}
+
+.pick-progress-fill {
+    height: 100%;
+    background-color: #4CAF50;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
 .remaining-count {
     font-size: 1.1rem;
     color: #666;

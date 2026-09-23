@@ -66,22 +66,40 @@ export function handlePicklist(code, currentPicklist, productData) {
             }
             if (!productData || Object.keys(productData).length === 0) {
                 showNotification(gettext("Product data is empty, cannot update list."), true);
-            } else {
-                // Store the original order before sorting
-                originalOrder = [...currentPicklist];
-
-                // Calculate original counts per product code (before sorting)
-                for (const code of currentPicklist) {
-                    originalCounts[code] = (originalCounts[code] || 0) + 1;
-                }
-
-                const sortingPreference = window.SETTINGS?.picklist_sorting ?? "original";
-                currentPicklist = sortPicklist(currentPicklist, productData, sortingPreference, originalOrder);
-
                 isProcessingPicklist = false;
-                updateScannedList(currentPicklist, productData);
-                showNotification(gettext("Picklist added"));
+                return null;
             }
+
+            // Refuse codes the server doesn't know *before* starting: the
+            // server rejects the whole list for one unknown code, and the
+            // picker needs to know which code is the problem.
+            const knownCodes = new Set(productData.map(item => item.code));
+            const unknownCodes = [...new Set(currentPicklist.filter(c => !knownCodes.has(c)))];
+            if (unknownCodes.length > 0) {
+                showNotification(
+                    gettext("Unknown product code(s): %(codes)s. Ask your admin to add them, then scan the list again.")
+                        .replace("%(codes)s", unknownCodes.join(", ")),
+                    true
+                );
+                isProcessingPicklist = false;
+                return null;
+            }
+
+            // Store the original order before sorting
+            originalOrder = [...currentPicklist];
+
+            // Calculate original counts per product code (before sorting)
+            for (const code of currentPicklist) {
+                originalCounts[code] = (originalCounts[code] || 0) + 1;
+            }
+
+            const sortingPreference = window.SETTINGS?.picklist_sorting ?? "original";
+            currentPicklist = sortPicklist(currentPicklist, productData, sortingPreference, originalOrder);
+
+            isProcessingPicklist = false;
+            updateScannedList(currentPicklist, productData);
+            showNotification(gettext("Picklist added"));
+
             // If you need to save the orderID, you can handle it here separately later
             const orderID = rows[0];  // First row is the orderID
             getDeviceFingerprint()
@@ -99,9 +117,18 @@ export function handlePicklist(code, currentPicklist, productData) {
                             deviceFingerprint: deviceFingerprint,  // Add fingerprint to the request
                         })
                     })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Picklist sent successfully
+                        .then(response => response.json().then(data => ({ok: response.ok, data})))
+                        .then(({ok, data}) => {
+                            if (!ok || data.status !== 'ok') {
+                                // The server refused the list (unknown product,
+                                // order picked elsewhere, ...). Clear it locally:
+                                // picking a list that was never registered would
+                                // silently record nothing.
+                                console.error('Picklist rejected by server:', data);
+                                currentPicklist.length = 0;
+                                updateScannedList(currentPicklist, productData);
+                                showNotification((data && data.message) || gettext("Error sending picklist."), true);
+                            }
                         })
                         .catch(error => {
                             console.error('Error sending picklist:', error);
@@ -119,9 +146,11 @@ export function handlePicklist(code, currentPicklist, productData) {
             return {currentPicklist, orderID, originalCounts, originalOrder};  // Return the updated picklist
         }
 
-        // Reset flag if the user cancels the picklist
+        // Reset flag if the user cancels the picklist. Return null so the
+        // caller keeps its current state (orderID does not exist in this
+        // scope — referencing it here used to throw).
         isProcessingPicklist = false;
-        return {currentPicklist, orderID, originalCounts: {}, originalOrder: []};  // Return the unchanged picklist if the user cancels
+        return null;
 
     } catch (err) {
         console.error("Error in handlePicklist:", err);

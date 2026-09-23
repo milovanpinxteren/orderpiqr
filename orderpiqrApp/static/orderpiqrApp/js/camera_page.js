@@ -120,7 +120,8 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 onSuccessfulPick(firstProductCode)
 
                 const product = productData.find(item => item.code === firstProductCode);  // Match code in productData
-                showNotification(gettext("Scanned %(product)s").replace("%(product)s", product.description));
+                const productLabel = product ? product.description : firstProductCode;
+                showNotification(gettext("Scanned %(product)s").replace("%(product)s", productLabel));
                 console.log('currentPicklist.length', currentPicklist.length)
 // Check if same product still exists in remaining picklist
                 const remainingCount = currentPicklist.filter(c => c === firstProductCode).length;
@@ -128,9 +129,9 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                     const totalCount = originalProductCounts[firstProductCode] || remainingCount + 1;
                     pauseScanner();
                     if (window.SETTINGS?.bulk_pick_enabled === true && remainingCount > 1) {
-                        showBulkPickOverlay(product.description, firstProductCode, remainingCount, totalCount);
+                        showBulkPickOverlay(productLabel, firstProductCode, remainingCount, totalCount);
                     } else {
-                        showConfirmationOverlay(product.description, remainingCount, totalCount);
+                        showConfirmationOverlay(productLabel, remainingCount, totalCount);
                     }
                 }
 
@@ -151,7 +152,8 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 onSuccessfulPick(code);
 
                 const product = productData.find(item => item.code === code);
-                showNotification(gettext("Scanned %(product)s").replace("%(product)s", product.description));
+                const productLabel = product ? product.description : code;
+                showNotification(gettext("Scanned %(product)s").replace("%(product)s", productLabel));
 
 // Check if same product still exists in remaining picklist
                 const remainingCount = currentPicklist.filter(c => c === code).length;
@@ -159,9 +161,9 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                     const totalCount = originalProductCounts[code] || remainingCount + 1;
                     pauseScanner();
                     if (window.SETTINGS?.bulk_pick_enabled === true && remainingCount > 1) {
-                        showBulkPickOverlay(product.description, code, remainingCount, totalCount);
+                        showBulkPickOverlay(productLabel, code, remainingCount, totalCount);
                     } else {
-                        showConfirmationOverlay(product.description, remainingCount, totalCount);
+                        showConfirmationOverlay(productLabel, remainingCount, totalCount);
                     }
                 }
 
@@ -218,6 +220,16 @@ function notifyProductPicked({orderID, productCode, timeTakenMs, csrfToken}) {
                     scannedAt: new Date().toISOString()
                 })
             });
+        })
+        .then(response => {
+            // A 404 here means the pick was NOT recorded server-side (e.g. the
+            // picklist never registered) — surface it instead of swallowing it.
+            if (!response.ok) {
+                return response.json().catch(() => ({})).then(data => {
+                    throw new Error(data.message || `product-pick failed (HTTP ${response.status})`);
+                });
+            }
+            return response;
         });
 }
 
@@ -236,10 +248,16 @@ export function notifyPicklistCompleted(orderID, csrfToken) {
                     deviceFingerprint  // ✅ include fingerprint
                 })
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Picklist completed successfully:', data);
-                    showNotification(gettext("Picklist completed!"), false);
+                .then(response => response.json().then(data => ({ok: response.ok, data})))
+                .then(({ok, data}) => {
+                    if (ok && data.status === 'ok') {
+                        console.log('Picklist completed successfully:', data);
+                        showNotification(gettext("Picklist completed!"), false);
+                    } else {
+                        // Only celebrate when the server actually recorded it.
+                        console.error('Complete-picklist rejected:', data);
+                        showNotification(gettext("Error completing picklist."), true);
+                    }
                 })
                 .catch(error => {
                     console.error('Error completing picklist:', error);
@@ -264,7 +282,20 @@ if (Object.keys(productData).length === 0) {
 // Overlay elements
 const overlay = document.getElementById('scan-confirmation-overlay');
 const overlayProductName = document.getElementById('overlay-product-name');
+const overlayPickedProgress = document.getElementById('overlay-picked-progress');
+const overlayProgressFill = document.getElementById('overlay-progress-fill');
 const overlayRemainingCount = document.getElementById('overlay-remaining-count');
+
+// Fill the "Picked X of Y" line, progress bar and "Z remaining" line of an overlay
+function renderPickProgress(progressEl, fillEl, remainingEl, remainingCount, totalCount) {
+    const pickedCount = Math.max(totalCount - remainingCount, 0);
+    progressEl.textContent = gettext("Picked %(picked)s of %(total)s")
+        .replace("%(picked)s", pickedCount)
+        .replace("%(total)s", totalCount);
+    fillEl.style.width = totalCount > 0 ? `${(pickedCount / totalCount) * 100}%` : '0%';
+    remainingEl.innerHTML = gettext("<strong>%(remaining)s</strong> remaining")
+        .replace("%(remaining)s", remainingCount);
+}
 
 // Event listener for full overlay tap
 overlay.addEventListener('click', function () {
@@ -275,9 +306,7 @@ overlay.addEventListener('click', function () {
 
 function showConfirmationOverlay(productDescription, remainingCount, totalCount) {
     overlayProductName.textContent = productDescription;
-    overlayRemainingCount.innerHTML = gettext("<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining")
-        .replace("%(remaining)s", remainingCount)
-        .replace("%(total)s", totalCount);
+    renderPickProgress(overlayPickedProgress, overlayProgressFill, overlayRemainingCount, remainingCount, totalCount);
     overlay.classList.remove('hidden');
 }
 
@@ -288,6 +317,8 @@ function hideConfirmationOverlay() {
 // Bulk pick overlay elements
 const bulkOverlay = document.getElementById('bulk-pick-overlay');
 const bulkOverlayProductName = document.getElementById('bulk-overlay-product-name');
+const bulkOverlayPickedProgress = document.getElementById('bulk-overlay-picked-progress');
+const bulkOverlayProgressFill = document.getElementById('bulk-overlay-progress-fill');
 const bulkOverlayRemainingCount = document.getElementById('bulk-overlay-remaining-count');
 const bulkConfirmAllBtn = document.getElementById('bulk-confirm-all-btn');
 const bulkConfirmQtyBtn = document.getElementById('bulk-confirm-qty-btn');
@@ -302,9 +333,7 @@ function showBulkPickOverlay(productDescription, productCode, remainingCount, to
     bulkPickContext = { productCode, remainingCount, totalCount, productDescription };
 
     bulkOverlayProductName.textContent = productDescription;
-    bulkOverlayRemainingCount.innerHTML = gettext("<strong>%(remaining)s</strong> of <strong>%(total)s</strong> remaining")
-        .replace("%(remaining)s", remainingCount)
-        .replace("%(total)s", totalCount);
+    renderPickProgress(bulkOverlayPickedProgress, bulkOverlayProgressFill, bulkOverlayRemainingCount, remainingCount, totalCount);
 
     bulkPickQuantityInput.value = remainingCount;
     bulkPickQuantityInput.max = remainingCount;

@@ -147,17 +147,22 @@ def scan_picklist(request):
             for product_code in picklist:
                 product = Product.objects.filter(customer=device.customer, code=product_code).first()
                 if not product:
-                    raise Product.DoesNotExist()
+                    # Raising (not returning) matters: it rolls back the
+                    # transaction, so the order lock and half-built picklist
+                    # don't survive a list we refused.
+                    raise Product.DoesNotExist(product_code)
                 ProductPick.objects.create(
                     product=product,
                     picklist=pick_list,
                     quantity=1,
                 )
 
-    except Product.DoesNotExist:
+    except Product.DoesNotExist as exc:
+        missing_code = exc.args[0] if exc.args else '?'
         return JsonResponse({
             'status': 'error',
-            'message': 'Product not found for one of the product codes'
+            'message': f"Unknown product code '{missing_code}'. "
+                       "Add it to your products and scan the list again."
         }, status=404)
     except IntegrityError as e:
         return JsonResponse({
@@ -346,7 +351,13 @@ def complete_picklist(request):
                     from integrations.services.events import order_completed
                     order_completed(picklist.order)
             else:
-                print('No picklist found, contact support')
+                # No picklist means the scan was never registered (e.g. the
+                # server rejected it at scan time). Saying "ok" here would let
+                # the picker walk away believing the work was recorded.
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'No picklist found for this device and order'
+                }, status=404)
 
             return JsonResponse({'status': 'ok', 'message': 'Picklist processed successfully'})
 
