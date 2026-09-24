@@ -6,6 +6,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from orderpiqrApp.utils.start_page import TOKEN_START_PAGE_CHOICES
+
 from .customers import Customer
 
 DEFAULT_VALIDITY_DAYS = 90
@@ -38,6 +40,12 @@ class PickerLoginToken(models.Model):
     revoked_at = models.DateTimeField(_("Revoked At"), null=True, blank=True)
     last_used_at = models.DateTimeField(_("Last Used At"), null=True, blank=True)
     use_count = models.PositiveIntegerField(_("Times Used"), default=0)
+    # Lives here rather than in the QR image, so the landing page of a printed
+    # sheet can be corrected without reprinting and redistributing it.
+    start_page = models.CharField(
+        _("Start Page"), max_length=16, blank=True, default='',
+        choices=TOKEN_START_PAGE_CHOICES,
+        help_text=_("Page this picker lands on after scanning. Blank follows the company setting."))
 
     class Meta:
         verbose_name = _("Picker Login QR")

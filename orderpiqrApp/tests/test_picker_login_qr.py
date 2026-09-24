@@ -1,6 +1,7 @@
 """Scannable picker login: issuing from manage/profile and redeeming at /q/."""
 import re
 from datetime import timedelta
+from urllib.parse import quote
 
 from django.contrib.auth.models import Group, User
 from django.test import Client, TestCase
@@ -118,7 +119,10 @@ class RedeemingTests(PickerLoginQRTestCase):
             'device_fingerprint': 'brand-new-phone',
         })
 
-        self.assertRedirects(response, reverse('name_entry'), fetch_redirect_response=False)
+        # Carries the start page along, so naming the phone does not lose it.
+        self.assertRedirects(
+            response, f"{reverse('name_entry')}?next={quote(reverse('queue_picker'))}",
+            fetch_redirect_response=False)
         self.assertEqual(int(self.client.session['_auth_user_id']), self.picker.pk)
 
     def test_post_from_a_known_device_goes_straight_to_the_app(self):
@@ -130,7 +134,7 @@ class RedeemingTests(PickerLoginQRTestCase):
         response = self.client.post(reverse('qr_login', args=[raw]), {
             'device_fingerprint': 'known-phone',
         })
-        self.assertRedirects(response, '/', fetch_redirect_response=False)
+        self.assertRedirects(response, reverse('queue_picker'), fetch_redirect_response=False)
 
     def test_redeeming_stamps_usage(self):
         token, raw = self.issue()
@@ -270,7 +274,9 @@ class CsrfTests(PickerLoginQRTestCase):
         )
 
         self.assertNotEqual(response.status_code, 403, 'CSRF verification failed')
-        self.assertRedirects(response, reverse('name_entry'), fetch_redirect_response=False)
+        self.assertRedirects(
+            response, f"{reverse('name_entry')}?next={quote(reverse('queue_picker'))}",
+            fetch_redirect_response=False)
         self.assertEqual(int(self.client.session['_auth_user_id']), self.picker.pk)
 
     def test_confirmation_page_is_never_cached(self):

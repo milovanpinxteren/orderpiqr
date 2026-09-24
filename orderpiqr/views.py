@@ -11,6 +11,7 @@ from orderpiqrApp.utils.devices import (
 )
 from orderpiqrApp.utils.inventory import is_inventory_enabled, is_orderpicking_enabled
 from orderpiqrApp.utils.login_qr import resolve_token
+from orderpiqrApp.utils.start_page import resolve_start_page
 from django.views.decorators.cache import never_cache
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext_lazy as _
@@ -19,6 +20,9 @@ from django.conf import settings
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.urls import reverse
+from django.utils.http import url_has_allowed_host_and_scheme
+from urllib.parse import quote
 import os
 import threading
 import time
@@ -74,20 +78,10 @@ def root_redirect(request):
     if request.user.groups.filter(name='companyadmin').exists():
         return redirect('/orderpiqr/manage/')  # Redirect companyadmin to the custom admin
     if request.user.groups.filter(name='orderpicker').exists():
-        # Check which features are enabled for the orderpicker's customer
+        # Honours the customer's picker_start_page setting, falling back to the
+        # enabled features. Shared with the QR login so both land identically.
         try:
-            customer = request.user.userprofile.customer
-            orderpicking = is_orderpicking_enabled(customer)
-            inventory = is_inventory_enabled(customer)
-
-            if orderpicking and inventory:
-                return redirect('picker_choice')  # Show choice screen
-            elif orderpicking:
-                return redirect('/orderpiqr/queue/')  # Direct to order picking
-            elif inventory:
-                return redirect('/orderpiqr/inventory/')  # Direct to inventory
-            else:
-                return redirect('/orderpiqr')  # Fallback to index
+            return redirect(resolve_start_page(request.user.userprofile.customer))
         except Exception:
             return redirect('/orderpiqr')  # Fallback on error
     return redirect('/login')  # Redirect to login if no role matches (should not happen)
@@ -144,7 +138,8 @@ def qr_login(request, token):
 
     After login this hands straight back to the normal device flow: a phone
     that has never been registered lands on name entry, a known one goes to the
-    picker app.
+    picker app — at whichever start page the token or the customer setting
+    names.
     """
     login_token = resolve_token(token)
 
@@ -157,9 +152,12 @@ def qr_login(request, token):
         login(request, login_token.user)  # cycles the session key
         login_token.mark_used()
         remember_fingerprint(request, get_fingerprint(request, request.POST))
+        destination = resolve_start_page(login_token.customer, login_token.start_page)
         if resolve_device(request):
-            return redirect('/')
-        return redirect('name_entry')
+            return redirect(destination)
+        # An unregistered phone names itself first, then carries on to the same
+        # destination rather than falling back to the default landing page.
+        return redirect(f"{reverse('name_entry')}?next={quote(destination)}")
 
     response = render(request, 'registration/qr_login.html', {
         'token': login_token,
@@ -192,8 +190,13 @@ def picker_choice(request):
 
 @login_required
 def name_entry(request):
-    # Get the 'next' parameter from GET or POST
+    # Get the 'next' parameter from GET or POST. Validated because it is
+    # attacker-supplied: without this, /name-entry/?next=https://evil.example
+    # would bounce a freshly logged-in picker off-site.
     next_url = request.POST.get('next') or request.GET.get('next') or '/'
+    if not url_has_allowed_host_and_scheme(
+            next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure()):
+        next_url = '/'
 
     if request.method == 'POST':
         # Handle form submission and save the name to Device model

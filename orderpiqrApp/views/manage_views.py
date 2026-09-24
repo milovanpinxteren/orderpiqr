@@ -27,6 +27,7 @@ from orderpiqrApp.utils.csv_import import (
 )
 from orderpiqrApp.utils.inventory import is_inventory_enabled, modify_inventory
 from orderpiqrApp.utils.login_qr import active_token, issue_token, login_url
+from orderpiqrApp.utils.start_page import QUEUE, SCAN, TOKEN_START_PAGE_CHOICES
 from orderpiqrApp.models import Product, Order, OrderLine, PickList, Device, CustomerSettingValue, SettingDefinition, InventoryLog
 from django.contrib.auth.models import User
 
@@ -1134,7 +1135,13 @@ def profile(request):
             if picker is None:
                 messages.error(request, _("Picker account not found."))
             else:
-                token, raw_token = issue_token(picker, customer, created_by=user)
+                # Anything unrecognised becomes blank, i.e. follow the company
+                # setting — never a page the picker has no feature for.
+                start_page = request.POST.get('start_page', '')
+                if start_page not in (SCAN, QUEUE):
+                    start_page = ''
+                token, raw_token = issue_token(
+                    picker, customer, created_by=user, start_page=start_page)
                 new_qr = {
                     'picker': picker,
                     'token': token,
@@ -1166,6 +1173,7 @@ def profile(request):
 
     context['picker_users'] = pickers
     context['new_qr'] = new_qr
+    context['start_page_choices'] = TOKEN_START_PAGE_CHOICES
     return render(request, 'manage/profile.html', context)
 
 

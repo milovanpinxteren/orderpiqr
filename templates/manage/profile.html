@@ -146,6 +146,15 @@
                     <form method="post" class="picker-form">
                         {% csrf_token %}
                         <input type="hidden" name="picker_id" value="{{ picker.pk }}">
+                        <select class="form-control" name="start_page"
+                                aria-label="{% trans 'Page this picker starts on' %}">
+                            {% for value, label in start_page_choices %}
+                            <option value="{{ value }}"
+                                {% if picker.active_qr and picker.active_qr.start_page == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                            {% endfor %}
+                        </select>
                         <button type="submit" name="action" value="create_picker_qr" class="btn btn-secondary">
                             {% if picker.active_qr %}{% trans "New login QR" %}{% else %}{% trans "Login QR" %}{% endif %}
                         </button>

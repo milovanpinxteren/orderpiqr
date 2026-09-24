@@ -38,12 +38,15 @@ def active_token(user):
             .first())
 
 
-def issue_token(user, customer, created_by=None, days=DEFAULT_VALIDITY_DAYS):
+def issue_token(user, customer, created_by=None, days=DEFAULT_VALIDITY_DAYS, start_page=''):
     """Issue a fresh token, revoking any earlier one for this picker.
 
     Returns ``(token, raw_token)``. The raw token is returned once and is not
     recoverable afterwards — only its hash is stored, so it exists solely in
     the QR image rendered from this call.
+
+    ``start_page`` overrides where this picker lands after scanning; blank
+    follows the customer's ``picker_start_page`` setting.
     """
     PickerLoginToken.objects.filter(
         user=user, revoked_at__isnull=True).update(revoked_at=timezone.now())
@@ -55,6 +58,7 @@ def issue_token(user, customer, created_by=None, days=DEFAULT_VALIDITY_DAYS):
         key_hash=key_hash,
         created_by=created_by,
         expires_at=timezone.now() + timedelta(days=days),
+        start_page=start_page or '',
     )
     return token, raw_token
 

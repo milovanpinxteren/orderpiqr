@@ -4,13 +4,15 @@ from orderpiqrApp.models import PickerLoginToken
 
 
 class PickerLoginTokenAdmin(admin.ModelAdmin):
-    """Read-and-revoke only: tokens are issued from manage/profile, where the
-    raw value can be rendered as a QR. Nothing here can recover a token, since
-    only its hash is stored."""
+    """Read-and-revoke only, with one exception: tokens are issued from
+    manage/profile, where the raw value can be rendered as a QR, and nothing
+    here can recover a token since only its hash is stored. ``start_page``
+    stays editable because it is not part of the printed code — correcting it
+    saves reprinting and redistributing a sheet."""
 
-    list_display = ('user', 'customer', 'created', 'expires_at', 'revoked_at',
-                    'last_used_at', 'use_count')
-    list_filter = ('customer', 'revoked_at')
+    list_display = ('user', 'customer', 'start_page', 'created', 'expires_at',
+                    'revoked_at', 'last_used_at', 'use_count')
+    list_filter = ('customer', 'revoked_at', 'start_page')
     search_fields = ['user__username']
     readonly_fields = ('user', 'customer', 'key_hash', 'created_by', 'created',
                        'expires_at', 'last_used_at', 'use_count')
