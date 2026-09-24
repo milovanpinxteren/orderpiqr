@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 16:34+0200\n"
+"POT-Creation-Date: 2026-09-24 19:47+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -109,7 +109,7 @@ msgstr "Legături comenzi externe"
 #: .\orderpiqrApp\admin\email_admin.py:33 .\orderpiqrApp\models\orders.py:23
 #: .\templates\manage\dashboard.html:208
 #: .\templates\manage\integrations\list.html:26
-#: .\templates\manage\orders\list.html:95
+#: .\templates\manage\orders\list.html:96
 #: .\templates\manage\picklists\detail.html:102
 #: .\templates\manage\picklists\list.html:34
 #: .\templates\manage\products\form.html:45
@@ -133,6 +133,7 @@ msgstr "Mesaj"
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:45 .\orderpiqrApp\models\products.py:21
+#: .\templates\index.html:143
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -521,7 +522,7 @@ msgid "Created By"
 msgstr "Creat de"
 
 #: .\orderpiqrApp\models\login_tokens.py:38
-#: .\templates\manage\dashboard.html:209 .\templates\manage\orders\list.html:96
+#: .\templates\manage\dashboard.html:209 .\templates\manage\orders\list.html:97
 #: .\templates\manage\picklists\detail.html:62
 #: .\templates\manage\picklists\list.html:35
 #: .\templates\manage\settings\api_tokens.html:53
@@ -599,7 +600,7 @@ msgid "Cancelled"
 msgstr "Anulat"
 
 #: .\orderpiqrApp\models\orders.py:19 .\templates\manage\orders\form.html:20
-#: .\templates\manage\orders\list.html:93
+#: .\templates\manage\orders\list.html:94
 msgid "Order Code"
 msgstr "Cod comandă"
 
@@ -836,14 +837,15 @@ msgstr "Valoare setare client"
 msgid "Customer setting values"
 msgstr "Valori setări client"
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:134
+#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:136
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Cod produs"
 
 #: .\orderpiqrApp\models\products.py:11
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:91
-#: .\templates\index.html:136 .\templates\manage\orders\form.html:62
+#: .\templates\index.html:138 .\templates\index.html:142
+#: .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:100
 #: .\templates\manage\products\form.html:37
 #: .\templates\manage\products\list.html:97
@@ -1059,8 +1061,8 @@ msgstr "Produsul '{code}' a fost actualizat cu succes."
 #: .\orderpiqrApp\views\manage_views.py:324
 #: .\orderpiqrApp\views\manage_views.py:379
 #: .\orderpiqrApp\views\manage_views.py:618
-#: .\orderpiqrApp\views\manage_views.py:819
-#: .\orderpiqrApp\views\manage_views.py:1329
+#: .\orderpiqrApp\views\manage_views.py:847
+#: .\orderpiqrApp\views\manage_views.py:1357
 msgid "No customer found."
 msgstr "Niciun client găsit."
 
@@ -1073,15 +1075,15 @@ msgstr "Produsul '{code}' a fost șters."
 #: .\orderpiqrApp\views\manage_views.py:320
 #: .\orderpiqrApp\views\manage_views.py:375
 #: .\orderpiqrApp\views\manage_views.py:614
-#: .\orderpiqrApp\views\manage_views.py:828
-#: .\orderpiqrApp\views\manage_views.py:1325
+#: .\orderpiqrApp\views\manage_views.py:856
+#: .\orderpiqrApp\views\manage_views.py:1353
 msgid "Invalid request method."
 msgstr "Metodă de cerere invalidă."
 
 #: .\orderpiqrApp\views\manage_views.py:329
 #: .\orderpiqrApp\views\manage_views.py:386
 #: .\orderpiqrApp\views\manage_views.py:623
-#: .\orderpiqrApp\views\manage_views.py:1338
+#: .\orderpiqrApp\views\manage_views.py:1366
 msgid "Invalid request."
 msgstr "Cerere invalidă."
 
@@ -1116,7 +1118,7 @@ msgid "{count} product(s) updated."
 msgstr "{count} produs(e) actualizat(e)."
 
 #: .\orderpiqrApp\views\manage_views.py:368
-#: .\orderpiqrApp\views\manage_views.py:676
+#: .\orderpiqrApp\views\manage_views.py:704
 msgid "Unknown action."
 msgstr "Acțiune necunoscută."
 
@@ -1125,9 +1127,9 @@ msgid "Invalid field."
 msgstr "Câmp invalid."
 
 #: .\orderpiqrApp\views\manage_views.py:398
-#: .\orderpiqrApp\views\manage_views.py:1332
-#: .\orderpiqrApp\views\manage_views.py:1387
-#: .\orderpiqrApp\views\manage_views.py:1453
+#: .\orderpiqrApp\views\manage_views.py:1360
+#: .\orderpiqrApp\views\manage_views.py:1415
+#: .\orderpiqrApp\views\manage_views.py:1481
 msgid "Inventory management is not enabled."
 msgstr "Gestionarea inventarului nu este activată."
 
@@ -1136,7 +1138,7 @@ msgid "Quantity cannot be negative."
 msgstr "Cantitatea nu poate fi negativă."
 
 #: .\orderpiqrApp\views\manage_views.py:404
-#: .\orderpiqrApp\views\manage_views.py:1486
+#: .\orderpiqrApp\views\manage_views.py:1514
 msgid "Invalid quantity value."
 msgstr "Valoare cantitate invalidă."
 
@@ -1157,12 +1159,12 @@ msgid "Updated."
 msgstr "Actualizat."
 
 #: .\orderpiqrApp\views\manage_views.py:444
-#: .\orderpiqrApp\views\manage_views.py:843
+#: .\orderpiqrApp\views\manage_views.py:871
 msgid "Please select a CSV file."
 msgstr "Vă rugăm să selectați un fișier CSV."
 
 #: .\orderpiqrApp\views\manage_views.py:448
-#: .\orderpiqrApp\views\manage_views.py:847
+#: .\orderpiqrApp\views\manage_views.py:875
 msgid "Please upload a valid CSV file."
 msgstr "Vă rugăm să încărcați un fișier CSV valid."
 
@@ -1189,7 +1191,7 @@ msgstr ""
 "goală (rânduri: {rows})."
 
 #: .\orderpiqrApp\views\manage_views.py:503
-#: .\orderpiqrApp\views\manage_views.py:924
+#: .\orderpiqrApp\views\manage_views.py:952
 #, python-brace-format
 msgid "Error processing CSV: {error}"
 msgstr "Eroare la procesarea CSV: {error}"
@@ -1224,128 +1226,138 @@ msgstr "{count} comenzi eliminate din coadă."
 msgid "{count} order(s) skipped (not queued)."
 msgstr "{count} comenzi omise (nu sunt în coadă)."
 
-#: .\orderpiqrApp\views\manage_views.py:702
-#: .\orderpiqrApp\views\manage_views.py:776
+#: .\orderpiqrApp\views\manage_views.py:699
+#, python-brace-format
+msgid "{count} order(s) reset to draft."
+msgstr "{count} comenzi readuse la schiță."
+
+#: .\orderpiqrApp\views\manage_views.py:701
+#, python-brace-format
+msgid "{count} order(s) skipped (already draft, completed or cancelled)."
+msgstr "{count} comenzi omise (deja schiță, finalizate sau anulate)."
+
+#: .\orderpiqrApp\views\manage_views.py:730
+#: .\orderpiqrApp\views\manage_views.py:804
 msgid "Order code is required."
 msgstr "Codul comenzii este obligatoriu."
 
-#: .\orderpiqrApp\views\manage_views.py:704
-#: .\orderpiqrApp\views\manage_views.py:778
+#: .\orderpiqrApp\views\manage_views.py:732
+#: .\orderpiqrApp\views\manage_views.py:806
 msgid "An order with this code already exists."
 msgstr "O comandă cu acest cod există deja."
 
-#: .\orderpiqrApp\views\manage_views.py:707
-#: .\orderpiqrApp\views\manage_views.py:781
+#: .\orderpiqrApp\views\manage_views.py:735
+#: .\orderpiqrApp\views\manage_views.py:809
 msgid "At least one product is required."
 msgstr "Cel puțin un produs este obligatoriu."
 
-#: .\orderpiqrApp\views\manage_views.py:743
+#: .\orderpiqrApp\views\manage_views.py:771
 #, python-brace-format
 msgid "Order '{code}' created successfully."
 msgstr "Comanda '{code}' a fost creată cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:807
+#: .\orderpiqrApp\views\manage_views.py:835
 #, python-brace-format
 msgid "Order '{code}' updated successfully."
 msgstr "Comanda '{code}' a fost actualizată cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:826
+#: .\orderpiqrApp\views\manage_views.py:854
 #, python-brace-format
 msgid "Order '{code}' deleted."
 msgstr "Comanda '{code}' a fost ștearsă."
 
-#: .\orderpiqrApp\views\manage_views.py:866
+#: .\orderpiqrApp\views\manage_views.py:894
 #, python-brace-format
 msgid "row {row}: missing order code or product code"
 msgstr "rândul {row}: lipsește codul comenzii sau codul produsului"
 
-#: .\orderpiqrApp\views\manage_views.py:882
+#: .\orderpiqrApp\views\manage_views.py:910
 #, python-brace-format
 msgid "order {order} already exists"
 msgstr "comanda {order} există deja"
 
-#: .\orderpiqrApp\views\manage_views.py:903
+#: .\orderpiqrApp\views\manage_views.py:931
 #, python-brace-format
 msgid "order {order}: unknown product {product}"
 msgstr "comanda {order}: produs necunoscut {product}"
 
-#: .\orderpiqrApp\views\manage_views.py:908
+#: .\orderpiqrApp\views\manage_views.py:936
 #, python-brace-format
 msgid "No orders were imported: {reasons}"
 msgstr "Nu a fost importată nicio comandă: {reasons}"
 
-#: .\orderpiqrApp\views\manage_views.py:909
+#: .\orderpiqrApp\views\manage_views.py:937
 msgid "the file contains no valid rows."
 msgstr "fișierul nu conține rânduri valide."
 
-#: .\orderpiqrApp\views\manage_views.py:912
+#: .\orderpiqrApp\views\manage_views.py:940
 #, python-brace-format
 msgid "Import completed: {orders} orders created with {lines} lines."
 msgstr "Import finalizat: {orders} comenzi create cu {lines} linii."
 
-#: .\orderpiqrApp\views\manage_views.py:916
+#: .\orderpiqrApp\views\manage_views.py:944
 #, python-brace-format
 msgid "Some rows could not be imported: {reasons}"
 msgstr "Unele rânduri nu au putut fi importate: {reasons}"
 
-#: .\orderpiqrApp\views\manage_views.py:1060
+#: .\orderpiqrApp\views\manage_views.py:1088
 msgid "First name is required."
 msgstr "Prenumele este obligatoriu."
 
-#: .\orderpiqrApp\views\manage_views.py:1062
+#: .\orderpiqrApp\views\manage_views.py:1090
 msgid "Email is required."
 msgstr "Email-ul este obligatoriu."
 
-#: .\orderpiqrApp\views\manage_views.py:1072
+#: .\orderpiqrApp\views\manage_views.py:1100
 msgid "Profile updated successfully."
 msgstr "Profilul a fost actualizat cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:1081
+#: .\orderpiqrApp\views\manage_views.py:1109
 msgid "Current password is incorrect."
 msgstr "Parola curentă este incorectă."
 
-#: .\orderpiqrApp\views\manage_views.py:1083
+#: .\orderpiqrApp\views\manage_views.py:1111
 msgid "New password must be at least 8 characters."
 msgstr "Noua parolă trebuie să aibă cel puțin 8 caractere."
 
-#: .\orderpiqrApp\views\manage_views.py:1085
+#: .\orderpiqrApp\views\manage_views.py:1113
 msgid "New passwords do not match."
 msgstr "Noile parole nu se potrivesc."
 
-#: .\orderpiqrApp\views\manage_views.py:1094
+#: .\orderpiqrApp\views\manage_views.py:1122
 msgid "Password changed successfully."
 msgstr "Parola a fost schimbată cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:1101
-#: .\orderpiqrApp\views\manage_views.py:1136
-#: .\orderpiqrApp\views\manage_views.py:1158
+#: .\orderpiqrApp\views\manage_views.py:1129
+#: .\orderpiqrApp\views\manage_views.py:1164
+#: .\orderpiqrApp\views\manage_views.py:1186
 msgid "Picker account not found."
 msgstr "Contul de operator nu a fost găsit."
 
-#: .\orderpiqrApp\views\manage_views.py:1103
-#: .\orderpiqrApp\views\manage_views.py:1121
+#: .\orderpiqrApp\views\manage_views.py:1131
+#: .\orderpiqrApp\views\manage_views.py:1149
 msgid "Password must be at least 8 characters."
 msgstr "Parola trebuie să aibă cel puțin 8 caractere."
 
-#: .\orderpiqrApp\views\manage_views.py:1108
+#: .\orderpiqrApp\views\manage_views.py:1136
 #, python-brace-format
 msgid "Password for picker account '{username}' updated."
 msgstr "Parola pentru contul de operator '{username}' a fost actualizată."
 
-#: .\orderpiqrApp\views\manage_views.py:1117
+#: .\orderpiqrApp\views\manage_views.py:1145
 msgid "Username is required."
 msgstr "Numele de utilizator este obligatoriu."
 
-#: .\orderpiqrApp\views\manage_views.py:1119
+#: .\orderpiqrApp\views\manage_views.py:1147
 msgid "This username is already taken."
 msgstr "Acest nume de utilizator este deja folosit."
 
-#: .\orderpiqrApp\views\manage_views.py:1128
+#: .\orderpiqrApp\views\manage_views.py:1156
 #, python-brace-format
 msgid "Picker account '{username}' created."
 msgstr "Contul de operator '{username}' a fost creat."
 
-#: .\orderpiqrApp\views\manage_views.py:1151
+#: .\orderpiqrApp\views\manage_views.py:1179
 #, python-brace-format
 msgid ""
 "Login QR created for '{username}'. Print it now – it cannot be shown again."
@@ -1353,43 +1365,43 @@ msgstr ""
 "Cod QR de autentificare creat pentru '{username}'. Tipăriţi-l acum – nu va "
 "mai fi afișat."
 
-#: .\orderpiqrApp\views\manage_views.py:1164
+#: .\orderpiqrApp\views\manage_views.py:1192
 #, python-brace-format
 msgid "Login QR for '{username}' revoked. Printed copies no longer work."
 msgstr ""
 "Codul QR de autentificare pentru '{username}' a fost revocat. Copiile "
 "tipărite nu mai funcţionează."
 
-#: .\orderpiqrApp\views\manage_views.py:1248
+#: .\orderpiqrApp\views\manage_views.py:1276
 msgid "Settings saved successfully."
 msgstr "Setările au fost salvate cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:1268
+#: .\orderpiqrApp\views\manage_views.py:1296
 msgid "Inventory management is not enabled for your account."
 msgstr "Gestionarea inventarului nu este activată pentru contul dumneavoastră."
 
-#: .\orderpiqrApp\views\manage_views.py:1341
+#: .\orderpiqrApp\views\manage_views.py:1369
 msgid "No logs selected."
 msgstr "Nicio înregistrare selectată."
 
-#: .\orderpiqrApp\views\manage_views.py:1351
+#: .\orderpiqrApp\views\manage_views.py:1379
 msgid "No valid logs found."
 msgstr "Nicio înregistrare validă găsită."
 
-#: .\orderpiqrApp\views\manage_views.py:1374
+#: .\orderpiqrApp\views\manage_views.py:1402
 #, python-format
 msgid "%(count)d log(s) deleted and inventory reverted."
 msgstr "%(count)d înregistrare(ări) ștearsă(șterse) și inventarul restabilit."
 
-#: .\orderpiqrApp\views\manage_views.py:1480
+#: .\orderpiqrApp\views\manage_views.py:1508
 msgid "Inventory correction added successfully."
 msgstr "Corecție de inventar adăugată cu succes."
 
-#: .\orderpiqrApp\views\manage_views.py:1484
+#: .\orderpiqrApp\views\manage_views.py:1512
 msgid "Product not found."
 msgstr "Produs negăsit."
 
-#: .\orderpiqrApp\views\manage_views.py:1499
+#: .\orderpiqrApp\views\manage_views.py:1527
 msgid "You have been logged out successfully."
 msgstr "Ați fost deconectat cu succes."
 
@@ -1438,7 +1450,7 @@ msgid "Only draft orders can be added to queue"
 msgstr "Doar comenzile ciornă pot fi adăugate în coadă"
 
 #: .\orderpiqrApp\views\queue_views.py:374
-#: .\templates\manage\orders\list.html:269
+#: .\templates\manage\orders\list.html:270
 #: .\templates\manage\queue\list.html:441 .\templates\queue\manage.html:172
 msgid "Order added to queue"
 msgstr "%(count)s comandă(comenzi) adăugată(e) în coadă."
@@ -1706,15 +1718,19 @@ msgstr "Deconectare"
 msgid "This app is best viewed on your phone"
 msgstr "Această aplicație este optimizată pentru vizualizare pe telefon"
 
-#: .\templates\index.html:129 .\templates\manage\picklists\detail.html:4
+#: .\templates\index.html:130 .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
 #: .\templates\manage\picklists\list.html:30
 msgid "Picklist"
 msgstr "Listă de preluare"
 
-#: .\templates\index.html:135
+#: .\templates\index.html:137
 msgid "Product Name"
 msgstr "Nume produs"
+
+#: .\templates\index.html:141 .\templates\manage\orders\form.html:61
+msgid "Qty"
+msgstr "Cant."
 
 #: .\templates\inventory\picker.html:19 .\templates\queue\picker.html:19
 msgid "Scanner"
@@ -1922,7 +1938,7 @@ msgstr "Pas"
 #: .\templates\manage\orders\form.html:4 .\templates\manage\orders\form.html:5
 #: .\templates\manage\orders\form.html:128
 #: .\templates\manage\orders\list.html:23
-#: .\templates\manage\orders\list.html:191
+#: .\templates\manage\orders\list.html:192
 #: .\templates\manage\queue\list.html:85
 msgid "Create Order"
 msgstr "Creează comandă"
@@ -1985,7 +2001,7 @@ msgstr "Vezi toate"
 
 #: .\templates\manage\dashboard.html:223
 #: .\templates\manage\devices\list.html:44
-#: .\templates\manage\orders\list.html:122
+#: .\templates\manage\orders\list.html:123
 #: .\templates\manage\picklists\list.html:79
 #: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:94
 msgid "ago"
@@ -2131,7 +2147,7 @@ msgstr ""
 #: .\templates\manage\inventory\logs.html:62
 #: .\templates\manage\orders\form.html:126
 #: .\templates\manage\orders\import.html:34
-#: .\templates\manage\orders\list.html:212
+#: .\templates\manage\orders\list.html:213
 #: .\templates\manage\products\form.html:61
 #: .\templates\manage\products\import.html:34
 #: .\templates\manage\products\list.html:224
@@ -2175,7 +2191,7 @@ msgid "Last event"
 msgstr "Ultimul eveniment"
 
 #: .\templates\manage\integrations\list.html:30
-#: .\templates\manage\orders\list.html:97
+#: .\templates\manage\orders\list.html:98
 #: .\templates\manage\picklists\list.html:36
 #: .\templates\manage\products\list.html:103
 #: .\templates\manage\settings\api_tokens.html:54
@@ -2378,14 +2394,14 @@ msgid "Date/Time"
 msgstr "Dată/Oră"
 
 #: .\templates\manage\inventory\logs.html:136
-#: .\templates\manage\orders\list.html:167
+#: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:106
 #: .\templates\manage\products\list.html:180
 msgid "Page"
 msgstr "Pagina"
 
 #: .\templates\manage\inventory\logs.html:136
-#: .\templates\manage\orders\list.html:167
+#: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:106
 #: .\templates\manage\products\list.html:180
 msgid "of"
@@ -2439,10 +2455,6 @@ msgstr "Note opționale pentru această comandă"
 #: .\templates\manage\orders\form.html:55
 msgid "Add Line"
 msgstr "Adaugă linie"
-
-#: .\templates\manage\orders\form.html:61
-msgid "Qty"
-msgstr "Cant."
 
 #: .\templates\manage\orders\form.html:75
 msgid "Search product..."
@@ -2637,7 +2649,7 @@ msgid "Code Z-A"
 msgstr "Cod Z-A"
 
 #: .\templates\manage\orders\list.html:75
-#: .\templates\manage\orders\list.html:127 .\templates\queue\manage.html:66
+#: .\templates\manage\orders\list.html:128 .\templates\queue\manage.html:66
 msgid "Add to Queue"
 msgstr "Adaugă în coadă"
 
@@ -2646,75 +2658,79 @@ msgid "Remove from Queue"
 msgstr "Elimină din coadă"
 
 #: .\templates\manage\orders\list.html:77
-#: .\templates\manage\orders\list.html:143
-#: .\templates\manage\orders\list.html:213
+msgid "Reset to Draft"
+msgstr "Readu la schiță"
+
+#: .\templates\manage\orders\list.html:78
+#: .\templates\manage\orders\list.html:144
+#: .\templates\manage\orders\list.html:214
 #: .\templates\manage\products\list.html:79
 #: .\templates\manage\products\list.html:157
 #: .\templates\manage\products\list.html:225
 msgid "Delete"
 msgstr "Șterge"
 
-#: .\templates\manage\orders\list.html:94
+#: .\templates\manage\orders\list.html:95
 #: .\templates\queue\_order_cards.html:24 .\templates\shopify\app.html:212
 msgid "Items"
 msgstr "Articole"
 
-#: .\templates\manage\orders\list.html:134
+#: .\templates\manage\orders\list.html:135
 #: .\templates\manage\products\list.html:149
 msgid "Edit"
 msgstr "Editează"
 
-#: .\templates\manage\orders\list.html:184
+#: .\templates\manage\orders\list.html:185
 msgid "No orders found"
 msgstr "Nicio comandă în coadă"
 
-#: .\templates\manage\orders\list.html:185
+#: .\templates\manage\orders\list.html:186
 #: .\templates\manage\products\list.html:197
 msgid "Try adjusting your search or filter criteria."
 msgstr "Încercați să ajustați criteriile de căutare sau filtrare."
 
-#: .\templates\manage\orders\list.html:186
+#: .\templates\manage\orders\list.html:187
 #: .\templates\manage\products\list.html:198
 msgid "Clear Filters"
 msgstr "Șterge filtrele"
 
-#: .\templates\manage\orders\list.html:188
+#: .\templates\manage\orders\list.html:189
 msgid "No orders yet"
 msgstr "Nicio comandă în coadă"
 
-#: .\templates\manage\orders\list.html:189
+#: .\templates\manage\orders\list.html:190
 msgid "Get started by creating your first order or importing from a CSV file."
 msgstr "Începeți prin a crea prima comandă sau importați dintr-un fișier CSV."
 
-#: .\templates\manage\orders\list.html:192
+#: .\templates\manage\orders\list.html:193
 #: .\templates\manage\products\list.html:204
 msgid "Import CSV"
 msgstr "Importă CSV"
 
-#: .\templates\manage\orders\list.html:204
+#: .\templates\manage\orders\list.html:205
 msgid "Delete Order"
 msgstr "Bun venit la Orderpiqr!"
 
-#: .\templates\manage\orders\list.html:208
+#: .\templates\manage\orders\list.html:209
 msgid "Are you sure you want to delete order"
 msgstr "Sigur doriți să ștergeți comanda"
 
-#: .\templates\manage\orders\list.html:209
+#: .\templates\manage\orders\list.html:210
 #: .\templates\manage\products\list.html:221
 msgid "This action cannot be undone."
 msgstr "Această acțiune nu poate fi anulată."
 
-#: .\templates\manage\orders\list.html:272
+#: .\templates\manage\orders\list.html:273
 msgid "Error adding to queue"
 msgstr "Adaugă în coadă"
 
-#: .\templates\manage\orders\list.html:276
-#: .\templates\manage\orders\list.html:335
+#: .\templates\manage\orders\list.html:277
+#: .\templates\manage\orders\list.html:341
 #: .\templates\manage\products\list.html:336
 msgid "An error occurred"
 msgstr "A apărut o eroare"
 
-#: .\templates\manage\orders\list.html:281
+#: .\templates\manage\orders\list.html:282
 #, python-format
 msgid ""
 "Delete %%s order(s)? Orders currently being picked are skipped. This cannot "
@@ -2723,16 +2739,23 @@ msgstr ""
 "Ștergeți %%s comenzi? Comenzile în curs de pregătire sunt omise. Această "
 "acțiune nu poate fi anulată."
 
-#: .\templates\manage\orders\list.html:282
+#: .\templates\manage\orders\list.html:283
 #, python-format
 msgid "Add %%s order(s) to the queue? Only draft orders are added."
 msgstr "Adăugați %%s comenzi în coadă? Doar comenzile ciornă sunt adăugate."
 
-#: .\templates\manage\orders\list.html:283
+#: .\templates\manage\orders\list.html:284
 #, python-format
 msgid "Remove %%s order(s) from the queue? Only queued orders are affected."
 msgstr ""
 "Eliminați %%s comenzi din coadă? Sunt afectate doar comenzile din coadă."
+
+#: .\templates\manage\orders\list.html:285
+#, python-format
+msgid ""
+"Reset %%s order(s) to draft? In-progress orders are unclaimed and their "
+"picking progress is discarded. Completed and cancelled orders are skipped."
+msgstr "Readuceți %%s comenzi la schiță? Comenzile în curs sunt deblocate, iar progresul lor de preluare este șters. Comenzile finalizate și anulate sunt omise."
 
 #: .\templates\manage\picklists\detail.html:19
 msgid "Back to List"

@@ -673,6 +673,34 @@ def orders_bulk_action(request):
             message += " " + _("{count} order(s) skipped (not queued).").format(count=skipped)
         return JsonResponse({'status': 'ok', 'message': message})
 
+    elif action == 'reset_to_draft':
+        # The escape hatch for stuck/test orders: unclaim in-progress orders
+        # (discarding the active picklist, like the queue unlock does) and put
+        # them back to draft, where delete and re-queue are allowed again.
+        # Completed and cancelled orders are left alone.
+        with transaction.atomic():
+            targets = list(orders.filter(status__in=['queued', 'in_progress'])
+                           .select_for_update())
+            for order in targets:
+                if order.status == 'in_progress':
+                    # Match on picklist_code as well as the order FK — a
+                    # picklist that predates the claim may have order=None.
+                    PickList.objects.filter(
+                        Q(order=order) | Q(picklist_code=order.order_code),
+                        customer=customer,
+                        pick_started=True,
+                        successful__isnull=True,
+                    ).delete()
+                order.status = 'draft'
+                order.queue_position = None
+            Order.objects.bulk_update(targets, ['status', 'queue_position'])
+        reset = len(targets)
+        skipped = count - reset
+        message = _("{count} order(s) reset to draft.").format(count=reset)
+        if skipped:
+            message += " " + _("{count} order(s) skipped (already draft, completed or cancelled).").format(count=skipped)
+        return JsonResponse({'status': 'ok', 'message': message})
+
     return JsonResponse({'status': 'error', 'message': _("Unknown action.")}, status=400)
 
 

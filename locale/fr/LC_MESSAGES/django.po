@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 16:34+0200\n"
+"POT-Creation-Date: 2026-09-24 19:47+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Français <fr@li.org>\n"
@@ -109,7 +109,7 @@ msgstr "Liens de commandes externes"
 #: .\orderpiqrApp\admin\email_admin.py:33 .\orderpiqrApp\models\orders.py:23
 #: .\templates\manage\dashboard.html:208
 #: .\templates\manage\integrations\list.html:26
-#: .\templates\manage\orders\list.html:95
+#: .\templates\manage\orders\list.html:96
 #: .\templates\manage\picklists\detail.html:102
 #: .\templates\manage\picklists\list.html:34
 #: .\templates\manage\products\form.html:45
@@ -133,6 +133,7 @@ msgstr "Message"
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:45 .\orderpiqrApp\models\products.py:21
+#: .\templates\index.html:143
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -522,7 +523,7 @@ msgid "Created By"
 msgstr "Créé par"
 
 #: .\orderpiqrApp\models\login_tokens.py:38
-#: .\templates\manage\dashboard.html:209 .\templates\manage\orders\list.html:96
+#: .\templates\manage\dashboard.html:209 .\templates\manage\orders\list.html:97
 #: .\templates\manage\picklists\detail.html:62
 #: .\templates\manage\picklists\list.html:35
 #: .\templates\manage\settings\api_tokens.html:53
@@ -600,7 +601,7 @@ msgid "Cancelled"
 msgstr "Annulé"
 
 #: .\orderpiqrApp\models\orders.py:19 .\templates\manage\orders\form.html:20
-#: .\templates\manage\orders\list.html:93
+#: .\templates\manage\orders\list.html:94
 msgid "Order Code"
 msgstr "Code commande"
 
@@ -839,14 +840,15 @@ msgstr "Valeur du paramètre client"
 msgid "Customer setting values"
 msgstr "Valeurs des paramètres client"
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:134
+#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:136
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Code produit"
 
 #: .\orderpiqrApp\models\products.py:11
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:91
-#: .\templates\index.html:136 .\templates\manage\orders\form.html:62
+#: .\templates\index.html:138 .\templates\index.html:142
+#: .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:100
 #: .\templates\manage\products\form.html:37
 #: .\templates\manage\products\list.html:97
@@ -1065,8 +1067,8 @@ msgstr "Produit '{code}' mis à jour avec succès."
 #: .\orderpiqrApp\views\manage_views.py:324
 #: .\orderpiqrApp\views\manage_views.py:379
 #: .\orderpiqrApp\views\manage_views.py:618
-#: .\orderpiqrApp\views\manage_views.py:819
-#: .\orderpiqrApp\views\manage_views.py:1329
+#: .\orderpiqrApp\views\manage_views.py:847
+#: .\orderpiqrApp\views\manage_views.py:1357
 msgid "No customer found."
 msgstr "Aucun client trouvé."
 
@@ -1079,15 +1081,15 @@ msgstr "Produit '{code}' supprimé."
 #: .\orderpiqrApp\views\manage_views.py:320
 #: .\orderpiqrApp\views\manage_views.py:375
 #: .\orderpiqrApp\views\manage_views.py:614
-#: .\orderpiqrApp\views\manage_views.py:828
-#: .\orderpiqrApp\views\manage_views.py:1325
+#: .\orderpiqrApp\views\manage_views.py:856
+#: .\orderpiqrApp\views\manage_views.py:1353
 msgid "Invalid request method."
 msgstr "Méthode de requête invalide."
 
 #: .\orderpiqrApp\views\manage_views.py:329
 #: .\orderpiqrApp\views\manage_views.py:386
 #: .\orderpiqrApp\views\manage_views.py:623
-#: .\orderpiqrApp\views\manage_views.py:1338
+#: .\orderpiqrApp\views\manage_views.py:1366
 msgid "Invalid request."
 msgstr "Requête invalide."
 
@@ -1122,7 +1124,7 @@ msgid "{count} product(s) updated."
 msgstr "{count} produit(s) mis à jour."
 
 #: .\orderpiqrApp\views\manage_views.py:368
-#: .\orderpiqrApp\views\manage_views.py:676
+#: .\orderpiqrApp\views\manage_views.py:704
 msgid "Unknown action."
 msgstr "Action inconnue."
 
@@ -1131,9 +1133,9 @@ msgid "Invalid field."
 msgstr "Champ invalide."
 
 #: .\orderpiqrApp\views\manage_views.py:398
-#: .\orderpiqrApp\views\manage_views.py:1332
-#: .\orderpiqrApp\views\manage_views.py:1387
-#: .\orderpiqrApp\views\manage_views.py:1453
+#: .\orderpiqrApp\views\manage_views.py:1360
+#: .\orderpiqrApp\views\manage_views.py:1415
+#: .\orderpiqrApp\views\manage_views.py:1481
 msgid "Inventory management is not enabled."
 msgstr "La gestion d'inventaire n'est pas activée."
 
@@ -1142,7 +1144,7 @@ msgid "Quantity cannot be negative."
 msgstr "La quantité ne peut pas être négative."
 
 #: .\orderpiqrApp\views\manage_views.py:404
-#: .\orderpiqrApp\views\manage_views.py:1486
+#: .\orderpiqrApp\views\manage_views.py:1514
 msgid "Invalid quantity value."
 msgstr "Valeur de quantité invalide."
 
@@ -1163,12 +1165,12 @@ msgid "Updated."
 msgstr "Mis à jour."
 
 #: .\orderpiqrApp\views\manage_views.py:444
-#: .\orderpiqrApp\views\manage_views.py:843
+#: .\orderpiqrApp\views\manage_views.py:871
 msgid "Please select a CSV file."
 msgstr "Veuillez sélectionner un fichier CSV."
 
 #: .\orderpiqrApp\views\manage_views.py:448
-#: .\orderpiqrApp\views\manage_views.py:847
+#: .\orderpiqrApp\views\manage_views.py:875
 msgid "Please upload a valid CSV file."
 msgstr "Veuillez télécharger un fichier CSV valide."
 
@@ -1195,7 +1197,7 @@ msgstr ""
 "(lignes : {rows})."
 
 #: .\orderpiqrApp\views\manage_views.py:503
-#: .\orderpiqrApp\views\manage_views.py:924
+#: .\orderpiqrApp\views\manage_views.py:952
 #, python-brace-format
 msgid "Error processing CSV: {error}"
 msgstr "Erreur lors du traitement du CSV : {error}"
@@ -1230,128 +1232,138 @@ msgstr "{count} commande(s) retirée(s) de la file d'attente."
 msgid "{count} order(s) skipped (not queued)."
 msgstr "{count} commande(s) ignorée(s) (pas en file d'attente)."
 
-#: .\orderpiqrApp\views\manage_views.py:702
-#: .\orderpiqrApp\views\manage_views.py:776
+#: .\orderpiqrApp\views\manage_views.py:699
+#, python-brace-format
+msgid "{count} order(s) reset to draft."
+msgstr "{count} commande(s) remise(s) en brouillon."
+
+#: .\orderpiqrApp\views\manage_views.py:701
+#, python-brace-format
+msgid "{count} order(s) skipped (already draft, completed or cancelled)."
+msgstr "{count} commande(s) ignorée(s) (déjà en brouillon, terminée(s) ou annulée(s))."
+
+#: .\orderpiqrApp\views\manage_views.py:730
+#: .\orderpiqrApp\views\manage_views.py:804
 msgid "Order code is required."
 msgstr "Le code commande est requis."
 
-#: .\orderpiqrApp\views\manage_views.py:704
-#: .\orderpiqrApp\views\manage_views.py:778
+#: .\orderpiqrApp\views\manage_views.py:732
+#: .\orderpiqrApp\views\manage_views.py:806
 msgid "An order with this code already exists."
 msgstr "Une commande avec ce code existe déjà."
 
-#: .\orderpiqrApp\views\manage_views.py:707
-#: .\orderpiqrApp\views\manage_views.py:781
+#: .\orderpiqrApp\views\manage_views.py:735
+#: .\orderpiqrApp\views\manage_views.py:809
 msgid "At least one product is required."
 msgstr "Au moins un produit est requis."
 
-#: .\orderpiqrApp\views\manage_views.py:743
+#: .\orderpiqrApp\views\manage_views.py:771
 #, python-brace-format
 msgid "Order '{code}' created successfully."
 msgstr "Commande '{code}' créée avec succès."
 
-#: .\orderpiqrApp\views\manage_views.py:807
+#: .\orderpiqrApp\views\manage_views.py:835
 #, python-brace-format
 msgid "Order '{code}' updated successfully."
 msgstr "Commande '{code}' mise à jour avec succès."
 
-#: .\orderpiqrApp\views\manage_views.py:826
+#: .\orderpiqrApp\views\manage_views.py:854
 #, python-brace-format
 msgid "Order '{code}' deleted."
 msgstr "Commande '{code}' supprimée."
 
-#: .\orderpiqrApp\views\manage_views.py:866
+#: .\orderpiqrApp\views\manage_views.py:894
 #, python-brace-format
 msgid "row {row}: missing order code or product code"
 msgstr "ligne {row} : code commande ou code produit manquant"
 
-#: .\orderpiqrApp\views\manage_views.py:882
+#: .\orderpiqrApp\views\manage_views.py:910
 #, python-brace-format
 msgid "order {order} already exists"
 msgstr "la commande {order} existe déjà"
 
-#: .\orderpiqrApp\views\manage_views.py:903
+#: .\orderpiqrApp\views\manage_views.py:931
 #, python-brace-format
 msgid "order {order}: unknown product {product}"
 msgstr "commande {order} : produit inconnu {product}"
 
-#: .\orderpiqrApp\views\manage_views.py:908
+#: .\orderpiqrApp\views\manage_views.py:936
 #, python-brace-format
 msgid "No orders were imported: {reasons}"
 msgstr "Aucune commande n'a été importée : {reasons}"
 
-#: .\orderpiqrApp\views\manage_views.py:909
+#: .\orderpiqrApp\views\manage_views.py:937
 msgid "the file contains no valid rows."
 msgstr "le fichier ne contient aucune ligne valide."
 
-#: .\orderpiqrApp\views\manage_views.py:912
+#: .\orderpiqrApp\views\manage_views.py:940
 #, python-brace-format
 msgid "Import completed: {orders} orders created with {lines} lines."
 msgstr "Import terminé : {orders} commandes créées avec {lines} lignes."
 
-#: .\orderpiqrApp\views\manage_views.py:916
+#: .\orderpiqrApp\views\manage_views.py:944
 #, python-brace-format
 msgid "Some rows could not be imported: {reasons}"
 msgstr "Certaines lignes n'ont pas pu être importées : {reasons}"
 
-#: .\orderpiqrApp\views\manage_views.py:1060
+#: .\orderpiqrApp\views\manage_views.py:1088
 msgid "First name is required."
 msgstr "Le prénom est requis."
 
-#: .\orderpiqrApp\views\manage_views.py:1062
+#: .\orderpiqrApp\views\manage_views.py:1090
 msgid "Email is required."
 msgstr "L'e-mail est requis."
 
-#: .\orderpiqrApp\views\manage_views.py:1072
+#: .\orderpiqrApp\views\manage_views.py:1100
 msgid "Profile updated successfully."
 msgstr "Profil mis à jour avec succès."
 
-#: .\orderpiqrApp\views\manage_views.py:1081
+#: .\orderpiqrApp\views\manage_views.py:1109
 msgid "Current password is incorrect."
 msgstr "Le mot de passe actuel est incorrect."
 
-#: .\orderpiqrApp\views\manage_views.py:1083
+#: .\orderpiqrApp\views\manage_views.py:1111
 msgid "New password must be at least 8 characters."
 msgstr "Le nouveau mot de passe doit contenir au moins 8 caractères."
 
-#: .\orderpiqrApp\views\manage_views.py:1085
+#: .\orderpiqrApp\views\manage_views.py:1113
 msgid "New passwords do not match."
 msgstr "Les nouveaux mots de passe ne correspondent pas."
 
-#: .\orderpiqrApp\views\manage_views.py:1094
+#: .\orderpiqrApp\views\manage_views.py:1122
 msgid "Password changed successfully."
 msgstr "Mot de passe modifié avec succès."
 
-#: .\orderpiqrApp\views\manage_views.py:1101
-#: .\orderpiqrApp\views\manage_views.py:1136
-#: .\orderpiqrApp\views\manage_views.py:1158
+#: .\orderpiqrApp\views\manage_views.py:1129
+#: .\orderpiqrApp\views\manage_views.py:1164
+#: .\orderpiqrApp\views\manage_views.py:1186
 msgid "Picker account not found."
 msgstr "Compte préparateur introuvable."
 
-#: .\orderpiqrApp\views\manage_views.py:1103
-#: .\orderpiqrApp\views\manage_views.py:1121
+#: .\orderpiqrApp\views\manage_views.py:1131
+#: .\orderpiqrApp\views\manage_views.py:1149
 msgid "Password must be at least 8 characters."
 msgstr "Le mot de passe doit contenir au moins 8 caractères."
 
-#: .\orderpiqrApp\views\manage_views.py:1108
+#: .\orderpiqrApp\views\manage_views.py:1136
 #, python-brace-format
 msgid "Password for picker account '{username}' updated."
 msgstr "Mot de passe du compte préparateur '{username}' mis à jour."
 
-#: .\orderpiqrApp\views\manage_views.py:1117
+#: .\orderpiqrApp\views\manage_views.py:1145
 msgid "Username is required."
 msgstr "Le nom d'utilisateur est requis."
 
-#: .\orderpiqrApp\views\manage_views.py:1119
+#: .\orderpiqrApp\views\manage_views.py:1147
 msgid "This username is already taken."
 msgstr "Ce nom d'utilisateur est déjà pris."
 
-#: .\orderpiqrApp\views\manage_views.py:1128
+#: .\orderpiqrApp\views\manage_views.py:1156
 #, python-brace-format
 msgid "Picker account '{username}' created."
 msgstr "Compte préparateur '{username}' créé."
 
-#: .\orderpiqrApp\views\manage_views.py:1151
+#: .\orderpiqrApp\views\manage_views.py:1179
 #, python-brace-format
 msgid ""
 "Login QR created for '{username}'. Print it now – it cannot be shown again."
@@ -1359,43 +1371,43 @@ msgstr ""
 "QR de connexion créé pour « {username} ». Imprimez-le maintenant – il ne "
 "sera plus affiché."
 
-#: .\orderpiqrApp\views\manage_views.py:1164
+#: .\orderpiqrApp\views\manage_views.py:1192
 #, python-brace-format
 msgid "Login QR for '{username}' revoked. Printed copies no longer work."
 msgstr ""
 "QR de connexion de « {username} » révoqué. Les copies imprimées ne "
 "fonctionnent plus."
 
-#: .\orderpiqrApp\views\manage_views.py:1248
+#: .\orderpiqrApp\views\manage_views.py:1276
 msgid "Settings saved successfully."
 msgstr "Paramètres enregistrés avec succès."
 
-#: .\orderpiqrApp\views\manage_views.py:1268
+#: .\orderpiqrApp\views\manage_views.py:1296
 msgid "Inventory management is not enabled for your account."
 msgstr "La gestion d'inventaire n'est pas activée pour votre compte."
 
-#: .\orderpiqrApp\views\manage_views.py:1341
+#: .\orderpiqrApp\views\manage_views.py:1369
 msgid "No logs selected."
 msgstr "Aucun journal sélectionné."
 
-#: .\orderpiqrApp\views\manage_views.py:1351
+#: .\orderpiqrApp\views\manage_views.py:1379
 msgid "No valid logs found."
 msgstr "Aucun journal valide trouvé."
 
-#: .\orderpiqrApp\views\manage_views.py:1374
+#: .\orderpiqrApp\views\manage_views.py:1402
 #, python-format
 msgid "%(count)d log(s) deleted and inventory reverted."
 msgstr "%(count)d journal(aux) supprimé(s) et inventaire rétabli."
 
-#: .\orderpiqrApp\views\manage_views.py:1480
+#: .\orderpiqrApp\views\manage_views.py:1508
 msgid "Inventory correction added successfully."
 msgstr "Correction d'inventaire ajoutée avec succès."
 
-#: .\orderpiqrApp\views\manage_views.py:1484
+#: .\orderpiqrApp\views\manage_views.py:1512
 msgid "Product not found."
 msgstr "Produit introuvable."
 
-#: .\orderpiqrApp\views\manage_views.py:1499
+#: .\orderpiqrApp\views\manage_views.py:1527
 msgid "You have been logged out successfully."
 msgstr "Vous avez été déconnecté avec succès."
 
@@ -1444,7 +1456,7 @@ msgid "Only draft orders can be added to queue"
 msgstr "Seules les commandes en brouillon peuvent être ajoutées à la file"
 
 #: .\orderpiqrApp\views\queue_views.py:374
-#: .\templates\manage\orders\list.html:269
+#: .\templates\manage\orders\list.html:270
 #: .\templates\manage\queue\list.html:441 .\templates\queue\manage.html:172
 msgid "Order added to queue"
 msgstr "Commande ajoutée à la file"
@@ -1711,15 +1723,19 @@ msgstr "Se déconnecter"
 msgid "This app is best viewed on your phone"
 msgstr "Cette application est optimisée pour les téléphones"
 
-#: .\templates\index.html:129 .\templates\manage\picklists\detail.html:4
+#: .\templates\index.html:130 .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
 #: .\templates\manage\picklists\list.html:30
 msgid "Picklist"
 msgstr "Liste de prélèvement"
 
-#: .\templates\index.html:135
+#: .\templates\index.html:137
 msgid "Product Name"
 msgstr "Nom du produit"
+
+#: .\templates\index.html:141 .\templates\manage\orders\form.html:61
+msgid "Qty"
+msgstr "Qté"
 
 #: .\templates\inventory\picker.html:19 .\templates\queue\picker.html:19
 msgid "Scanner"
@@ -1927,7 +1943,7 @@ msgstr "Étape"
 #: .\templates\manage\orders\form.html:4 .\templates\manage\orders\form.html:5
 #: .\templates\manage\orders\form.html:128
 #: .\templates\manage\orders\list.html:23
-#: .\templates\manage\orders\list.html:191
+#: .\templates\manage\orders\list.html:192
 #: .\templates\manage\queue\list.html:85
 msgid "Create Order"
 msgstr "Créer une commande"
@@ -1990,7 +2006,7 @@ msgstr "Tout voir"
 
 #: .\templates\manage\dashboard.html:223
 #: .\templates\manage\devices\list.html:44
-#: .\templates\manage\orders\list.html:122
+#: .\templates\manage\orders\list.html:123
 #: .\templates\manage\picklists\list.html:79
 #: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:94
 msgid "ago"
@@ -2137,7 +2153,7 @@ msgstr ""
 #: .\templates\manage\inventory\logs.html:62
 #: .\templates\manage\orders\form.html:126
 #: .\templates\manage\orders\import.html:34
-#: .\templates\manage\orders\list.html:212
+#: .\templates\manage\orders\list.html:213
 #: .\templates\manage\products\form.html:61
 #: .\templates\manage\products\import.html:34
 #: .\templates\manage\products\list.html:224
@@ -2181,7 +2197,7 @@ msgid "Last event"
 msgstr "Dernier événement"
 
 #: .\templates\manage\integrations\list.html:30
-#: .\templates\manage\orders\list.html:97
+#: .\templates\manage\orders\list.html:98
 #: .\templates\manage\picklists\list.html:36
 #: .\templates\manage\products\list.html:103
 #: .\templates\manage\settings\api_tokens.html:54
@@ -2385,14 +2401,14 @@ msgid "Date/Time"
 msgstr "Date/Heure"
 
 #: .\templates\manage\inventory\logs.html:136
-#: .\templates\manage\orders\list.html:167
+#: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:106
 #: .\templates\manage\products\list.html:180
 msgid "Page"
 msgstr "Page"
 
 #: .\templates\manage\inventory\logs.html:136
-#: .\templates\manage\orders\list.html:167
+#: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:106
 #: .\templates\manage\products\list.html:180
 msgid "of"
@@ -2448,10 +2464,6 @@ msgstr "Notes optionnelles pour cette commande"
 #: .\templates\manage\orders\form.html:55
 msgid "Add Line"
 msgstr "Ajouter une ligne"
-
-#: .\templates\manage\orders\form.html:61
-msgid "Qty"
-msgstr "Qté"
 
 #: .\templates\manage\orders\form.html:75
 msgid "Search product..."
@@ -2646,7 +2658,7 @@ msgid "Code Z-A"
 msgstr "Code Z-A"
 
 #: .\templates\manage\orders\list.html:75
-#: .\templates\manage\orders\list.html:127 .\templates\queue\manage.html:66
+#: .\templates\manage\orders\list.html:128 .\templates\queue\manage.html:66
 msgid "Add to Queue"
 msgstr "Ajouter à la file"
 
@@ -2655,77 +2667,81 @@ msgid "Remove from Queue"
 msgstr "Retirer de la file d'attente"
 
 #: .\templates\manage\orders\list.html:77
-#: .\templates\manage\orders\list.html:143
-#: .\templates\manage\orders\list.html:213
+msgid "Reset to Draft"
+msgstr "Remettre en brouillon"
+
+#: .\templates\manage\orders\list.html:78
+#: .\templates\manage\orders\list.html:144
+#: .\templates\manage\orders\list.html:214
 #: .\templates\manage\products\list.html:79
 #: .\templates\manage\products\list.html:157
 #: .\templates\manage\products\list.html:225
 msgid "Delete"
 msgstr "Supprimer"
 
-#: .\templates\manage\orders\list.html:94
+#: .\templates\manage\orders\list.html:95
 #: .\templates\queue\_order_cards.html:24 .\templates\shopify\app.html:212
 msgid "Items"
 msgstr "Articles"
 
-#: .\templates\manage\orders\list.html:134
+#: .\templates\manage\orders\list.html:135
 #: .\templates\manage\products\list.html:149
 msgid "Edit"
 msgstr "Modifier"
 
-#: .\templates\manage\orders\list.html:184
+#: .\templates\manage\orders\list.html:185
 msgid "No orders found"
 msgstr "Aucune commande trouvée"
 
-#: .\templates\manage\orders\list.html:185
+#: .\templates\manage\orders\list.html:186
 #: .\templates\manage\products\list.html:197
 msgid "Try adjusting your search or filter criteria."
 msgstr "Essayez d'ajuster vos critères de recherche ou de filtrage."
 
-#: .\templates\manage\orders\list.html:186
+#: .\templates\manage\orders\list.html:187
 #: .\templates\manage\products\list.html:198
 msgid "Clear Filters"
 msgstr "Effacer les filtres"
 
-#: .\templates\manage\orders\list.html:188
+#: .\templates\manage\orders\list.html:189
 msgid "No orders yet"
 msgstr "Aucune commande pour l'instant"
 
-#: .\templates\manage\orders\list.html:189
+#: .\templates\manage\orders\list.html:190
 msgid "Get started by creating your first order or importing from a CSV file."
 msgstr ""
 "Commencez par créer votre première commande ou importez depuis un fichier "
 "CSV."
 
-#: .\templates\manage\orders\list.html:192
+#: .\templates\manage\orders\list.html:193
 #: .\templates\manage\products\list.html:204
 msgid "Import CSV"
 msgstr "Importer CSV"
 
-#: .\templates\manage\orders\list.html:204
+#: .\templates\manage\orders\list.html:205
 msgid "Delete Order"
 msgstr "Supprimer la commande"
 
-#: .\templates\manage\orders\list.html:208
+#: .\templates\manage\orders\list.html:209
 msgid "Are you sure you want to delete order"
 msgstr "Êtes-vous sûr de vouloir supprimer la commande"
 
-#: .\templates\manage\orders\list.html:209
+#: .\templates\manage\orders\list.html:210
 #: .\templates\manage\products\list.html:221
 msgid "This action cannot be undone."
 msgstr "Cette action est irréversible."
 
-#: .\templates\manage\orders\list.html:272
+#: .\templates\manage\orders\list.html:273
 msgid "Error adding to queue"
 msgstr "Erreur lors de l'ajout à la file"
 
-#: .\templates\manage\orders\list.html:276
-#: .\templates\manage\orders\list.html:335
+#: .\templates\manage\orders\list.html:277
+#: .\templates\manage\orders\list.html:341
 #: .\templates\manage\products\list.html:336
 msgid "An error occurred"
 msgstr "Une erreur s'est produite"
 
-#: .\templates\manage\orders\list.html:281
+#: .\templates\manage\orders\list.html:282
 #, python-format
 msgid ""
 "Delete %%s order(s)? Orders currently being picked are skipped. This cannot "
@@ -2734,19 +2750,26 @@ msgstr ""
 "Supprimer %%s commande(s) ? Les commandes en cours de préparation sont "
 "ignorées. Cette action est irréversible."
 
-#: .\templates\manage\orders\list.html:282
+#: .\templates\manage\orders\list.html:283
 #, python-format
 msgid "Add %%s order(s) to the queue? Only draft orders are added."
 msgstr ""
 "Ajouter %%s commande(s) à la file d'attente ? Seules les commandes en "
 "brouillon sont ajoutées."
 
-#: .\templates\manage\orders\list.html:283
+#: .\templates\manage\orders\list.html:284
 #, python-format
 msgid "Remove %%s order(s) from the queue? Only queued orders are affected."
 msgstr ""
 "Retirer %%s commande(s) de la file d'attente ? Seules les commandes en file "
 "d'attente sont concernées."
+
+#: .\templates\manage\orders\list.html:285
+#, python-format
+msgid ""
+"Reset %%s order(s) to draft? In-progress orders are unclaimed and their "
+"picking progress is discarded. Completed and cancelled orders are skipped."
+msgstr "Remettre %%s commande(s) en brouillon ? Les commandes en cours sont libérées et leur progression de préparation est perdue. Les commandes terminées et annulées sont ignorées."
 
 #: .\templates\manage\picklists\detail.html:19
 msgid "Back to List"

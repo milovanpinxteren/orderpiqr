@@ -125,6 +125,53 @@ class OrdersBulkActionTests(BulkActionTestCase):
         self.assertIsNone(queued.queue_position)
         self.assertEqual(picking.status, 'in_progress')
 
+    def test_reset_to_draft_unclaims_in_progress_and_deletes_active_picklist(self):
+        from orderpiqrApp.models import Device, PickList
+        picking = self.make_order('P1', status='in_progress', queue_position=1)
+        queued = self.make_order('Q1', status='queued', queue_position=2)
+        completed = self.make_order('C1', status='completed')
+        device = Device.objects.create(
+            user=self.admin, customer=self.customer, device_fingerprint='fp-1',
+            name='Phone', description='', last_login=timezone.now(), lists_picked=0)
+        active = PickList.objects.create(
+            picklist_code='P1', customer=self.customer, device=device,
+            order=picking, pick_started=True)
+
+        response = self.post_json(self.url, {
+            'action': 'reset_to_draft',
+            'order_ids': [picking.order_id, queued.order_id, completed.order_id],
+        })
+        self.assertEqual(response.status_code, 200)
+        picking.refresh_from_db()
+        queued.refresh_from_db()
+        completed.refresh_from_db()
+        self.assertEqual(picking.status, 'draft')
+        self.assertIsNone(picking.queue_position)
+        self.assertEqual(queued.status, 'draft')
+        self.assertEqual(completed.status, 'completed')
+        self.assertFalse(PickList.objects.filter(pk=active.pk).exists())
+        self.assertIn('skipped', response.json()['message'])
+
+    def test_reset_to_draft_then_delete_removes_stuck_order(self):
+        picking = self.make_order('P1', status='in_progress', queue_position=1)
+        self.post_json(self.url, {'action': 'reset_to_draft', 'order_ids': [picking.order_id]})
+        self.post_json(self.url, {'action': 'delete', 'order_ids': [picking.order_id]})
+        self.assertFalse(Order.objects.filter(pk=picking.pk).exists())
+
+    def test_reset_to_draft_spares_completed_picklists(self):
+        # Only the ACTIVE picklist is discarded; a finished one is history.
+        from orderpiqrApp.models import Device, PickList
+        picking = self.make_order('P1', status='in_progress')
+        device = Device.objects.create(
+            user=self.admin, customer=self.customer, device_fingerprint='fp-1',
+            name='Phone', description='', last_login=timezone.now(), lists_picked=0)
+        done = PickList.objects.create(
+            picklist_code='P1', customer=self.customer, device=device,
+            order=picking, pick_started=True, successful=True)
+
+        self.post_json(self.url, {'action': 'reset_to_draft', 'order_ids': [picking.order_id]})
+        self.assertTrue(PickList.objects.filter(pk=done.pk).exists())
+
     def test_empty_selection_rejected(self):
         response = self.post_json(self.url, {'action': 'delete', 'order_ids': []})
         self.assertEqual(response.status_code, 400)

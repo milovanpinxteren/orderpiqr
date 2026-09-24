@@ -74,6 +74,7 @@
         <div class="bulk-actions">
             <button class="btn btn-sm btn-secondary" onclick="bulkAddToQueue()">{% trans "Add to Queue" %}</button>
             <button class="btn btn-sm btn-secondary" onclick="bulkRemoveFromQueue()">{% trans "Remove from Queue" %}</button>
+            <button class="btn btn-sm btn-secondary" onclick="bulkResetToDraft()">{% trans "Reset to Draft" %}</button>
             <button class="btn btn-sm btn-danger" onclick="bulkDelete()">{% trans "Delete" %}</button>
         </div>
         <button class="bulk-clear" onclick="ListTools.clearSelection()">✕</button>
@@ -281,9 +282,14 @@ function addToQueue(orderId) {
 {% trans "Delete %s order(s)? Orders currently being picked are skipped. This cannot be undone." as bulk_delete_msg %}
 {% trans "Add %s order(s) to the queue? Only draft orders are added." as bulk_queue_msg %}
 {% trans "Remove %s order(s) from the queue? Only queued orders are affected." as bulk_unqueue_msg %}
+{% trans "Reset %s order(s) to draft? In-progress orders are unclaimed and their picking progress is discarded. Completed and cancelled orders are skipped." as bulk_reset_msg %}
 
 function bulkDelete() {
     ListTools.bulkAction('delete', { confirmMessage: '{{ bulk_delete_msg|escapejs }}' });
+}
+
+function bulkResetToDraft() {
+    ListTools.bulkAction('reset_to_draft', { confirmMessage: '{{ bulk_reset_msg|escapejs }}' });
 }
 
 function bulkAddToQueue() {
