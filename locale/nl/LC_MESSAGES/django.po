@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 19:47+0200\n"
+"POT-Creation-Date: 2026-09-24 20:04+0200\n"
 "PO-Revision-Date: 2025-08-08 14:00+0200\n"
 "Last-Translator: Milo van Pinxteren <milo@example.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -134,7 +134,7 @@ msgstr "Bericht"
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:45 .\orderpiqrApp\models\products.py:21
-#: .\templates\index.html:143
+#: .\templates\index.html:150
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -152,7 +152,7 @@ msgstr "Wijziging"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
 #: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
-#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:117
+#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:124
 #: .\templates\manage\inventory\logs.html:80
 #: .\templates\manage\products\form.html:123
 #: .\templates\manage\products\form.html:163
@@ -842,14 +842,14 @@ msgstr "Klantinstellingswaarde"
 msgid "Customer setting values"
 msgstr "Klantinstellingswaarden"
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:136
+#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:143
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Productcode"
 
 #: .\orderpiqrApp\models\products.py:11
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:91
-#: .\templates\index.html:138 .\templates\index.html:142
+#: .\templates\index.html:145 .\templates\index.html:149
 #: .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:100
 #: .\templates\manage\products\form.html:37
@@ -1700,33 +1700,45 @@ msgid "Grouped by product"
 msgstr "Gegroepeerd per product"
 
 #: .\templates\index.html:103
+msgid "Popup Number"
+msgstr "Getal in popup"
+
+#: .\templates\index.html:105
+msgid "Remaining to take"
+msgstr "Nog te pakken"
+
+#: .\templates\index.html:106
+msgid "Total quantity"
+msgstr "Totaal aantal"
+
+#: .\templates\index.html:110
 msgid "Order Importance"
 msgstr "Vaste scanvolgorde"
 
-#: .\templates\index.html:103
+#: .\templates\index.html:110
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
-#: .\templates\index.html:111 .\templates\manage\base.html:234
+#: .\templates\index.html:118 .\templates\manage\base.html:234
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
 msgstr "Log uit"
 
-#: .\templates\index.html:122
+#: .\templates\index.html:129
 msgid "This app is best viewed on your phone"
 msgstr "Deze app is het beste te bekijken op uw telefoon"
 
-#: .\templates\index.html:130 .\templates\manage\picklists\detail.html:4
+#: .\templates\index.html:137 .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
 #: .\templates\manage\picklists\list.html:30
 msgid "Picklist"
 msgstr "Picklijst"
 
-#: .\templates\index.html:137
+#: .\templates\index.html:144
 msgid "Product Name"
 msgstr "Productnaam"
 
-#: .\templates\index.html:141 .\templates\manage\orders\form.html:61
+#: .\templates\index.html:148 .\templates\manage\orders\form.html:61
 msgid "Qty"
 msgstr "Aantal"
 
@@ -2757,7 +2769,10 @@ msgstr ""
 msgid ""
 "Reset %%s order(s) to draft? In-progress orders are unclaimed and their "
 "picking progress is discarded. Completed and cancelled orders are skipped."
-msgstr "%%s order(s) terugzetten naar concept? Orders die in behandeling zijn worden vrijgegeven en hun pickvoortgang wordt gewist. Voltooide en geannuleerde orders worden overgeslagen."
+msgstr ""
+"%%s order(s) terugzetten naar concept? Orders die in behandeling zijn worden "
+"vrijgegeven en hun pickvoortgang wordt gewist. Voltooide en geannuleerde "
+"orders worden overgeslagen."
 
 #: .\templates\manage\picklists\detail.html:19
 msgid "Back to List"
@@ -3361,25 +3376,29 @@ msgstr "Deze app is niet beschikbaar zonder internetverbinding"
 msgid "Retry"
 msgstr "Probeer opnieuw"
 
-#: .\templates\partials\scan_confirmation_overlay.html:11
+#: .\templates\partials\scan_confirmation_overlay.html:12
 msgid "Tap to scan next item"
 msgstr "Tik om volgend item te scannen"
 
-#: .\templates\partials\scan_confirmation_overlay.html:26
-msgid "Pick a specific quantity"
-msgstr "Kies een specifiek aantal"
+#: .\templates\partials\scan_confirmation_overlay.html:28
+msgid "How many more did you take?"
+msgstr "Hoeveel heb je er nog gepakt?"
 
-#: .\templates\partials\scan_confirmation_overlay.html:36
+#: .\templates\partials\scan_confirmation_overlay.html:38
 msgid "Confirm"
 msgstr "Bevestigen"
 
-#: .\templates\partials\scan_confirmation_overlay.html:42
+#: .\templates\partials\scan_confirmation_overlay.html:44
 msgid "Pick All"
 msgstr "Alles picken"
 
-#: .\templates\partials\scan_confirmation_overlay.html:45
-msgid "Pick 1"
-msgstr "1 picken"
+#: .\templates\partials\scan_confirmation_overlay.html:47
+msgid "+1 more"
+msgstr "+1 extra"
+
+#: .\templates\partials\scan_confirmation_overlay.html:52
+msgid "Continue scanning"
+msgstr "Doorgaan met scannen"
 
 #: .\templates\queue\_order_cards.html:67
 #: .\templates\queue\_picker_orders.html:59
@@ -4106,3 +4125,9 @@ msgstr "Toegang voor pickers"
 #: .\templates\shopify\app.html:246
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr "Uw magazijnmedewerkers loggen met dit account in op de picker-app:"
+
+#~ msgid "Pick a specific quantity"
+#~ msgstr "Kies een specifiek aantal"
+
+#~ msgid "Pick 1"
+#~ msgstr "1 picken"

@@ -8,6 +8,7 @@
         <p id="overlay-picked-progress" class="pick-progress"></p>
         <div class="pick-progress-track"><div id="overlay-progress-fill" class="pick-progress-fill"></div></div>
         <p id="overlay-remaining-count" class="remaining-count"></p>
+        <p id="overlay-secondary-count" class="pick-secondary"></p>
         <div class="overlay-btn">{% trans "Tap to scan next item" %}</div>
     </div>
 </div>
@@ -20,10 +21,11 @@
         <p id="bulk-overlay-picked-progress" class="pick-progress"></p>
         <div class="pick-progress-track"><div id="bulk-overlay-progress-fill" class="pick-progress-fill"></div></div>
         <p id="bulk-overlay-remaining-count" class="remaining-count"></p>
+        <p id="bulk-overlay-secondary-count" class="pick-secondary"></p>
 
         <div class="bulk-pick-custom-section">
             <div class="bulk-pick-divider">
-                <span>{% trans "Pick a specific quantity" %}</span>
+                <span>{% trans "How many more did you take?" %}</span>
             </div>
 
             <div class="bulk-pick-stepper">
@@ -42,8 +44,12 @@
                 {% trans "Pick All" %}
             </button>
             <button id="bulk-pick-one-btn" class="overlay-btn bulk-pick-one" type="button">
-                {% trans "Pick 1" %}
+                {% trans "+1 more" %}
             </button>
         </div>
+
+        <button id="bulk-continue-btn" class="overlay-btn bulk-continue" type="button">
+            {% trans "Continue scanning" %}
+        </button>
     </div>
 </div>

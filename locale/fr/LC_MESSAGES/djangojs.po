@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 19:37+0200\n"
+"POT-Creation-Date: 2026-09-24 20:04+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -476,7 +476,9 @@ msgstr "Aucune donnée produit disponible hors ligne"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:103
 msgid "This picklist is already in progress. Restart it from the beginning?"
-msgstr "Cette liste de prélèvement est déjà en cours. La recommencer depuis le début ?"
+msgstr ""
+"Cette liste de prélèvement est déjà en cours. La recommencer depuis le "
+"début ?"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:161
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:193
@@ -513,7 +515,7 @@ msgid "Error completing picklist."
 msgstr "Erreur lors de la finalisation de la liste de prélèvement."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:306
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:141
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:159
 msgid "Error getting device fingerprint."
 msgstr "Erreur lors de l'obtention de l'empreinte de l'appareil."
 
@@ -521,31 +523,51 @@ msgstr "Erreur lors de l'obtention de l'empreinte de l'appareil."
 msgid "No product data was found, cannot update list"
 msgstr "Aucune donnée produit trouvée, impossible de mettre à jour la liste."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:329
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:334
 msgid "Picked %(picked)s of %(total)s"
 msgstr "%(picked)s sur %(total)s prélevé(s)"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:333
-msgid "<strong>%(remaining)s</strong> remaining"
-msgstr "<strong>%(remaining)s</strong> restant(s)"
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:340
+msgid "<strong>%(total)s</strong> in total"
+msgstr "<strong>%(total)s</strong> au total"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:410
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:342
+msgid "Take %(remaining)s more"
+msgstr "Prenez-en %(remaining)s de plus"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:345
+msgid "Take <strong>%(remaining)s</strong> more"
+msgstr "Prenez-en <strong>%(remaining)s</strong> de plus"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:347
+msgid "%(total)s in total"
+msgstr "%(total)s au total"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:396
+msgid "All %(total)s taken"
+msgstr "Tous les %(total)s pris"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:397
+msgid "Pick All"
+msgstr "Tout prélever"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:434
 msgid "Could not update bulk product pick."
 msgstr "Impossible de mettre à jour le prélèvement groupé."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:417
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:441
 msgid "Picked %(quantity)s of %(product)s"
 msgstr "%(quantity)s de %(product)s prélevé(s)"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:482
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:515
 msgid "Please enter a valid quantity"
 msgstr "Veuillez entrer une quantité valide"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:581
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:614
 msgid "Cannot load order: product data not available"
 msgstr "Impossible de charger la commande: données produit non disponibles"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:619
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:652
 msgid "Order loaded from queue"
 msgstr "Commande chargée depuis la file"
 
@@ -604,56 +626,55 @@ msgstr "Importance de l'ordre : activée"
 msgid "Order Importance: Disabled"
 msgstr "Importance de l'ordre : désactivée"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:35
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:48
 msgid "New list found, start this list?"
 msgstr "Nouvelle liste trouvée, commencer cette liste ?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:49
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:62
 msgid "Could not determine product/quantity structure in picklist."
 msgstr ""
 "Impossible de déterminer la structure produit/quantité dans la liste de "
 "prélèvement."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:64
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:73
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:82
 msgid "Product row is invalid"
 msgstr "La ligne de produit est invalide"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:69
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:87
 msgid "Product data is empty, cannot update list."
 msgstr "Les données produit sont vides, impossible de mettre à jour la liste."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:81
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:99
 msgid ""
 "Unknown product code(s): %(codes)s. Ask your admin to add them, then scan "
 "the list again."
-msgstr ""
+msgstr "Code(s) produit inconnu(s) : %(codes)s. Demandez à votre administrateur de les ajouter, puis scannez à nouveau la liste."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:102
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:120
 msgid "Picklist added"
 msgstr "Liste de prélèvement ajoutée"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:131
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:136
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:149
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:154
 msgid "Error sending picklist."
 msgstr "Erreur lors de l'envoi de la liste de prélèvement."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:158
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:176
 msgid "Unexpected error while parsing picklist."
 msgstr "Erreur inattendue lors de l'analyse de la liste de prélèvement."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:168
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:186
 msgid "Invalid QR code structure. Please check the format"
 msgstr "Structure de code QR invalide. Veuillez vérifier le format"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:180
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:198
 msgid ""
-"Ambiguous picklist: both fields look like product codes. Please check your "
-"format."
-msgstr ""
-"Liste de prélèvement ambiguë : les deux champs ressemblent à des codes "
-"produits. Veuillez vérifier votre format."
+"Ambiguous picklist: both fields look like product codes. Set the picklist QR "
+"format in your settings to resolve this."
+msgstr "Liste de prélèvement ambiguë : les deux champs ressemblent à des codes produit. Définissez le format du QR de liste dans vos paramètres pour résoudre ce problème."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:183
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:201
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Aucun champ de la ligne de liste de préparation ne correspond à un code "

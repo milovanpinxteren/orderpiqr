@@ -99,6 +99,13 @@
                             <option value="grouped">{% trans "Grouped by product" %}</option>
                         </select>
                     </div>
+                    <div class="settings-row">
+                        <label for="prominent-number-select">{% trans "Popup Number" %}</label>
+                        <select id="prominent-number-select" class="dropdown">
+                            <option value="remaining">{% trans "Remaining to take" %}</option>
+                            <option value="total">{% trans "Total quantity" %}</option>
+                        </select>
+                    </div>
                     <button id="toggle-order-btn" class="btn-toggle">
                         {% trans "Order Importance" %}: {% trans "Enabled" %}
                     </button>
@@ -243,6 +250,16 @@
             // Dispatch custom event to trigger re-sort in camera_page.js module
             document.dispatchEvent(new CustomEvent('picklist-sort-change', {detail: {sortingMode: newValue}}));
         });
+
+        // Popup number: customer setting provides the default, picker can
+        // switch per session. Read at overlay render time — no re-render event.
+        const prominentSelect = document.getElementById("prominent-number-select");
+        if (prominentSelect) {
+            prominentSelect.value = window.SETTINGS?.bulk_pick_prominent_number === "total" ? "total" : "remaining";
+            prominentSelect.addEventListener("change", function () {
+                window.SETTINGS.bulk_pick_prominent_number = prominentSelect.value;
+            });
+        }
 
         // List view: customer setting provides the default, picker can switch per session
         const viewSelect = document.getElementById("picklist-view-select");

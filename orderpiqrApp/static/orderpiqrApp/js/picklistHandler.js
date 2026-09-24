@@ -11,14 +11,27 @@ export function parsePicklistRow(row) {
     for (const separator of separators) {
         const parts = row.split(separator);
         if (parts.length === 2) {
-            const quantity = parseInt(parts[0].trim(), 10);
-            const productCode = parts[1].trim();
-            if (!isNaN(quantity)) {
-                return [quantity, productCode];
-            }
+            // Which field is the quantity is decided by the caller (customer
+            // setting or auto-detection) — return both fields as strings.
+            return [parts[0].trim(), parts[1].trim()];
         }
     }
     return null;  // If row can't be parsed, return null
+}
+
+// The customer can pin the column order of picklist rows
+// (picklist_field_order setting); "auto" falls back to guessing against
+// known product codes, which fails when a quantity is itself a valid
+// product code.
+function resolveFieldOrder(exampleRow, productData) {
+    switch (window.SETTINGS?.picklist_field_order) {
+        case 'quantity_first':
+            return {productIndex: 1, quantityIndex: 0};
+        case 'product_first':
+            return {productIndex: 0, quantityIndex: 1};
+        default:
+            return determineFieldOrder(exampleRow, productData);
+    }
 }
 
 
@@ -44,7 +57,7 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
             const rows = code.split("\n");  // Split the picklist into rows (assuming multi-line)
             // Skip the first row (orderID) and process the remaining rows
             const validRows = rows.slice(1).filter(row => row.trim() !== "");  // Remove empty rows
-            const fieldOrder = determineFieldOrder(validRows[0], productData);
+            const fieldOrder = resolveFieldOrder(validRows[0], productData);
             if (!fieldOrder) {
                 showNotification(gettext("Could not determine product/quantity structure in picklist."), true);
                 isProcessingPicklist = false;
@@ -55,7 +68,12 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
                 const parts = parsePicklistRow(row);  // Parse each row
                 if (parts && parts.length === 2) {
                     const productCode = String(parts[fieldOrder.productIndex]).trim();
-                    const quantity = parseInt(parts[fieldOrder.quantityIndex]);
+                    const quantity = parseInt(parts[fieldOrder.quantityIndex], 10);
+                    if (isNaN(quantity) || quantity < 1) {
+                        showNotification(gettext("Product row is invalid"), true);
+                        console.log("Skipping row with invalid quantity:", row);
+                        continue;
+                    }
                     // Add the product code multiple times based on quantity
                     for (let j = 0; j < quantity; j++) {
                         currentPicklist.push(productCode);
@@ -177,7 +195,7 @@ function determineFieldOrder(exampleRow, productData) {
     } else if (secondIsProduct && !firstIsProduct) {
         return {productIndex: 1, quantityIndex: 0};
     } else if (firstIsProduct && secondIsProduct) {
-        showNotification(gettext("Ambiguous picklist: both fields look like product codes. Please check your format."), true);
+        showNotification(gettext("Ambiguous picklist: both fields look like product codes. Set the picklist QR format in your settings to resolve this."), true);
         return null;  // Ambiguous or invalid
     } else {
         showNotification(gettext("Neither field in the picklist row matches a known product code."), true);

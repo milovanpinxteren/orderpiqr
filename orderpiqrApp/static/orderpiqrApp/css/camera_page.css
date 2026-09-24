@@ -546,12 +546,20 @@ button:hover {
 .remaining-count {
     font-size: 1.1rem;
     color: #666;
-    margin: 0 0 24px;
+    margin: 0 0 4px;
 }
 
 .remaining-count strong {
     color: #1976D2;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+}
+
+/* Secondary number line under the prominent one ("15 in total" /
+   "Take 14 more" depending on the popup-number preference). */
+.pick-secondary {
+    font-size: 0.95rem;
+    color: #888;
+    margin: 0 0 24px;
 }
 
 .overlay-btn {
@@ -707,6 +715,16 @@ button:hover {
 
 .bulk-pick-one:hover {
     background-color: #444;
+}
+
+/* Plain exit: close the bulk overlay without registering a pick. */
+.bulk-continue {
+    background: transparent;
+    color: #555;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    padding: 12px 32px;
+    font-size: 1rem;
 }
 
 .bulk-pick-divider {

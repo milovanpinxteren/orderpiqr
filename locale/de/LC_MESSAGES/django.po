@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 19:47+0200\n"
+"POT-Creation-Date: 2026-09-24 20:04+0200\n"
 "PO-Revision-Date: 2025-05-31 14:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Deutsch <de@li.org>\n"
@@ -137,7 +137,7 @@ msgstr "Nachricht"
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:45 .\orderpiqrApp\models\products.py:21
-#: .\templates\index.html:143
+#: .\templates\index.html:150
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -155,7 +155,7 @@ msgstr "Änderung"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
 #: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
-#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:117
+#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:124
 #: .\templates\manage\inventory\logs.html:80
 #: .\templates\manage\products\form.html:123
 #: .\templates\manage\products\form.html:163
@@ -845,14 +845,14 @@ msgstr "Kundenspezifischer Einstellungswert"
 msgid "Customer setting values"
 msgstr "Kundenspezifische Einstellungswerte"
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:136
+#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:143
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Produktcode"
 
 #: .\orderpiqrApp\models\products.py:11
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:91
-#: .\templates\index.html:138 .\templates\index.html:142
+#: .\templates\index.html:145 .\templates\index.html:149
 #: .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:100
 #: .\templates\manage\products\form.html:37
@@ -1249,7 +1249,9 @@ msgstr "{count} Bestellung(en) auf Entwurf zurückgesetzt."
 #: .\orderpiqrApp\views\manage_views.py:701
 #, python-brace-format
 msgid "{count} order(s) skipped (already draft, completed or cancelled)."
-msgstr "{count} Bestellung(en) übersprungen (bereits Entwurf, abgeschlossen oder storniert)."
+msgstr ""
+"{count} Bestellung(en) übersprungen (bereits Entwurf, abgeschlossen oder "
+"storniert)."
 
 #: .\orderpiqrApp\views\manage_views.py:730
 #: .\orderpiqrApp\views\manage_views.py:804
@@ -1722,33 +1724,45 @@ msgid "Grouped by product"
 msgstr "Nach Produkt gruppiert"
 
 #: .\templates\index.html:103
+msgid "Popup Number"
+msgstr "Zahl im Popup"
+
+#: .\templates\index.html:105
+msgid "Remaining to take"
+msgstr "Noch zu nehmen"
+
+#: .\templates\index.html:106
+msgid "Total quantity"
+msgstr "Gesamtmenge"
+
+#: .\templates\index.html:110
 msgid "Order Importance"
 msgstr "Reihenfolge beachten"
 
-#: .\templates\index.html:103
+#: .\templates\index.html:110
 msgid "Enabled"
 msgstr "Aktiviert"
 
-#: .\templates\index.html:111 .\templates\manage\base.html:234
+#: .\templates\index.html:118 .\templates\manage\base.html:234
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
 msgstr "Abmelden"
 
-#: .\templates\index.html:122
+#: .\templates\index.html:129
 msgid "This app is best viewed on your phone"
 msgstr "Diese App ist am besten auf dem Handy zu nutzen"
 
-#: .\templates\index.html:130 .\templates\manage\picklists\detail.html:4
+#: .\templates\index.html:137 .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
 #: .\templates\manage\picklists\list.html:30
 msgid "Picklist"
 msgstr "Pickliste"
 
-#: .\templates\index.html:137
+#: .\templates\index.html:144
 msgid "Product Name"
 msgstr "Produktname"
 
-#: .\templates\index.html:141 .\templates\manage\orders\form.html:61
+#: .\templates\index.html:148 .\templates\manage\orders\form.html:61
 msgid "Qty"
 msgstr "Menge"
 
@@ -2784,7 +2798,10 @@ msgstr ""
 msgid ""
 "Reset %%s order(s) to draft? In-progress orders are unclaimed and their "
 "picking progress is discarded. Completed and cancelled orders are skipped."
-msgstr "%%s Bestellung(en) auf Entwurf zurücksetzen? Bestellungen in Bearbeitung werden freigegeben und ihr Kommissionierfortschritt wird verworfen. Abgeschlossene und stornierte Bestellungen werden übersprungen."
+msgstr ""
+"%%s Bestellung(en) auf Entwurf zurücksetzen? Bestellungen in Bearbeitung "
+"werden freigegeben und ihr Kommissionierfortschritt wird verworfen. "
+"Abgeschlossene und stornierte Bestellungen werden übersprungen."
 
 #: .\templates\manage\picklists\detail.html:19
 msgid "Back to List"
@@ -3391,25 +3408,29 @@ msgstr "Entschuldigung, der Inhalt ist im Moment nicht verfügbar."
 msgid "Retry"
 msgstr "Erneut versuchen"
 
-#: .\templates\partials\scan_confirmation_overlay.html:11
+#: .\templates\partials\scan_confirmation_overlay.html:12
 msgid "Tap to scan next item"
 msgstr "Tippen, um nächsten Artikel zu scannen"
 
-#: .\templates\partials\scan_confirmation_overlay.html:26
-msgid "Pick a specific quantity"
-msgstr "Bestimmte Menge auswählen"
+#: .\templates\partials\scan_confirmation_overlay.html:28
+msgid "How many more did you take?"
+msgstr "Wie viele hast du noch genommen?"
 
-#: .\templates\partials\scan_confirmation_overlay.html:36
+#: .\templates\partials\scan_confirmation_overlay.html:38
 msgid "Confirm"
 msgstr "Bestätigen"
 
-#: .\templates\partials\scan_confirmation_overlay.html:42
+#: .\templates\partials\scan_confirmation_overlay.html:44
 msgid "Pick All"
 msgstr "Alle picken"
 
-#: .\templates\partials\scan_confirmation_overlay.html:45
-msgid "Pick 1"
-msgstr "1 picken"
+#: .\templates\partials\scan_confirmation_overlay.html:47
+msgid "+1 more"
+msgstr "+1 mehr"
+
+#: .\templates\partials\scan_confirmation_overlay.html:52
+msgid "Continue scanning"
+msgstr "Weiter scannen"
 
 #: .\templates\queue\_order_cards.html:67
 #: .\templates\queue\_picker_orders.html:59
@@ -4147,3 +4168,9 @@ msgstr "Kommissionierer-Zugang"
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr ""
 "Ihre Lagermitarbeiter melden sich mit diesem Konto in der Picker-App an:"
+
+#~ msgid "Pick a specific quantity"
+#~ msgstr "Bestimmte Menge auswählen"
+
+#~ msgid "Pick 1"
+#~ msgstr "1 picken"

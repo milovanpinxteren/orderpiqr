@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 19:37+0200\n"
+"POT-Creation-Date: 2026-09-24 20:04+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -506,7 +506,7 @@ msgid "Error completing picklist."
 msgstr "Błąd podczas kończenia listy kompletacyjnej."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:306
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:141
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:159
 msgid "Error getting device fingerprint."
 msgstr "Błąd podczas pobierania odcisku urządzenia."
 
@@ -514,31 +514,51 @@ msgstr "Błąd podczas pobierania odcisku urządzenia."
 msgid "No product data was found, cannot update list"
 msgstr "Nie znaleziono danych produktu, nie można zaktualizować listy."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:329
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:334
 msgid "Picked %(picked)s of %(total)s"
 msgstr "Pobrano %(picked)s z %(total)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:333
-msgid "<strong>%(remaining)s</strong> remaining"
-msgstr "Pozostało: <strong>%(remaining)s</strong>"
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:340
+msgid "<strong>%(total)s</strong> in total"
+msgstr "<strong>%(total)s</strong> łącznie"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:410
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:342
+msgid "Take %(remaining)s more"
+msgstr "Weź jeszcze %(remaining)s"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:345
+msgid "Take <strong>%(remaining)s</strong> more"
+msgstr "Weź jeszcze <strong>%(remaining)s</strong>"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:347
+msgid "%(total)s in total"
+msgstr "%(total)s łącznie"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:396
+msgid "All %(total)s taken"
+msgstr "Wzięto wszystkie: %(total)s"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:397
+msgid "Pick All"
+msgstr "Pobierz wszystko"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:434
 msgid "Could not update bulk product pick."
 msgstr "Nie udało się zaktualizować zbiorczego pobrania."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:417
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:441
 msgid "Picked %(quantity)s of %(product)s"
 msgstr "Pobrano %(quantity)s z %(product)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:482
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:515
 msgid "Please enter a valid quantity"
 msgstr "Wprowadź prawidłową ilość"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:581
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:614
 msgid "Cannot load order: product data not available"
 msgstr "Nie można załadować zamówienia: dane produktu niedostępne"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:619
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:652
 msgid "Order loaded from queue"
 msgstr "Zamówienie załadowane z kolejki"
 
@@ -597,55 +617,54 @@ msgstr "Kolejność produktów: Włączona"
 msgid "Order Importance: Disabled"
 msgstr "Kolejność produktów: Wyłączona"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:35
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:48
 msgid "New list found, start this list?"
 msgstr "Znaleziono nową listę, rozpocząć ją?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:49
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:62
 msgid "Could not determine product/quantity structure in picklist."
 msgstr ""
 "Nie udało się określić struktury produktów/ilości w liście kompletacyjnej."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:64
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:73
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:82
 msgid "Product row is invalid"
 msgstr "Wiersz produktu jest nieprawidłowy"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:69
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:87
 msgid "Product data is empty, cannot update list."
 msgstr "Brak danych produktu, nie można zaktualizować listy."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:81
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:99
 msgid ""
 "Unknown product code(s): %(codes)s. Ask your admin to add them, then scan "
 "the list again."
-msgstr ""
+msgstr "Nieznane kody produktów: %(codes)s. Poproś administratora o ich dodanie, a następnie zeskanuj listę ponownie."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:102
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:120
 msgid "Picklist added"
 msgstr "Lista kompletacyjna dodana"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:131
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:136
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:149
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:154
 msgid "Error sending picklist."
 msgstr "Błąd podczas wysyłania listy kompletacyjnej."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:158
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:176
 msgid "Unexpected error while parsing picklist."
 msgstr "Nieoczekiwany błąd podczas przetwarzania listy kompletacyjnej."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:168
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:186
 msgid "Invalid QR code structure. Please check the format"
 msgstr "Nieprawidłowa struktura kodu QR. Sprawdź format"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:180
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:198
 msgid ""
-"Ambiguous picklist: both fields look like product codes. Please check your "
-"format."
-msgstr ""
-"Niejednoznaczna lista kompletacyjna: oba pola wyglądają jak kody produktów. "
-"Sprawdź swój format."
+"Ambiguous picklist: both fields look like product codes. Set the picklist QR "
+"format in your settings to resolve this."
+msgstr "Niejednoznaczna lista kompletacyjna: oba pola wyglądają jak kody produktów. Ustaw format kodu QR listy w ustawieniach, aby to rozwiązać."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:183
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:201
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Żadne pole w wierszu listy kompletacji nie odpowiada znanemu kodowi produktu."

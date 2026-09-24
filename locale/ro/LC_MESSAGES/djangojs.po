@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 19:37+0200\n"
+"POT-Creation-Date: 2026-09-24 20:04+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -503,7 +503,7 @@ msgid "Error completing picklist."
 msgstr "Eroare la finalizarea listei de preluare."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:306
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:141
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:159
 msgid "Error getting device fingerprint."
 msgstr "Eroare la obținerea amprentei dispozitivului."
 
@@ -511,31 +511,51 @@ msgstr "Eroare la obținerea amprentei dispozitivului."
 msgid "No product data was found, cannot update list"
 msgstr "Nu au fost găsite date despre produse, nu se poate actualiza lista."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:329
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:334
 msgid "Picked %(picked)s of %(total)s"
 msgstr "%(picked)s din %(total)s preluate"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:333
-msgid "<strong>%(remaining)s</strong> remaining"
-msgstr "Au mai rămas <strong>%(remaining)s</strong>"
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:340
+msgid "<strong>%(total)s</strong> in total"
+msgstr "<strong>%(total)s</strong> în total"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:410
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:342
+msgid "Take %(remaining)s more"
+msgstr "Mai ia %(remaining)s"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:345
+msgid "Take <strong>%(remaining)s</strong> more"
+msgstr "Mai ia <strong>%(remaining)s</strong>"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:347
+msgid "%(total)s in total"
+msgstr "%(total)s în total"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:396
+msgid "All %(total)s taken"
+msgstr "Toate cele %(total)s luate"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:397
+msgid "Pick All"
+msgstr "Preia tot"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:434
 msgid "Could not update bulk product pick."
 msgstr "Nu s-a putut actualiza preluarea în bloc."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:417
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:441
 msgid "Picked %(quantity)s of %(product)s"
 msgstr "%(quantity)s din %(product)s preluate"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:482
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:515
 msgid "Please enter a valid quantity"
 msgstr "Introduceți o cantitate validă"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:581
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:614
 msgid "Cannot load order: product data not available"
 msgstr "Nu se poate încărca comanda: datele produsului nu sunt disponibile"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:619
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:652
 msgid "Order loaded from queue"
 msgstr "Comandă încărcată din coadă"
 
@@ -594,55 +614,54 @@ msgstr "Importanța ordinii: Activată"
 msgid "Order Importance: Disabled"
 msgstr "Importanța ordinii: Dezactivată"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:35
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:48
 msgid "New list found, start this list?"
 msgstr "Listă nouă găsită, începi această listă?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:49
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:62
 msgid "Could not determine product/quantity structure in picklist."
 msgstr ""
 "Nu s-a putut determina structura produs/cantitate din lista de preluare."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:64
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:73
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:82
 msgid "Product row is invalid"
 msgstr "Rândul de produs este invalid"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:69
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:87
 msgid "Product data is empty, cannot update list."
 msgstr "Datele produsului sunt goale, nu se poate actualiza lista."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:81
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:99
 msgid ""
 "Unknown product code(s): %(codes)s. Ask your admin to add them, then scan "
 "the list again."
-msgstr ""
+msgstr "Cod(uri) de produs necunoscut(e): %(codes)s. Cere administratorului să le adauge, apoi scanează lista din nou."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:102
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:120
 msgid "Picklist added"
 msgstr "Listă de preluare adăugată"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:131
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:136
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:149
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:154
 msgid "Error sending picklist."
 msgstr "Eroare la trimiterea listei de preluare."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:158
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:176
 msgid "Unexpected error while parsing picklist."
 msgstr "Eroare neașteptată la interpretarea listei de preluare."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:168
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:186
 msgid "Invalid QR code structure. Please check the format"
 msgstr "Structură invalidă a codului QR. Vă rugăm să verificați formatul"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:180
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:198
 msgid ""
-"Ambiguous picklist: both fields look like product codes. Please check your "
-"format."
-msgstr ""
-"Listă de preluare ambiguă: ambele câmpuri arată ca niște coduri de produs. "
-"Vă rugăm să verificați formatul."
+"Ambiguous picklist: both fields look like product codes. Set the picklist QR "
+"format in your settings to resolve this."
+msgstr "Listă de preluare ambiguă: ambele câmpuri par coduri de produs. Setează formatul QR al listei în setări pentru a rezolva."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:183
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:201
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Niciun câmp din rândul listei de ridicare nu corespunde unui cod de produs "

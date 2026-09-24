@@ -322,16 +322,31 @@ const overlayProductName = document.getElementById('overlay-product-name');
 const overlayPickedProgress = document.getElementById('overlay-picked-progress');
 const overlayProgressFill = document.getElementById('overlay-progress-fill');
 const overlayRemainingCount = document.getElementById('overlay-remaining-count');
+const overlaySecondaryCount = document.getElementById('overlay-secondary-count');
 
-// Fill the "Picked X of Y" line, progress bar and "Z remaining" line of an overlay
-function renderPickProgress(progressEl, fillEl, remainingEl, remainingCount, totalCount) {
+// Fill the "Picked X of Y" line, progress bar and the prominent/secondary
+// number lines of an overlay. The prominent number is a customer/picker
+// preference (bulk_pick_prominent_number): "remaining" emphasizes how many
+// MORE to take, "total" emphasizes the full line quantity — both numbers are
+// always shown so neither reading is off by one.
+function renderPickProgress(progressEl, fillEl, prominentEl, secondaryEl, remainingCount, totalCount) {
     const pickedCount = Math.max(totalCount - remainingCount, 0);
     progressEl.textContent = gettext("Picked %(picked)s of %(total)s")
         .replace("%(picked)s", pickedCount)
         .replace("%(total)s", totalCount);
     fillEl.style.width = totalCount > 0 ? `${(pickedCount / totalCount) * 100}%` : '0%';
-    remainingEl.innerHTML = gettext("<strong>%(remaining)s</strong> remaining")
-        .replace("%(remaining)s", remainingCount);
+
+    if (window.SETTINGS?.bulk_pick_prominent_number === 'total') {
+        prominentEl.innerHTML = gettext("<strong>%(total)s</strong> in total")
+            .replace("%(total)s", totalCount);
+        secondaryEl.textContent = gettext("Take %(remaining)s more")
+            .replace("%(remaining)s", remainingCount);
+    } else {
+        prominentEl.innerHTML = gettext("Take <strong>%(remaining)s</strong> more")
+            .replace("%(remaining)s", remainingCount);
+        secondaryEl.textContent = gettext("%(total)s in total")
+            .replace("%(total)s", totalCount);
+    }
 }
 
 // Event listener for full overlay tap
@@ -343,7 +358,7 @@ overlay.addEventListener('click', function () {
 
 function showConfirmationOverlay(productDescription, remainingCount, totalCount) {
     overlayProductName.textContent = productDescription;
-    renderPickProgress(overlayPickedProgress, overlayProgressFill, overlayRemainingCount, remainingCount, totalCount);
+    renderPickProgress(overlayPickedProgress, overlayProgressFill, overlayRemainingCount, overlaySecondaryCount, remainingCount, totalCount);
     overlay.classList.remove('hidden');
 }
 
@@ -357,7 +372,9 @@ const bulkOverlayProductName = document.getElementById('bulk-overlay-product-nam
 const bulkOverlayPickedProgress = document.getElementById('bulk-overlay-picked-progress');
 const bulkOverlayProgressFill = document.getElementById('bulk-overlay-progress-fill');
 const bulkOverlayRemainingCount = document.getElementById('bulk-overlay-remaining-count');
+const bulkOverlaySecondaryCount = document.getElementById('bulk-overlay-secondary-count');
 const bulkConfirmAllBtn = document.getElementById('bulk-confirm-all-btn');
+const bulkContinueBtn = document.getElementById('bulk-continue-btn');
 const bulkConfirmQtyBtn = document.getElementById('bulk-confirm-qty-btn');
 const bulkPickOneBtn = document.getElementById('bulk-pick-one-btn');
 const bulkPickQuantityInput = document.getElementById('bulk-pick-quantity');
@@ -370,7 +387,14 @@ function showBulkPickOverlay(productDescription, productCode, remainingCount, to
     bulkPickContext = { productCode, remainingCount, totalCount, productDescription };
 
     bulkOverlayProductName.textContent = productDescription;
-    renderPickProgress(bulkOverlayPickedProgress, bulkOverlayProgressFill, bulkOverlayRemainingCount, remainingCount, totalCount);
+    renderPickProgress(bulkOverlayPickedProgress, bulkOverlayProgressFill, bulkOverlayRemainingCount, bulkOverlaySecondaryCount, remainingCount, totalCount);
+
+    // "All 15 taken" confirms the picker's physical total for the line
+    // (registers the remaining picks); fall back to a generic label when the
+    // total is unknown.
+    bulkConfirmAllBtn.textContent = totalCount > 0
+        ? gettext("All %(total)s taken").replace("%(total)s", totalCount)
+        : gettext("Pick All");
 
     bulkPickQuantityInput.value = remainingCount;
     bulkPickQuantityInput.max = remainingCount;
@@ -473,6 +497,15 @@ bulkConfirmAllBtn.addEventListener('click', function () {
 bulkPickOneBtn.addEventListener('click', function () {
     if (!bulkPickContext) return;
     executeBulkPick(bulkPickContext.productCode, 1, true);
+});
+
+// Close without registering anything — for pickers who scan each item
+// individually. ("+1 more" registers an extra pick, so it must not be the
+// only way out of this overlay.)
+bulkContinueBtn.addEventListener('click', function () {
+    hideBulkPickOverlay();
+    isProcessingScan = false;
+    resumeScanner();
 });
 
 bulkConfirmQtyBtn.addEventListener('click', function () {
