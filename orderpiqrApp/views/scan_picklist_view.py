@@ -103,10 +103,25 @@ def scan_picklist(request):
             # If order exists and is queued, lock it
             if order:
                 if order.status == 'in_progress':
-                    return JsonResponse({
-                        'status': 'error',
-                        'message': 'This order is already being picked by another device'
-                    }, status=409)
+                    # Only block when a *different* device holds the active
+                    # picklist. The same device re-scanning its own order is a
+                    # restart (phone held steady over the QR, or the app
+                    # reloaded mid-pick) and falls through to the restart
+                    # logic below.
+                    # Matched on picklist_code (unique per customer), not the
+                    # order FK — a picklist that predates the queue claim may
+                    # have order=None.
+                    held_by_other = PickList.objects.filter(
+                        picklist_code=order_id,
+                        customer=device.customer,
+                        pick_started=True,
+                        successful__isnull=True,
+                    ).exclude(device=device).exists()
+                    if held_by_other:
+                        return JsonResponse({
+                            'status': 'error',
+                            'message': 'This order is already being picked by another device'
+                        }, status=409)
                 elif order.status == 'completed':
                     return JsonResponse({
                         'status': 'error',

@@ -24,14 +24,15 @@ export function parsePicklistRow(row) {
 
 let isProcessingPicklist = false;  // Flag to track if a picklist is being processed
 
-export function handlePicklist(code, currentPicklist, productData) {
+export function handlePicklist(code, currentPicklist, productData, skipConfirm = false) {
     try {
         if (isProcessingPicklist) {
             console.log("Picklist is already being processed, ignoring duplicate scan.");
             return currentPicklist;  // Do nothing if a picklist is already being processed
         }
 
-        const confirmStart = confirm(gettext("New list found, start this list?"));
+        // skipConfirm: the caller already asked (restart of the active list)
+        const confirmStart = skipConfirm || confirm(gettext("New list found, start this list?"));
 
         if (confirmStart) {
             isProcessingPicklist = true;  // Set flag to true to indicate processing has started

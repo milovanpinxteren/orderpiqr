@@ -12,6 +12,14 @@ export let productData;
 // top-level (near other state)
 let lastPickTs = null;
 
+// The scanner keeps firing while the phone is held over the same picklist QR.
+// Re-starting the list makes the server reject it as already claimed, wiping
+// the picker's progress — so re-scans of the active list are ignored, and an
+// identical picklist payload is ignored until the phone has been away from
+// the code for a few seconds.
+let lastPicklistScan = {code: null, ts: 0};
+const PICKLIST_RESCAN_COOLDOWN_MS = 4000;
+
 if (navigator.onLine) {
     // ✅ Online: trust server-rendered data
     const el = document.getElementById("product-data");
@@ -73,7 +81,36 @@ initializeScanner((scannedCode) => {
     isProcessingScan = true;
     console.log("scanned code", scannedCode);
     if (isPicklist(scannedCode)) {
-        const result = handlePicklist(scannedCode, currentPicklist, productData);
+        const scannedOrderID = String(scannedCode).split("\n")[0].trim();
+        const isActiveList = currentPicklist.length > 0 && currentOrderID &&
+            scannedOrderID === String(currentOrderID).trim();
+        const seenRecently = scannedCode === lastPicklistScan.code &&
+            Date.now() - lastPicklistScan.ts < PICKLIST_RESCAN_COOLDOWN_MS;
+        lastPicklistScan.code = scannedCode;
+        lastPicklistScan.ts = Date.now();
+
+        if (seenRecently) {
+            // The phone never left the QR — the scanner just re-fired.
+            isProcessingScan = false;
+            return;
+        }
+
+        let skipConfirm = false;
+        if (isActiveList) {
+            // Deliberate re-scan of the list already on screen (the phone was
+            // away from the code for a while). Restarting resets all recorded
+            // progress, so ask first.
+            const restart = confirm(gettext("This picklist is already in progress. Restart it from the beginning?"));
+            lastPicklistScan.ts = Date.now();  // confirm() blocks JS; restart the cooldown once it closes
+            if (!restart) {
+                isProcessingScan = false;
+                return;
+            }
+            skipConfirm = true;
+        }
+
+        const result = handlePicklist(scannedCode, currentPicklist, productData, skipConfirm);
+        lastPicklistScan.ts = Date.now();  // the "start list?" dialog blocks JS too
         if (!result) {
             console.warn("Picklist processing failed, resetting scan flag");
             isProcessingScan = false;

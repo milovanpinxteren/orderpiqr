@@ -84,6 +84,41 @@ class ScanPicklistTests(ScanEndpointTestCase):
         # becomes unclaimable by anyone.
         self.assertEqual(order.status, 'queued')
 
+    def test_rescan_by_same_device_restarts_instead_of_409(self):
+        # Regression: a steady phone re-scans the picklist QR a second later;
+        # the order was already in_progress from the first scan and the 409
+        # made the client wipe the picker's list.
+        order = Order.objects.create(
+            customer=self.customer, order_code='ORD-1', status='queued', queue_position=1)
+        OrderLine.objects.create(order=order, product=self.smoothie, quantity=1)
+
+        self.scan(['SMOOTHIE-1'])
+        response = self.scan(['SMOOTHIE-1'])
+
+        self.assertEqual(response.status_code, 200)
+        picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
+        self.assertEqual(ProductPick.objects.filter(picklist=picklist).count(), 1)
+
+    def test_scan_of_order_held_by_other_device_is_rejected(self):
+        order = Order.objects.create(
+            customer=self.customer, order_code='ORD-1', status='queued', queue_position=1)
+        OrderLine.objects.create(order=order, product=self.smoothie, quantity=1)
+        self.scan(['SMOOTHIE-1'])
+
+        other_device = Device.objects.create(
+            user=self.picker, customer=self.customer, device_fingerprint='other-fp',
+            name='Other phone', description='', last_login=timezone.now(), lists_picked=0)
+        response = self.client.post('/orderpiqr/scan-picklist', data=json.dumps({
+            'orderID': 'ORD-1',
+            'picklist': ['SMOOTHIE-1'],
+            'deviceFingerprint': 'other-fp',
+        }), content_type='application/json')
+
+        self.assertEqual(response.status_code, 409)
+        # The first device's picklist must survive the rejected takeover.
+        picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
+        self.assertEqual(picklist.device, self.device)
+
     def test_unknown_product_from_another_customer_is_still_unknown(self):
         other = Customer.objects.create(name='Other company')
         Product.objects.create(customer=other, code='OTHER-1', description='Not ours')

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 09:10+0200\n"
+"POT-Creation-Date: 2026-09-24 19:37+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,8 +47,7 @@ msgstr "Kunde — Unternehmensadministratoren sehen nur ihre eigenen Geräte."
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:62
 msgid "Add a new device here when granting scanning access."
 msgstr ""
-"Fügen Sie hier ein neues Gerät hinzu, wenn Sie Scan-Zugriff gewähren "
-"möchten."
+"Fügen Sie hier ein neues Gerät hinzu, wenn Sie Scan-Zugriff gewähren möchten."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:67
 msgid "Search devices by name or description."
@@ -62,42 +61,42 @@ msgstr "Öffnen Sie ein Gerät, um die Details anzuzeigen."
 msgid ""
 "<h1>🎉 All set! You’ve completed the Orderpiqr tour.</h1><br>        Next "
 "steps:<br>        • <b>Add your products</b> in the admin panel.<br>        "
-"• <b>Create an order</b> and <b>generate a PDF picklist</b> for your "
-"team.<br>        • On your phone, visit <a href='https://app.orderpiqr.nl' "
+"• <b>Create an order</b> and <b>generate a PDF picklist</b> for your team."
+"<br>        • On your phone, visit <a href='https://app.orderpiqr.nl' "
 "target='_blank'>app.orderpiqr.nl</a>         and log in with your order "
 "picker account.<br>        • <b>Scan the QR code</b> on your newly created "
-"picklist.<br>        • Start picking your first order!<br><br>"
-"                <h2>Important information</h2>        We recommend using "
-"<b>Google Chrome</b> for full functionality — you can also         "
-"<b>install the web app</b> directly from your browser for quick "
-"access.<br><br>        On your phone, you can adjust settings such as "
-"<b>language</b>, <b>picking order</b>,         and <b>sorting order</b>. If "
-"you’d like us to set up default preferences for you, just let us "
-"know.<br><br>        If you have any questions or would like additional "
-"features, email         <a "
-"href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> or schedule a call via"
-"         <a href='https://www.orderpiqr.nl' "
+"picklist.<br>        • Start picking your first order!"
+"<br><br>                <h2>Important information</h2>        We recommend "
+"using <b>Google Chrome</b> for full functionality — you can also         "
+"<b>install the web app</b> directly from your browser for quick access."
+"<br><br>        On your phone, you can adjust settings such as <b>language</"
+"b>, <b>picking order</b>,         and <b>sorting order</b>. If you’d like us "
+"to set up default preferences for you, just let us know.<br><br>        If "
+"you have any questions or would like additional features, email         <a "
+"href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> or schedule a call "
+"via         <a href='https://www.orderpiqr.nl' "
 "target='_blank'>www.orderpiqr.nl</a>.<br><br>        Your first <b>50 "
-"picklists per month are free</b>! After that, you’ll receive a notification"
-"         before any billing begins — no subscriptions, no hidden costs."
+"picklists per month are free</b>! After that, you’ll receive a "
+"notification         before any billing begins — no subscriptions, no hidden "
+"costs."
 msgstr ""
-"<h1>🎉 Alles erledigt! Sie haben die Orderpiqr-Tour "
-"abgeschlossen.</h1><br>Nächste Schritte:<br>• <b>Fügen Sie Ihre Produkte</b>"
-" im Admin-Bereich hinzu.<br>• <b>Erstellen Sie eine Bestellung</b> und "
-"<b>generieren Sie eine PDF-Pickliste</b> für Ihr Team.<br>• Öffnen Sie auf "
-"Ihrem Smartphone <a href='https://app.orderpiqr.nl' "
+"<h1>🎉 Alles erledigt! Sie haben die Orderpiqr-Tour abgeschlossen.</"
+"h1><br>Nächste Schritte:<br>• <b>Fügen Sie Ihre Produkte</b> im Admin-"
+"Bereich hinzu.<br>• <b>Erstellen Sie eine Bestellung</b> und <b>generieren "
+"Sie eine PDF-Pickliste</b> für Ihr Team.<br>• Öffnen Sie auf Ihrem "
+"Smartphone <a href='https://app.orderpiqr.nl' "
 "target='_blank'>app.orderpiqr.nl</a> und melden Sie sich mit Ihrem Picker-"
 "Konto an.<br>• <b>Scannen Sie den QR-Code</b> auf Ihrer neu erstellten "
-"Pickliste.<br>• Beginnen Sie mit dem Picken Ihrer ersten "
-"Bestellung!<br><br><h2>Wichtige Informationen</h2>Wir empfehlen <b>Google "
-"Chrome</b> für die volle Funktionalität. Sie können die <b>Web-App</b> "
-"direkt aus Ihrem Browser installieren, um schnellen Zugriff zu "
-"haben.<br><br>Auf Ihrem Smartphone können Sie Einstellungen wie "
-"<b>Sprache</b>, <b>Pick-Reihenfolge</b> und <b>Sortierung</b> anpassen. Wenn"
-" wir Standardpräferenzen für Sie einrichten sollen, lassen Sie es uns "
-"wissen.<br><br>Bei Fragen oder wenn Sie zusätzliche Funktionen wünschen, "
-"schreiben Sie an <a href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> "
-"oder vereinbaren Sie einen Termin über <a href='https://www.orderpiqr.nl' "
+"Pickliste.<br>• Beginnen Sie mit dem Picken Ihrer ersten Bestellung!"
+"<br><br><h2>Wichtige Informationen</h2>Wir empfehlen <b>Google Chrome</b> "
+"für die volle Funktionalität. Sie können die <b>Web-App</b> direkt aus Ihrem "
+"Browser installieren, um schnellen Zugriff zu haben.<br><br>Auf Ihrem "
+"Smartphone können Sie Einstellungen wie <b>Sprache</b>, <b>Pick-Reihenfolge</"
+"b> und <b>Sortierung</b> anpassen. Wenn wir Standardpräferenzen für Sie "
+"einrichten sollen, lassen Sie es uns wissen.<br><br>Bei Fragen oder wenn Sie "
+"zusätzliche Funktionen wünschen, schreiben Sie an <a "
+"href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> oder vereinbaren Sie "
+"einen Termin über <a href='https://www.orderpiqr.nl' "
 "target='_blank'>www.orderpiqr.nl</a>.<br><br>Ihre ersten <b>50 Picklisten "
 "pro Monat sind kostenlos</b>! Danach erhalten Sie eine Benachrichtigung, "
 "bevor eine Abrechnung beginnt – keine Abos, keine versteckten Kosten."
@@ -143,10 +142,9 @@ msgid ""
 "are replaced)."
 msgstr ""
 "Importieren Sie Bestellungen in großen Mengen über CSV/XLSX. Erforderliche "
-"Spalten: <code>order_code</code>, <code>product_code</code>, "
-"<code>quantity</code>. Unbekannte Produktcodes werden abgelehnt. Vorhandene "
-"Bestellungen mit demselben Code werden überschrieben (ihre Positionen werden"
-" ersetzt)."
+"Spalten: <code>order_code</code>, <code>product_code</code>, <code>quantity</"
+"code>. Unbekannte Produktcodes werden abgelehnt. Vorhandene Bestellungen mit "
+"demselben Code werden überschrieben (ihre Positionen werden ersetzt)."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:76
 msgid "Search by order code (and other fields) to find orders quickly."
@@ -161,24 +159,24 @@ msgstr "Verwenden Sie Filter (z. B. nach Datum), um die Liste einzuschränken."
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:88
 msgid "Select one or more orders, then choose “%(label)s”."
 msgstr ""
-"Wählen Sie eine oder mehrere Bestellungen aus und klicken Sie dann auf "
-"„%(label)s“."
+"Wählen Sie eine oder mehrere Bestellungen aus und klicken Sie dann auf „%"
+"(label)s“."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:91
 msgid ""
-"Select one or more orders, then choose “%(label)s” to generate a batch of QR"
-" PDFs."
+"Select one or more orders, then choose “%(label)s” to generate a batch of QR "
+"PDFs."
 msgstr ""
-"Wählen Sie eine oder mehrere Bestellungen aus und klicken Sie auf "
-"„%(label)s“, um eine Reihe von QR-PDFs zu erstellen."
+"Wählen Sie eine oder mehrere Bestellungen aus und klicken Sie auf „%"
+"(label)s“, um eine Reihe von QR-PDFs zu erstellen."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:93
 msgid ""
 "Select one or more orders, then choose your action to generate picklists or "
 "QR PDFs."
 msgstr ""
-"Wählen Sie eine oder mehrere Bestellungen aus und wählen Sie eine Aktion, um"
-" Picklisten oder QR-PDFs zu generieren."
+"Wählen Sie eine oder mehrere Bestellungen aus und wählen Sie eine Aktion, um "
+"Picklisten oder QR-PDFs zu generieren."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:98
 msgid "Click Apply to run the action."
@@ -216,8 +214,8 @@ msgid ""
 "from Orders, or auto-created when scanning a QR that doesn't exist yet."
 msgstr ""
 "Dies sind Ihre Picklisten — die eigentlichen Kommissionieraufgaben. Sie "
-"können aus Bestellungen generiert oder automatisch erstellt werden, wenn ein"
-" noch nicht vorhandener QR-Code gescannt wird."
+"können aus Bestellungen generiert oder automatisch erstellt werden, wenn ein "
+"noch nicht vorhandener QR-Code gescannt wird."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:45
 msgid "Picklist code — unique ID used in the app/QRs."
@@ -260,13 +258,11 @@ msgid ""
 "timing, and which items were not picked."
 msgstr ""
 "Öffnen Sie eine Pickliste, um Ergebnisse auf Artikelebene zu sehen: welche "
-"Produkte gepickt wurden, Zeitabläufe und welche Artikel nicht gepickt "
-"wurden."
+"Produkte gepickt wurden, Zeitabläufe und welche Artikel nicht gepickt wurden."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:83
 msgid ""
-"Next: <b>Devices</b> — manage which devices can scan and see who picked "
-"what."
+"Next: <b>Devices</b> — manage which devices can scan and see who picked what."
 msgstr ""
 "Als Nächstes: <b>Geräte</b> — verwalten Sie, welche Geräte scannen dürfen, "
 "und sehen Sie, wer was gepickt hat."
@@ -303,11 +299,10 @@ msgstr "Gesamterfolg — schneller Überblick über den Status."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:183
 msgid ""
-"Item-level results (Product Picks). Each row shows what happened per "
-"product."
+"Item-level results (Product Picks). Each row shows what happened per product."
 msgstr ""
-"Ergebnisse auf Artikelebene (Produkt-Picks). Jede Zeile zeigt, was mit jedem"
-" Produkt passiert ist."
+"Ergebnisse auf Artikelebene (Produkt-Picks). Jede Zeile zeigt, was mit jedem "
+"Produkt passiert ist."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:189
 msgid "Product — what was supposed to be picked."
@@ -346,8 +341,8 @@ msgid ""
 "exists, you can create one. Used for scanning/imports."
 msgstr ""
 "Code (SKU). Eindeutiger scannbarer Code, der sich auf dem Produkt befindet. "
-"Falls keiner vorhanden ist, können Sie einen erstellen. Wird für "
-"Scans/Importe verwendet."
+"Falls keiner vorhanden ist, können Sie einen erstellen. Wird für Scans/"
+"Importe verwendet."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:41
 msgid "Description. Human-readable item name for pickers."
@@ -377,8 +372,8 @@ msgstr ""
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:61
 msgid ""
-"You can also enable a CSV/XLSX upload on this page. When present, it adds or"
-" overwrites by product code for the current customer."
+"You can also enable a CSV/XLSX upload on this page. When present, it adds or "
+"overwrites by product code for the current customer."
 msgstr ""
 "Sie können auf dieser Seite auch einen CSV/XLSX-Upload aktivieren. Wenn "
 "vorhanden, werden Produkte anhand ihres Codes für den aktuellen Kunden "
@@ -400,8 +395,8 @@ msgid ""
 "All set here. Continue to <b>Orders</b> to generate an order. Make sure you "
 "have created/imported products before you do."
 msgstr ""
-"Alles bereit. Fahren Sie mit <b>Bestellungen</b> fort, um eine Bestellung zu"
-" generieren. Stellen Sie sicher, dass Sie vorher Produkte erstellt oder "
+"Alles bereit. Fahren Sie mit <b>Bestellungen</b> fort, um eine Bestellung zu "
+"generieren. Stellen Sie sicher, dass Sie vorher Produkte erstellt oder "
 "importiert haben."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:116
@@ -447,8 +442,7 @@ msgid ""
 "created automatically when a QR is scanned."
 msgstr ""
 "Picklisten — Die eigentlichen Kommissionieraufgaben. Aus Bestellungen "
-"generieren oder automatisch erstellen lassen, wenn ein QR-Code gescannt "
-"wird."
+"generieren oder automatisch erstellen lassen, wenn ein QR-Code gescannt wird."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:60
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:62
@@ -468,95 +462,98 @@ msgid "Go to Products"
 msgstr "Zu Produkte gehen"
 
 # === CAMERA PAGE / OTHER JS (leftover msgids without msgstr) ===
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:25
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:33
 msgid "Could not load product data from server"
 msgstr "Produktdaten konnten nicht vom Server geladen werden."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:29
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:37
 msgid "No product data found on page"
 msgstr "Keine Produktdaten auf der Seite gefunden"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:38
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:46
 msgid "Offline mode: using cached product data"
 msgstr "Offlinemodus: zwischengespeicherte Produktdaten werden verwendet."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:41
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:49
 msgid "Cached product data is not usable"
 msgstr "Zwischengespeicherte Produktdaten sind nicht verwendbar."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:44
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:52
 msgid "No product data available while offline"
 msgstr "Keine Produktdaten im Offlinemodus verfügbar."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:123
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:154
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:103
+msgid "This picklist is already in progress. Restart it from the beginning?"
+msgstr "Diese Pickliste ist bereits in Bearbeitung. Von vorne neu starten?"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:161
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:193
 msgid "Scanned %(product)s"
 msgstr "%(product)s gescannt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:143
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:181
 msgid "Incorrect scan, please try again."
 msgstr "Falscher Scan, bitte versuchen Sie es erneut."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:172
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:211
 msgid "Product code not found in the list."
 msgstr "Produktcode nicht in der Liste gefunden."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:177
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:216
 msgid ""
 "An unexpected error occurred, please try again. If this issue persists, "
 "contact support"
 msgstr ""
-"Ein unerwarteter Fehler ist aufgetreten, bitte versuchen Sie es erneut. Wenn"
-" das Problem weiterhin besteht, kontaktieren Sie den Support"
+"Ein unerwarteter Fehler ist aufgetreten, bitte versuchen Sie es erneut. Wenn "
+"das Problem weiterhin besteht, kontaktieren Sie den Support"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:195
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:234
 msgid "Could not update product pick."
 msgstr "Produkt-Pick konnte nicht aktualisiert werden."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:242
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:292
 msgid "Picklist completed!"
 msgstr "Pickliste abgeschlossen!"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:246
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:296
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:301
 msgid "Error completing picklist."
 msgstr "Fehler beim Abschließen der Pickliste."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:251
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:113
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:306
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:141
 msgid "Error getting device fingerprint."
 msgstr "Fehler beim Abrufen des Geräte-Fingerprints."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:259
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:314
 msgid "No product data was found, cannot update list"
 msgstr "Keine Produktdaten gefunden, Liste kann nicht aktualisiert werden"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:278
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:305
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:329
 msgid "Picked %(picked)s of %(total)s"
 msgstr "%(picked)s von %(total)s gepickt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:278
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:305
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:333
 msgid "<strong>%(remaining)s</strong> remaining"
 msgstr "Noch <strong>%(remaining)s</strong> übrig"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:344
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:410
 msgid "Could not update bulk product pick."
 msgstr "Sammelkommissionierung konnte nicht aktualisiert werden."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:351
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:417
 msgid "Picked %(quantity)s of %(product)s"
 msgstr "%(quantity)s von %(product)s gepickt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:416
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:482
 msgid "Please enter a valid quantity"
 msgstr "Bitte geben Sie eine gültige Menge ein"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:509
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:581
 msgid "Cannot load order: product data not available"
 msgstr "Auftrag kann nicht geladen werden: Produktdaten nicht verfügbar"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:547
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:619
 msgid "Order loaded from queue"
 msgstr "Auftrag aus Warteschlange geladen"
 
@@ -615,48 +612,55 @@ msgstr "Bestellpriorität: Aktiviert"
 msgid "Order Importance: Disabled"
 msgstr "Bestellpriorität: Deaktiviert"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:34
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:35
 msgid "New list found, start this list?"
 msgstr "Neue Liste gefunden, diese Liste starten?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:48
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:49
 msgid "Could not determine product/quantity structure in picklist."
 msgstr ""
 "Produkt-/Mengenstruktur in der Pickliste konnte nicht ermittelt werden."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:63
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:64
 msgid "Product row is invalid"
 msgstr "Produktzeile ist ungültig"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:68
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:69
 msgid "Product data is empty, cannot update list."
 msgstr "Produktdaten sind leer, Liste kann nicht aktualisiert werden."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:83
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:81
+msgid ""
+"Unknown product code(s): %(codes)s. Ask your admin to add them, then scan "
+"the list again."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:102
 msgid "Picklist added"
 msgstr "Pickliste hinzugefügt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:108
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:131
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:136
 msgid "Error sending picklist."
 msgstr "Fehler beim Senden der Pickliste."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:128
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:158
 msgid "Unexpected error while parsing picklist."
 msgstr "Unerwarteter Fehler beim Verarbeiten der Pickliste."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:138
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:168
 msgid "Invalid QR code structure. Please check the format"
 msgstr "Ungültige QR-Code-Struktur. Bitte prüfen Sie das Format."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:150
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:180
 msgid ""
 "Ambiguous picklist: both fields look like product codes. Please check your "
 "format."
 msgstr ""
-"Mehrdeutige Pickliste: Beide Felder sehen wie Produktcodes aus. Bitte prüfen"
-" Sie Ihr Format."
+"Mehrdeutige Pickliste: Beide Felder sehen wie Produktcodes aus. Bitte prüfen "
+"Sie Ihr Format."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:153
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:183
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Keines der Felder in der Picklistenzeile entspricht einem bekannten "

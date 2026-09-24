@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 11:03+0200\n"
+"POT-Creation-Date: 2026-09-24 19:37+0200\n"
 "PO-Revision-Date: 2026-09-23 11:00+0200\n"
 "Last-Translator: Milo van Pinxteren <milo@example.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -12,7 +12,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:31
 msgid "Devices show who scanned and picked. Use this page to track activity."
@@ -59,28 +60,29 @@ msgstr "Відкрийте пристрій, щоб переглянути йо�
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:80
 msgid ""
 "<h1>🎉 All set! You’ve completed the Orderpiqr tour.</h1><br>        Next "
-"steps:<br>        • <b>Add your products</b> in the admin panel.<br>        •"
-" <b>Create an order</b> and <b>generate a PDF picklist</b> for your team.<br>"
-"        • On your phone, visit <a href='https://app.orderpiqr.nl' "
+"steps:<br>        • <b>Add your products</b> in the admin panel.<br>        "
+"• <b>Create an order</b> and <b>generate a PDF picklist</b> for your team."
+"<br>        • On your phone, visit <a href='https://app.orderpiqr.nl' "
 "target='_blank'>app.orderpiqr.nl</a>         and log in with your order "
 "picker account.<br>        • <b>Scan the QR code</b> on your newly created "
-"picklist.<br>        • Start picking your first order!<br><br>"
-"                <h2>Important information</h2>        We recommend using "
-"<b>Google Chrome</b> for full functionality — you can also         <b>install"
-" the web app</b> directly from your browser for quick access.<br><br>        "
-"On your phone, you can adjust settings such as <b>language</b>, <b>picking "
-"order</b>,         and <b>sorting order</b>. If you’d like us to set up "
-"default preferences for you, just let us know.<br><br>        If you have any"
-" questions or would like additional features, email         <a "
-"href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> or schedule a call via"
-"         <a href='https://www.orderpiqr.nl' "
+"picklist.<br>        • Start picking your first order!"
+"<br><br>                <h2>Important information</h2>        We recommend "
+"using <b>Google Chrome</b> for full functionality — you can also         "
+"<b>install the web app</b> directly from your browser for quick access."
+"<br><br>        On your phone, you can adjust settings such as <b>language</"
+"b>, <b>picking order</b>,         and <b>sorting order</b>. If you’d like us "
+"to set up default preferences for you, just let us know.<br><br>        If "
+"you have any questions or would like additional features, email         <a "
+"href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> or schedule a call "
+"via         <a href='https://www.orderpiqr.nl' "
 "target='_blank'>www.orderpiqr.nl</a>.<br><br>        Your first <b>50 "
-"picklists per month are free</b>! After that, you’ll receive a notification"
-"         before any billing begins — no subscriptions, no hidden costs."
+"picklists per month are free</b>! After that, you’ll receive a "
+"notification         before any billing begins — no subscriptions, no hidden "
+"costs."
 msgstr ""
 "<h1>🎉 Усе готово! Ви завершили тур Orderpiqr.</h1><br>        Наступні "
-"кроки:<br>        • <b>Додайте свої товари</b> в панелі адміністратора.<br>"
-"        • <b>Створіть замовлення</b> та <b>згенеруйте PDF-лист "
+"кроки:<br>        • <b>Додайте свої товари</b> в панелі адміністратора."
+"<br>        • <b>Створіть замовлення</b> та <b>згенеруйте PDF-лист "
 "комплектації</b> для своєї команди.<br>        • На телефоні відкрийте <a "
 "href='https://app.orderpiqr.nl' target='_blank'>app.orderpiqr.nl</a>         "
 "і увійдіть за обліковим записом комплектувальника.<br>        • "
@@ -88,9 +90,9 @@ msgstr ""
 "• Почніть комплектувати своє перше замовлення!<br><br>                "
 "<h2>Важлива інформація</h2>        Для повної функціональності рекомендуємо "
 "використовувати <b>Google Chrome</b> — ви також можете         <b>встановити "
-"вебзастосунок</b> безпосередньо з браузера для швидкого доступу.<br><br>"
-"        На телефоні можна змінювати такі налаштування, як <b>мова</b>, "
-"<b>порядок комплектації</b>         та <b>порядок сортування</b>. Якщо "
+"вебзастосунок</b> безпосередньо з браузера для швидкого доступу."
+"<br><br>        На телефоні можна змінювати такі налаштування, як <b>мова</"
+"b>, <b>порядок комплектації</b>         та <b>порядок сортування</b>. Якщо "
 "бажаєте, щоб ми налаштували параметри за замовчуванням за вас, просто "
 "повідомте нам.<br><br>        Якщо у вас є запитання або ви хочете додаткові "
 "функції, напишіть на         <a "
@@ -115,8 +117,8 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:51
 msgid "Order code — your primary identifier used across imports and PDFs."
 msgstr ""
-"Код замовлення — ваш основний ідентифікатор, що використовується в імпортах і"
-" PDF-файлах."
+"Код замовлення — ваш основний ідентифікатор, що використовується в імпортах "
+"і PDF-файлах."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:55
 msgid ""
@@ -137,8 +139,8 @@ msgstr ""
 msgid ""
 "Bulk import orders via CSV/XLSX. Required headers: <code>order_code</code>, "
 "<code>product_code</code>, <code>quantity</code>. Unknown product codes are "
-"rejected. Existing orders with the same code are overwritten (their lines are"
-" replaced)."
+"rejected. Existing orders with the same code are overwritten (their lines "
+"are replaced)."
 msgstr ""
 "Масовий імпорт замовлень через CSV/XLSX. Обов’язкові заголовки: "
 "<code>order_code</code>, <code>product_code</code>, <code>quantity</code>. "
@@ -164,8 +166,8 @@ msgid ""
 "Select one or more orders, then choose “%(label)s” to generate a batch of QR "
 "PDFs."
 msgstr ""
-"Виберіть одне або кілька замовлень, а потім оберіть «%(label)s», щоб створити"
-" пакет QR-PDF."
+"Виберіть одне або кілька замовлень, а потім оберіть «%(label)s», щоб "
+"створити пакет QR-PDF."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:93
 msgid ""
@@ -329,11 +331,11 @@ msgstr "Це ваш каталог товарів. Налаштуймо його
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:37
 msgid ""
-"Code (SKU). Unique scannable code which is on the product. If no code exists,"
-" you can create one. Used for scanning/imports."
+"Code (SKU). Unique scannable code which is on the product. If no code "
+"exists, you can create one. Used for scanning/imports."
 msgstr ""
-"Код (SKU). Унікальний скануваний код, нанесений на товар. Якщо коду немає, ви"
-" можете створити його. Використовується для сканування та імпорту."
+"Код (SKU). Унікальний скануваний код, нанесений на товар. Якщо коду немає, "
+"ви можете створити його. Використовується для сканування та імпорту."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:41
 msgid "Description. Human-readable item name for pickers."
@@ -401,8 +403,8 @@ msgstr "Перейти до листів комплектації"
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:38
 msgid ""
-"👋 Quick tour of the essentials. If you prefer talking to an employee, you can"
-" schedule a meeting or contact us at www.orderpiqr.nl"
+"👋 Quick tour of the essentials. If you prefer talking to an employee, you "
+"can schedule a meeting or contact us at www.orderpiqr.nl"
 msgstr ""
 "👋 Короткий огляд основного. Якщо ви бажаєте поспілкуватися з працівником, "
 "можете призначити зустріч або звернутися до нас на www.orderpiqr.nl"
@@ -410,8 +412,8 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:42
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:44
 msgid ""
-"Products — Create items to pick with (bar)code, name/description and physical"
-" location."
+"Products — Create items to pick with (bar)code, name/description and "
+"physical location."
 msgstr ""
 "Товари — створюйте позиції для комплектації з (штрих)кодом, назвою чи описом "
 "і фізичним розташуванням."
@@ -422,8 +424,8 @@ msgid ""
 "Orders — Create orders manually or via API/import. (Scanning a Picklist QR "
 "can also create a picklist on the fly.)"
 msgstr ""
-"Замовлення — створюйте замовлення вручну або через API чи імпорт. (Сканування"
-" QR-коду листа комплектації також може створити лист на льоту.)"
+"Замовлення — створюйте замовлення вручну або через API чи імпорт. "
+"(Сканування QR-коду листа комплектації також може створити лист на льоту.)"
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:54
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:56
@@ -451,40 +453,44 @@ msgstr "Відкрийте <b>Товари</b>, щоб почати."
 msgid "Go to Products"
 msgstr "Перейти до товарів"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:25
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:33
 msgid "Could not load product data from server"
 msgstr "Не вдалося завантажити дані товарів із сервера"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:29
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:37
 msgid "No product data found on page"
 msgstr "На сторінці не знайдено даних товарів"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:38
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:46
 msgid "Offline mode: using cached product data"
 msgstr "Офлайн-режим: використовуються кешовані дані товарів"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:41
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:49
 msgid "Cached product data is not usable"
 msgstr "Кешовані дані товарів непридатні для використання"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:44
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:52
 msgid "No product data available while offline"
 msgstr "В офлайн-режимі дані товарів недоступні"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:123
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:154
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:103
+msgid "This picklist is already in progress. Restart it from the beginning?"
+msgstr "Цей лист комплектації вже виконується. Розпочати його спочатку?"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:161
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:193
 msgid "Scanned %(product)s"
 msgstr "Відскановано %(product)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:143
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:181
 msgid "Incorrect scan, please try again."
 msgstr "Неправильне сканування, спробуйте ще раз."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:172
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:211
 msgid "Product code not found in the list."
 msgstr "Код товару не знайдено у списку."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:177
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:216
 msgid ""
 "An unexpected error occurred, please try again. If this issue persists, "
 "contact support"
@@ -492,52 +498,53 @@ msgstr ""
 "Сталася неочікувана помилка, спробуйте ще раз. Якщо проблема не зникає, "
 "зверніться до служби підтримки"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:195
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:234
 msgid "Could not update product pick."
 msgstr "Не вдалося оновити комплектацію товару."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:242
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:292
 msgid "Picklist completed!"
 msgstr "Лист комплектації завершено!"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:246
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:296
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:301
 msgid "Error completing picklist."
 msgstr "Помилка завершення листа комплектації."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:251
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:113
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:306
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:141
 msgid "Error getting device fingerprint."
 msgstr "Помилка отримання відбитка пристрою."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:259
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:314
 msgid "No product data was found, cannot update list"
 msgstr "Дані товарів не знайдено, неможливо оновити лист"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:274
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:329
 msgid "Picked %(picked)s of %(total)s"
 msgstr "Скомплектовано %(picked)s з %(total)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:278
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:333
 msgid "<strong>%(remaining)s</strong> remaining"
 msgstr "Залишилося: <strong>%(remaining)s</strong>"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:355
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:410
 msgid "Could not update bulk product pick."
 msgstr "Не вдалося оновити масову комплектацію товарів."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:362
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:417
 msgid "Picked %(quantity)s of %(product)s"
 msgstr "Скомплектовано %(quantity)s з %(product)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:427
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:482
 msgid "Please enter a valid quantity"
 msgstr "Введіть коректну кількість"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:520
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:581
 msgid "Cannot load order: product data not available"
 msgstr "Неможливо завантажити замовлення: дані товарів недоступні"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:558
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:619
 msgid "Order loaded from queue"
 msgstr "Замовлення завантажено з черги"
 
@@ -596,47 +603,54 @@ msgstr "Пріоритет замовлення: увімкнено"
 msgid "Order Importance: Disabled"
 msgstr "Пріоритет замовлення: вимкнено"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:34
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:35
 msgid "New list found, start this list?"
 msgstr "Знайдено новий лист. Розпочати його?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:48
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:49
 msgid "Could not determine product/quantity structure in picklist."
 msgstr "Не вдалося визначити структуру товар/кількість у листі комплектації."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:63
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:64
 msgid "Product row is invalid"
 msgstr "Рядок товару недійсний"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:68
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:69
 msgid "Product data is empty, cannot update list."
 msgstr "Дані товарів порожні, неможливо оновити лист."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:83
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:81
+msgid ""
+"Unknown product code(s): %(codes)s. Ask your admin to add them, then scan "
+"the list again."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:102
 msgid "Picklist added"
 msgstr "Лист комплектації додано"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:108
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:131
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:136
 msgid "Error sending picklist."
 msgstr "Помилка надсилання листа комплектації."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:128
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:158
 msgid "Unexpected error while parsing picklist."
 msgstr "Неочікувана помилка під час розбору листа комплектації."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:138
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:168
 msgid "Invalid QR code structure. Please check the format"
 msgstr "Недійсна структура QR-коду. Перевірте формат"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:150
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:180
 msgid ""
 "Ambiguous picklist: both fields look like product codes. Please check your "
 "format."
 msgstr ""
-"Неоднозначний лист комплектації: обидва поля схожі на коди товарів. Перевірте"
-" формат."
+"Неоднозначний лист комплектації: обидва поля схожі на коди товарів. "
+"Перевірте формат."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:153
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:183
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Жодне поле в рядку листа комплектації не відповідає відомому коду товару."
