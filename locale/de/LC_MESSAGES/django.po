@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 12:06+0200\n"
+"POT-Creation-Date: 2026-09-24 16:34+0200\n"
 "PO-Revision-Date: 2025-05-31 14:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Deutsch <de@li.org>\n"
@@ -154,7 +154,7 @@ msgstr "Änderung"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
 #: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
-#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:110
+#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:117
 #: .\templates\manage\inventory\logs.html:80
 #: .\templates\manage\products\form.html:123
 #: .\templates\manage\products\form.html:163
@@ -305,11 +305,13 @@ msgstr "Ungültige Formulareingabe."
 #: .\orderpiqrApp\admin\product_admin.py:184
 #, python-format
 msgid "A product with the code \"%(code)s\" already exists for this customer."
-msgstr "Ein Produkt mit dem Code \"%(code)s\" existiert bereits für diesen Kunden."
+msgstr ""
+"Ein Produkt mit dem Code \"%(code)s\" existiert bereits für diesen Kunden."
 
 #: .\orderpiqrApp\admin\product_admin.py:188
 #, python-format
-msgid "A product with the code \"%(code)s\" already exists, cannot add duplicate."
+msgid ""
+"A product with the code \"%(code)s\" already exists, cannot add duplicate."
 msgstr ""
 "Ein Produkt mit dem Code \"%(code)s\" existiert bereits, Duplikat kann nicht "
 "hinzugefügt werden."
@@ -816,8 +818,8 @@ msgstr "Optionen"
 
 #: .\orderpiqrApp\models\preferences.py:32
 msgid ""
-"For 'choice' type settings: list of {value, label} options. E.g. [{\"value\":"
-" \"original\", \"label\": \"Original order\"}]"
+"For 'choice' type settings: list of {value, label} options. E.g. "
+"[{\"value\": \"original\", \"label\": \"Original order\"}]"
 msgstr ""
 "Für Einstellungen vom Typ 'Auswahl': Liste von {value, label} Optionen. Z.B. "
 "[{\"value\": \"original\", \"label\": \"Ursprüngliche Reihenfolge\"}]"
@@ -842,14 +844,14 @@ msgstr "Kundenspezifischer Einstellungswert"
 msgid "Customer setting values"
 msgstr "Kundenspezifische Einstellungswerte"
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:127
+#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:134
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Produktcode"
 
 #: .\orderpiqrApp\models\products.py:11
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:91
-#: .\templates\index.html:129 .\templates\manage\orders\form.html:62
+#: .\templates\index.html:136 .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:100
 #: .\templates\manage\products\form.html:37
 #: .\templates\manage\products\list.html:97
@@ -945,8 +947,8 @@ msgstr ""
 
 #: .\orderpiqrApp\views\auth\signup_view.py:83
 msgid ""
-"Some of the submitted information is missing or invalid. Please check and try"
-" again."
+"Some of the submitted information is missing or invalid. Please check and "
+"try again."
 msgstr ""
 "Einige der übermittelten Informationen fehlen oder sind ungültig. Bitte "
 "überprüfen Sie diese und versuchen Sie es erneut."
@@ -1195,8 +1197,8 @@ msgstr "Import abgeschlossen: {created} erstellt, {updated} aktualisiert."
 #: .\orderpiqrApp\views\manage_views.py:495
 #, python-brace-format
 msgid ""
-"{count} row(s) were skipped because the product code or description was empty"
-" (rows: {rows})."
+"{count} row(s) were skipped because the product code or description was "
+"empty (rows: {rows})."
 msgstr ""
 "{count} Zeile(n) wurden übersprungen, weil der Produktcode oder die "
 "Beschreibung leer war (Zeilen: {rows})."
@@ -1519,9 +1521,9 @@ msgid ""
 "Something about that request didn't look right, so we stopped it. Tap Try "
 "again, or go back to the home screen and start over."
 msgstr ""
-"An dieser Anfrage stimmte etwas nicht, deshalb haben wir sie gestoppt. Tippen"
-" Sie auf Erneut versuchen, oder gehen Sie zurück zum Startbildschirm und "
-"fangen Sie neu an."
+"An dieser Anfrage stimmte etwas nicht, deshalb haben wir sie gestoppt. "
+"Tippen Sie auf Erneut versuchen, oder gehen Sie zurück zum Startbildschirm "
+"und fangen Sie neu an."
 
 #: .\templates\400.html:30 .\templates\403_csrf.html:32
 #: .\templates\500.html:218
@@ -1539,8 +1541,8 @@ msgstr "Zugriff verweigert"
 
 #: .\templates\403.html:21
 msgid ""
-"You don't have permission to access this page. Please make sure you're logged"
-" in with the correct account."
+"You don't have permission to access this page. Please make sure you're "
+"logged in with the correct account."
 msgstr ""
 "Sie haben keine Berechtigung, auf diese Seite zuzugreifen. Bitte stellen Sie "
 "sicher, dass Sie mit dem richtigen Konto angemeldet sind."
@@ -1568,8 +1570,8 @@ msgstr "Seite nicht gefunden"
 
 #: .\templates\404.html:21
 msgid ""
-"The page you're looking for doesn't exist or has been moved. Please check the"
-" URL or navigate back to the homepage."
+"The page you're looking for doesn't exist or has been moved. Please check "
+"the URL or navigate back to the homepage."
 msgstr ""
 "Die gesuchte Seite existiert nicht oder wurde verschoben. Bitte überprüfen "
 "Sie die URL oder kehren Sie zur Startseite zurück."
@@ -1580,8 +1582,8 @@ msgstr "Serverfehler"
 
 #: .\templates\500.html:209
 msgid ""
-"Something went wrong on our end. Our team has been notified and we're working"
-" to fix the issue. Please try again in a few minutes."
+"Something went wrong on our end. Our team has been notified and we're "
+"working to fix the issue. Please try again in a few minutes."
 msgstr ""
 "Auf unserer Seite ist etwas schief gelaufen. Unser Team wurde benachrichtigt "
 "und arbeitet an einer Lösung. Bitte versuchen Sie es in einigen Minuten "
@@ -1696,29 +1698,41 @@ msgid "Original"
 msgstr "Original"
 
 #: .\templates\index.html:96
+msgid "List View"
+msgstr "Listenansicht"
+
+#: .\templates\index.html:98
+msgid "Individual items"
+msgstr "Einzelne Artikel"
+
+#: .\templates\index.html:99
+msgid "Grouped by product"
+msgstr "Nach Produkt gruppiert"
+
+#: .\templates\index.html:103
 msgid "Order Importance"
 msgstr "Reihenfolge beachten"
 
-#: .\templates\index.html:96
+#: .\templates\index.html:103
 msgid "Enabled"
 msgstr "Aktiviert"
 
-#: .\templates\index.html:104 .\templates\manage\base.html:234
+#: .\templates\index.html:111 .\templates\manage\base.html:234
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
 msgstr "Abmelden"
 
-#: .\templates\index.html:115
+#: .\templates\index.html:122
 msgid "This app is best viewed on your phone"
 msgstr "Diese App ist am besten auf dem Handy zu nutzen"
 
-#: .\templates\index.html:122 .\templates\manage\picklists\detail.html:4
+#: .\templates\index.html:129 .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
 #: .\templates\manage\picklists\list.html:30
 msgid "Picklist"
 msgstr "Pickliste"
 
-#: .\templates\index.html:128
+#: .\templates\index.html:135
 msgid "Product Name"
 msgstr "Produktname"
 
@@ -1970,8 +1984,8 @@ msgid ""
 "Mobile-friendly view for order pickers. Share the picker login with your "
 "team."
 msgstr ""
-"Mobilfreundliche Ansicht für Kommissionierer. Teilen Sie die Anmeldedaten mit"
-" Ihrem Team."
+"Mobilfreundliche Ansicht für Kommissionierer. Teilen Sie die Anmeldedaten "
+"mit Ihrem Team."
 
 #: .\templates\manage\dashboard.html:178
 msgid "Inventory Picker"
@@ -2801,8 +2815,8 @@ msgid ""
 "Pick lists are created automatically when pickers claim orders from the "
 "queue."
 msgstr ""
-"Picklisten werden automatisch erstellt, wenn Kommissionierer Bestellungen aus"
-" der Warteschlange übernehmen."
+"Picklisten werden automatisch erstellt, wenn Kommissionierer Bestellungen "
+"aus der Warteschlange übernehmen."
 
 #: .\templates\manage\picklists\list.html:123
 msgid "Go to Queue"
@@ -3054,9 +3068,9 @@ msgstr "Kommissionierer-Konten"
 #: .\templates\manage\profile.html:95
 msgid ""
 "Your warehouse staff log into the picker app with these accounts. Set a "
-"password here and hand it to your team — pickers cannot change it themselves."
-" A login QR lets someone sign in by scanning instead of typing, which is the "
-"quickest way to get a new picker started."
+"password here and hand it to your team — pickers cannot change it "
+"themselves. A login QR lets someone sign in by scanning instead of typing, "
+"which is the quickest way to get a new picker started."
 msgstr ""
 "Ihre Lagermitarbeiter melden sich mit diesen Konten in der Picker-App an. "
 "Legen Sie hier ein Passwort fest und geben Sie es an Ihr Team weiter — "
@@ -3332,8 +3346,8 @@ msgstr ""
 #: .\templates\manage\settings\api_tokens.html:88
 #, python-format
 msgid ""
-"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push orders"
-" with your token."
+"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push "
+"orders with your token."
 msgstr ""
 "Wie Sie mit Ihrem Token Bestellungen übermitteln, erfahren Sie in der <a "
 "href=\"%(docs_url)s\">API-Dokumentation</a>."
@@ -3625,8 +3639,8 @@ msgid ""
 "If an account exists with the email address you entered, you will receive a "
 "password reset link shortly."
 msgstr ""
-"Wenn ein Konto mit der eingegebenen E-Mail-Adresse existiert, erhalten Sie in"
-" Kürze einen Link zum Zurücksetzen des Passworts."
+"Wenn ein Konto mit der eingegebenen E-Mail-Adresse existiert, erhalten Sie "
+"in Kürze einen Link zum Zurücksetzen des Passworts."
 
 #: .\templates\registration\password_reset_done.html:24
 msgid "Didn't receive the email? Check your spam folder or"
@@ -4016,12 +4030,12 @@ msgstr "Shopify-Bestellungen"
 
 #: .\templates\shopify\app.html:194
 msgid ""
-"Browse the orders in your Shopify store and push the ones you want to pick to"
-" OrderPiqr. New paid orders are imported automatically."
+"Browse the orders in your Shopify store and push the ones you want to pick "
+"to OrderPiqr. New paid orders are imported automatically."
 msgstr ""
-"Durchsuchen Sie die Bestellungen in Ihrem Shopify-Shop und übertragen Sie die"
-" zu kommissionierenden Bestellungen an OrderPiqr. Neue bezahlte Bestellungen "
-"werden automatisch importiert."
+"Durchsuchen Sie die Bestellungen in Ihrem Shopify-Shop und übertragen Sie "
+"die zu kommissionierenden Bestellungen an OrderPiqr. Neue bezahlte "
+"Bestellungen werden automatisch importiert."
 
 #: .\templates\shopify\app.html:198
 msgid "Open, unfulfilled"

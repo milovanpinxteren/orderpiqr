@@ -497,6 +497,12 @@ document.addEventListener('picklist-sort-change', function (e) {
     resortCurrentPicklist(e.detail.sortingMode);
 });
 
+// Listen for list view changes (individual vs grouped) from the dropdown.
+// Display-only: updateScannedList reads the mode from window.SETTINGS.
+document.addEventListener('picklist-view-change', function () {
+    updateScannedList(currentPicklist, productData);
+});
+
 // Check for claimed order from queue on page load
 function loadClaimedOrder() {
     console.log('[Queue] Checking for claimed order...');

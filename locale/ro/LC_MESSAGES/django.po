@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 12:06+0200\n"
+"POT-Creation-Date: 2026-09-24 16:34+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,7 +150,7 @@ msgstr "Modificare"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
 #: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
-#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:110
+#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:117
 #: .\templates\manage\inventory\logs.html:80
 #: .\templates\manage\products\form.html:123
 #: .\templates\manage\products\form.html:163
@@ -231,7 +231,8 @@ msgstr "Valoare lipsă pentru \"order_code\" la rândul %(row)d"
 #: .\orderpiqrApp\admin\order_admin.py:170
 #, python-format
 msgid "Invalid quantity for product code \"%(code)s\" in row %(row)d"
-msgstr "Cantitate invalidă pentru codul produsului \"%(code)s\" la rândul %(row)d"
+msgstr ""
+"Cantitate invalidă pentru codul produsului \"%(code)s\" la rândul %(row)d"
 
 #: .\orderpiqrApp\admin\order_admin.py:177
 #, python-format
@@ -304,8 +305,10 @@ msgstr "Un produs cu codul \"%(code)s\" există deja pentru acest client."
 
 #: .\orderpiqrApp\admin\product_admin.py:188
 #, python-format
-msgid "A product with the code \"%(code)s\" already exists, cannot add duplicate."
-msgstr "Un produs cu codul \"%(code)s\" există deja, nu se poate adăuga duplicat."
+msgid ""
+"A product with the code \"%(code)s\" already exists, cannot add duplicate."
+msgstr ""
+"Un produs cu codul \"%(code)s\" există deja, nu se poate adăuga duplicat."
 
 #: .\orderpiqrApp\admin\product_admin.py:194
 #, python-format
@@ -485,8 +488,8 @@ msgstr "Lista de preluare sursă"
 msgid ""
 "If this change was caused by order completion, reference to the picklist."
 msgstr ""
-"Dacă această modificare a fost cauzată de finalizarea unei comenzi, referință"
-" către lista de preluare."
+"Dacă această modificare a fost cauzată de finalizarea unei comenzi, "
+"referință către lista de preluare."
 
 #: .\orderpiqrApp\models\inventory.py:83 .\templates\manage\base.html:76
 #: .\templates\manage\inventory\logs.html:4
@@ -807,8 +810,8 @@ msgstr "Opțiuni"
 
 #: .\orderpiqrApp\models\preferences.py:32
 msgid ""
-"For 'choice' type settings: list of {value, label} options. E.g. [{\"value\":"
-" \"original\", \"label\": \"Original order\"}]"
+"For 'choice' type settings: list of {value, label} options. E.g. "
+"[{\"value\": \"original\", \"label\": \"Original order\"}]"
 msgstr ""
 "Pentru setările de tip 'alegere': listă de opțiuni {value, label}. Ex. "
 "[{\"value\": \"original\", \"label\": \"Ordine originală\"}]"
@@ -833,14 +836,14 @@ msgstr "Valoare setare client"
 msgid "Customer setting values"
 msgstr "Valori setări client"
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:127
+#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:134
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Cod produs"
 
 #: .\orderpiqrApp\models\products.py:11
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:91
-#: .\templates\index.html:129 .\templates\manage\orders\form.html:62
+#: .\templates\index.html:136 .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:100
 #: .\templates\manage\products\form.html:37
 #: .\templates\manage\products\list.html:97
@@ -933,11 +936,11 @@ msgstr "Vă rugăm să corectați erorile evidențiate și să încercați din n
 
 #: .\orderpiqrApp\views\auth\signup_view.py:83
 msgid ""
-"Some of the submitted information is missing or invalid. Please check and try"
-" again."
+"Some of the submitted information is missing or invalid. Please check and "
+"try again."
 msgstr ""
-"Unele informații trimise lipsesc sau sunt invalide. Vă rugăm să verificați și"
-" să încercați din nou."
+"Unele informații trimise lipsesc sau sunt invalide. Vă rugăm să verificați "
+"și să încercați din nou."
 
 #: .\orderpiqrApp\views\auth\signup_view.py:86
 msgid "We’re experiencing technical issues. Please try again shortly."
@@ -1179,8 +1182,8 @@ msgstr "Import finalizat: {created} create, {updated} actualizate."
 #: .\orderpiqrApp\views\manage_views.py:495
 #, python-brace-format
 msgid ""
-"{count} row(s) were skipped because the product code or description was empty"
-" (rows: {rows})."
+"{count} row(s) were skipped because the product code or description was "
+"empty (rows: {rows})."
 msgstr ""
 "{count} rând(uri) au fost omise deoarece codul produsului sau descrierea era "
 "goală (rânduri: {rows})."
@@ -1518,8 +1521,8 @@ msgstr "Acces interzis"
 
 #: .\templates\403.html:21
 msgid ""
-"You don't have permission to access this page. Please make sure you're logged"
-" in with the correct account."
+"You don't have permission to access this page. Please make sure you're "
+"logged in with the correct account."
 msgstr ""
 "Nu aveți permisiunea de a accesa această pagină. Vă rugăm să vă asigurați că "
 "sunteți conectat cu contul corect."
@@ -1538,8 +1541,8 @@ msgid ""
 "Try again to reload this page, then carry on where you left off."
 msgstr ""
 "Ați lipsit o vreme, așa că v-am deconectat pentru a vă proteja munca. "
-"Atingeți Încercați din nou pentru a reîncărca această pagină și continuați de"
-" unde ați rămas."
+"Atingeți Încercați din nou pentru a reîncărca această pagină și continuați "
+"de unde ați rămas."
 
 #: .\templates\404.html:4 .\templates\404.html:18
 msgid "Page Not Found"
@@ -1547,8 +1550,8 @@ msgstr "Pagină negăsită"
 
 #: .\templates\404.html:21
 msgid ""
-"The page you're looking for doesn't exist or has been moved. Please check the"
-" URL or navigate back to the homepage."
+"The page you're looking for doesn't exist or has been moved. Please check "
+"the URL or navigate back to the homepage."
 msgstr ""
 "Pagina pe care o căutați nu există sau a fost mutată. Vă rugăm să verificați "
 "URL-ul sau să reveniți la pagina principală."
@@ -1559,8 +1562,8 @@ msgstr "Eroare de server"
 
 #: .\templates\500.html:209
 msgid ""
-"Something went wrong on our end. Our team has been notified and we're working"
-" to fix the issue. Please try again in a few minutes."
+"Something went wrong on our end. Our team has been notified and we're "
+"working to fix the issue. Please try again in a few minutes."
 msgstr ""
 "Ceva nu a funcționat corect de partea noastră. Echipa noastră a fost "
 "notificată și lucrăm la rezolvarea problemei. Vă rugăm să încercați din nou "
@@ -1675,29 +1678,41 @@ msgid "Original"
 msgstr "Original"
 
 #: .\templates\index.html:96
+msgid "List View"
+msgstr "Vizualizare listă"
+
+#: .\templates\index.html:98
+msgid "Individual items"
+msgstr "Articole individuale"
+
+#: .\templates\index.html:99
+msgid "Grouped by product"
+msgstr "Grupate pe produs"
+
+#: .\templates\index.html:103
 msgid "Order Importance"
 msgstr "Importanța comenzii"
 
-#: .\templates\index.html:96
+#: .\templates\index.html:103
 msgid "Enabled"
 msgstr "Activat"
 
-#: .\templates\index.html:104 .\templates\manage\base.html:234
+#: .\templates\index.html:111 .\templates\manage\base.html:234
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
 msgstr "Deconectare"
 
-#: .\templates\index.html:115
+#: .\templates\index.html:122
 msgid "This app is best viewed on your phone"
 msgstr "Această aplicație este optimizată pentru vizualizare pe telefon"
 
-#: .\templates\index.html:122 .\templates\manage\picklists\detail.html:4
+#: .\templates\index.html:129 .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
 #: .\templates\manage\picklists\list.html:30
 msgid "Picklist"
 msgstr "Listă de preluare"
 
-#: .\templates\index.html:128
+#: .\templates\index.html:135
 msgid "Product Name"
 msgstr "Nume produs"
 
@@ -2236,8 +2251,8 @@ msgid ""
 "In your WordPress admin, go to Plugins → Add New and install the “OrderPiqr” "
 "plugin from WordPress.org."
 msgstr ""
-"În administrarea WordPress, mergeți la Module → Adaugă modul nou și instalați"
-" pluginul „OrderPiqr” de pe WordPress.org."
+"În administrarea WordPress, mergeți la Module → Adaugă modul nou și "
+"instalați pluginul „OrderPiqr” de pe WordPress.org."
 
 #: .\templates\manage\integrations\pairing_key.html:31
 msgid "Open the OrderPiqr settings"
@@ -2256,8 +2271,8 @@ msgid ""
 "Paste the key above and click Connect. Your products and open orders will "
 "start syncing automatically."
 msgstr ""
-"Lipiți cheia de mai sus și apăsați Conectare. Produsele și comenzile deschise"
-" se vor sincroniza automat."
+"Lipiți cheia de mai sus și apăsați Conectare. Produsele și comenzile "
+"deschise se vor sincroniza automat."
 
 #: .\templates\manage\integrations\pairing_key.html:41
 msgid "Back to integrations"
@@ -2771,8 +2786,8 @@ msgid ""
 "Pick lists are created automatically when pickers claim orders from the "
 "queue."
 msgstr ""
-"Listele de preluare sunt create automat când operatorii revendică comenzi din"
-" coadă."
+"Listele de preluare sunt create automat când operatorii revendică comenzi "
+"din coadă."
 
 #: .\templates\manage\picklists\list.html:123
 msgid "Go to Queue"
@@ -3023,9 +3038,9 @@ msgstr "Conturi de operator"
 #: .\templates\manage\profile.html:95
 msgid ""
 "Your warehouse staff log into the picker app with these accounts. Set a "
-"password here and hand it to your team — pickers cannot change it themselves."
-" A login QR lets someone sign in by scanning instead of typing, which is the "
-"quickest way to get a new picker started."
+"password here and hand it to your team — pickers cannot change it "
+"themselves. A login QR lets someone sign in by scanning instead of typing, "
+"which is the quickest way to get a new picker started."
 msgstr ""
 "Personalul din depozit se autentifică în aplicaţia de picking cu aceste "
 "conturi. Setaţi aici o parolă și transmiteţi-o echipei — operatorii nu o pot "
@@ -3297,8 +3312,8 @@ msgstr ""
 #: .\templates\manage\settings\api_tokens.html:88
 #, python-format
 msgid ""
-"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push orders"
-" with your token."
+"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push "
+"orders with your token."
 msgstr ""
 "Consultați <a href=\"%(docs_url)s\">documentația API</a> pentru a afla cum "
 "trimiteți comenzi cu tokenul dvs."
@@ -3684,8 +3699,8 @@ msgid ""
 "Ask your manager for a new login code, or sign in with your username and "
 "password."
 msgstr ""
-"Cereţi managerului un cod de autentificare nou sau autentificaţi-vă cu numele"
-" de utilizator și parola."
+"Cereţi managerului un cod de autentificare nou sau autentificaţi-vă cu "
+"numele de utilizator și parola."
 
 #: .\templates\registration\qr_login.html:25
 #: .\templates\registration\qr_login.html:46
@@ -3747,8 +3762,8 @@ msgid ""
 "first use - their device is then remembered."
 msgstr ""
 "O singură autentificare partajată pentru tot personalul depozitului. Fiecare "
-"operator își introduce numele la prima utilizare - dispozitivul lor este apoi"
-" reținut."
+"operator își introduce numele la prima utilizare - dispozitivul lor este "
+"apoi reținut."
 
 #: .\templates\registration\signup.html:47
 msgid ""
@@ -3978,8 +3993,8 @@ msgstr "Comenzi Shopify"
 
 #: .\templates\shopify\app.html:194
 msgid ""
-"Browse the orders in your Shopify store and push the ones you want to pick to"
-" OrderPiqr. New paid orders are imported automatically."
+"Browse the orders in your Shopify store and push the ones you want to pick "
+"to OrderPiqr. New paid orders are imported automatically."
 msgstr ""
 "Răsfoiți comenzile din magazinul dumneavoastră Shopify și trimiteți-le în "
 "OrderPiqr pe cele pe care doriți să le preluați. Comenzile noi plătite sunt "
@@ -4052,8 +4067,8 @@ msgid ""
 "your existing products and settings will be used instead."
 msgstr ""
 "Acest magazin a primit un spațiu de lucru OrderPiqr nou la instalarea "
-"aplicației. Dacă firma dumneavoastră are deja un cont pe orderpiqr.nl, legați"
-" acest magazin de el — se vor folosi în schimb produsele și setările "
+"aplicației. Dacă firma dumneavoastră are deja un cont pe orderpiqr.nl, "
+"legați acest magazin de el — se vor folosi în schimb produsele și setările "
 "existente."
 
 #: .\templates\shopify\app.html:237

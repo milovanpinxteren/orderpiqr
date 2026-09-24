@@ -52,13 +52,30 @@ body {
     padding-right: 12px;
 }
 
-/* Picklist code display */
+/* Picklist code display: header of the scanned-list card */
 .picklist-code-display {
     margin: 0;
-    font-size: 0.95em;
-    color: #555;
+    padding: 10px 14px 8px;
     text-align: center;
     width: 100%;
+}
+
+.picklist-label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #999;
+    margin-bottom: 1px;
+}
+
+.picklist-code {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 0.02em;
+    overflow-wrap: anywhere;
 }
 
 /* Settings dropdown */
@@ -241,7 +258,7 @@ h3 {
     flex-direction: column;
     align-items: center;
     padding: 10px;
-    gap: 0.1rem;
+    gap: 0.85rem;
 }
 
 /* Camera / Scanner */
@@ -250,7 +267,9 @@ h3 {
     margin: 0 auto;
     padding: 0.5rem;
     position: relative;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     border-radius: 12px;
     display: flex;
     justify-content: center;
@@ -310,6 +329,9 @@ button:hover {
     overflow-x: auto;
     border-radius: 10px;
     overflow: hidden;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    background-color: #fff;
 }
 
 .scanned-list {
@@ -322,24 +344,103 @@ button:hover {
 .scanned-list th, .scanned-list td {
     padding: 10px 14px;
     text-align: left;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #e6eaee;
 }
 
 .scanned-list th {
-    background-color: rgba(17, 143, 17, 0.85);
-    color: white;
-    font-weight: 600;
-    font-size: 0.8rem;
+    background-color: #eef6ee;
+    color: #0e7a0e;
+    font-weight: 700;
+    font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid #cfe6cf;
 }
 
-.scanned-list tr:nth-child(even) {
-    background-color: #f9fafb;
+.scanned-list tbody tr:nth-child(even) {
+    background-color: #f2f5f8;
 }
 
 .scanned-list tr:hover {
     background-color: #f1f3f5;
+}
+
+/* Grouped picklist view: one row per product with qty badge, location and
+   name+code. The table has two header rows; CSS shows the one matching the
+   active view. */
+.scanned-list .header-grouped {
+    display: none;
+}
+
+.scanned-list.grouped-view .header-grouped {
+    display: table-row;
+}
+
+.scanned-list.grouped-view .header-individual {
+    display: none;
+}
+
+/* Tight qty/location columns leave as much room as possible for long
+   product names. Header cells get the same padding so columns stay aligned. */
+.grouped-row td,
+.header-grouped th {
+    padding: 8px 6px;
+    vertical-align: middle;
+}
+
+.grouped-row td:first-child,
+.header-grouped th:first-child {
+    padding-left: 10px;
+}
+
+.grouped-row td:last-child,
+.header-grouped th:last-child {
+    padding-right: 10px;
+}
+
+.grouped-qty,
+.th-qty {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.grouped-qty {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #118f11;
+}
+
+.grouped-location {
+    font-weight: 700;
+    color: #333;
+    /* Locations can be up to 50 chars; wrap them in a capped column instead
+       of letting nowrap push the product column off-screen. Segments between
+       separators are inline-block units (see renderLocation), so breaks fall
+       after ',' / ';' — break-word is the fallback within a segment. */
+    max-width: 26vw;
+    overflow-wrap: break-word;
+}
+
+.grouped-location-part.nowrap {
+    white-space: nowrap;
+}
+
+.grouped-info {
+    width: 98%;
+}
+
+.grouped-name {
+    color: #444;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.grouped-code {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 2px;
+    overflow-wrap: anywhere;
 }
 
 /* Notifications */

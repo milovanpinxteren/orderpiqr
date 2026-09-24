@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 12:06+0200\n"
+"POT-Creation-Date: 2026-09-24 16:34+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,7 +151,7 @@ msgstr "Zmiana"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
 #: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
-#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:110
+#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:117
 #: .\templates\manage\inventory\logs.html:80
 #: .\templates\manage\products\form.html:123
 #: .\templates\manage\products\form.html:163
@@ -305,7 +305,8 @@ msgstr "Produkt o kodzie \"%(code)s\" już istnieje dla tego klienta."
 
 #: .\orderpiqrApp\admin\product_admin.py:188
 #, python-format
-msgid "A product with the code \"%(code)s\" already exists, cannot add duplicate."
+msgid ""
+"A product with the code \"%(code)s\" already exists, cannot add duplicate."
 msgstr "Produkt o kodzie \"%(code)s\" już istnieje, nie można dodać duplikatu."
 
 #: .\orderpiqrApp\admin\product_admin.py:194
@@ -623,8 +624,8 @@ msgid ""
 "Where this order came from: manual, csv, api, or an integration platform "
 "(e.g. shopify)."
 msgstr ""
-"Skąd pochodzi to zamówienie: manual, csv, api lub platforma integracyjna (np."
-" shopify)."
+"Skąd pochodzi to zamówienie: manual, csv, api lub platforma integracyjna "
+"(np. shopify)."
 
 #: .\orderpiqrApp\models\orders.py:48 .\orderpiqrApp\models\orders.py:63
 #: .\templates\manage\dashboard.html:207
@@ -810,8 +811,8 @@ msgstr "Opcje"
 
 #: .\orderpiqrApp\models\preferences.py:32
 msgid ""
-"For 'choice' type settings: list of {value, label} options. E.g. [{\"value\":"
-" \"original\", \"label\": \"Original order\"}]"
+"For 'choice' type settings: list of {value, label} options. E.g. "
+"[{\"value\": \"original\", \"label\": \"Original order\"}]"
 msgstr ""
 "Dla ustawień typu 'wybór': lista opcji {value, label}. Np. [{\"value\": "
 "\"original\", \"label\": \"Oryginalna kolejność\"}]"
@@ -836,14 +837,14 @@ msgstr "Wartość ustawienia klienta"
 msgid "Customer setting values"
 msgstr "Wartości ustawień klienta"
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:127
+#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:134
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Kod produktu"
 
 #: .\orderpiqrApp\models\products.py:11
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:91
-#: .\templates\index.html:129 .\templates\manage\orders\form.html:62
+#: .\templates\index.html:136 .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:100
 #: .\templates\manage\products\form.html:37
 #: .\templates\manage\products\list.html:97
@@ -934,8 +935,8 @@ msgstr "Proszę poprawić podświetlone błędy i spróbować ponownie."
 
 #: .\orderpiqrApp\views\auth\signup_view.py:83
 msgid ""
-"Some of the submitted information is missing or invalid. Please check and try"
-" again."
+"Some of the submitted information is missing or invalid. Please check and "
+"try again."
 msgstr ""
 "Część przesłanych informacji jest brakująca lub nieprawidłowa. Proszę "
 "sprawdzić i spróbować ponownie."
@@ -1181,8 +1182,8 @@ msgstr "Import zakończony: utworzono {created}, zaktualizowano {updated}."
 #: .\orderpiqrApp\views\manage_views.py:495
 #, python-brace-format
 msgid ""
-"{count} row(s) were skipped because the product code or description was empty"
-" (rows: {rows})."
+"{count} row(s) were skipped because the product code or description was "
+"empty (rows: {rows})."
 msgstr ""
 "Pominięto {count} wiersz(y), ponieważ kod produktu lub opis był pusty "
 "(wiersze: {rows})."
@@ -1349,8 +1350,8 @@ msgstr "Utworzono konto kompletującego '{username}'."
 msgid ""
 "Login QR created for '{username}'. Print it now – it cannot be shown again."
 msgstr ""
-"Utworzono kod QR logowania dla '{username}'. Wydrukuj go teraz – nie zostanie"
-" pokazany ponownie."
+"Utworzono kod QR logowania dla '{username}'. Wydrukuj go teraz – nie "
+"zostanie pokazany ponownie."
 
 #: .\orderpiqrApp\views\manage_views.py:1164
 #, python-brace-format
@@ -1520,8 +1521,8 @@ msgstr "Brak dostępu"
 
 #: .\templates\403.html:21
 msgid ""
-"You don't have permission to access this page. Please make sure you're logged"
-" in with the correct account."
+"You don't have permission to access this page. Please make sure you're "
+"logged in with the correct account."
 msgstr ""
 "Nie masz uprawnień do dostępu do tej strony. Upewnij się, że jesteś "
 "zalogowany na odpowiednie konto."
@@ -1549,8 +1550,8 @@ msgstr "Strona nie znaleziona"
 
 #: .\templates\404.html:21
 msgid ""
-"The page you're looking for doesn't exist or has been moved. Please check the"
-" URL or navigate back to the homepage."
+"The page you're looking for doesn't exist or has been moved. Please check "
+"the URL or navigate back to the homepage."
 msgstr ""
 "Strona, której szukasz, nie istnieje lub została przeniesiona. Sprawdź adres "
 "URL lub wróć do strony głównej."
@@ -1561,8 +1562,8 @@ msgstr "Błąd serwera"
 
 #: .\templates\500.html:209
 msgid ""
-"Something went wrong on our end. Our team has been notified and we're working"
-" to fix the issue. Please try again in a few minutes."
+"Something went wrong on our end. Our team has been notified and we're "
+"working to fix the issue. Please try again in a few minutes."
 msgstr ""
 "Coś poszło nie tak po naszej stronie. Nasz zespół został powiadomiony i "
 "pracujemy nad rozwiązaniem problemu. Spróbuj ponownie za kilka minut."
@@ -1673,29 +1674,41 @@ msgid "Original"
 msgstr "Oryginalna"
 
 #: .\templates\index.html:96
+msgid "List View"
+msgstr "Widok listy"
+
+#: .\templates\index.html:98
+msgid "Individual items"
+msgstr "Pojedyncze pozycje"
+
+#: .\templates\index.html:99
+msgid "Grouped by product"
+msgstr "Pogrupowane według produktu"
+
+#: .\templates\index.html:103
 msgid "Order Importance"
 msgstr "Kolejność produktów"
 
-#: .\templates\index.html:96
+#: .\templates\index.html:103
 msgid "Enabled"
 msgstr "Włączone"
 
-#: .\templates\index.html:104 .\templates\manage\base.html:234
+#: .\templates\index.html:111 .\templates\manage\base.html:234
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
 msgstr "Wyloguj się"
 
-#: .\templates\index.html:115
+#: .\templates\index.html:122
 msgid "This app is best viewed on your phone"
 msgstr "Ta aplikacja najlepiej wygląda na telefonie"
 
-#: .\templates\index.html:122 .\templates\manage\picklists\detail.html:4
+#: .\templates\index.html:129 .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
 #: .\templates\manage\picklists\list.html:30
 msgid "Picklist"
 msgstr "Lista pobrań"
 
-#: .\templates\index.html:128
+#: .\templates\index.html:135
 msgid "Product Name"
 msgstr "Nazwa produktu"
 
@@ -1934,8 +1947,8 @@ msgstr "Wyświetlacz kolejki"
 msgid ""
 "Full-screen view for warehouse screens. Shows QR codes for pickers to scan."
 msgstr ""
-"Widok pełnoekranowy dla ekranów magazynowych. Wyświetla kody QR do skanowania"
-" przez kompletatorów."
+"Widok pełnoekranowy dla ekranów magazynowych. Wyświetla kody QR do "
+"skanowania przez kompletatorów."
 
 #: .\templates\manage\dashboard.html:155 .\templates\manage\queue\list.html:25
 #: .\templates\queue\manage.html:26
@@ -1947,8 +1960,8 @@ msgid ""
 "Mobile-friendly view for order pickers. Share the picker login with your "
 "team."
 msgstr ""
-"Widok przyjazny dla urządzeń mobilnych dla kompletatorów zamówień. Udostępnij"
-" logowanie kompletującego swojemu zespołowi."
+"Widok przyjazny dla urządzeń mobilnych dla kompletatorów zamówień. "
+"Udostępnij logowanie kompletującego swojemu zespołowi."
 
 #: .\templates\manage\dashboard.html:178
 msgid "Inventory Picker"
@@ -2547,9 +2560,9 @@ msgid ""
 "Comma and semicolon separated files both work, and common column names such "
 "as Order Number, SKU or Quantity are recognized automatically."
 msgstr ""
-"Działają pliki rozdzielane zarówno przecinkami, jak i średnikami, a popularne"
-" nazwy kolumn, takie jak Order Number, SKU czy Quantity, są rozpoznawane "
-"automatycznie."
+"Działają pliki rozdzielane zarówno przecinkami, jak i średnikami, a "
+"popularne nazwy kolumn, takie jak Order Number, SKU czy Quantity, są "
+"rozpoznawane automatycznie."
 
 #: .\templates\manage\orders\import.html:109
 msgid "Multiple rows with the same order_code will be combined into one order"
@@ -2870,8 +2883,8 @@ msgid ""
 "Comma and semicolon separated files both work, and common column names such "
 "as SKU, Barcode or Title are recognized automatically."
 msgstr ""
-"Działają pliki rozdzielane zarówno przecinkami, jak i średnikami, a popularne"
-" nazwy kolumn, takie jak SKU, Barcode czy Title, są rozpoznawane "
+"Działają pliki rozdzielane zarówno przecinkami, jak i średnikami, a "
+"popularne nazwy kolumn, takie jak SKU, Barcode czy Title, są rozpoznawane "
 "automatycznie."
 
 #: .\templates\manage\products\import.html:107
@@ -2879,8 +2892,8 @@ msgid ""
 "If a product with the same code already exists, it will be updated with the "
 "new values."
 msgstr ""
-"Jeśli produkt o tym samym kodzie już istnieje, zostanie zaktualizowany nowymi"
-" wartościami."
+"Jeśli produkt o tym samym kodzie już istnieje, zostanie zaktualizowany "
+"nowymi wartościami."
 
 #: .\templates\manage\products\list.html:6
 msgid "Manage your product inventory"
@@ -3020,14 +3033,15 @@ msgstr "Konta kompletujących"
 #: .\templates\manage\profile.html:95
 msgid ""
 "Your warehouse staff log into the picker app with these accounts. Set a "
-"password here and hand it to your team — pickers cannot change it themselves."
-" A login QR lets someone sign in by scanning instead of typing, which is the "
-"quickest way to get a new picker started."
+"password here and hand it to your team — pickers cannot change it "
+"themselves. A login QR lets someone sign in by scanning instead of typing, "
+"which is the quickest way to get a new picker started."
 msgstr ""
-"Pracownicy magazynu logują się do aplikacji kompletatora za pomocą tych kont."
-" Ustaw tutaj hasło i przekaż je zespołowi — kompletatorzy nie mogą go sami "
-"zmienić. Kod QR logowania pozwala zalogować się przez zeskanowanie zamiast "
-"wpisywania, co jest najszybszym sposobem na uruchomienie nowego kompletatora."
+"Pracownicy magazynu logują się do aplikacji kompletatora za pomocą tych "
+"kont. Ustaw tutaj hasło i przekaż je zespołowi — kompletatorzy nie mogą go "
+"sami zmienić. Kod QR logowania pozwala zalogować się przez zeskanowanie "
+"zamiast wpisywania, co jest najszybszym sposobem na uruchomienie nowego "
+"kompletatora."
 
 #: .\templates\manage\profile.html:100
 #, python-format
@@ -3294,11 +3308,11 @@ msgstr ""
 #: .\templates\manage\settings\api_tokens.html:88
 #, python-format
 msgid ""
-"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push orders"
-" with your token."
+"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push "
+"orders with your token."
 msgstr ""
-"Zobacz <a href=\"%(docs_url)s\">dokumentację API</a>, aby dowiedzieć się, jak"
-" przesyłać zamówienia przy użyciu tokenu."
+"Zobacz <a href=\"%(docs_url)s\">dokumentację API</a>, aby dowiedzieć się, "
+"jak przesyłać zamówienia przy użyciu tokenu."
 
 #: .\templates\manage\settings\api_tokens.html:129
 msgid "Token copied to clipboard"
@@ -3606,8 +3620,8 @@ msgid ""
 "You're receiving this email because you requested a password reset for your "
 "OrderPiqR account (%(username)s)."
 msgstr ""
-"Otrzymujesz tę wiadomość, ponieważ poprosiłeś o zresetowanie hasła do swojego"
-" konta OrderPiqR (%(username)s)."
+"Otrzymujesz tę wiadomość, ponieważ poprosiłeś o zresetowanie hasła do "
+"swojego konta OrderPiqR (%(username)s)."
 
 #: .\templates\registration\password_reset_email.html:6
 msgid "Please click the link below to set a new password:"
@@ -3728,8 +3742,8 @@ msgid ""
 "For managers: add products, create orders, manage the queue, and track "
 "progress."
 msgstr ""
-"Dla menedżerów: dodawaj produkty, twórz zamówienia, zarządzaj kolejką i śledź"
-" postęp."
+"Dla menedżerów: dodawaj produkty, twórz zamówienia, zarządzaj kolejką i "
+"śledź postęp."
 
 #: .\templates\registration\signup.html:41
 msgid "Picker Account"
@@ -3915,8 +3929,8 @@ msgid ""
 "If your products carry their warehouse location in a metafield, OrderPiqr "
 "keeps product locations in sync with it."
 msgstr ""
-"Jeśli Twoje produkty przechowują lokalizację magazynową w metapolu, OrderPiqr"
-" synchronizuje z nim lokalizacje produktów."
+"Jeśli Twoje produkty przechowują lokalizację magazynową w metapolu, "
+"OrderPiqr synchronizuje z nim lokalizacje produktów."
 
 #: .\templates\shopify\app.html:157
 msgid "Unknown products"
@@ -3968,8 +3982,8 @@ msgstr "Zamówienia Shopify"
 
 #: .\templates\shopify\app.html:194
 msgid ""
-"Browse the orders in your Shopify store and push the ones you want to pick to"
-" OrderPiqr. New paid orders are imported automatically."
+"Browse the orders in your Shopify store and push the ones you want to pick "
+"to OrderPiqr. New paid orders are imported automatically."
 msgstr ""
 "Przeglądaj zamówienia w swoim sklepie Shopify i przesyłaj do OrderPiqr te, "
 "które chcesz skompletować. Nowe opłacone zamówienia są importowane "

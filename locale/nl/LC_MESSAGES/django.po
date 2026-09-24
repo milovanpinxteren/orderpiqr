@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 12:06+0200\n"
+"POT-Creation-Date: 2026-09-24 16:34+0200\n"
 "PO-Revision-Date: 2025-08-08 14:00+0200\n"
 "Last-Translator: Milo van Pinxteren <milo@example.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -151,7 +151,7 @@ msgstr "Wijziging"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
 #: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
-#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:110
+#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:117
 #: .\templates\manage\inventory\logs.html:80
 #: .\templates\manage\products\form.html:123
 #: .\templates\manage\products\form.html:163
@@ -307,7 +307,8 @@ msgstr "Een product met de code \"%(code)s\" bestaat al voor deze klant."
 
 #: .\orderpiqrApp\admin\product_admin.py:188
 #, python-format
-msgid "A product with the code \"%(code)s\" already exists, cannot add duplicate."
+msgid ""
+"A product with the code \"%(code)s\" already exists, cannot add duplicate."
 msgstr ""
 "Een product met de code \"%(code)s\" bestaat al; dubbele invoer niet "
 "mogelijk."
@@ -814,8 +815,8 @@ msgstr "Opties"
 
 #: .\orderpiqrApp\models\preferences.py:32
 msgid ""
-"For 'choice' type settings: list of {value, label} options. E.g. [{\"value\":"
-" \"original\", \"label\": \"Original order\"}]"
+"For 'choice' type settings: list of {value, label} options. E.g. "
+"[{\"value\": \"original\", \"label\": \"Original order\"}]"
 msgstr ""
 "Voor 'keuze' type instellingen: lijst van {value, label} opties. Bijv. "
 "[{\"value\": \"original\", \"label\": \"Originele volgorde\"}]"
@@ -840,14 +841,14 @@ msgstr "Klantinstellingswaarde"
 msgid "Customer setting values"
 msgstr "Klantinstellingswaarden"
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:127
+#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:134
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Productcode"
 
 #: .\orderpiqrApp\models\products.py:11
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:91
-#: .\templates\index.html:129 .\templates\manage\orders\form.html:62
+#: .\templates\index.html:136 .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:100
 #: .\templates\manage\products\form.html:37
 #: .\templates\manage\products\list.html:97
@@ -882,8 +883,8 @@ msgid ""
 "Could not find the required column(s) {missing}. Found columns: {found}. "
 "Please use the format shown below."
 msgstr ""
-"Kon de vereiste kolom(men) {missing} niet vinden. Gevonden kolommen: {found}."
-" Gebruik het formaat zoals hieronder weergegeven."
+"Kon de vereiste kolom(men) {missing} niet vinden. Gevonden kolommen: "
+"{found}. Gebruik het formaat zoals hieronder weergegeven."
 
 #: .\orderpiqrApp\utils\csv_import.py:96
 msgid "The file contains no data rows below the header."
@@ -916,8 +917,8 @@ msgid ""
 "Your company and users were created. Welcome! Start by adding your products, "
 "then create orders and manage your queue."
 msgstr ""
-"Uw bedrijf en gebruikers zijn aangemaakt. Welkom! Begin met het toevoegen van"
-" uw producten, maak vervolgens orders aan en beheer uw wachtrij."
+"Uw bedrijf en gebruikers zijn aangemaakt. Welkom! Begin met het toevoegen "
+"van uw producten, maak vervolgens orders aan en beheer uw wachtrij."
 
 #: .\orderpiqrApp\views\auth\signup_view.py:66
 msgid ""
@@ -938,8 +939,8 @@ msgstr "Corrigeer de gemarkeerde fouten en probeer opnieuw."
 
 #: .\orderpiqrApp\views\auth\signup_view.py:83
 msgid ""
-"Some of the submitted information is missing or invalid. Please check and try"
-" again."
+"Some of the submitted information is missing or invalid. Please check and "
+"try again."
 msgstr ""
 "Sommige informatie ontbreekt of is ongeldig. Controleer en probeer opnieuw."
 
@@ -1174,8 +1175,8 @@ msgid ""
 "No products were imported: every row is missing a product code or "
 "description. Please check the CSV format below."
 msgstr ""
-"Er zijn geen producten geïmporteerd: in elke rij ontbreekt een productcode of"
-" omschrijving. Controleer het CSV-formaat hieronder."
+"Er zijn geen producten geïmporteerd: in elke rij ontbreekt een productcode "
+"of omschrijving. Controleer het CSV-formaat hieronder."
 
 #: .\orderpiqrApp\views\manage_views.py:490
 #, python-brace-format
@@ -1185,8 +1186,8 @@ msgstr "Import voltooid: {created} aangemaakt, {updated} bijgewerkt."
 #: .\orderpiqrApp\views\manage_views.py:495
 #, python-brace-format
 msgid ""
-"{count} row(s) were skipped because the product code or description was empty"
-" (rows: {rows})."
+"{count} row(s) were skipped because the product code or description was "
+"empty (rows: {rows})."
 msgstr ""
 "{count} rij(en) overgeslagen omdat de productcode of omschrijving leeg was "
 "(rijen: {rows})."
@@ -1524,8 +1525,8 @@ msgstr "Toegang geweigerd"
 
 #: .\templates\403.html:21
 msgid ""
-"You don't have permission to access this page. Please make sure you're logged"
-" in with the correct account."
+"You don't have permission to access this page. Please make sure you're "
+"logged in with the correct account."
 msgstr ""
 "U heeft geen toegang tot deze pagina. Controleer of u bent ingelogd met het "
 "juiste account."
@@ -1543,8 +1544,8 @@ msgid ""
 "You were away for a while, so we signed you out to keep your work safe. Tap "
 "Try again to reload this page, then carry on where you left off."
 msgstr ""
-"U was even weg, daarom hebben we u uitgelogd om uw werk veilig te houden. Tik"
-" op Opnieuw proberen om deze pagina opnieuw te laden en ga verder waar u "
+"U was even weg, daarom hebben we u uitgelogd om uw werk veilig te houden. "
+"Tik op Opnieuw proberen om deze pagina opnieuw te laden en ga verder waar u "
 "gebleven was."
 
 #: .\templates\404.html:4 .\templates\404.html:18
@@ -1553,8 +1554,8 @@ msgstr "Pagina niet gevonden"
 
 #: .\templates\404.html:21
 msgid ""
-"The page you're looking for doesn't exist or has been moved. Please check the"
-" URL or navigate back to the homepage."
+"The page you're looking for doesn't exist or has been moved. Please check "
+"the URL or navigate back to the homepage."
 msgstr ""
 "De pagina die u zoekt bestaat niet of is verplaatst. Controleer de URL of ga "
 "terug naar de startpagina."
@@ -1565,8 +1566,8 @@ msgstr "Serverfout"
 
 #: .\templates\500.html:209
 msgid ""
-"Something went wrong on our end. Our team has been notified and we're working"
-" to fix the issue. Please try again in a few minutes."
+"Something went wrong on our end. Our team has been notified and we're "
+"working to fix the issue. Please try again in a few minutes."
 msgstr ""
 "Er is iets misgegaan aan onze kant. Ons team is op de hoogte gebracht en we "
 "werken aan een oplossing. Probeer het over enkele minuten opnieuw."
@@ -1675,29 +1676,41 @@ msgid "Original"
 msgstr "Origineel"
 
 #: .\templates\index.html:96
+msgid "List View"
+msgstr "Lijstweergave"
+
+#: .\templates\index.html:98
+msgid "Individual items"
+msgstr "Losse artikelen"
+
+#: .\templates\index.html:99
+msgid "Grouped by product"
+msgstr "Gegroepeerd per product"
+
+#: .\templates\index.html:103
 msgid "Order Importance"
 msgstr "Vaste scanvolgorde"
 
-#: .\templates\index.html:96
+#: .\templates\index.html:103
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
-#: .\templates\index.html:104 .\templates\manage\base.html:234
+#: .\templates\index.html:111 .\templates\manage\base.html:234
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
 msgstr "Log uit"
 
-#: .\templates\index.html:115
+#: .\templates\index.html:122
 msgid "This app is best viewed on your phone"
 msgstr "Deze app is het beste te bekijken op uw telefoon"
 
-#: .\templates\index.html:122 .\templates\manage\picklists\detail.html:4
+#: .\templates\index.html:129 .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
 #: .\templates\manage\picklists\list.html:30
 msgid "Picklist"
 msgstr "Picklijst"
 
-#: .\templates\index.html:128
+#: .\templates\index.html:135
 msgid "Product Name"
 msgstr "Productnaam"
 
@@ -2000,8 +2013,8 @@ msgstr "Nog geen apparaten geregistreerd."
 msgid ""
 "Devices are automatically registered when pickers scan their first QR code."
 msgstr ""
-"Apparaten worden automatisch geregistreerd wanneer pickers hun eerste QR-code"
-" scannen."
+"Apparaten worden automatisch geregistreerd wanneer pickers hun eerste QR-"
+"code scannen."
 
 #: .\templates\manage\dashboard.html:268
 msgid "Orders This Week"
@@ -2219,8 +2232,8 @@ msgid ""
 "This key is shown only once and expires in 24 hours. It can be used a single "
 "time."
 msgstr ""
-"Deze sleutel wordt maar één keer getoond en verloopt na 24 uur. De sleutel is"
-" eenmalig te gebruiken."
+"Deze sleutel wordt maar één keer getoond en verloopt na 24 uur. De sleutel "
+"is eenmalig te gebruiken."
 
 #: .\templates\manage\integrations\pairing_key.html:21
 #: .\templates\manage\settings\api_tokens.html:19
@@ -2549,8 +2562,8 @@ msgid ""
 "Comma and semicolon separated files both work, and common column names such "
 "as Order Number, SKU or Quantity are recognized automatically."
 msgstr ""
-"Zowel komma- als puntkommagescheiden bestanden werken, en gangbare kolomnamen"
-" zoals Order Number, SKU of Quantity worden automatisch herkend."
+"Zowel komma- als puntkommagescheiden bestanden werken, en gangbare "
+"kolomnamen zoals Order Number, SKU of Quantity worden automatisch herkend."
 
 #: .\templates\manage\orders\import.html:109
 msgid "Multiple rows with the same order_code will be combined into one order"
@@ -2720,8 +2733,8 @@ msgstr ""
 #, python-format
 msgid "Remove %%s order(s) from the queue? Only queued orders are affected."
 msgstr ""
-"%%s order(s) uit de wachtrij verwijderen? Alleen orders in de wachtrij worden"
-" aangepast."
+"%%s order(s) uit de wachtrij verwijderen? Alleen orders in de wachtrij "
+"worden aangepast."
 
 #: .\templates\manage\picklists\detail.html:19
 msgid "Back to List"
@@ -2877,8 +2890,8 @@ msgid ""
 "Comma and semicolon separated files both work, and common column names such "
 "as SKU, Barcode or Title are recognized automatically."
 msgstr ""
-"Zowel komma- als puntkommagescheiden bestanden werken, en gangbare kolomnamen"
-" zoals SKU, Barcode of Title worden automatisch herkend."
+"Zowel komma- als puntkommagescheiden bestanden werken, en gangbare "
+"kolomnamen zoals SKU, Barcode of Title worden automatisch herkend."
 
 #: .\templates\manage\products\import.html:107
 msgid ""
@@ -3028,14 +3041,14 @@ msgstr "Picker accounts"
 #: .\templates\manage\profile.html:95
 msgid ""
 "Your warehouse staff log into the picker app with these accounts. Set a "
-"password here and hand it to your team — pickers cannot change it themselves."
-" A login QR lets someone sign in by scanning instead of typing, which is the "
-"quickest way to get a new picker started."
+"password here and hand it to your team — pickers cannot change it "
+"themselves. A login QR lets someone sign in by scanning instead of typing, "
+"which is the quickest way to get a new picker started."
 msgstr ""
 "Uw magazijnmedewerkers loggen met deze accounts in op de picker-app. Stel "
-"hier een wachtwoord in en geef dat aan uw team — pickers kunnen het zelf niet"
-" wijzigen. Met een inlog-QR logt iemand in door te scannen in plaats van te "
-"typen; dat is de snelste manier om een nieuwe picker op weg te helpen."
+"hier een wachtwoord in en geef dat aan uw team — pickers kunnen het zelf "
+"niet wijzigen. Met een inlog-QR logt iemand in door te scannen in plaats van "
+"te typen; dat is de snelste manier om een nieuwe picker op weg te helpen."
 
 #: .\templates\manage\profile.html:100
 #, python-format
@@ -3064,9 +3077,9 @@ msgid ""
 "Anyone who scans this code can sign in as this picker — keep the print-out "
 "inside the warehouse. It cannot be shown again after you leave this page."
 msgstr ""
-"Iedereen die deze code scant, kan inloggen als deze picker — bewaar de afdruk"
-" binnen het magazijn. Na het verlaten van deze pagina wordt de code niet "
-"opnieuw getoond."
+"Iedereen die deze code scant, kan inloggen als deze picker — bewaar de "
+"afdruk binnen het magazijn. Na het verlaten van deze pagina wordt de code "
+"niet opnieuw getoond."
 
 #: .\templates\manage\profile.html:124
 #, python-format
@@ -3278,8 +3291,8 @@ msgstr "Actieve tokens"
 msgid ""
 "Creating a token replaces your existing token of the same type. Continue?"
 msgstr ""
-"Als u een token aanmaakt, vervangt dit uw bestaande token van hetzelfde type."
-" Doorgaan?"
+"Als u een token aanmaakt, vervangt dit uw bestaande token van hetzelfde "
+"type. Doorgaan?"
 
 #: .\templates\manage\settings\api_tokens.html:41
 msgid "Create token"
@@ -3303,8 +3316,8 @@ msgstr ""
 #: .\templates\manage\settings\api_tokens.html:88
 #, python-format
 msgid ""
-"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push orders"
-" with your token."
+"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push "
+"orders with your token."
 msgstr ""
 "Zie de <a href=\"%(docs_url)s\">API-documentatie</a> voor het aanleveren van "
 "orders met uw token."
@@ -3631,8 +3644,8 @@ msgid ""
 "If you didn't request this password reset, you can safely ignore this email. "
 "Your password will not be changed."
 msgstr ""
-"Als u deze wachtwoord reset niet heeft aangevraagd, kunt u deze e-mail veilig"
-" negeren. Uw wachtwoord wordt niet gewijzigd."
+"Als u deze wachtwoord reset niet heeft aangevraagd, kunt u deze e-mail "
+"veilig negeren. Uw wachtwoord wordt niet gewijzigd."
 
 #: .\templates\registration\password_reset_email.html:14
 msgid "Best regards,"
@@ -3737,8 +3750,8 @@ msgid ""
 "For managers: add products, create orders, manage the queue, and track "
 "progress."
 msgstr ""
-"Voor managers: voeg producten toe, maak orders, beheer de wachtrij en volg de"
-" voortgang."
+"Voor managers: voeg producten toe, maak orders, beheer de wachtrij en volg "
+"de voortgang."
 
 #: .\templates\registration\signup.html:41
 msgid "Picker Account"
@@ -3749,8 +3762,8 @@ msgid ""
 "One shared login for all warehouse staff. Each picker enters their name on "
 "first use - their device is then remembered."
 msgstr ""
-"Eén gedeelde login voor alle magazijnmedewerkers. Elke picker voert zijn naam"
-" in bij eerste gebruik - zijn apparaat wordt dan onthouden."
+"Eén gedeelde login voor alle magazijnmedewerkers. Elke picker voert zijn "
+"naam in bij eerste gebruik - zijn apparaat wordt dan onthouden."
 
 #: .\templates\registration\signup.html:47
 msgid ""
@@ -3856,8 +3869,8 @@ msgid ""
 "This store has no active OrderPiqr subscription. Choose a plan to keep order "
 "sync running — billing is handled by Shopify."
 msgstr ""
-"Deze winkel heeft geen actief OrderPiqr-abonnement. Kies een abonnement om de"
-" ordersynchronisatie actief te houden — facturering verloopt via Shopify."
+"Deze winkel heeft geen actief OrderPiqr-abonnement. Kies een abonnement om "
+"de ordersynchronisatie actief te houden — facturering verloopt via Shopify."
 
 #: .\templates\shopify\app.html:105
 msgid "Choose a plan"
@@ -3977,8 +3990,8 @@ msgstr "Shopify-orders"
 
 #: .\templates\shopify\app.html:194
 msgid ""
-"Browse the orders in your Shopify store and push the ones you want to pick to"
-" OrderPiqr. New paid orders are imported automatically."
+"Browse the orders in your Shopify store and push the ones you want to pick "
+"to OrderPiqr. New paid orders are imported automatically."
 msgstr ""
 "Blader door de orders in uw Shopify-winkel en stuur de orders die u wilt "
 "picken naar OrderPiqr. Nieuwe betaalde orders worden automatisch "
@@ -4050,9 +4063,10 @@ msgid ""
 "your company already has an account on orderpiqr.nl, link this store to it — "
 "your existing products and settings will be used instead."
 msgstr ""
-"Deze winkel kreeg een nieuwe OrderPiqr-werkruimte toen u de app installeerde."
-" Als uw bedrijf al een account heeft op orderpiqr.nl, koppel deze winkel "
-"daaraan — uw bestaande producten en instellingen worden dan gebruikt."
+"Deze winkel kreeg een nieuwe OrderPiqr-werkruimte toen u de app "
+"installeerde. Als uw bedrijf al een account heeft op orderpiqr.nl, koppel "
+"deze winkel daaraan — uw bestaande producten en instellingen worden dan "
+"gebruikt."
 
 #: .\templates\shopify\app.html:237
 msgid "Admin username"

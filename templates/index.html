@@ -92,6 +92,13 @@
                             <option value="description">{% trans "Description" %}</option>
                         </select>
                     </div>
+                    <div class="settings-row">
+                        <label for="picklist-view-select">{% trans "List View" %}</label>
+                        <select id="picklist-view-select" class="dropdown">
+                            <option value="individual">{% trans "Individual items" %}</option>
+                            <option value="grouped">{% trans "Grouped by product" %}</option>
+                        </select>
+                    </div>
                     <button id="toggle-order-btn" class="btn-toggle">
                         {% trans "Order Importance" %}: {% trans "Enabled" %}
                     </button>
@@ -119,14 +126,21 @@
         <div id="reader" class="scanner"></div>
     </div>
     <div id="scanned-list-container" class="scanned-list-container">
-        <h4 id="picklist-code-display" class="picklist-code-display" style="display: none;">{% trans "Picklist" %}:
-            <span id="picklist-code-value"></span></h4>
+        <h4 id="picklist-code-display" class="picklist-code-display" style="display: none;">
+            <span class="picklist-label">{% trans "Picklist" %}</span>
+            <span id="picklist-code-value" class="picklist-code"></span>
+        </h4>
         <table id="scanned-list" class="scanned-list">
             <thead>
-            <tr>
+            <tr class="header-individual">
                 <th>{% trans "Product Code" %}</th>
                 <th>{% trans "Product Name" %}</th>
                 <th>{% trans "Location" %}</th>
+            </tr>
+            <tr class="header-grouped">
+                <th class="th-qty">{% trans "Qty" %}</th>
+                <th>{% trans "Location" %}</th>
+                <th>{% trans "Product" %}</th>
             </tr>
             </thead>
             <tbody></tbody>
@@ -229,6 +243,18 @@
             // Dispatch custom event to trigger re-sort in camera_page.js module
             document.dispatchEvent(new CustomEvent('picklist-sort-change', {detail: {sortingMode: newValue}}));
         });
+
+        // List view: customer setting provides the default, picker can switch per session
+        const viewSelect = document.getElementById("picklist-view-select");
+        if (viewSelect) {
+            viewSelect.value = window.SETTINGS?.grouped_picklist_view === true ? "grouped" : "individual";
+            viewSelect.addEventListener("change", function () {
+                window.SETTINGS.grouped_picklist_view = viewSelect.value === "grouped";
+
+                // Dispatch custom event to trigger re-render in camera_page.js module
+                document.dispatchEvent(new CustomEvent('picklist-view-change', {detail: {grouped: window.SETTINGS.grouped_picklist_view}}));
+            });
+        }
 
 
         toggleBtn.addEventListener("click", function () {

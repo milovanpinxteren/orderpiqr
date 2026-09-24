@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 12:06+0200\n"
+"POT-Creation-Date: 2026-09-24 16:34+0200\n"
 "PO-Revision-Date: 2026-09-23 11:00+0200\n"
 "Last-Translator: Milo van Pinxteren <milo@example.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -12,7 +12,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: .\drf_hashed_token\admin.py:10
 msgid "Hashed auth tokens"
@@ -150,7 +151,7 @@ msgstr "Зміна"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
 #: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
-#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:110
+#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:117
 #: .\templates\manage\inventory\logs.html:80
 #: .\templates\manage\products\form.html:123
 #: .\templates\manage\products\form.html:163
@@ -304,7 +305,8 @@ msgstr "Товар із кодом «%(code)s» уже існує для цьо�
 
 #: .\orderpiqrApp\admin\product_admin.py:188
 #, python-format
-msgid "A product with the code \"%(code)s\" already exists, cannot add duplicate."
+msgid ""
+"A product with the code \"%(code)s\" already exists, cannot add duplicate."
 msgstr "Товар із кодом «%(code)s» уже існує, неможливо додати дублікат."
 
 #: .\orderpiqrApp\admin\product_admin.py:194
@@ -808,8 +810,8 @@ msgstr "Варіанти"
 
 #: .\orderpiqrApp\models\preferences.py:32
 msgid ""
-"For 'choice' type settings: list of {value, label} options. E.g. [{\"value\":"
-" \"original\", \"label\": \"Original order\"}]"
+"For 'choice' type settings: list of {value, label} options. E.g. "
+"[{\"value\": \"original\", \"label\": \"Original order\"}]"
 msgstr ""
 "Для параметрів типу 'choice': список варіантів {value, label}. Напр. "
 "[{\"value\": \"original\", \"label\": \"Original order\"}]"
@@ -834,14 +836,14 @@ msgstr "Значення параметра клієнта"
 msgid "Customer setting values"
 msgstr "Значення параметрів клієнта"
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:127
+#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:134
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Код товару"
 
 #: .\orderpiqrApp\models\products.py:11
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:91
-#: .\templates\index.html:129 .\templates\manage\orders\form.html:62
+#: .\templates\index.html:136 .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:100
 #: .\templates\manage\products\form.html:37
 #: .\templates\manage\products\list.html:97
@@ -931,8 +933,8 @@ msgstr "Виправте виділені помилки та спробуйте
 
 #: .\orderpiqrApp\views\auth\signup_view.py:83
 msgid ""
-"Some of the submitted information is missing or invalid. Please check and try"
-" again."
+"Some of the submitted information is missing or invalid. Please check and "
+"try again."
 msgstr ""
 "Частина наданої інформації відсутня або недійсна. Перевірте та спробуйте ще "
 "раз."
@@ -1178,8 +1180,8 @@ msgstr "Імпорт завершено: створено {created}, оновл�
 #: .\orderpiqrApp\views\manage_views.py:495
 #, python-brace-format
 msgid ""
-"{count} row(s) were skipped because the product code or description was empty"
-" (rows: {rows})."
+"{count} row(s) were skipped because the product code or description was "
+"empty (rows: {rows})."
 msgstr ""
 "Пропущено рядків через порожній код товару або опис: {count} (рядки: {rows})."
 
@@ -1496,8 +1498,8 @@ msgid ""
 "Something about that request didn't look right, so we stopped it. Tap Try "
 "again, or go back to the home screen and start over."
 msgstr ""
-"Із цим запитом щось було не так, тому ми його зупинили. Натисніть «Спробувати"
-" ще раз» або поверніться на головний екран і почніть спочатку."
+"Із цим запитом щось було не так, тому ми його зупинили. Натисніть "
+"«Спробувати ще раз» або поверніться на головний екран і почніть спочатку."
 
 #: .\templates\400.html:30 .\templates\403_csrf.html:32
 #: .\templates\500.html:218
@@ -1515,8 +1517,8 @@ msgstr "Доступ заборонено"
 
 #: .\templates\403.html:21
 msgid ""
-"You don't have permission to access this page. Please make sure you're logged"
-" in with the correct account."
+"You don't have permission to access this page. Please make sure you're "
+"logged in with the correct account."
 msgstr ""
 "У вас немає дозволу на доступ до цієї сторінки. Переконайтеся, що ви увійшли "
 "з правильним обліковим записом."
@@ -1544,8 +1546,8 @@ msgstr "Сторінку не знайдено"
 
 #: .\templates\404.html:21
 msgid ""
-"The page you're looking for doesn't exist or has been moved. Please check the"
-" URL or navigate back to the homepage."
+"The page you're looking for doesn't exist or has been moved. Please check "
+"the URL or navigate back to the homepage."
 msgstr ""
 "Сторінка, яку ви шукаєте, не існує або її переміщено. Перевірте URL або "
 "поверніться на головну сторінку."
@@ -1556,8 +1558,8 @@ msgstr "Помилка сервера"
 
 #: .\templates\500.html:209
 msgid ""
-"Something went wrong on our end. Our team has been notified and we're working"
-" to fix the issue. Please try again in a few minutes."
+"Something went wrong on our end. Our team has been notified and we're "
+"working to fix the issue. Please try again in a few minutes."
 msgstr ""
 "Щось пішло не так на нашому боці. Нашу команду вже сповіщено, і ми працюємо "
 "над усуненням проблеми. Спробуйте ще раз за кілька хвилин."
@@ -1592,8 +1594,8 @@ msgstr "Керування чергою"
 #: .\templates\admin\orderpiqrApp\order\change_list.html:43
 msgid "Manage the picking queue - add orders, reorder, and monitor progress"
 msgstr ""
-"Керуйте чергою комплектації — додавайте замовлення, змінюйте порядок і стежте"
-" за прогресом"
+"Керуйте чергою комплектації — додавайте замовлення, змінюйте порядок і "
+"стежте за прогресом"
 
 #: .\templates\admin\orderpiqrApp\order\change_list.html:45
 msgid "Open Queue Manager"
@@ -1669,29 +1671,41 @@ msgid "Original"
 msgstr "Початковий"
 
 #: .\templates\index.html:96
+msgid "List View"
+msgstr "Вигляд списку"
+
+#: .\templates\index.html:98
+msgid "Individual items"
+msgstr "Окремі товари"
+
+#: .\templates\index.html:99
+msgid "Grouped by product"
+msgstr "Згруповано за товаром"
+
+#: .\templates\index.html:103
 msgid "Order Importance"
 msgstr "Пріоритет замовлення"
 
-#: .\templates\index.html:96
+#: .\templates\index.html:103
 msgid "Enabled"
 msgstr "Увімкнено"
 
-#: .\templates\index.html:104 .\templates\manage\base.html:234
+#: .\templates\index.html:111 .\templates\manage\base.html:234
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
 msgstr "Вийти"
 
-#: .\templates\index.html:115
+#: .\templates\index.html:122
 msgid "This app is best viewed on your phone"
 msgstr "Цей застосунок найкраще переглядати на телефоні"
 
-#: .\templates\index.html:122 .\templates\manage\picklists\detail.html:4
+#: .\templates\index.html:129 .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
 #: .\templates\manage\picklists\list.html:30
 msgid "Picklist"
 msgstr "Лист комплектації"
 
-#: .\templates\index.html:128
+#: .\templates\index.html:135
 msgid "Product Name"
 msgstr "Назва товару"
 
@@ -2191,8 +2205,8 @@ msgid ""
 "Connect your WooCommerce store to import orders into the picking queue "
 "automatically."
 msgstr ""
-"Підключіть свій магазин WooCommerce, щоб автоматично імпортувати замовлення в"
-" чергу комплектації."
+"Підключіть свій магазин WooCommerce, щоб автоматично імпортувати замовлення "
+"в чергу комплектації."
 
 #: .\templates\manage\integrations\list.html:96
 msgid ""
@@ -2252,8 +2266,8 @@ msgid ""
 "Paste the key above and click Connect. Your products and open orders will "
 "start syncing automatically."
 msgstr ""
-"Вставте наведений вище ключ і натисніть «Підключити». Ваші товари та відкриті"
-" замовлення почнуть синхронізуватися автоматично."
+"Вставте наведений вище ключ і натисніть «Підключити». Ваші товари та "
+"відкриті замовлення почнуть синхронізуватися автоматично."
 
 #: .\templates\manage\integrations\pairing_key.html:41
 msgid "Back to integrations"
@@ -3016,15 +3030,15 @@ msgstr "Облікові записи комплектувальників"
 #: .\templates\manage\profile.html:95
 msgid ""
 "Your warehouse staff log into the picker app with these accounts. Set a "
-"password here and hand it to your team — pickers cannot change it themselves."
-" A login QR lets someone sign in by scanning instead of typing, which is the "
-"quickest way to get a new picker started."
+"password here and hand it to your team — pickers cannot change it "
+"themselves. A login QR lets someone sign in by scanning instead of typing, "
+"which is the quickest way to get a new picker started."
 msgstr ""
-"Ваші складські працівники входять у застосунок комплектувальника за допомогою"
-" цих облікових записів. Задайте тут пароль і передайте його своїй команді — "
-"комплектувальники не можуть змінити його самостійно. QR-код входу дозволяє "
-"увійти скануванням замість введення даних, і це найшвидший спосіб розпочати "
-"роботу з новим комплектувальником."
+"Ваші складські працівники входять у застосунок комплектувальника за "
+"допомогою цих облікових записів. Задайте тут пароль і передайте його своїй "
+"команді — комплектувальники не можуть змінити його самостійно. QR-код входу "
+"дозволяє увійти скануванням замість введення даних, і це найшвидший спосіб "
+"розпочати роботу з новим комплектувальником."
 
 #: .\templates\manage\profile.html:100
 #, python-format
@@ -3054,8 +3068,8 @@ msgid ""
 "inside the warehouse. It cannot be shown again after you leave this page."
 msgstr ""
 "Будь-хто, хто відсканує цей код, зможе увійти як цей комплектувальник — "
-"зберігайте роздруківку в межах складу. Після того як ви залишите цю сторінку,"
-" код більше не відображатиметься."
+"зберігайте роздруківку в межах складу. Після того як ви залишите цю "
+"сторінку, код більше не відображатиметься."
 
 #: .\templates\manage\profile.html:124
 #, python-format
@@ -3291,8 +3305,8 @@ msgstr ""
 #: .\templates\manage\settings\api_tokens.html:88
 #, python-format
 msgid ""
-"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push orders"
-" with your token."
+"See the <a href=\"%(docs_url)s\">API documentation</a> for how to push "
+"orders with your token."
 msgstr ""
 "Дивіться <a href=\"%(docs_url)s\">документацію API</a>, щоб дізнатися, як "
 "надсилати замовлення за допомогою свого токена."
@@ -3398,8 +3412,8 @@ msgid ""
 "This order is being picked by someone else. Are you sure you want to take it "
 "over? Their progress will be lost."
 msgstr ""
-"Це замовлення комплектує інша людина. Ви впевнені, що хочете його перехопити?"
-" Її прогрес буде втрачено."
+"Це замовлення комплектує інша людина. Ви впевнені, що хочете його "
+"перехопити? Її прогрес буде втрачено."
 
 #: .\templates\registration\login.html:4
 msgid "Login"
@@ -3916,8 +3930,8 @@ msgid ""
 "If your products carry their warehouse location in a metafield, OrderPiqr "
 "keeps product locations in sync with it."
 msgstr ""
-"Якщо ваші товари зберігають своє складське розташування в метаполі, OrderPiqr"
-" синхронізує розташування товарів із ним."
+"Якщо ваші товари зберігають своє складське розташування в метаполі, "
+"OrderPiqr синхронізує розташування товарів із ним."
 
 #: .\templates\shopify\app.html:157
 msgid "Unknown products"
@@ -3969,8 +3983,8 @@ msgstr "Замовлення Shopify"
 
 #: .\templates\shopify\app.html:194
 msgid ""
-"Browse the orders in your Shopify store and push the ones you want to pick to"
-" OrderPiqr. New paid orders are imported automatically."
+"Browse the orders in your Shopify store and push the ones you want to pick "
+"to OrderPiqr. New paid orders are imported automatically."
 msgstr ""
 "Переглядайте замовлення у своєму магазині Shopify та надсилайте до OrderPiqr "
 "ті, які хочете скомплектувати. Нові оплачені замовлення імпортуються "
@@ -4062,5 +4076,5 @@ msgstr "Доступ комплектувальника"
 #: .\templates\shopify\app.html:246
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr ""
-"Ваші складські працівники входять у застосунок комплектувальника за допомогою"
-" цього облікового запису:"
+"Ваші складські працівники входять у застосунок комплектувальника за "
+"допомогою цього облікового запису:"
