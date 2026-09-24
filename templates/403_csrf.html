@@ -1,0 +1,42 @@
+{% extends "errors/base_error.html" %}
+{% load i18n %}
+
+{# Django's CSRF machinery looks for this exact template name (403_csrf.html), #}
+{# both from our CSRF_FAILURE_VIEW and from Django's own fallback view. #}
+
+{% block title %}{% trans "Session Expired" %}{% endblock %}
+
+{% block icon_bg %}#fef3c7{% endblock %}
+{% block icon_color %}#d97706{% endblock %}
+
+{% block icon %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <polyline points="12 6 12 12 16 14"/>
+</svg>
+{% endblock %}
+
+{% block error_code %}{% endblock %}
+{% block error_title %}{% trans "Session Expired" %}{% endblock %}
+
+{% block error_message %}
+{% trans "You were away for a while, so we signed you out to keep your work safe. Tap Try again to reload this page, then carry on where you left off." %}
+{% endblock %}
+
+{% block error_actions %}
+<button onclick="location.replace(location.pathname + location.search)" class="btn btn-primary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="23 4 23 10 17 10"/>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+    </svg>
+    {% trans "Try Again" %}
+</button>
+<a href="{% url 'login' %}" class="btn btn-secondary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+        <polyline points="10 17 15 12 10 7"/>
+        <line x1="15" y1="12" x2="3" y2="12"/>
+    </svg>
+    {% trans "Sign In" %}
+</a>
+{% endblock %}

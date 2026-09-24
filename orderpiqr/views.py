@@ -123,6 +123,17 @@ def custom_login(request):
     return render(request, 'registration/login.html', {'form': form})
 
 
+# The raw token sits in the URL path, so this page must not hand its own URL to
+# third parties in a Referer header. It must NOT be 'no-referrer' though: per
+# the Fetch spec ("append a request Origin header"), a page served with
+# no-referrer makes the browser send `Origin: null` on its own same-origin form
+# POST, and Django's CsrfViewMiddleware rejects that with "Origin checking
+# failed - null does not match any trusted origins" — i.e. the Continue button
+# 403s. 'same-origin' keeps the token off every other host while leaving our own
+# POST's Origin/Referer intact.
+QR_LOGIN_REFERRER_POLICY = 'same-origin'
+
+
 @never_cache
 def qr_login(request, token):
     """Redeem a scanned picker login QR.
@@ -139,7 +150,7 @@ def qr_login(request, token):
 
     if login_token is None:
         response = render(request, 'registration/qr_login.html', {'invalid': True}, status=403)
-        response['Referrer-Policy'] = 'no-referrer'
+        response['Referrer-Policy'] = QR_LOGIN_REFERRER_POLICY
         return response
 
     if request.method == 'POST':
@@ -158,7 +169,7 @@ def qr_login(request, token):
         # we replace it.
         'current_user': request.user if request.user.is_authenticated else None,
     })
-    response['Referrer-Policy'] = 'no-referrer'
+    response['Referrer-Policy'] = QR_LOGIN_REFERRER_POLICY
     return response
 
 

@@ -49,6 +49,10 @@ if DEBUG:
     ALLOWED_HOSTS += ['127.0.0.1', '.trycloudflare.com', 'host.docker.internal']
     CSRF_TRUSTED_ORIGINS = ['https://*.trycloudflare.com']
 
+# CSRF rejections never reach handler403 (the middleware calls this view
+# directly), so point them at the branded page instead of Django's default.
+CSRF_FAILURE_VIEW = 'orderpiqr.error_views.csrf_failure'
+
 LOGIN_URL = '/login/'  # Adjust this URL to match your login view or URL pattern
 LOGIN_REDIRECT_URL = '/'  # You can set this to any page you'd like as a fallback
 LOGOUT_REDIRECT_URL = '/'  # Redirect to custom login page

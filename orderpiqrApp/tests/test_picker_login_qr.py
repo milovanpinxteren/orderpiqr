@@ -1,8 +1,9 @@
 """Scannable picker login: issuing from manage/profile and redeeming at /q/."""
+import re
 from datetime import timedelta
 
 from django.contrib.auth.models import Group, User
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import activate
@@ -199,7 +200,93 @@ class RedeemingTests(PickerLoginQRTestCase):
         self.assertEqual(response.status_code, 403)
         self.assertNotIn('_auth_user_id', self.client.session)
 
-    def test_response_suppresses_the_referrer(self):
+    def test_response_keeps_the_token_off_other_hosts(self):
         _token, raw = self.issue()
         response = self.client.get(reverse('qr_login', args=[raw]))
-        self.assertEqual(response['Referrer-Policy'], 'no-referrer')
+        # Not 'no-referrer' — see CsrfTests.browser_headers for why that breaks
+        # the page's own POST.
+        self.assertEqual(response['Referrer-Policy'], 'same-origin')
+
+    def test_invalid_page_keeps_the_token_off_other_hosts(self):
+        response = self.client.get(reverse('qr_login', args=['not-a-real-token']))
+        self.assertEqual(response['Referrer-Policy'], 'same-origin')
+
+
+class CsrfTests(PickerLoginQRTestCase):
+    """The Continue button has to survive CsrfViewMiddleware for real.
+
+    Every other test here uses the default test client, which disables CSRF
+    enforcement and sends no Origin header — so they all pass even when a real
+    phone gets a 403 on the very same POST.
+    """
+
+    HOST = 'app.orderpiqr.nl'
+    ORIGIN = 'https://app.orderpiqr.nl'
+
+    def setUp(self):
+        super().setUp()
+        self.client = Client(enforce_csrf_checks=True)
+
+    @classmethod
+    def browser_headers(cls, referrer_policy, url):
+        """The Origin/Referer a browser puts on this page's own form POST.
+
+        Per Fetch, "append a request Origin header": for a non-CORS request
+        whose method is not GET/HEAD, a document referrer policy of
+        ``no-referrer`` replaces the serialized origin with ``null`` (and of
+        course suppresses Referer). Django's ``_origin_verified`` then matches
+        ``null`` against neither ``request.get_host()`` nor
+        ``CSRF_TRUSTED_ORIGINS`` and rejects the POST. ``same-origin`` still
+        withholds both headers from every other host, but leaves our own POST
+        alone.
+        """
+        if referrer_policy == 'no-referrer':
+            return {'HTTP_ORIGIN': 'null'}
+        return {'HTTP_ORIGIN': cls.ORIGIN, 'HTTP_REFERER': f'{cls.ORIGIN}{url}'}
+
+    def get_confirmation(self, raw):
+        url = reverse('qr_login', args=[raw])
+        page = self.client.get(url, secure=True, HTTP_HOST=self.HOST)
+        self.assertEqual(page.status_code, 200)
+        return url, page
+
+    def test_continue_button_is_accepted_by_csrf_middleware(self):
+        """Scan, press Continue, get logged in — not a 403."""
+        _token, raw = self.issue()
+        url, page = self.get_confirmation(raw)
+
+        match = re.search(
+            r'name="csrfmiddlewaretoken"\s+value="([^"]+)"', page.content.decode())
+        self.assertIsNotNone(match, 'confirmation form is missing {% csrf_token %}')
+        self.assertIn('csrftoken', self.client.cookies,
+                      'GET did not set the CSRF cookie the POST needs')
+
+        response = self.client.post(
+            url,
+            {'csrfmiddlewaretoken': match.group(1), 'device_fingerprint': 'brand-new-phone'},
+            secure=True,
+            HTTP_HOST=self.HOST,
+            **self.browser_headers(page['Referrer-Policy'], url),
+        )
+
+        self.assertNotEqual(response.status_code, 403, 'CSRF verification failed')
+        self.assertRedirects(response, reverse('name_entry'), fetch_redirect_response=False)
+        self.assertEqual(int(self.client.session['_auth_user_id']), self.picker.pk)
+
+    def test_confirmation_page_is_never_cached(self):
+        # A cached page would hand every scanner the same stale CSRF token.
+        _token, raw = self.issue()
+        _url, page = self.get_confirmation(raw)
+        self.assertIn('no-store', page['Cache-Control'])
+
+    def test_post_without_a_csrf_token_is_still_rejected(self):
+        # The fix must not have loosened protection on this endpoint.
+        _token, raw = self.issue()
+        url, _page = self.get_confirmation(raw)
+
+        response = self.client.post(
+            url, {'device_fingerprint': 'phone'}, secure=True, HTTP_HOST=self.HOST,
+            HTTP_ORIGIN=self.ORIGIN, HTTP_REFERER=f'{self.ORIGIN}{url}')
+
+        self.assertEqual(response.status_code, 403)
+        self.assertNotIn('_auth_user_id', self.client.session)

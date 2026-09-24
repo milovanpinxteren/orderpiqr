@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 10:48+0200\n"
+"POT-Creation-Date: 2026-09-24 11:31+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -214,7 +214,7 @@ msgid "%(count)s order(s) removed from queue."
 msgstr "%(count)s comandă(comenzi) eliminată(e) din coadă."
 
 #: .\orderpiqrApp\admin\order_admin.py:124
-#: .\orderpiqrApp\admin\order_admin.py:328 .\orderpiqr\views.py:199
+#: .\orderpiqrApp\admin\order_admin.py:328 .\orderpiqr\views.py:210
 msgid "Your account is not linked to a customer."
 msgstr "Contul dumneavoastră nu este asociat cu un client."
 
@@ -1326,12 +1326,16 @@ msgstr "Contul de operator '{username}' a fost creat."
 #, python-brace-format
 msgid ""
 "Login QR created for '{username}'. Print it now – it cannot be shown again."
-msgstr "Cod QR de autentificare creat pentru '{username}'. Tipăriţi-l acum – nu va mai fi afișat."
+msgstr ""
+"Cod QR de autentificare creat pentru '{username}'. Tipăriţi-l acum – nu va "
+"mai fi afișat."
 
 #: .\orderpiqrApp\views\manage_views.py:1157
 #, python-brace-format
 msgid "Login QR for '{username}' revoked. Printed copies no longer work."
-msgstr "Codul QR de autentificare pentru '{username}' a fost revocat. Copiile tipărite nu mai funcţionează."
+msgstr ""
+"Codul QR de autentificare pentru '{username}' a fost revocat. Copiile "
+"tipărite nu mai funcţionează."
 
 #: .\orderpiqrApp\views\manage_views.py:1240
 msgid "Settings saved successfully."
@@ -1472,11 +1476,21 @@ msgstr "Cerere invalidă"
 
 #: .\templates\400.html:21
 msgid ""
-"The server could not understand your request. This might be due to invalid "
-"data or a malformed request."
+"Something about that request didn't look right, so we stopped it. Tap Try "
+"again, or go back to the home screen and start over."
 msgstr ""
-"Serverul nu a putut procesa cererea dumneavoastră. Acest lucru poate fi "
-"cauzat de date invalide sau o cerere malformată."
+"Ceva nu era în regulă cu acea cerere, așa că am oprit-o. Atingeți "
+"Încercați din nou sau reveniți la ecranul principal și luați-o de la capăt."
+
+#: .\templates\400.html:30 .\templates\403_csrf.html:32
+#: .\templates\500.html:218
+msgid "Try Again"
+msgstr "Încercați din nou"
+
+#: .\templates\400.html:37 .\templates\403.html:38 .\templates\500.html:225
+#: .\templates\errors\base_error.html:282
+msgid "Go to Homepage"
+msgstr "Mergi la pagina principală"
 
 #: .\templates\403.html:4 .\templates\403.html:18
 msgid "Access Denied"
@@ -1490,14 +1504,22 @@ msgstr ""
 "Nu aveți permisiunea de a accesa această pagină. Vă rugăm să vă asigurați că "
 "sunteți conectat cu contul corect."
 
-#: .\templates\403.html:31
+#: .\templates\403.html:31 .\templates\403_csrf.html:40
 msgid "Sign In"
 msgstr "Autentificare"
 
-#: .\templates\403.html:38 .\templates\500.html:40
-#: .\templates\errors\base_error.html:270
-msgid "Go to Homepage"
-msgstr "Mergi la pagina principală"
+#: .\templates\403_csrf.html:7 .\templates\403_csrf.html:20
+msgid "Session Expired"
+msgstr "Sesiune expirată"
+
+#: .\templates\403_csrf.html:23
+msgid ""
+"You were away for a while, so we signed you out to keep your work safe. Tap "
+"Try again to reload this page, then carry on where you left off."
+msgstr ""
+"Ați lipsit o vreme, așa că v-am deconectat pentru a vă proteja munca. "
+"Atingeți Încercați din nou pentru a reîncărca această pagină și continuați "
+"de unde ați rămas."
 
 #: .\templates\404.html:4 .\templates\404.html:18
 msgid "Page Not Found"
@@ -1511,11 +1533,11 @@ msgstr ""
 "Pagina pe care o căutați nu există sau a fost mutată. Vă rugăm să verificați "
 "URL-ul sau să reveniți la pagina principală."
 
-#: .\templates\500.html:4 .\templates\500.html:21
+#: .\templates\500.html:18 .\templates\500.html:204
 msgid "Server Error"
 msgstr "Eroare de server"
 
-#: .\templates\500.html:24
+#: .\templates\500.html:209
 msgid ""
 "Something went wrong on our end. Our team has been notified and we're "
 "working to fix the issue. Please try again in a few minutes."
@@ -1524,9 +1546,13 @@ msgstr ""
 "notificată și lucrăm la rezolvarea problemei. Vă rugăm să încercați din nou "
 "în câteva minute."
 
-#: .\templates\500.html:33
-msgid "Try Again"
-msgstr "Încercați din nou"
+#: .\templates\500.html:232 .\templates\errors\base_error.html:299
+msgid ""
+"If this problem persists, please contact <a "
+"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
+msgstr ""
+"Dacă această problemă persistă, vă rugăm să contactați <a "
+"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
 
 #: .\templates\admin\base_site.html:36 .\templates\admin\base_site.html:37
 #: .\templates\admin\base_site.html:42
@@ -1593,17 +1619,9 @@ msgstr "Încarcă fișierul"
 msgid "Upload Product CSV/XLSX"
 msgstr "Încarcă fișierul produs CSV/XLSX"
 
-#: .\templates\errors\base_error.html:277 .\templates\offline.html:69
+#: .\templates\errors\base_error.html:289 .\templates\offline.html:69
 msgid "Go Back"
 msgstr "Înapoi"
-
-#: .\templates\errors\base_error.html:287
-msgid ""
-"If this problem persists, please contact <a "
-"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
-msgstr ""
-"Dacă această problemă persistă, vă rugăm să contactați <a "
-"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
 
 #: .\templates\index.html:51
 msgid "Welcome to Orderpiqr!"
@@ -2988,7 +3006,11 @@ msgid ""
 "password here and hand it to your team — pickers cannot change it "
 "themselves. A login QR lets someone sign in by scanning instead of typing, "
 "which is the quickest way to get a new picker started."
-msgstr "Personalul din depozit se autentifică în aplicaţia de picking cu aceste conturi. Setaţi aici o parolă și transmiteţi-o echipei — operatorii nu o pot schimba singuri. Un cod QR de autentificare permite conectarea prin scanare în loc de tastare, cea mai rapidă modalitate de a porni un operator nou."
+msgstr ""
+"Personalul din depozit se autentifică în aplicaţia de picking cu aceste "
+"conturi. Setaţi aici o parolă și transmiteţi-o echipei — operatorii nu o pot "
+"schimba singuri. Un cod QR de autentificare permite conectarea prin scanare "
+"în loc de tastare, cea mai rapidă modalitate de a porni un operator nou."
 
 #: .\templates\manage\profile.html:100
 #, python-format
@@ -3016,7 +3038,10 @@ msgstr "Tipărește"
 msgid ""
 "Anyone who scans this code can sign in as this picker — keep the print-out "
 "inside the warehouse. It cannot be shown again after you leave this page."
-msgstr "Oricine scanează acest cod se poate autentifica drept acest operator — păstraţi tipăritura în interiorul depozitului. Nu va mai fi afișat după ce părăsiţi această pagină."
+msgstr ""
+"Oricine scanează acest cod se poate autentifica drept acest operator — "
+"păstraţi tipăritura în interiorul depozitului. Nu va mai fi afișat după ce "
+"părăsiţi această pagină."
 
 #: .\templates\manage\profile.html:124
 #, python-format
@@ -3270,23 +3295,23 @@ msgstr "Ne pare rău, conținutul nu este disponibil momentan."
 msgid "Retry"
 msgstr "Reîncercați"
 
-#: .\templates\partials\scan_confirmation_overlay.html:9
+#: .\templates\partials\scan_confirmation_overlay.html:11
 msgid "Tap to scan next item"
 msgstr "Apăsați pentru a scana următorul articol"
 
-#: .\templates\partials\scan_confirmation_overlay.html:22
+#: .\templates\partials\scan_confirmation_overlay.html:26
 msgid "Pick a specific quantity"
 msgstr "Alege o cantitate specifică"
 
-#: .\templates\partials\scan_confirmation_overlay.html:32
+#: .\templates\partials\scan_confirmation_overlay.html:36
 msgid "Confirm"
 msgstr "Confirmă"
 
-#: .\templates\partials\scan_confirmation_overlay.html:38
+#: .\templates\partials\scan_confirmation_overlay.html:42
 msgid "Pick All"
 msgstr "Preia tot"
 
-#: .\templates\partials\scan_confirmation_overlay.html:41
+#: .\templates\partials\scan_confirmation_overlay.html:45
 msgid "Pick 1"
 msgstr "Preia 1"
 
@@ -3634,7 +3659,9 @@ msgstr "Autentificaţi-vă pentru a începe pickingul"
 msgid ""
 "Ask your manager for a new login code, or sign in with your username and "
 "password."
-msgstr "Cereţi managerului un cod de autentificare nou sau autentificaţi-vă cu numele de utilizator și parola."
+msgstr ""
+"Cereţi managerului un cod de autentificare nou sau autentificaţi-vă cu "
+"numele de utilizator și parola."
 
 #: .\templates\registration\qr_login.html:25
 #: .\templates\registration\qr_login.html:46
@@ -3646,7 +3673,9 @@ msgstr "Autentificare cu parolă"
 msgid ""
 "You are currently signed in as %(name)s. Continuing will sign that account "
 "out on this device."
-msgstr "Sunteţi conectat în prezent ca %(name)s. Dacă continuaţi, acel cont va fi deconectat de pe acest dispozitiv."
+msgstr ""
+"Sunteţi conectat în prezent ca %(name)s. Dacă continuaţi, acel cont va fi "
+"deconectat de pe acest dispozitiv."
 
 #: .\templates\registration\qr_login.html:35
 msgid "Signing in as"

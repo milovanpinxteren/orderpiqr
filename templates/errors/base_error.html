@@ -1,4 +1,5 @@
 {% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'en' }}">
 <head>
@@ -115,6 +116,12 @@
             margin: 0 0 8px;
         }
 
+        /* Pages without a meaningful number (e.g. the expired-session page)
+           leave the block empty; don't reserve space for it. */
+        .error-code:empty {
+            display: none;
+        }
+
         .error-title {
             font-size: 1.25rem;
             font-weight: 600;
@@ -144,8 +151,12 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 12px 20px;
-            font-size: 0.9375rem;
+            /* Gloved thumbs on a phone: keep every action comfortably
+               above the 44px minimum touch target. */
+            padding: 14px 20px;
+            min-height: 52px;
+            width: 100%;
+            font-size: 1rem;
             font-weight: 600;
             font-family: inherit;
             border-radius: var(--border-radius);
@@ -153,6 +164,7 @@
             transition: all var(--transition-fast);
             border: none;
             text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn:hover {

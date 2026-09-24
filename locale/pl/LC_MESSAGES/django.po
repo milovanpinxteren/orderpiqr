@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 10:48+0200\n"
+"POT-Creation-Date: 2026-09-24 11:31+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -215,7 +215,7 @@ msgid "%(count)s order(s) removed from queue."
 msgstr "%(count)s zamówień usunięto z kolejki."
 
 #: .\orderpiqrApp\admin\order_admin.py:124
-#: .\orderpiqrApp\admin\order_admin.py:328 .\orderpiqr\views.py:199
+#: .\orderpiqrApp\admin\order_admin.py:328 .\orderpiqr\views.py:210
 msgid "Your account is not linked to a customer."
 msgstr "Twoje konto nie jest powiązane z klientem."
 
@@ -1326,12 +1326,16 @@ msgstr "Utworzono konto kompletującego '{username}'."
 #, python-brace-format
 msgid ""
 "Login QR created for '{username}'. Print it now – it cannot be shown again."
-msgstr "Utworzono kod QR logowania dla '{username}'. Wydrukuj go teraz – nie zostanie pokazany ponownie."
+msgstr ""
+"Utworzono kod QR logowania dla '{username}'. Wydrukuj go teraz – nie "
+"zostanie pokazany ponownie."
 
 #: .\orderpiqrApp\views\manage_views.py:1157
 #, python-brace-format
 msgid "Login QR for '{username}' revoked. Printed copies no longer work."
-msgstr "Kod QR logowania dla '{username}' został unieważniony. Wydrukowane kopie już nie działają."
+msgstr ""
+"Kod QR logowania dla '{username}' został unieważniony. Wydrukowane kopie już "
+"nie działają."
 
 #: .\orderpiqrApp\views\manage_views.py:1240
 msgid "Settings saved successfully."
@@ -1472,11 +1476,21 @@ msgstr "Nieprawidłowe żądanie"
 
 #: .\templates\400.html:21
 msgid ""
-"The server could not understand your request. This might be due to invalid "
-"data or a malformed request."
+"Something about that request didn't look right, so we stopped it. Tap Try "
+"again, or go back to the home screen and start over."
 msgstr ""
-"Serwer nie mógł przetworzyć Twojego żądania. Może to być spowodowane "
-"nieprawidłowymi danymi lub źle sformułowanym żądaniem."
+"Coś było nie tak z tym żądaniem, więc je zatrzymaliśmy. Dotknij Spróbuj "
+"ponownie lub wróć do ekranu głównego i zacznij od nowa."
+
+#: .\templates\400.html:30 .\templates\403_csrf.html:32
+#: .\templates\500.html:218
+msgid "Try Again"
+msgstr "Spróbuj ponownie"
+
+#: .\templates\400.html:37 .\templates\403.html:38 .\templates\500.html:225
+#: .\templates\errors\base_error.html:282
+msgid "Go to Homepage"
+msgstr "Przejdź do strony głównej"
 
 #: .\templates\403.html:4 .\templates\403.html:18
 msgid "Access Denied"
@@ -1490,14 +1504,22 @@ msgstr ""
 "Nie masz uprawnień do dostępu do tej strony. Upewnij się, że jesteś "
 "zalogowany na odpowiednie konto."
 
-#: .\templates\403.html:31
+#: .\templates\403.html:31 .\templates\403_csrf.html:40
 msgid "Sign In"
 msgstr "Zaloguj się"
 
-#: .\templates\403.html:38 .\templates\500.html:40
-#: .\templates\errors\base_error.html:270
-msgid "Go to Homepage"
-msgstr "Przejdź do strony głównej"
+#: .\templates\403_csrf.html:7 .\templates\403_csrf.html:20
+msgid "Session Expired"
+msgstr "Sesja wygasła"
+
+#: .\templates\403_csrf.html:23
+msgid ""
+"You were away for a while, so we signed you out to keep your work safe. Tap "
+"Try again to reload this page, then carry on where you left off."
+msgstr ""
+"Przez chwilę Cię nie było, więc wylogowaliśmy Cię, aby chronić Twoją "
+"pracę. Dotknij Spróbuj ponownie, aby odświeżyć tę stronę, i kontynuuj od "
+"miejsca, w którym skończyłeś."
 
 #: .\templates\404.html:4 .\templates\404.html:18
 msgid "Page Not Found"
@@ -1511,11 +1533,11 @@ msgstr ""
 "Strona, której szukasz, nie istnieje lub została przeniesiona. Sprawdź adres "
 "URL lub wróć do strony głównej."
 
-#: .\templates\500.html:4 .\templates\500.html:21
+#: .\templates\500.html:18 .\templates\500.html:204
 msgid "Server Error"
 msgstr "Błąd serwera"
 
-#: .\templates\500.html:24
+#: .\templates\500.html:209
 msgid ""
 "Something went wrong on our end. Our team has been notified and we're "
 "working to fix the issue. Please try again in a few minutes."
@@ -1523,9 +1545,13 @@ msgstr ""
 "Coś poszło nie tak po naszej stronie. Nasz zespół został powiadomiony i "
 "pracujemy nad rozwiązaniem problemu. Spróbuj ponownie za kilka minut."
 
-#: .\templates\500.html:33
-msgid "Try Again"
-msgstr "Spróbuj ponownie"
+#: .\templates\500.html:232 .\templates\errors\base_error.html:299
+msgid ""
+"If this problem persists, please contact <a "
+"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
+msgstr ""
+"Jeśli problem będzie się powtarzał, skontaktuj się z <a "
+"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
 
 #: .\templates\admin\base_site.html:36 .\templates\admin\base_site.html:37
 #: .\templates\admin\base_site.html:42
@@ -1589,17 +1615,9 @@ msgstr "Prześlij plik"
 msgid "Upload Product CSV/XLSX"
 msgstr "Prześlij plik produktu CSV/XLSX"
 
-#: .\templates\errors\base_error.html:277 .\templates\offline.html:69
+#: .\templates\errors\base_error.html:289 .\templates\offline.html:69
 msgid "Go Back"
 msgstr "Wróć"
-
-#: .\templates\errors\base_error.html:287
-msgid ""
-"If this problem persists, please contact <a "
-"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
-msgstr ""
-"Jeśli problem będzie się powtarzał, skontaktuj się z <a "
-"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
 
 #: .\templates\index.html:51
 msgid "Welcome to Orderpiqr!"
@@ -2983,7 +3001,12 @@ msgid ""
 "password here and hand it to your team — pickers cannot change it "
 "themselves. A login QR lets someone sign in by scanning instead of typing, "
 "which is the quickest way to get a new picker started."
-msgstr "Pracownicy magazynu logują się do aplikacji kompletatora za pomocą tych kont. Ustaw tutaj hasło i przekaż je zespołowi — kompletatorzy nie mogą go sami zmienić. Kod QR logowania pozwala zalogować się przez zeskanowanie zamiast wpisywania, co jest najszybszym sposobem na uruchomienie nowego kompletatora."
+msgstr ""
+"Pracownicy magazynu logują się do aplikacji kompletatora za pomocą tych "
+"kont. Ustaw tutaj hasło i przekaż je zespołowi — kompletatorzy nie mogą go "
+"sami zmienić. Kod QR logowania pozwala zalogować się przez zeskanowanie "
+"zamiast wpisywania, co jest najszybszym sposobem na uruchomienie nowego "
+"kompletatora."
 
 #: .\templates\manage\profile.html:100
 #, python-format
@@ -3011,7 +3034,10 @@ msgstr "Drukuj"
 msgid ""
 "Anyone who scans this code can sign in as this picker — keep the print-out "
 "inside the warehouse. It cannot be shown again after you leave this page."
-msgstr "Każdy, kto zeskanuje ten kod, może zalogować się jako ten kompletator — przechowuj wydruk na terenie magazynu. Po opuszczeniu tej strony kod nie zostanie pokazany ponownie."
+msgstr ""
+"Każdy, kto zeskanuje ten kod, może zalogować się jako ten kompletator — "
+"przechowuj wydruk na terenie magazynu. Po opuszczeniu tej strony kod nie "
+"zostanie pokazany ponownie."
 
 #: .\templates\manage\profile.html:124
 #, python-format
@@ -3265,23 +3291,23 @@ msgstr "Przepraszamy, treść jest niedostępna w tej chwili."
 msgid "Retry"
 msgstr "Spróbuj ponownie"
 
-#: .\templates\partials\scan_confirmation_overlay.html:9
+#: .\templates\partials\scan_confirmation_overlay.html:11
 msgid "Tap to scan next item"
 msgstr "Dotknij, aby zeskanować następną pozycję"
 
-#: .\templates\partials\scan_confirmation_overlay.html:22
+#: .\templates\partials\scan_confirmation_overlay.html:26
 msgid "Pick a specific quantity"
 msgstr "Wybierz konkretną ilość"
 
-#: .\templates\partials\scan_confirmation_overlay.html:32
+#: .\templates\partials\scan_confirmation_overlay.html:36
 msgid "Confirm"
 msgstr "Potwierdź"
 
-#: .\templates\partials\scan_confirmation_overlay.html:38
+#: .\templates\partials\scan_confirmation_overlay.html:42
 msgid "Pick All"
 msgstr "Pobierz wszystko"
 
-#: .\templates\partials\scan_confirmation_overlay.html:41
+#: .\templates\partials\scan_confirmation_overlay.html:45
 msgid "Pick 1"
 msgstr "Pobierz 1"
 
@@ -3626,7 +3652,9 @@ msgstr "Zaloguj się, aby rozpocząć kompletację"
 msgid ""
 "Ask your manager for a new login code, or sign in with your username and "
 "password."
-msgstr "Poproś przełożonego o nowy kod logowania lub zaloguj się za pomocą nazwy użytkownika i hasła."
+msgstr ""
+"Poproś przełożonego o nowy kod logowania lub zaloguj się za pomocą nazwy "
+"użytkownika i hasła."
 
 #: .\templates\registration\qr_login.html:25
 #: .\templates\registration\qr_login.html:46
@@ -3638,7 +3666,9 @@ msgstr "Zaloguj się hasłem"
 msgid ""
 "You are currently signed in as %(name)s. Continuing will sign that account "
 "out on this device."
-msgstr "Jesteś obecnie zalogowany jako %(name)s. Kontynuowanie wyloguje to konto na tym urządzeniu."
+msgstr ""
+"Jesteś obecnie zalogowany jako %(name)s. Kontynuowanie wyloguje to konto na "
+"tym urządzeniu."
 
 #: .\templates\registration\qr_login.html:35
 msgid "Signing in as"

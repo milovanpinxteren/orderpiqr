@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 10:48+0200\n"
+"POT-Creation-Date: 2026-09-24 11:31+0200\n"
 "PO-Revision-Date: 2025-08-08 14:00+0200\n"
 "Last-Translator: Milo van Pinxteren <milo@example.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -215,7 +215,7 @@ msgid "%(count)s order(s) removed from queue."
 msgstr "%(count)s order(s) verwijderd uit wachtrij."
 
 #: .\orderpiqrApp\admin\order_admin.py:124
-#: .\orderpiqrApp\admin\order_admin.py:328 .\orderpiqr\views.py:199
+#: .\orderpiqrApp\admin\order_admin.py:328 .\orderpiqr\views.py:210
 msgid "Your account is not linked to a customer."
 msgstr "Uw account is niet gekoppeld aan een klant."
 
@@ -1330,12 +1330,16 @@ msgstr "Picker account '{username}' aangemaakt."
 #, python-brace-format
 msgid ""
 "Login QR created for '{username}'. Print it now – it cannot be shown again."
-msgstr "Inlog-QR aangemaakt voor '{username}'. Print hem nu – hij wordt niet opnieuw getoond."
+msgstr ""
+"Inlog-QR aangemaakt voor '{username}'. Print hem nu – hij wordt niet opnieuw "
+"getoond."
 
 #: .\orderpiqrApp\views\manage_views.py:1157
 #, python-brace-format
 msgid "Login QR for '{username}' revoked. Printed copies no longer work."
-msgstr "Inlog-QR voor '{username}' ingetrokken. Afgedrukte exemplaren werken niet meer."
+msgstr ""
+"Inlog-QR voor '{username}' ingetrokken. Afgedrukte exemplaren werken niet "
+"meer."
 
 #: .\orderpiqrApp\views\manage_views.py:1240
 msgid "Settings saved successfully."
@@ -1476,11 +1480,21 @@ msgstr "Ongeldige aanvraag"
 
 #: .\templates\400.html:21
 msgid ""
-"The server could not understand your request. This might be due to invalid "
-"data or a malformed request."
+"Something about that request didn't look right, so we stopped it. Tap Try "
+"again, or go back to the home screen and start over."
 msgstr ""
-"De server kon uw verzoek niet verwerken. Dit kan komen door ongeldige "
-"gegevens of een onjuist geformuleerd verzoek."
+"Er klopte iets niet aan dat verzoek, dus hebben we het gestopt. Tik op "
+"Opnieuw proberen, of ga terug naar het startscherm en begin opnieuw."
+
+#: .\templates\400.html:30 .\templates\403_csrf.html:32
+#: .\templates\500.html:218
+msgid "Try Again"
+msgstr "Opnieuw proberen"
+
+#: .\templates\400.html:37 .\templates\403.html:38 .\templates\500.html:225
+#: .\templates\errors\base_error.html:282
+msgid "Go to Homepage"
+msgstr "Naar startpagina"
 
 #: .\templates\403.html:4 .\templates\403.html:18
 msgid "Access Denied"
@@ -1494,14 +1508,22 @@ msgstr ""
 "U heeft geen toegang tot deze pagina. Controleer of u bent ingelogd met het "
 "juiste account."
 
-#: .\templates\403.html:31
+#: .\templates\403.html:31 .\templates\403_csrf.html:40
 msgid "Sign In"
 msgstr "Inloggen"
 
-#: .\templates\403.html:38 .\templates\500.html:40
-#: .\templates\errors\base_error.html:270
-msgid "Go to Homepage"
-msgstr "Naar startpagina"
+#: .\templates\403_csrf.html:7 .\templates\403_csrf.html:20
+msgid "Session Expired"
+msgstr "Sessie verlopen"
+
+#: .\templates\403_csrf.html:23
+msgid ""
+"You were away for a while, so we signed you out to keep your work safe. Tap "
+"Try again to reload this page, then carry on where you left off."
+msgstr ""
+"U was even weg, daarom hebben we u uitgelogd om uw werk veilig te houden. "
+"Tik op Opnieuw proberen om deze pagina opnieuw te laden en ga verder waar "
+"u gebleven was."
 
 #: .\templates\404.html:4 .\templates\404.html:18
 msgid "Page Not Found"
@@ -1515,11 +1537,11 @@ msgstr ""
 "De pagina die u zoekt bestaat niet of is verplaatst. Controleer de URL of ga "
 "terug naar de startpagina."
 
-#: .\templates\500.html:4 .\templates\500.html:21
+#: .\templates\500.html:18 .\templates\500.html:204
 msgid "Server Error"
 msgstr "Serverfout"
 
-#: .\templates\500.html:24
+#: .\templates\500.html:209
 msgid ""
 "Something went wrong on our end. Our team has been notified and we're "
 "working to fix the issue. Please try again in a few minutes."
@@ -1527,9 +1549,13 @@ msgstr ""
 "Er is iets misgegaan aan onze kant. Ons team is op de hoogte gebracht en we "
 "werken aan een oplossing. Probeer het over enkele minuten opnieuw."
 
-#: .\templates\500.html:33
-msgid "Try Again"
-msgstr "Opnieuw proberen"
+#: .\templates\500.html:232 .\templates\errors\base_error.html:299
+msgid ""
+"If this problem persists, please contact <a "
+"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
+msgstr ""
+"Als dit probleem aanhoudt, neem dan contact op met <a "
+"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
 
 #: .\templates\admin\base_site.html:36 .\templates\admin\base_site.html:37
 #: .\templates\admin\base_site.html:42
@@ -1591,17 +1617,9 @@ msgstr "Upload bestand"
 msgid "Upload Product CSV/XLSX"
 msgstr "Product CSV/XLSX uploaden"
 
-#: .\templates\errors\base_error.html:277 .\templates\offline.html:69
+#: .\templates\errors\base_error.html:289 .\templates\offline.html:69
 msgid "Go Back"
 msgstr "Ga terug"
-
-#: .\templates\errors\base_error.html:287
-msgid ""
-"If this problem persists, please contact <a "
-"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
-msgstr ""
-"Als dit probleem aanhoudt, neem dan contact op met <a "
-"href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
 
 #: .\templates\index.html:51
 msgid "Welcome to Orderpiqr!"
@@ -2991,7 +3009,11 @@ msgid ""
 "password here and hand it to your team — pickers cannot change it "
 "themselves. A login QR lets someone sign in by scanning instead of typing, "
 "which is the quickest way to get a new picker started."
-msgstr "Uw magazijnmedewerkers loggen met deze accounts in op de picker-app. Stel hier een wachtwoord in en geef dat aan uw team — pickers kunnen het zelf niet wijzigen. Met een inlog-QR logt iemand in door te scannen in plaats van te typen; dat is de snelste manier om een nieuwe picker op weg te helpen."
+msgstr ""
+"Uw magazijnmedewerkers loggen met deze accounts in op de picker-app. Stel "
+"hier een wachtwoord in en geef dat aan uw team — pickers kunnen het zelf "
+"niet wijzigen. Met een inlog-QR logt iemand in door te scannen in plaats van "
+"te typen; dat is de snelste manier om een nieuwe picker op weg te helpen."
 
 #: .\templates\manage\profile.html:100
 #, python-format
@@ -3019,7 +3041,10 @@ msgstr "Afdrukken"
 msgid ""
 "Anyone who scans this code can sign in as this picker — keep the print-out "
 "inside the warehouse. It cannot be shown again after you leave this page."
-msgstr "Iedereen die deze code scant, kan inloggen als deze picker — bewaar de afdruk binnen het magazijn. Na het verlaten van deze pagina wordt de code niet opnieuw getoond."
+msgstr ""
+"Iedereen die deze code scant, kan inloggen als deze picker — bewaar de "
+"afdruk binnen het magazijn. Na het verlaten van deze pagina wordt de code "
+"niet opnieuw getoond."
 
 #: .\templates\manage\profile.html:124
 #, python-format
@@ -3274,23 +3299,23 @@ msgstr "Deze app is niet beschikbaar zonder internetverbinding"
 msgid "Retry"
 msgstr "Probeer opnieuw"
 
-#: .\templates\partials\scan_confirmation_overlay.html:9
+#: .\templates\partials\scan_confirmation_overlay.html:11
 msgid "Tap to scan next item"
 msgstr "Tik om volgend item te scannen"
 
-#: .\templates\partials\scan_confirmation_overlay.html:22
+#: .\templates\partials\scan_confirmation_overlay.html:26
 msgid "Pick a specific quantity"
 msgstr "Kies een specifiek aantal"
 
-#: .\templates\partials\scan_confirmation_overlay.html:32
+#: .\templates\partials\scan_confirmation_overlay.html:36
 msgid "Confirm"
 msgstr "Bevestigen"
 
-#: .\templates\partials\scan_confirmation_overlay.html:38
+#: .\templates\partials\scan_confirmation_overlay.html:42
 msgid "Pick All"
 msgstr "Alles picken"
 
-#: .\templates\partials\scan_confirmation_overlay.html:41
+#: .\templates\partials\scan_confirmation_overlay.html:45
 msgid "Pick 1"
 msgstr "1 picken"
 
@@ -3635,7 +3660,9 @@ msgstr "Log in om te gaan picken"
 msgid ""
 "Ask your manager for a new login code, or sign in with your username and "
 "password."
-msgstr "Vraag uw manager om een nieuwe inlogcode, of log in met uw gebruikersnaam en wachtwoord."
+msgstr ""
+"Vraag uw manager om een nieuwe inlogcode, of log in met uw gebruikersnaam en "
+"wachtwoord."
 
 #: .\templates\registration\qr_login.html:25
 #: .\templates\registration\qr_login.html:46
@@ -3647,7 +3674,9 @@ msgstr "Inloggen met een wachtwoord"
 msgid ""
 "You are currently signed in as %(name)s. Continuing will sign that account "
 "out on this device."
-msgstr "U bent momenteel ingelogd als %(name)s. Als u doorgaat, wordt dat account op dit apparaat uitgelogd."
+msgstr ""
+"U bent momenteel ingelogd als %(name)s. Als u doorgaat, wordt dat account op "
+"dit apparaat uitgelogd."
 
 #: .\templates\registration\qr_login.html:35
 msgid "Signing in as"
