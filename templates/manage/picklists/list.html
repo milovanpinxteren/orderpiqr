@@ -15,6 +15,7 @@
             <option value="in_progress" {% if status_filter == 'in_progress' %}selected{% endif %}>{% trans "In Progress" %}</option>
             <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>{% trans "Completed" %}</option>
             <option value="failed" {% if status_filter == 'failed' %}selected{% endif %}>{% trans "Failed" %}</option>
+            <option value="archived" {% if status_filter == 'archived' %}selected{% endif %}>{% trans "Archived" %}</option>
         </select>
     </div>
 </div>

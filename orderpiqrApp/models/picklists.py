@@ -18,6 +18,9 @@ class PickList(models.Model):
     pick_time = models.DateTimeField(_("Pick Time"), auto_now_add=True, null=True, blank=True)
     time_taken = models.DurationField(_("Time Taken"), null=True, blank=True)
     successful = models.BooleanField(_("Successful"), null=True, blank=True)
+    # Archived hides a picklist from the health page without pretending it
+    # completed. The row is never deleted — billing counts picklists.
+    archived = models.BooleanField(_("Archived"), default=False)
     notes = models.TextField(_("Notes"), blank=True, null=True)
 
     class Meta:

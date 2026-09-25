@@ -49,6 +49,7 @@ from orderpiqrApp.views.manage_views import (
     queue_manage as manage_queue,
     picklists_list,
     picklist_detail,
+    picklist_close,
     health_list,
     devices_list,
     profile,
@@ -122,6 +123,7 @@ urlpatterns = [
     # Picklists (Read-only)
     path('manage/picklists/', picklists_list, name='manage_picklists'),
     path('manage/picklists/<int:picklist_id>/', picklist_detail, name='manage_picklist_detail'),
+    path('manage/picklists/<int:picklist_id>/close/', picklist_close, name='manage_picklist_close'),
 
     # Pick-flow Health
     path('manage/health/', health_list, name='manage_health'),

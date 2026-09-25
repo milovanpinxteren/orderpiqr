@@ -152,7 +152,8 @@ def _customer_tokens(customer):
 def api_tokens(request):
     """Self-service API tokens for the customer's users (one live and one
     test token per user; see drf_hashed_token)."""
-    context = get_base_context(request, 'api_tokens')
+    # Highlights the Integrations nav item — the API pages live under it now.
+    context = get_base_context(request, 'integrations')
     customer = context['customer']
     if not customer:
         messages.error(request, _("No customer profile found for your account."))

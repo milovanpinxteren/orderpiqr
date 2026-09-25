@@ -128,6 +128,7 @@ def dashboard(request):
     stale_picklists = picklists.filter(
         pick_started=True,
         successful__isnull=True,
+        archived=False,
         pick_time__lt=now - timedelta(hours=4)
     ).order_by('pick_time')
     context['stale_picklists_count'] = stale_picklists.count()
@@ -1017,11 +1018,13 @@ def picklists_list(request):
     if status_filter == 'pending':
         picklists = picklists.filter(pick_started__isnull=True)
     elif status_filter == 'in_progress':
-        picklists = picklists.filter(pick_started=True, successful__isnull=True)
+        picklists = picklists.filter(pick_started=True, successful__isnull=True, archived=False)
     elif status_filter == 'completed':
         picklists = picklists.filter(successful=True)
     elif status_filter == 'failed':
         picklists = picklists.filter(successful=False)
+    elif status_filter == 'archived':
+        picklists = picklists.filter(archived=True)
     context['status_filter'] = status_filter
 
     # Ordering
@@ -1050,6 +1053,55 @@ def picklist_detail(request, picklist_id):
     context['product_picks'] = picklist.products.select_related('product').all()
 
     return render(request, 'manage/picklists/detail.html', context)
+
+
+@company_admin_required
+def picklist_close(request, picklist_id):
+    """Admin cleanup for open picklists: mark completed or archive.
+
+    Deliberately no cancel/delete — billing counts picklists, so the row
+    always survives. "Complete" only closes the picklist and its linked
+    order; it fires no inventory decrement and no platform write-backs
+    (an admin closing a stale list is not a real pick).
+    """
+    if request.method != 'POST':
+        return redirect('manage_picklists')
+
+    context = get_base_context(request)
+    customer = context['customer']
+    if not customer:
+        return redirect('manage_dashboard')
+
+    picklist = get_object_or_404(PickList, picklist_id=picklist_id, customer=customer)
+    action = request.POST.get('action')
+    now = timezone.now()
+    stamp = f"{request.user.username} at {timezone.localtime(now).strftime('%Y-%m-%d %H:%M')}"
+
+    if action == 'complete' and picklist.successful is None:
+        picklist.successful = True
+        if picklist.pick_time:
+            picklist.time_taken = now - picklist.pick_time
+        note = f"Marked completed by {stamp}"
+        picklist.notes = f"{picklist.notes}\n{note}" if picklist.notes else note
+        picklist.save()
+        if picklist.order and picklist.order.status != 'completed':
+            picklist.order.status = 'completed'
+            picklist.order.completed_at = now
+            picklist.order.save(update_fields=['status', 'completed_at'])
+        messages.success(request, _("Picklist marked as completed."))
+    elif action == 'archive' and not picklist.archived:
+        picklist.archived = True
+        note = f"Archived by {stamp}"
+        picklist.notes = f"{picklist.notes}\n{note}" if picklist.notes else note
+        picklist.save()
+        messages.success(request, _("Picklist archived."))
+
+    next_url = request.POST.get('next', '')
+    if next_url == 'health':
+        return redirect('manage_health')
+    if next_url == 'detail':
+        return redirect('manage_picklist_detail', picklist_id=picklist.picklist_id)
+    return redirect('manage_picklists')
 
 
 # ============================================
@@ -1114,6 +1166,7 @@ def health_list(request):
         customer=customer,
         pick_started=True,
         successful__isnull=True,
+        archived=False,
         pick_time__lt=timezone.now() - timedelta(hours=4)
     ).select_related('order', 'device').order_by('pick_time')
 

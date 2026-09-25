@@ -121,30 +121,6 @@
             </div>
 
             <div class="nav-section">
-                <span class="nav-label">{% trans "Developer" %}</span>
-                <a href="{% url 'manage_api_tokens' %}" class="nav-item {% if active_nav == 'api_tokens' %}active{% endif %}">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
-                    </svg>
-                    <span>{% trans "API Tokens" %}</span>
-                </a>
-                <a href="{% url 'swagger-ui' %}" class="nav-item {% if active_nav == 'api-docs' %}active{% endif %}" target="_blank">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="16 18 22 12 16 6"/>
-                        <polyline points="8 6 2 12 8 18"/>
-                    </svg>
-                    <span>{% trans "API Docs" %}</span>
-                </a>
-                <a href="{% url 'redoc' %}" class="nav-item {% if active_nav == 'api-redoc' %}active{% endif %}" target="_blank">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                        <path d="M14 2v6h6M16 13H8m8 4H8m2-8H8"/>
-                    </svg>
-                    <span>{% trans "API Reference" %}</span>
-                </a>
-            </div>
-
-            <div class="nav-section">
                 <span class="nav-label">{% trans "Settings" %}</span>
                 <a href="{% url 'manage_integrations' %}" class="nav-item {% if active_nav == 'integrations' %}active{% endif %}">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

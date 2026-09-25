@@ -175,6 +175,80 @@ class HealthListTests(ManageHealthTestCase):
             response, reverse('manage_picklist_detail', args=[stale.picklist_id]))
 
 
+class PicklistCloseTests(ManageHealthTestCase):
+    """Admin cleanup of stale picklists: mark completed or archive.
+    There is deliberately no cancel/delete — billing counts picklists."""
+
+    def setUp(self):
+        super().setUp()
+        self.device = self.make_device()
+        self.picklist = self.make_picklist(self.device, hours_ago=6, code='PL-STUCK')
+        self.url = reverse('manage_picklist_close', args=[self.picklist.picklist_id])
+
+    def test_get_does_not_modify(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+        self.picklist.refresh_from_db()
+        self.assertIsNone(self.picklist.successful)
+        self.assertFalse(self.picklist.archived)
+
+    def test_mark_completed(self):
+        from orderpiqrApp.models import Order
+        order = Order.objects.create(
+            customer=self.customer, order_code='ORD-STUCK', status='in_progress')
+        PickList.objects.filter(pk=self.picklist.pk).update(order=order)
+
+        response = self.client.post(self.url, {'action': 'complete', 'next': 'health'})
+        self.assertRedirects(response, reverse('manage_health'))
+
+        self.picklist.refresh_from_db()
+        self.assertTrue(self.picklist.successful)
+        self.assertIsNotNone(self.picklist.time_taken)
+        self.assertIn('Marked completed by boss', self.picklist.notes)
+        order.refresh_from_db()
+        self.assertEqual(order.status, 'completed')
+        self.assertIsNotNone(order.completed_at)
+
+    def test_archive_hides_from_health_and_dashboard(self):
+        response = self.client.post(self.url, {'action': 'archive', 'next': 'health'})
+        self.assertRedirects(response, reverse('manage_health'))
+
+        self.picklist.refresh_from_db()
+        self.assertTrue(self.picklist.archived)
+        self.assertIsNone(self.picklist.successful)  # archive is not completion
+        self.assertIn('Archived by boss', self.picklist.notes)
+
+        health = self.client.get(reverse('manage_health'))
+        self.assertEqual(len(health.context['stale_picklists']), 0)
+        dashboard = self.client.get(reverse('manage_dashboard'))
+        self.assertEqual(dashboard.context['stale_picklists_count'], 0)
+
+    def test_complete_ignored_when_already_closed(self):
+        PickList.objects.filter(pk=self.picklist.pk).update(successful=True)
+        self.client.post(self.url, {'action': 'complete'})
+        self.picklist.refresh_from_db()
+        self.assertIsNone(self.picklist.notes)  # no admin note appended
+
+    def test_other_customers_picklist_is_404(self):
+        other_device = self.make_device(customer=self.other_customer, name='Foreign')
+        foreign = PickList.objects.create(
+            customer=self.other_customer, device=other_device,
+            picklist_code='PL-FOREIGN', pick_started=True, successful=None)
+        url = reverse('manage_picklist_close', args=[foreign.picklist_id])
+        response = self.client.post(url, {'action': 'archive'})
+        self.assertEqual(response.status_code, 404)
+        foreign.refresh_from_db()
+        self.assertFalse(foreign.archived)
+
+    def test_archived_filter_on_picklists_list(self):
+        self.client.post(self.url, {'action': 'archive'})
+        response = self.client.get(reverse('manage_picklists'), {'status': 'archived'})
+        self.assertEqual([p.pk for p in response.context['picklists']],
+                         [self.picklist.pk])
+        in_progress = self.client.get(reverse('manage_picklists'), {'status': 'in_progress'})
+        self.assertEqual(len(in_progress.context['picklists']), 0)
+
+
 class ProductCreatePrefillTests(ManageHealthTestCase):
     def test_code_prefilled_from_query_param(self):
         response = self.client.get(

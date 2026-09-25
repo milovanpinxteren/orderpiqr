@@ -29,6 +29,7 @@
                         <th>{% trans "Order" %}</th>
                         <th>{% trans "Device" %}</th>
                         <th>{% trans "Started" %}</th>
+                        <th class="text-right">{% trans "Actions" %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +55,26 @@
                             {% endif %}
                         </td>
                         <td class="text-muted">{{ picklist.pick_time|timesince }} {% trans "ago" %}</td>
+                        <td class="text-right">
+                            <div class="stale-actions">
+                                {% trans "Mark this picklist as completed? This also completes the linked order." as confirm_complete %}
+                                <form method="post" action="{% url 'manage_picklist_close' picklist.picklist_id %}"
+                                      onsubmit="return confirm('{{ confirm_complete|escapejs }}');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="complete">
+                                    <input type="hidden" name="next" value="health">
+                                    <button type="submit" class="btn btn-sm btn-primary">{% trans "Mark completed" %}</button>
+                                </form>
+                                {% trans "Archive this picklist? It stays in your history but no longer counts as stale." as confirm_archive %}
+                                <form method="post" action="{% url 'manage_picklist_close' picklist.picklist_id %}"
+                                      onsubmit="return confirm('{{ confirm_archive|escapejs }}');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="archive">
+                                    <input type="hidden" name="next" value="health">
+                                    <button type="submit" class="btn btn-sm btn-secondary">{% trans "Archive" %}</button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -257,5 +278,10 @@
     color: white;
 }
 .text-right { text-align: right; }
+.stale-actions {
+    display: flex;
+    gap: var(--spacing-xs);
+    justify-content: flex-end;
+}
 </style>
 {% endblock %}
