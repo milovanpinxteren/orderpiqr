@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 11:56+0200\n"
+"POT-Creation-Date: 2026-09-25 12:56+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Français <fr@li.org>\n"
@@ -135,7 +135,7 @@ msgstr "Message"
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:48 .\orderpiqrApp\models\products.py:21
-#: .\templates\index.html:150
+#: .\templates\index.html:167
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -861,14 +861,14 @@ msgstr "Valeur du paramètre client"
 msgid "Customer setting values"
 msgstr "Valeurs des paramètres client"
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:143
+#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:160
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Code produit"
 
 #: .\orderpiqrApp\models\products.py:11
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:91
-#: .\templates\index.html:145 .\templates\index.html:149
+#: .\templates\index.html:162 .\templates\index.html:166
 #: .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:122
 #: .\templates\manage\products\form.html:37
@@ -1374,12 +1374,10 @@ msgid "Some rows could not be imported: {reasons}"
 msgstr "Certaines lignes n'ont pas pu être importées : {reasons}"
 
 #: .\orderpiqrApp\views\manage_views.py:1091
-#| msgid "Picklist rejected"
 msgid "Picklist marked as completed."
 msgstr "Liste de prélèvement marquée comme terminée."
 
 #: .\orderpiqrApp\views\manage_views.py:1097
-#| msgid "Picklist rejected"
 msgid "Picklist archived."
 msgstr "Liste de prélèvement archivée."
 
@@ -1812,7 +1810,23 @@ msgstr "Se déconnecter"
 msgid "This app is best viewed on your phone"
 msgstr "Cette application est optimisée pour les téléphones"
 
-#: .\templates\index.html:137 .\templates\manage\health\list.html:28
+#: .\templates\index.html:135
+msgid "Camera options"
+msgstr "Options de la caméra"
+
+#: .\templates\index.html:143
+msgid "Select Camera"
+msgstr "Sélectionner la caméra"
+
+#: .\templates\index.html:145
+msgid "Stop camera"
+msgstr "Arrêter la caméra"
+
+#: .\templates\index.html:149
+msgid "Enable camera"
+msgstr "Activer la caméra"
+
+#: .\templates\index.html:154 .\templates\manage\health\list.html:28
 #: .\templates\manage\health\list.html:156
 #: .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
@@ -1820,11 +1834,11 @@ msgstr "Cette application est optimisée pour les téléphones"
 msgid "Picklist"
 msgstr "Liste de prélèvement"
 
-#: .\templates\index.html:144
+#: .\templates\index.html:161
 msgid "Product Name"
 msgstr "Nom du produit"
 
-#: .\templates\index.html:148 .\templates\manage\orders\form.html:61
+#: .\templates\index.html:165 .\templates\manage\orders\form.html:61
 msgid "Qty"
 msgstr "Qté"
 
@@ -2256,7 +2270,6 @@ msgstr ""
 
 #: .\templates\manage\health\list.html:66
 #: .\templates\manage\picklists\detail.html:22
-#| msgid "Completed"
 msgid "Mark completed"
 msgstr "Marquer comme terminée"
 
@@ -2477,7 +2490,6 @@ msgstr ""
 "Shopify App Store."
 
 #: .\templates\manage\integrations\list.html:106
-#| msgid "Developer"
 msgid "API & Developer"
 msgstr "API et développeur"
 

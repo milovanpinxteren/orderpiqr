@@ -131,6 +131,23 @@
 
     <div id="camera-container" class="camera-container">
         <div id="reader" class="scanner"></div>
+        <button id="camera-options-toggle" class="camera-options-toggle" type="button"
+                aria-label="{% trans 'Camera options' %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                <circle cx="12" cy="13" r="4"/>
+            </svg>
+        </button>
+        <div id="camera-controls" class="camera-controls hidden">
+            <label for="camera-select" class="camera-controls-label">{% trans "Select Camera" %}</label>
+            <select id="camera-select" class="dropdown"></select>
+            <button id="camera-stop-btn" class="camera-stop-btn" type="button">{% trans "Stop camera" %}</button>
+        </div>
+        <div id="camera-error" class="camera-error hidden">
+            <p id="camera-error-text"></p>
+            <button id="camera-retry-btn" type="button">{% trans "Enable camera" %}</button>
+        </div>
     </div>
     <div id="scanned-list-container" class="scanned-list-container">
         <h4 id="picklist-code-display" class="picklist-code-display" style="display: none;">
@@ -283,6 +300,22 @@
                 menu.classList.remove("active");
             }
         });
+
+        // The page itself never scrolls: the camera stays fixed and only the
+        // picklist table scrolls. Scrolling the list down slides the top bar
+        // away for extra room; scrolling up brings it back.
+        const header = document.querySelector(".header");
+        const listContainer = document.getElementById("scanned-list-container");
+        let lastScrollTop = 0;
+        listContainer.addEventListener("scroll", function () {
+            const scrollTop = listContainer.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 20) {
+                header.style.marginTop = "-" + header.offsetHeight + "px";
+            } else if (scrollTop < lastScrollTop || scrollTop <= 20) {
+                header.style.marginTop = "";
+            }
+            lastScrollTop = Math.max(scrollTop, 0);
+        }, {passive: true});
     });
 </script>
 

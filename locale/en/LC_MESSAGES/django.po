@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 11:56+0200\n"
+"POT-Creation-Date: 2026-09-25 12:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -139,7 +139,7 @@ msgstr ""
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:48 .\orderpiqrApp\models\products.py:21
-#: .\templates\index.html:150
+#: .\templates\index.html:167
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -865,14 +865,14 @@ msgstr ""
 msgid "Customer setting values"
 msgstr ""
 
-#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:143
+#: .\orderpiqrApp\models\products.py:9 .\templates\index.html:160
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr ""
 
 #: .\orderpiqrApp\models\products.py:11
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:91
-#: .\templates\index.html:145 .\templates\index.html:149
+#: .\templates\index.html:162 .\templates\index.html:166
 #: .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:122
 #: .\templates\manage\products\form.html:37
@@ -1807,7 +1807,23 @@ msgstr ""
 msgid "This app is best viewed on your phone"
 msgstr ""
 
-#: .\templates\index.html:137 .\templates\manage\health\list.html:28
+#: .\templates\index.html:135
+msgid "Camera options"
+msgstr "Camera options"
+
+#: .\templates\index.html:143
+msgid "Select Camera"
+msgstr "Select Camera"
+
+#: .\templates\index.html:145
+msgid "Stop camera"
+msgstr "Stop camera"
+
+#: .\templates\index.html:149
+msgid "Enable camera"
+msgstr "Enable camera"
+
+#: .\templates\index.html:154 .\templates\manage\health\list.html:28
 #: .\templates\manage\health\list.html:156
 #: .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
@@ -1815,11 +1831,11 @@ msgstr ""
 msgid "Picklist"
 msgstr ""
 
-#: .\templates\index.html:144
+#: .\templates\index.html:161
 msgid "Product Name"
 msgstr ""
 
-#: .\templates\index.html:148 .\templates\manage\orders\form.html:61
+#: .\templates\index.html:165 .\templates\manage\orders\form.html:61
 msgid "Qty"
 msgstr ""
 
@@ -2260,7 +2276,6 @@ msgstr ""
 
 #: .\templates\manage\health\list.html:66
 #: .\templates\manage\picklists\detail.html:22
-#| msgid "Completed"
 msgid "Mark completed"
 msgstr ""
 

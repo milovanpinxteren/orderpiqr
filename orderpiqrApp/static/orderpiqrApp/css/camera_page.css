@@ -3,6 +3,8 @@
     box-sizing: border-box;
 }
 
+/* The page never scrolls as a whole: the camera stays fixed and the
+   picklist table gets its own scroll area (see .scanned-list-container). */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     margin: 0 auto;
@@ -10,6 +12,8 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
     background-color: #f4f6f9;
 }
 
@@ -35,6 +39,9 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
+    flex-shrink: 0;
+    /* Slid away (negative margin set from JS) while the list scrolls down. */
+    transition: margin-top 0.25s ease;
 }
 
 .header-left {
@@ -252,18 +259,24 @@ h3 {
     margin-top: 0%;
 }
 
-/* Container */
+/* Container: fills the space under the header; children share it with the
+   camera fixed and the list taking whatever is left. */
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 10px;
     gap: 0.85rem;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    overflow: hidden;
 }
 
 /* Camera / Scanner */
 .camera-container {
     width: 90vw;
+    max-width: 800px;
     margin: 0 auto;
     padding: 0.5rem;
     position: relative;
@@ -274,36 +287,115 @@ h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-x: hidden;
-    overflow-y: visible;
     flex-direction: column;
+    flex-shrink: 0;
+    /* Keeps the floating options button inside the card when the camera is
+       stopped and the library empties #reader. */
+    min-height: 66px;
 }
 
 #reader {
     background-color: white;
     border-radius: 12px;
+    width: 100%;
 }
 
-#reader .qr-code-full-region {
+/* The core Html5Qrcode API renders a bare <video> — cap it so the camera
+   card never claims more than roughly a third of the screen. */
+#reader video {
+    width: 100% !important;
+    max-height: 34vh;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+/* Small round button on the video that opens the camera options panel. */
+.camera-options-toggle {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 5;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.camera-options-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.65);
+}
+
+.camera-options-toggle svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Camera options panel: camera picker + stop/start, hidden by default. */
+.camera-controls {
+    position: absolute;
+    top: 58px;
+    right: 14px;
+    z-index: 5;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 8px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    max-width: calc(100% - 28px);
 }
 
-#reader__scan_region {
-    width: 100%;
-    max-height: 45vh;
-    overflow: hidden;
-    position: relative;
-    border-radius: 12px;
+.camera-controls.hidden {
+    display: none;
 }
 
-#reader__scan_region video,
-#reader__scan_region canvas {
-    width: 100% !important;
-    height: auto !important;
-    object-fit: contain;
-    display: block;
+.camera-controls-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.camera-controls .dropdown {
+    max-width: 230px;
+}
+
+.camera-stop-btn {
+    font-size: 0.85rem;
+}
+
+/* Shown instead of the feed when the camera is unavailable or denied. */
+.camera-error {
+    padding: 16px 10px;
+    text-align: center;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.camera-error.hidden {
+    display: none;
+}
+
+.camera-error button {
+    margin-top: 10px;
+    background-color: #118f11;
+    color: #fff;
+    border: none;
+}
+
+.camera-error button:hover {
+    background-color: #0e7a0e;
 }
 
 /* Global button/select baseline */
@@ -322,13 +414,16 @@ button:hover {
     background-color: #f0f0f0;
 }
 
-/* Scanned items table */
+/* Scanned items table: the only scrolling region of the page. */
 .scanned-list-container {
     width: 100%;
     max-width: 800px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     border-radius: 10px;
-    overflow: hidden;
     border: 1px solid #e0e0e0;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     background-color: #fff;
@@ -336,9 +431,19 @@ button:hover {
 
 .scanned-list {
     width: 100%;
-    border-collapse: collapse;
+    /* separate instead of collapse: collapsed borders detach from sticky
+       header cells while scrolling */
+    border-collapse: separate;
+    border-spacing: 0;
     font-size: 0.9rem;
     background-color: #fff;
+}
+
+/* Column headers stay visible while the list scrolls. */
+.scanned-list thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 .scanned-list th, .scanned-list td {
