@@ -8,8 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'orderpiqrApp/css/inventory_picker.css' %}">
+    <link rel="stylesheet" href="{% static 'orderpiqrApp/css/camera_controls.css' %}">
     <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
     <link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
+    <script src="{% url 'javascript-catalog' %}"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <title>{% trans "Inventory" %}</title>
 </head>
@@ -51,9 +53,27 @@
             </button>
         </div>
 
-        <!-- Camera Scanner Section -->
+        <!-- Camera Scanner Section (controls markup mirrors index.html; the
+             shared qrScanner.js module wires it by element id) -->
         <div id="scanner-section" class="scanner-section">
             <div id="reader" class="scanner-reader"></div>
+            <button id="camera-options-toggle" class="camera-options-toggle" type="button"
+                    aria-label="{% trans 'Camera options' %}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                </svg>
+            </button>
+            <div id="camera-controls" class="camera-controls hidden">
+                <label for="camera-select" class="camera-controls-label">{% trans "Select Camera" %}</label>
+                <select id="camera-select" class="dropdown"></select>
+                <button id="camera-stop-btn" class="camera-stop-btn" type="button">{% trans "Stop camera" %}</button>
+            </div>
+            <div id="camera-error" class="camera-error hidden">
+                <p id="camera-error-text"></p>
+                <button id="camera-retry-btn" type="button">{% trans "Enable camera" %}</button>
+            </div>
         </div>
 
         <!-- Manual Search Section -->
@@ -136,22 +156,30 @@
 
 <div id="notification-container" class="notification-container"></div>
 
-    <script>
+    <script type="module">
+        import {
+            initializeScanner,
+            pauseScanner as pauseCamera,
+            resumeScanner as resumeCamera
+        } from "{% static 'orderpiqrApp/js/qrScanner.js' %}";
+
         const csrfToken = "{{ csrf_token }}";
         const productData = {{ products_json|safe }};
         let selectedProduct = null;
         let changeMode = 'set';
         let inputMode = 'scan';
-        let scannerInstance = null;
 
-        document.addEventListener('DOMContentLoaded', function() {
-            setupInputModeToggle();
-            setupSearch();
-            setupModeToggle();
-            setupQuantityButtons();
-            setupSubmit();
-            initializeScanner();
-        });
+        // Referenced from inline onclick attributes, so they must be globals.
+        window.clearSelectedProduct = clearSelectedProduct;
+        window.selectProductById = selectProductById;
+
+        // Module scripts run after the DOM is parsed — no DOMContentLoaded needed.
+        setupInputModeToggle();
+        setupSearch();
+        setupModeToggle();
+        setupQuantityButtons();
+        setupSubmit();
+        initializeScanner(handleBarcodeScan);
 
         function setupInputModeToggle() {
             const scanModeBtn = document.getElementById('scan-mode-btn');
@@ -179,23 +207,6 @@
             });
         }
 
-        function initializeScanner() {
-            const width = window.innerWidth;
-            const qrBoxSize = Math.floor(width * 0.6);
-
-            scannerInstance = new Html5QrcodeScanner("reader", {
-                fps: 5,
-                aspectRatio: 1.0,
-                qrbox: { width: qrBoxSize, height: qrBoxSize },
-                rememberLastUsedCamera: true,
-                showTorchButtonIfSupported: true
-            });
-
-            scannerInstance.render((scanResult) => {
-                handleBarcodeScan(scanResult);
-            });
-        }
-
         function handleBarcodeScan(scannedCode) {
             // Pause scanner while processing
             pauseScanner();
@@ -216,22 +227,14 @@
         }
 
         function pauseScanner() {
-            if (scannerInstance) {
-                try {
-                    scannerInstance.pause(true);
-                } catch (e) {
-                    console.log("Scanner pause error:", e);
-                }
-            }
+            pauseCamera();
         }
 
         function resumeScanner() {
-            if (scannerInstance && inputMode === 'scan') {
-                try {
-                    scannerInstance.resume();
-                } catch (e) {
-                    console.log("Scanner resume error:", e);
-                }
+            // Only resume while the scan tab is active — in search mode the
+            // camera stays frozen behind the hidden section.
+            if (inputMode === 'scan') {
+                resumeCamera();
             }
         }
 

@@ -101,13 +101,19 @@ body {
     flex-shrink: 0;
 }
 
-/* Scanner Section */
+/* Scanner Section — camera video, options button/panel and error box are
+   styled by the shared camera_controls.css. */
 .scanner-section {
     margin-bottom: 1rem;
     background: #ffffff;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     overflow: hidden;
+    /* Anchor for the floating camera-options button and panel. */
+    position: relative;
+    /* Keeps the floating options button inside the card when the camera
+       is stopped or unavailable. */
+    min-height: 66px;
 }
 
 .scanner-reader {
@@ -116,34 +122,6 @@ body {
 
 #reader {
     border: none !important;
-}
-
-#reader__scan_region {
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-#reader__scan_region video {
-    border-radius: 8px;
-}
-
-#reader__dashboard {
-    padding: 0.5rem !important;
-}
-
-#reader__dashboard_section_csr {
-    padding: 0.5rem 0 !important;
-}
-
-#reader__dashboard_section_csr span {
-    font-size: 0.85rem !important;
-    color: #666 !important;
-}
-
-#reader__dashboard_section_swaplink {
-    font-size: 0.85rem !important;
-    color: #118f11 !important;
-    text-decoration: none !important;
 }
 
 /* Search Section */

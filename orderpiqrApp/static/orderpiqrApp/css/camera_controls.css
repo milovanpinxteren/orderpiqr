@@ -1,0 +1,107 @@
+/* Shared camera-card UI for pages using qrScanner.js (scan page and
+   inventory picker): compact video, floating options button, options
+   panel and the camera-unavailable error box. The host page provides a
+   positioned container around #reader. */
+
+/* The core Html5Qrcode API renders a bare <video> — cap it so the camera
+   never claims more than roughly a third of the screen. */
+#reader video {
+    width: 100% !important;
+    max-height: 34vh;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+/* Small round button on the video that opens the camera options panel. */
+.camera-options-toggle {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 5;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.camera-options-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.65);
+}
+
+.camera-options-toggle svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Camera options panel: camera picker + stop/start, hidden by default. */
+.camera-controls {
+    position: absolute;
+    top: 58px;
+    right: 14px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    max-width: calc(100% - 28px);
+}
+
+.camera-controls.hidden {
+    display: none;
+}
+
+.camera-controls-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.camera-controls .dropdown {
+    max-width: 230px;
+    font-size: 0.8rem;
+    padding: 0.35em 0.5em;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+.camera-stop-btn {
+    font-size: 0.85rem;
+}
+
+/* Shown instead of the feed when the camera is unavailable or denied. */
+.camera-error {
+    padding: 16px 10px;
+    text-align: center;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.camera-error.hidden {
+    display: none;
+}
+
+.camera-error button {
+    margin-top: 10px;
+    background-color: #118f11;
+    color: #fff;
+    border: none;
+}
+
+.camera-error button:hover {
+    background-color: #0e7a0e;
+}

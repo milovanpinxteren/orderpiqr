@@ -6,7 +6,8 @@
 // starts on its own and those controls live in a panel behind the small
 // options button overlaid on the camera card (see index.html).
 
-const gettext = window.gettext;
+// Fallback keeps the module working on pages without the JS i18n catalog.
+const gettext = window.gettext || (s => s);
 
 const LAST_CAMERA_KEY = 'orderpiqr_last_camera_id';
 // No qrbox/formatsToSupport: the full frame is scanned and every format the
