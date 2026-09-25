@@ -7,3 +7,4 @@ from .login_tokens import *
 from .preferences import *
 from .email_log import *
 from .inventory import *
+from .scan_events import *

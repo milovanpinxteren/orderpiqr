@@ -2,6 +2,7 @@
 import {updateScannedList} from './domUpdater.js';
 import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprint function
 import {showNotification} from './notifications.js';
+import {reportScanEvent} from './scanEventReporter.js';
 
 const gettext = window.gettext;  // Pull it from the global scope
 
@@ -23,14 +24,14 @@ export function parsePicklistRow(row) {
 // (picklist_field_order setting); "auto" falls back to guessing against
 // known product codes, which fails when a quantity is itself a valid
 // product code.
-function resolveFieldOrder(exampleRow, productData) {
+function resolveFieldOrder(exampleRow, productData, picklistCode = '') {
     switch (window.SETTINGS?.picklist_field_order) {
         case 'quantity_first':
             return {productIndex: 1, quantityIndex: 0};
         case 'product_first':
             return {productIndex: 0, quantityIndex: 1};
         default:
-            return determineFieldOrder(exampleRow, productData);
+            return determineFieldOrder(exampleRow, productData, picklistCode);
     }
 }
 
@@ -56,8 +57,9 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
 
             const rows = code.split("\n");  // Split the picklist into rows (assuming multi-line)
             // Skip the first row (orderID) and process the remaining rows
+            const scannedOrderID = String(rows[0] ?? '').trim();  // First row is the orderID
             const validRows = rows.slice(1).filter(row => row.trim() !== "");  // Remove empty rows
-            const fieldOrder = resolveFieldOrder(validRows[0], productData);
+            const fieldOrder = resolveFieldOrder(validRows[0], productData, scannedOrderID);
             if (!fieldOrder) {
                 showNotification(gettext("Could not determine product/quantity structure in picklist."), true);
                 isProcessingPicklist = false;
@@ -71,6 +73,10 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
                     const quantity = parseInt(parts[fieldOrder.quantityIndex], 10);
                     if (isNaN(quantity) || quantity < 1) {
                         showNotification(gettext("Product row is invalid"), true);
+                        reportScanEvent('picklist_parse_error', {
+                            picklistCode: scannedOrderID,
+                            message: `invalid quantity in row: ${row}`
+                        });
                         console.log("Skipping row with invalid quantity:", row);
                         continue;
                     }
@@ -80,6 +86,10 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
                     }
                 } else {
                     showNotification(gettext("Product row is invalid"), true);
+                    reportScanEvent('picklist_parse_error', {
+                        picklistCode: scannedOrderID,
+                        message: `unparseable row: ${row}`
+                    });
                     console.log("Skipping invalid row:", row);  // Debug invalid row
                 }
             }
@@ -100,6 +110,11 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
                         .replace("%(codes)s", unknownCodes.join(", ")),
                     true
                 );
+                reportScanEvent('unknown_product', {
+                    scannedCode: unknownCodes.join(', ').slice(0, 255),
+                    picklistCode: scannedOrderID,
+                    message: 'unknown codes in scanned picklist'
+                });
                 isProcessingPicklist = false;
                 return null;
             }
@@ -147,6 +162,13 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
                                 currentPicklist.length = 0;
                                 updateScannedList(currentPicklist, productData);
                                 showNotification((data && data.message) || gettext("Error sending picklist."), true);
+                                // Server rejection only — network failures land
+                                // in .catch and are not reported (the report
+                                // itself would fail too).
+                                reportScanEvent('sync_error', {
+                                    picklistCode: scannedOrderID,
+                                    message: (data && data.message) || 'scan-picklist rejected by server'
+                                });
                             }
                         })
                         .catch(error => {
@@ -180,10 +202,14 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
 }
 
 
-function determineFieldOrder(exampleRow, productData) {
+function determineFieldOrder(exampleRow, productData, picklistCode = '') {
     const parts = parsePicklistRow(exampleRow);
     if (!parts || parts.length !== 2) {
         showNotification(gettext("Invalid QR code structure. Please check the format"), true);
+        reportScanEvent('picklist_parse_error', {
+            picklistCode,
+            message: `invalid QR code structure in row: ${exampleRow ?? ''}`
+        });
         return null;
     }
 
@@ -196,9 +222,17 @@ function determineFieldOrder(exampleRow, productData) {
         return {productIndex: 1, quantityIndex: 0};
     } else if (firstIsProduct && secondIsProduct) {
         showNotification(gettext("Ambiguous picklist: both fields look like product codes. Set the picklist QR format in your settings to resolve this."), true);
+        reportScanEvent('picklist_parse_error', {
+            picklistCode,
+            message: `ambiguous field order, both fields are product codes: ${exampleRow}`
+        });
         return null;  // Ambiguous or invalid
     } else {
         showNotification(gettext("Neither field in the picklist row matches a known product code."), true);
+        reportScanEvent('picklist_parse_error', {
+            picklistCode,
+            message: `neither field matches a known product code: ${exampleRow}`
+        });
         return null;  // Ambiguous or invalid
     }
 }

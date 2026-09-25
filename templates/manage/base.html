@@ -105,6 +105,12 @@
                     </svg>
                     <span>{% trans "Pick Lists" %}</span>
                 </a>
+                <a href="{% url 'manage_health' %}" class="nav-item {% if active_nav == 'health' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                    <span>{% trans "Health" %}</span>
+                </a>
                 <a href="{% url 'manage_devices' %}" class="nav-item {% if active_nav == 'devices' %}active{% endif %}">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="5" y="2" width="14" height="20" rx="2"/>

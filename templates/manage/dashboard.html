@@ -62,6 +62,20 @@
         <div class="stat-card-value">{{ orders_completed_today }}</div>
         <div class="stat-card-change">{{ active_picklists }} {% trans "active picklists" %}</div>
     </div>
+
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">{% trans "Scan Health" %}</span>
+            <div class="stat-card-icon {% if scan_issues_24h > 0 %}red{% else %}green{% endif %}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-card-value">{{ scan_issues_7d }}</div>
+        <div class="stat-card-change">{% trans "issues this week" %}</div>
+        <div class="stat-card-change">{{ scan_issues_24h }} {% trans "last 24h" %} &middot; {{ manual_overrides_7d }} {% trans "overrides" %}</div>
+    </div>
 </div>
 
 <!-- Quick Actions for Onboarding -->
@@ -230,6 +244,70 @@
             <div class="empty-state">
                 <p>{% trans "No orders yet. Create your first order!" %}</p>
                 <a href="{% url 'manage_order_create' %}" class="btn btn-primary">{% trans "Create Order" %}</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recent Scan Issues -->
+    <div class="card">
+        <div class="card-header">
+            <h3>{% trans "Recent Scan Issues" %}</h3>
+            <a href="{% url 'manage_health' %}" class="btn btn-sm btn-secondary">{% trans "View All" %}</a>
+        </div>
+        <div class="card-body p-0">
+            {% if stale_picklists_count > 0 %}
+            <div class="stale-picklists-warning">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                {% blocktrans with count=stale_picklists_count %}{{ count }} picklist(s) in progress for over 4 hours{% endblocktrans %}
+            </div>
+            {% endif %}
+            {% if recent_scan_events %}
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "When" %}</th>
+                            <th>{% trans "Type" %}</th>
+                            <th>{% trans "Code" %}</th>
+                            <th>{% trans "Device" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in recent_scan_events %}
+                        <tr>
+                            <td class="text-muted">{{ event.created_at|timesince }} {% trans "ago" %}</td>
+                            <td>
+                                <span class="badge badge-{% if event.event_type == 'manual_override' %}info{% elif event.event_type == 'picklist_parse_error' or event.event_type == 'picklist_rejected' %}warning{% else %}danger{% endif %}">
+                                    {{ event.get_event_type_display }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if event.scanned_code %}
+                                <span class="scan-event-code">{{ event.scanned_code|truncatechars:24 }}</span>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if event.device %}
+                                {{ event.device.name }}
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <p>{% trans "No scan issues recorded. Happy picking!" %}</p>
             </div>
             {% endif %}
         </div>
@@ -452,6 +530,26 @@
 
 .p-0 {
     padding: 0 !important;
+}
+
+.scan-event-code {
+    font-family: monospace;
+    font-size: 0.8125rem;
+}
+
+.stale-picklists-warning {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--warning-light);
+    color: #e67700;
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.stale-picklists-warning svg {
+    flex-shrink: 0;
 }
 
 .device-status-summary {

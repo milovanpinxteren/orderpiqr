@@ -28,7 +28,7 @@ from orderpiqrApp.utils.csv_import import (
 from orderpiqrApp.utils.inventory import is_inventory_enabled, modify_inventory
 from orderpiqrApp.utils.login_qr import active_token, issue_token, login_url
 from orderpiqrApp.utils.start_page import QUEUE, SCAN, TOKEN_START_PAGE_CHOICES
-from orderpiqrApp.models import Product, Order, OrderLine, PickList, Device, CustomerSettingValue, SettingDefinition, InventoryLog
+from orderpiqrApp.models import Product, Order, OrderLine, PickList, Device, CustomerSettingValue, SettingDefinition, InventoryLog, ScanEvent
 from django.contrib.auth.models import User
 
 
@@ -111,6 +111,27 @@ def dashboard(request):
     context['active_devices'] = devices.filter(
         last_login__gte=timezone.now() - timedelta(minutes=15)
     ).count()
+
+    # Pick-flow health
+    now = timezone.now()
+    scan_events = ScanEvent.objects.filter(customer=customer)
+    scan_issues = scan_events.exclude(event_type='manual_override')
+    context['scan_issues_7d'] = scan_issues.filter(created_at__gte=now - timedelta(days=7)).count()
+    context['scan_issues_24h'] = scan_issues.filter(created_at__gte=now - timedelta(hours=24)).count()
+    context['manual_overrides_7d'] = scan_events.filter(
+        event_type='manual_override',
+        created_at__gte=now - timedelta(days=7)
+    ).count()
+    context['recent_scan_events'] = scan_events.select_related('device').order_by('-created_at')[:8]
+
+    # Picklists stuck in progress: started over 4 hours ago and never finished.
+    stale_picklists = picklists.filter(
+        pick_started=True,
+        successful__isnull=True,
+        pick_time__lt=now - timedelta(hours=4)
+    ).order_by('pick_time')
+    context['stale_picklists_count'] = stale_picklists.count()
+    context['stale_picklists'] = stale_picklists[:5]
 
     # Recent orders (last 5)
     context['recent_orders'] = orders.select_related().order_by('-created_at')[:5]
@@ -240,6 +261,14 @@ def product_create(request):
         return redirect('manage_products')
 
     context['is_create'] = True
+
+    # Prefill from ?code=... (e.g. "Add as product" on the health page).
+    # Reuses the template's form_data re-render path; 'active' mirrors the
+    # checked-by-default state of a fresh form.
+    prefill_code = request.GET.get('code', '').strip()
+    if prefill_code:
+        context['form_data'] = {'code': prefill_code, 'active': 'on'}
+
     return render(request, 'manage/products/form.html', context)
 
 
@@ -1021,6 +1050,81 @@ def picklist_detail(request, picklist_id):
     context['product_picks'] = picklist.products.select_related('product').all()
 
     return render(request, 'manage/picklists/detail.html', context)
+
+
+# ============================================
+# Pick-flow Health
+# ============================================
+
+@company_admin_required
+def health_list(request):
+    """Pick-flow health: scan failures, rejected picklists and manual
+    overrides, with the recurring problem codes of the last 7 days."""
+    context = get_base_context(request, 'health')
+    customer = context['customer']
+
+    if not customer:
+        return redirect('manage_dashboard')
+
+    events = ScanEvent.objects.filter(
+        customer=customer
+    ).select_related('device').order_by('-created_at')
+
+    # Filters
+    event_type = request.GET.get('event_type')
+    if event_type:
+        events = events.filter(event_type=event_type)
+        context['event_type_filter'] = event_type
+
+    date_from = request.GET.get('date_from')
+    if date_from:
+        events = events.filter(created_at__date__gte=date_from)
+        context['date_from'] = date_from
+
+    date_to = request.GET.get('date_to')
+    if date_to:
+        events = events.filter(created_at__date__lte=date_to)
+        context['date_to'] = date_to
+
+    context['event_types'] = ScanEvent.EVENT_TYPES
+
+    # Top problem codes of the last 7 days. Bulk unknown_product events may
+    # contain comma-joined codes; those are displayed as-is.
+    week_ago = timezone.now() - timedelta(days=7)
+    top_codes = list(
+        ScanEvent.objects.filter(customer=customer, created_at__gte=week_ago)
+        .exclude(scanned_code='')
+        .values('scanned_code')
+        .annotate(count=Count('id'))
+        .order_by('-count')[:10]
+    )
+    existing_codes = set(
+        Product.objects.filter(
+            customer=customer,
+            code__in=[entry['scanned_code'] for entry in top_codes]
+        ).values_list('code', flat=True)
+    )
+    for entry in top_codes:
+        # "Add as product" only makes sense for genuinely unknown codes.
+        entry['product_exists'] = entry['scanned_code'] in existing_codes
+    context['top_codes'] = top_codes
+
+    # Picklists stuck in progress: started over 4 hours ago and never finished.
+    context['stale_picklists'] = PickList.objects.filter(
+        customer=customer,
+        pick_started=True,
+        successful__isnull=True,
+        pick_time__lt=timezone.now() - timedelta(hours=4)
+    ).select_related('order', 'device').order_by('pick_time')
+
+    # Pagination
+    paginator = Paginator(events, 25)
+    page = request.GET.get('page', 1)
+    context['events'] = paginator.get_page(page)
+    context['paginator'] = paginator
+    context['querystring'] = _querystring_without_page(request)
+
+    return render(request, 'manage/health/list.html', context)
 
 
 # ============================================

@@ -1,0 +1,261 @@
+{% extends "manage/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Pick-flow Health" %}{% endblock %}
+{% block page_title %}{% trans "Pick-flow Health" %}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% trans "Scan failures, rejected picklists and manual overrides" %}</p>{% endblock %}
+
+{% block content %}
+{% if stale_picklists %}
+<!-- Stale In-progress Picklists -->
+<div class="card mb-lg">
+    <div class="card-header">
+        <h3>{% trans "Stale Picklists" %}</h3>
+    </div>
+    <div class="card-body p-0">
+        <div class="stale-picklists-warning">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            {% blocktrans with count=stale_picklists|length %}{{ count }} picklist(s) in progress for over 4 hours{% endblocktrans %}
+        </div>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{% trans "Picklist" %}</th>
+                        <th>{% trans "Order" %}</th>
+                        <th>{% trans "Device" %}</th>
+                        <th>{% trans "Started" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for picklist in stale_picklists %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'manage_picklist_detail' picklist.picklist_id %}">
+                                <strong>{{ picklist.picklist_code|default:picklist.picklist_id }}</strong>
+                            </a>
+                        </td>
+                        <td>
+                            {% if picklist.order %}
+                            {{ picklist.order.order_code }}
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if picklist.device %}
+                            {{ picklist.device.name|default:picklist.device.device_id }}
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted">{{ picklist.pick_time|timesince }} {% trans "ago" %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if top_codes %}
+<!-- Top Problem Codes -->
+<div class="card mb-lg">
+    <div class="card-header">
+        <h3>{% trans "Top Problem Codes (last 7 days)" %}</h3>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{% trans "Code" %}</th>
+                        <th>{% trans "Events" %}</th>
+                        <th class="text-right">{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in top_codes %}
+                    <tr>
+                        <td><span class="scan-event-code">{{ entry.scanned_code }}</span></td>
+                        <td>{{ entry.count }}</td>
+                        <td class="text-right">
+                            {% if entry.product_exists %}
+                            <span class="badge badge-secondary">{% trans "Known product" %}</span>
+                            {% else %}
+                            <a href="{% url 'manage_product_create' %}?code={{ entry.scanned_code|urlencode }}"
+                               class="btn btn-sm btn-primary">{% trans "Add as product" %}</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Filters -->
+<form method="get" action="{% url 'manage_health' %}" class="search-filters">
+    <div class="filter-group">
+        <select class="form-control" name="event_type">
+            <option value="">{% trans "All Types" %}</option>
+            {% for value, label in event_types %}
+            <option value="{{ value }}" {% if event_type_filter == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="filter-group">
+        <input type="date" class="form-control" name="date_from" value="{{ date_from|default:'' }}" placeholder="{% trans 'From' %}">
+    </div>
+    <div class="filter-group">
+        <input type="date" class="form-control" name="date_to" value="{{ date_to|default:'' }}" placeholder="{% trans 'To' %}">
+    </div>
+    <button type="submit" class="btn btn-secondary">{% trans "Filter" %}</button>
+    <a href="{% url 'manage_health' %}" class="btn btn-secondary">{% trans "Clear" %}</a>
+</form>
+
+<!-- Events Table -->
+<div class="card">
+    <div class="card-body p-0">
+        {% if events %}
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{% trans "When" %}</th>
+                        <th>{% trans "Type" %}</th>
+                        <th>{% trans "Scanned Code" %}</th>
+                        <th>{% trans "Picklist" %}</th>
+                        <th>{% trans "Device" %}</th>
+                        <th>{% trans "Message" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                    <tr>
+                        <td class="text-muted" title="{{ event.created_at|date:'M j, Y H:i' }}">
+                            {{ event.created_at|timesince }} {% trans "ago" %}
+                        </td>
+                        <td>
+                            <span class="badge badge-{% if event.event_type == 'manual_override' %}info{% elif event.event_type == 'picklist_parse_error' or event.event_type == 'picklist_rejected' %}warning{% else %}danger{% endif %}">
+                                {{ event.get_event_type_display }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if event.scanned_code %}
+                            <span class="scan-event-code">{{ event.scanned_code }}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if event.picklist_code %}
+                            <span class="scan-event-code">{{ event.picklist_code }}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if event.device %}
+                            {{ event.device.name }}
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if event.message %}
+                            <span title="{{ event.message }}">{{ event.message|truncatewords:8 }}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if paginator.num_pages > 1 %}
+        <div class="pagination">
+            {% if events.has_previous %}
+            <a href="?page=1{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&laquo;</a>
+            <a href="?page={{ events.previous_page_number }}{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&lsaquo;</a>
+            {% endif %}
+
+            <span class="pagination-info">
+                {% trans "Page" %} {{ events.number }} {% trans "of" %} {{ paginator.num_pages }}
+            </span>
+
+            {% if events.has_next %}
+            <a href="?page={{ events.next_page_number }}{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&rsaquo;</a>
+            <a href="?page={{ paginator.num_pages }}{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="empty-state">
+            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+            <h3>{% trans "No scan issues found" %}</h3>
+            <p>{% trans "Failed scans, rejected picklists and manual overrides will appear here." %}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.pagination-info {
+    padding: 0 var(--spacing-md);
+    color: var(--text-secondary);
+}
+.p-0 { padding: 0 !important; }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.scan-event-code {
+    font-family: monospace;
+    font-size: 0.8125rem;
+    word-break: break-all;
+}
+.stale-picklists-warning {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--warning-light);
+    color: #e67700;
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+.stale-picklists-warning svg {
+    flex-shrink: 0;
+}
+.search-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+.filter-group {
+    flex: 1;
+    min-width: 140px;
+}
+.filter-group select,
+.filter-group input {
+    width: 100%;
+}
+.badge-info {
+    background-color: #17a2b8;
+    color: white;
+}
+.text-right { text-align: right; }
+</style>
+{% endblock %}

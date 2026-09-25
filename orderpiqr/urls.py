@@ -5,7 +5,7 @@ from django.conf.urls.i18n import i18n_patterns
 from django.views.i18n import JavaScriptCatalog
 
 from orderpiqr.views import *
-from orderpiqrApp.views import scan_picklist, complete_picklist, product_pick, bulk_product_pick
+from orderpiqrApp.views import scan_picklist, complete_picklist, product_pick, bulk_product_pick, scan_event
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from api.views.documentation_views import documentation_view
@@ -56,6 +56,7 @@ urlpatterns = [
     path('orderpiqr/product-pick', product_pick, name='product-pick'),
     path('orderpiqr/bulk-product-pick', bulk_product_pick, name='bulk-product-pick'),
     path('orderpiqr/complete-picklist', complete_picklist, name='complete-picklist'),
+    path('orderpiqr/scan-event', scan_event, name='scan_event'),
     # Keep this outside of i18n to enable POST
     path('offline/', TemplateView.as_view(template_name='offline.html'), name='offline'),
     re_path(r'^serviceWorker\.js$', serve, {'document_root': settings.BASE_DIR, 'path': 'serviceWorker.js'}),

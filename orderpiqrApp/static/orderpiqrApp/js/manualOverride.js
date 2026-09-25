@@ -1,6 +1,6 @@
 import {updateScannedList} from './domUpdater.js';
 import {showNotification} from './notifications.js';
-import {currentPicklist, productData, notifyPicklistCompleted, currentOrderID, onSuccessfulPick} from './camera_page.js';  // Import currentPicklist and productData
+import {currentPicklist, productData, notifyPicklistCompleted, currentOrderID, onSuccessfulPick, showPickFollowUpOverlay} from './camera_page.js';  // Import currentPicklist and productData
 const gettext = window.gettext;
 
 
@@ -40,20 +40,24 @@ function handleManualOverride(code) {
     clickTimes[code] = []; // Reset the click counter for this product
     updateScannedList(currentPicklist, productData); // Update the table after removing the product
     const product = productData.find(item => item.code === code);  // Match code in productData
-    onSuccessfulPick(code);
+    // The override is logged server-side via the product-pick call itself
+    // (manualOverride flag) — no separate scan event, to avoid double counting.
+    onSuccessfulPick(code, {manualOverride: true});
     // Show notification for the manual override
     if (product) {
         // showNotification(`Manual override: ${product.description} confirmed`);
         showNotification(gettext("Manual override: %(product)s confirmed").replace("%(product)s", product.description));
-        if (currentPicklist.length === 0) {
-            notifyPicklistCompleted(currentOrderID, csrfToken);  // <- you'll need to make csrfToken available
-        }
-
     } else {
         // showNotification(`Manual override: ${code} confirmed`);
         showNotification(gettext("Manual override: %(code)s confirmed").replace("%(code)s", code));
-        if (currentPicklist.length === 0) {
-            notifyPicklistCompleted(currentOrderID, csrfToken);  // <- you'll need to make csrfToken available
-        }
+    }
+
+    // Same follow-up as a scan: for a multi-quantity line this opens the bulk
+    // overlay ("All N taken" / stepper), so products without a barcode don't
+    // need a triple-tap per unit.
+    showPickFollowUpOverlay(code, product ? product.description : code);
+
+    if (currentPicklist.length === 0) {
+        notifyPicklistCompleted(currentOrderID, csrfToken);
     }
 }

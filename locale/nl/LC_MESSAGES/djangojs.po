@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 20:04+0200\n"
+"POT-Creation-Date: 2026-09-25 11:09+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -440,44 +440,44 @@ msgstr "Open <b>Producten</b> om te beginnen."
 msgid "Go to Products"
 msgstr "Ga naar Producten"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:33
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:34
 msgid "Could not load product data from server"
 msgstr "Productgegevens konden niet van de server worden geladen"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:37
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:38
 msgid "No product data found on page"
 msgstr "Geen productgegevens op de pagina gevonden"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:46
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:47
 msgid "Offline mode: using cached product data"
 msgstr "Offlinemodus: er worden gecachte productgegevens gebruikt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:49
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:50
 msgid "Cached product data is not usable"
 msgstr "Gecachte productgegevens zijn niet bruikbaar"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:52
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:53
 msgid "No product data available while offline"
 msgstr "Geen productgegevens beschikbaar tijdens offline gebruik"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:103
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:104
 msgid "This picklist is already in progress. Restart it from the beginning?"
 msgstr "Deze picklijst is al bezig. Wil je opnieuw starten vanaf het begin?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:161
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:193
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:162
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:188
 msgid "Scanned %(product)s"
 msgstr "%(product)s Gescand"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:181
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:171
 msgid "Incorrect scan, please try again."
 msgstr "Ongeldige scan, probeer het opnieuw."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:211
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:196
 msgid "Product code not found in the list."
 msgstr "Productcode niet gevonden in de lijst."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:216
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:205
 msgid ""
 "An unexpected error occurred, please try again. If this issue persists, "
 "contact support"
@@ -485,73 +485,73 @@ msgstr ""
 "Er is een onverwachte fout opgetreden. Probeer het opnieuw. Als het probleem "
 "blijft bestaan, neem dan contact op met support."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:234
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:224
 msgid "Could not update product pick."
 msgstr "Kon productpick niet bijwerken."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:292
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:290
 msgid "Picklist completed!"
 msgstr "Picklijst toegevoegd"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:296
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:301
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:294
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:305
 msgid "Error completing picklist."
 msgstr "Fout bij verzenden van picklijst."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:306
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:159
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:310
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:181
 msgid "Error getting device fingerprint."
 msgstr "Fout bij ophalen van apparaat-ID."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:314
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:318
 msgid "No product data was found, cannot update list"
 msgstr "Geen productgegevens gevonden, lijst kan niet worden bijgewerkt."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:334
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:338
 msgid "Picked %(picked)s of %(total)s"
 msgstr "%(picked)s van %(total)s gepickt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:340
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:344
 msgid "<strong>%(total)s</strong> in total"
 msgstr "<strong>%(total)s</strong> in totaal"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:342
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:346
 msgid "Take %(remaining)s more"
 msgstr "Pak er nog %(remaining)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:345
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:349
 msgid "Take <strong>%(remaining)s</strong> more"
 msgstr "Pak er nog <strong>%(remaining)s</strong>"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:347
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:351
 msgid "%(total)s in total"
 msgstr "%(total)s in totaal"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:396
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:416
 msgid "All %(total)s taken"
 msgstr "Alle %(total)s gepakt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:397
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:417
 msgid "Pick All"
 msgstr "Alles picken"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:434
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:454
 msgid "Could not update bulk product pick."
 msgstr "Kon bulkpick niet bijwerken."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:441
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:461
 msgid "Picked %(quantity)s of %(product)s"
 msgstr "%(quantity)s van %(product)s gepickt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:515
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:535
 msgid "Please enter a valid quantity"
 msgstr "Voer een geldig aantal in"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:614
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:634
 msgid "Cannot load order: product data not available"
 msgstr "Kan order niet laden: productgegevens niet beschikbaar"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:652
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:672
 msgid "Order loaded from queue"
 msgstr "Order geladen vanuit wachtrij"
 
@@ -594,11 +594,11 @@ msgstr "Selecteer alle %s resultaten die aan dit filter voldoen"
 msgid "An error occurred"
 msgstr "Er is een fout opgetreden"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:47
+#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:49
 msgid "Manual override: %(product)s confirmed"
 msgstr "Handmatige override: %(product)s bevestigd"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:54
+#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:52
 msgid "Manual override: %(code)s confirmed"
 msgstr "Handmatige override: %(code)s bevestigd"
 
@@ -610,53 +610,57 @@ msgstr "Vaste scanvolgorde: Ingeschakeld"
 msgid "Order Importance: Disabled"
 msgstr "Vaste scanvolgorde: Uitgeschakeld"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:48
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:49
 msgid "New list found, start this list?"
 msgstr "Nieuwe lijst gevonden, wil je deze starten?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:62
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:64
 msgid "Could not determine product/quantity structure in picklist."
 msgstr "Kon de structuur van product/aantal in de picklijst niet bepalen."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:73
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:82
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:75
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:88
 msgid "Product row is invalid"
 msgstr "Productrij is ongeldig"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:87
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:97
 msgid "Product data is empty, cannot update list."
 msgstr "Productgegevens zijn leeg, lijst kan niet worden bijgewerkt."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:99
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:109
 msgid ""
 "Unknown product code(s): %(codes)s. Ask your admin to add them, then scan "
 "the list again."
-msgstr "Onbekende productcode(s): %(codes)s. Vraag je beheerder om ze toe te voegen en scan de lijst daarna opnieuw."
+msgstr ""
+"Onbekende productcode(s): %(codes)s. Vraag je beheerder om ze toe te voegen "
+"en scan de lijst daarna opnieuw."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:120
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:135
 msgid "Picklist added"
 msgstr "Picklijst toegevoegd"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:149
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:154
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:164
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:176
 msgid "Error sending picklist."
 msgstr "Fout bij verzenden van picklijst."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:176
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:198
 msgid "Unexpected error while parsing picklist."
 msgstr "Fout bij lezen van de picklijst."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:186
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:208
 msgid "Invalid QR code structure. Please check the format"
 msgstr "Ongeldige QR code, controleer QR-code format"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:198
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:224
 msgid ""
 "Ambiguous picklist: both fields look like product codes. Set the picklist QR "
 "format in your settings to resolve this."
-msgstr "Onduidelijke picklijst: beide velden lijken op productcodes. Stel het formaat van de picklijst-QR in bij je instellingen om dit op te lossen."
+msgstr ""
+"Onduidelijke picklijst: beide velden lijken op productcodes. Stel het "
+"formaat van de picklijst-QR in bij je instellingen om dit op te lossen."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:201
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:231
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Geen van beide velden in de picklijsregel komt overeen met een bekende "

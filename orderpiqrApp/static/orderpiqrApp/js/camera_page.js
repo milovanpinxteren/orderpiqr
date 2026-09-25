@@ -5,6 +5,7 @@ import {toggleOrderImportance, updateOrderImportanceButton, getIsOrderImportant}
 import {handlePicklist, sortPicklist} from './picklistHandler.js';
 import {updateScannedList} from './domUpdater.js';
 import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprint function
+import {reportScanEvent} from './scanEventReporter.js';
 
 const gettext = window.gettext;
 // Access the productData object injected into the HTML
@@ -160,18 +161,7 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 const productLabel = product ? product.description : firstProductCode;
                 showNotification(gettext("Scanned %(product)s").replace("%(product)s", productLabel));
                 console.log('currentPicklist.length', currentPicklist.length)
-// Check if same product still exists in remaining picklist
-                const remainingCount = currentPicklist.filter(c => c === firstProductCode).length;
-                if (remainingCount > 0) {
-                    const totalCount = originalProductCounts[firstProductCode] || remainingCount + 1;
-                    pauseScanner();
-                    if (window.SETTINGS?.bulk_pick_enabled === true && remainingCount > 1) {
-                        showBulkPickOverlay(productLabel, firstProductCode, remainingCount, totalCount);
-                    } else {
-                        showConfirmationOverlay(productLabel, remainingCount, totalCount);
-                    }
-                }
-
+                showPickFollowUpOverlay(firstProductCode, productLabel);
 
                 if (currentPicklist.length === 0) {
                     notifyPicklistCompleted(currentOrderID, csrfToken);
@@ -179,6 +169,11 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
             } else {
                 // Incorrect scan, show error notification
                 showNotification(gettext("Incorrect scan, please try again."), true);
+                reportScanEvent('wrong_product', {
+                    scannedCode: code,
+                    picklistCode: currentOrderID ? String(currentOrderID) : '',
+                    message: `expected ${firstProductCode}`
+                });
             }
         } else {
             const index = currentPicklist.indexOf(code);
@@ -192,23 +187,17 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 const productLabel = product ? product.description : code;
                 showNotification(gettext("Scanned %(product)s").replace("%(product)s", productLabel));
 
-// Check if same product still exists in remaining picklist
-                const remainingCount = currentPicklist.filter(c => c === code).length;
-                if (remainingCount > 0) {
-                    const totalCount = originalProductCounts[code] || remainingCount + 1;
-                    pauseScanner();
-                    if (window.SETTINGS?.bulk_pick_enabled === true && remainingCount > 1) {
-                        showBulkPickOverlay(productLabel, code, remainingCount, totalCount);
-                    } else {
-                        showConfirmationOverlay(productLabel, remainingCount, totalCount);
-                    }
-                }
+                showPickFollowUpOverlay(code, productLabel);
 
                 if (currentPicklist.length === 0) {
                     notifyPicklistCompleted(currentOrderID, csrfToken);
                 }
             } else {
                 showNotification(gettext("Product code not found in the list."), true);
+                reportScanEvent('unknown_product', {
+                    scannedCode: code,
+                    picklistCode: currentOrderID ? String(currentOrderID) : ''
+                });
             }
         }
     } catch (error) {
@@ -218,7 +207,7 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
 }
 
 // camera_page.js
-export function onSuccessfulPick(scannedCode) {
+export function onSuccessfulPick(scannedCode, {manualOverride = false} = {}) {
     try {
         const now = Date.now();
         const timeTakenMs = lastPickTs ? (now - lastPickTs) : null;
@@ -228,6 +217,7 @@ export function onSuccessfulPick(scannedCode) {
             orderID: currentOrderID,
             productCode: scannedCode,
             timeTakenMs,
+            manualOverride,
             csrfToken
         }).catch(err => {
             console.error('product-pick update failed', err);
@@ -239,7 +229,7 @@ export function onSuccessfulPick(scannedCode) {
 }
 
 
-function notifyProductPicked({orderID, productCode, timeTakenMs, csrfToken}) {
+function notifyProductPicked({orderID, productCode, timeTakenMs, manualOverride = false, csrfToken}) {
     return getDeviceFingerprint()
         .then(deviceFingerprint => {
             return fetch('/orderpiqr/product-pick', {
@@ -253,6 +243,7 @@ function notifyProductPicked({orderID, productCode, timeTakenMs, csrfToken}) {
                     productCode,             // e.g. SKU/code string
                     successful: true,        // this call is only for successful scans
                     timeTakenMs,             // duration since previous successful pick
+                    manualOverride,          // triple-tap override; logged server-side
                     deviceFingerprint,
                     scannedAt: new Date().toISOString()
                 })
@@ -263,6 +254,13 @@ function notifyProductPicked({orderID, productCode, timeTakenMs, csrfToken}) {
             // picklist never registered) — surface it instead of swallowing it.
             if (!response.ok) {
                 return response.json().catch(() => ({})).then(data => {
+                    // Server rejection (not a network failure) — report it so
+                    // the admin dashboard shows the silently lost pick.
+                    reportScanEvent('sync_error', {
+                        scannedCode: productCode,
+                        picklistCode: orderID ? String(orderID) : '',
+                        message: data.message || `product-pick rejected (HTTP ${response.status})`
+                    });
                     throw new Error(data.message || `product-pick failed (HTTP ${response.status})`);
                 });
             }
@@ -294,6 +292,12 @@ export function notifyPicklistCompleted(orderID, csrfToken) {
                         // Only celebrate when the server actually recorded it.
                         console.error('Complete-picklist rejected:', data);
                         showNotification(gettext("Error completing picklist."), true);
+                        // Server rejection (network failures land in .catch below
+                        // and are not reported — the report would fail too).
+                        reportScanEvent('sync_error', {
+                            picklistCode: orderID ? String(orderID) : '',
+                            message: (data && data.message) || 'complete-picklist rejected'
+                        });
                     }
                 })
                 .catch(error => {
@@ -346,6 +350,22 @@ function renderPickProgress(progressEl, fillEl, prominentEl, secondaryEl, remain
             .replace("%(remaining)s", remainingCount);
         secondaryEl.textContent = gettext("%(total)s in total")
             .replace("%(total)s", totalCount);
+    }
+}
+
+// After one instance of a product is registered (scan or triple-tap manual
+// override), show the follow-up overlay when more of the same product remain:
+// the bulk overlay when enabled and more than one is left, the tap-to-continue
+// confirmation otherwise. The overlay's dismiss handlers resume the scanner.
+export function showPickFollowUpOverlay(productCode, productLabel) {
+    const remainingCount = currentPicklist.filter(c => c === productCode).length;
+    if (remainingCount === 0) return;
+    const totalCount = originalProductCounts[productCode] || remainingCount + 1;
+    pauseScanner();
+    if (window.SETTINGS?.bulk_pick_enabled === true && remainingCount > 1) {
+        showBulkPickOverlay(productLabel, productCode, remainingCount, totalCount);
+    } else {
+        showConfirmationOverlay(productLabel, remainingCount, totalCount);
     }
 }
 
