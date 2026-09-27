@@ -211,9 +211,11 @@
             // Pause scanner while processing
             pauseScanner();
 
-            // Look for exact match
+            // Look for exact match on the primary code or any barcode alias
+            const scanned = scannedCode.toLowerCase();
             const product = productData.find(p =>
-                p.code.toLowerCase() === scannedCode.toLowerCase()
+                p.code.toLowerCase() === scanned ||
+                (p.barcodes || []).some(b => b.toLowerCase() === scanned)
             );
 
             if (product) {

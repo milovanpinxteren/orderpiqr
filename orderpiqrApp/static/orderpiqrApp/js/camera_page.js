@@ -2,7 +2,7 @@
 import {initializeScanner, pauseScanner, resumeScanner} from './qrScanner.js';
 import {showNotification} from './notifications.js';
 import {toggleOrderImportance, updateOrderImportanceButton, getIsOrderImportant} from './orderImportance.js';
-import {handlePicklist, sortPicklist} from './picklistHandler.js';
+import {handlePicklist, sortPicklist, canonicalCode} from './picklistHandler.js';
 import {updateScannedList} from './domUpdater.js';
 import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprint function
 import {reportScanEvent} from './scanEventReporter.js';
@@ -148,14 +148,20 @@ function isPicklist(code) {
 // Function to handle scanned product codes
 export function handleProductCode(code, currentPicklist, productData, isOrderImportant, currentOrderID) {
     try {
-        code = String(code).trim();
+        // The physical item may carry any of the product's barcodes (a rotated
+        // EAN, or the primary code); the picklist stores primary codes. The
+        // raw code is kept for health logging: it tells which physical label
+        // generation was scanned, which the canonical code hides.
+        const rawCode = String(code).trim();
+        code = canonicalCode(productData, rawCode);
+        const rawSuffix = rawCode !== code ? ` (scanned as ${rawCode})` : '';
         if (isOrderImportant) {
             const firstProductCode = currentPicklist[0];
             if (code === firstProductCode) {
                 // Correct scan, remove the first product from the list
                 currentPicklist.splice(0, 1);
                 updateScannedList(currentPicklist, productData); // Update the table after removing the first product
-                onSuccessfulPick(firstProductCode)
+                onSuccessfulPick(rawCode)
 
                 const product = productData.find(item => item.code === firstProductCode);  // Match code in productData
                 const productLabel = product ? product.description : firstProductCode;
@@ -170,9 +176,9 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 // Incorrect scan, show error notification
                 showNotification(gettext("Incorrect scan, please try again."), true);
                 reportScanEvent('wrong_product', {
-                    scannedCode: code,
+                    scannedCode: rawCode,
                     picklistCode: currentOrderID ? String(currentOrderID) : '',
-                    message: `expected ${firstProductCode}`
+                    message: `expected ${firstProductCode}` + (rawSuffix ? `; resolves to ${code}` : '')
                 });
             }
         } else {
@@ -181,7 +187,7 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 // Valid scan, remove the product from the list
                 currentPicklist.splice(index, 1);
                 updateScannedList(currentPicklist, productData);  // Update the table after a valid scan
-                onSuccessfulPick(code);
+                onSuccessfulPick(rawCode);
 
                 const product = productData.find(item => item.code === code);
                 const productLabel = product ? product.description : code;
@@ -195,8 +201,9 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
             } else {
                 showNotification(gettext("Product code not found in the list."), true);
                 reportScanEvent('unknown_product', {
-                    scannedCode: code,
-                    picklistCode: currentOrderID ? String(currentOrderID) : ''
+                    scannedCode: rawCode,
+                    picklistCode: currentOrderID ? String(currentOrderID) : '',
+                    message: rawSuffix ? `resolves to ${code}, which is not on the list` : ''
                 });
             }
         }

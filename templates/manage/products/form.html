@@ -34,6 +34,14 @@
             </div>
 
             <div class="form-group">
+                <label class="form-label" for="barcodes">{% trans "Extra barcodes" %}</label>
+                <textarea class="form-control" id="barcodes" name="barcodes" rows="2"
+                          placeholder="{% trans 'One barcode per line' %}"
+                >{% if form_data %}{{ form_data.barcodes }}{% elif product %}{% for barcode in product.barcodes.all %}{{ barcode.code }}{% if not forloop.last %}&#10;{% endif %}{% endfor %}{% endif %}</textarea>
+                <p class="form-text">{% trans "Alternative codes that also identify this product when scanned — e.g. a superseded EAN that is still on stock in circulation. Separate codes with a new line or a comma; a comma can therefore not be part of a code." %}</p>
+            </div>
+
+            <div class="form-group">
                 <label class="form-label" for="location">{% trans "Location" %}</label>
                 <input type="text" class="form-control" id="location" name="location"
                        value="{% if form_data %}{{ form_data.location }}{% elif product %}{{ product.location }}{% endif %}"

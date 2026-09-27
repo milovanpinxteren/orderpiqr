@@ -7,6 +7,24 @@ import {reportScanEvent} from './scanEventReporter.js';
 const gettext = window.gettext;  // Pull it from the global scope
 
 
+// A product is identified by its primary code or any of its barcode aliases
+// (suppliers rotate EANs; during the transition both are in circulation).
+export function findProductByCode(productData, code) {
+    const wanted = String(code).trim();
+    return productData.find(item =>
+        item.code === wanted || (item.barcodes || []).includes(wanted)
+    ) || null;
+}
+
+// Normalise any scannable code to the product's primary code, so picklist
+// entries and item scans compare equal whichever generation of barcode the
+// QR or the physical product carries. Unknown codes pass through unchanged.
+export function canonicalCode(productData, code) {
+    const product = findProductByCode(productData, code);
+    return product ? product.code : String(code).trim();
+}
+
+
 export function parsePicklistRow(row) {
     const separators = ['\t', ',', ';'];  // Define possible separators
     for (const separator of separators) {
@@ -69,7 +87,9 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
                 const row = validRows[i];
                 const parts = parsePicklistRow(row);  // Parse each row
                 if (parts && parts.length === 2) {
-                    const productCode = String(parts[fieldOrder.productIndex]).trim();
+                    // Canonicalise: a row may carry a barcode alias (e.g. an
+                    // EAN that was since rotated); store the primary code.
+                    const productCode = canonicalCode(productData, parts[fieldOrder.productIndex]);
                     const quantity = parseInt(parts[fieldOrder.quantityIndex], 10);
                     if (isNaN(quantity) || quantity < 1) {
                         showNotification(gettext("Product row is invalid"), true);
@@ -214,8 +234,8 @@ function determineFieldOrder(exampleRow, productData, picklistCode = '') {
     }
 
     const [first, second] = parts.map(p => String(p).trim());
-    const firstIsProduct = productData.find(item => item.code === first);
-    const secondIsProduct = productData.find(item => item.code === second);
+    const firstIsProduct = findProductByCode(productData, first);
+    const secondIsProduct = findProductByCode(productData, second);
     if (firstIsProduct && !secondIsProduct) {
         return {productIndex: 0, quantityIndex: 1};
     } else if (secondIsProduct && !firstIsProduct) {

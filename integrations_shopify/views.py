@@ -382,13 +382,12 @@ def api_map_product(request):
     except (json.JSONDecodeError, KeyError, ValueError):
         return JsonResponse({'error': 'invalid request'}, status=400)
 
-    from orderpiqrApp.models import Product
+    from orderpiqrApp.utils.products import resolve_product
     link = ProductLink.objects.filter(
         connection=shop.connection, pk=link_id).first()
     if link is None:
         return JsonResponse({'error': 'link not found'}, status=404)
-    product = Product.objects.filter(
-        customer=shop.connection.customer, code=product_code).first()
+    product = resolve_product(shop.connection.customer, product_code)
     if product is None:
         return JsonResponse({'error': 'no product with that code'}, status=404)
 

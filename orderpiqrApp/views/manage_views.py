@@ -27,8 +27,9 @@ from orderpiqrApp.utils.csv_import import (
 )
 from orderpiqrApp.utils.inventory import is_inventory_enabled, modify_inventory
 from orderpiqrApp.utils.login_qr import active_token, issue_token, login_url
+from orderpiqrApp.utils.products import code_conflict, merge_products, resolve_product, set_alias_codes, set_primary_code
 from orderpiqrApp.utils.start_page import QUEUE, SCAN, TOKEN_START_PAGE_CHOICES
-from orderpiqrApp.models import Product, Order, OrderLine, PickList, Device, CustomerSettingValue, SettingDefinition, InventoryLog, ScanEvent
+from orderpiqrApp.models import Product, ProductBarcode, Order, OrderLine, PickList, Device, CustomerSettingValue, SettingDefinition, InventoryLog, ScanEvent
 from django.contrib.auth.models import User
 
 
@@ -160,6 +161,27 @@ def dashboard(request):
 # Products
 # ============================================
 
+def _parse_barcode_input(raw):
+    """Split the form's barcodes field (newline- or comma-separated) into a
+    deduplicated list of codes."""
+    codes = []
+    for chunk in (raw or '').replace(',', '\n').splitlines():
+        code = chunk.strip()
+        if code and code not in codes:
+            codes.append(code)
+    return codes
+
+
+def _barcode_errors(customer, primary_code, barcodes, exclude_product=None):
+    """Validate alias codes against the primary and other products' codes."""
+    errors = []
+    for code in barcodes:
+        if code == primary_code:
+            errors.append(_("Barcode '{code}' is the same as the product code.").format(code=code))
+        elif code_conflict(customer, code, exclude_product=exclude_product):
+            errors.append(_("Barcode '{code}' is already in use by another product.").format(code=code))
+    return errors
+
 def _filtered_products(customer, params):
     """Product queryset for the given filter params (search/status/location).
     Shared by the list view and the bulk endpoint's select-all mode so that
@@ -169,9 +191,10 @@ def _filtered_products(customer, params):
     if search:
         products = products.filter(
             Q(code__icontains=search) |
+            Q(barcodes__code__icontains=search) |
             Q(description__icontains=search) |
             Q(location__icontains=search)
-        )
+        ).distinct()
     status = params.get('status') or ''
     if status == 'active':
         products = products.filter(active=True)
@@ -236,14 +259,16 @@ def product_create(request):
         description = request.POST.get('description', '').strip()
         location = request.POST.get('location', '').strip()
         active = request.POST.get('active') == 'on'
+        barcodes = _parse_barcode_input(request.POST.get('barcodes', ''))
 
         errors = []
         if not code:
             errors.append(_("Product code is required."))
-        elif Product.objects.filter(customer=customer, code=code).exists():
+        elif code_conflict(customer, code):
             errors.append(_("A product with this code already exists."))
         if not description:
             errors.append(_("Description is required."))
+        errors.extend(_barcode_errors(customer, code, barcodes))
 
         if errors:
             for error in errors:
@@ -258,6 +283,7 @@ def product_create(request):
             location=location,
             active=active
         )
+        set_alias_codes(product, barcodes)
         messages.success(request, _("Product '{code}' created successfully.").format(code=code))
         return redirect('manage_products')
 
@@ -298,14 +324,16 @@ def product_edit(request, product_id):
         description = request.POST.get('description', '').strip()
         location = request.POST.get('location', '').strip()
         active = request.POST.get('active') == 'on'
+        barcodes = _parse_barcode_input(request.POST.get('barcodes', ''))
 
         errors = []
         if not code:
             errors.append(_("Product code is required."))
-        elif Product.objects.filter(customer=customer, code=code).exclude(product_id=product_id).exists():
+        elif code_conflict(customer, code, exclude_product=product):
             errors.append(_("A product with this code already exists."))
         if not description:
             errors.append(_("Description is required."))
+        errors.extend(_barcode_errors(customer, code, barcodes, exclude_product=product))
 
         if errors:
             for error in errors:
@@ -318,6 +346,10 @@ def product_edit(request, product_id):
         product.location = location
         product.active = active
         product.save()
+        # The form is the explicit desired state of every code — no automatic
+        # demotion of the old primary here (unlike the sync API): the admin
+        # lists the barcodes they want to keep.
+        set_alias_codes(product, barcodes)
 
         messages.success(request, _("Product '{code}' updated successfully.").format(code=code))
         return redirect('manage_products')
@@ -394,6 +426,27 @@ def products_bulk_action(request):
         new_location = data.get('value', '').strip()
         products.update(location=new_location)
         return JsonResponse({'status': 'ok', 'message': _("{count} product(s) updated.").format(count=count)})
+    elif action == 'merge':
+        # Merge the selected products into the one identified by `value`
+        # (its product code). Their codes stay scannable as barcode aliases.
+        target_code = str(data.get('value') or '').strip()
+        if not target_code:
+            return JsonResponse({'status': 'error', 'message': _("Enter the product code to merge into.")}, status=400)
+        # Aliases are accepted too: any scannable code identifies the target.
+        target = resolve_product(customer, target_code)
+        if target is None:
+            return JsonResponse({'status': 'error', 'message': _("No product with code '{code}' found.").format(code=target_code)}, status=400)
+        sources = list(products.exclude(product_id=target.product_id))
+        if not sources:
+            return JsonResponse({'status': 'error', 'message': _("Select at least one other product to merge.")}, status=400)
+        # One transaction for the whole batch: a failure mid-loop must not
+        # leave half the selection merged.
+        with transaction.atomic():
+            for source in sources:
+                merge_products(target, source, user=request.user)
+        return JsonResponse({'status': 'ok', 'message': _(
+            "{count} product(s) merged into '{code}'. Their codes remain scannable as barcodes."
+        ).format(count=len(sources), code=target.code)})
     else:
         return JsonResponse({'status': 'error', 'message': _("Unknown action.")}, status=400)
 
@@ -450,8 +503,18 @@ def product_inline_edit(request, product_id):
         value = value.strip()
         if not value:
             return JsonResponse({'status': 'error', 'message': _("This field cannot be empty.")}, status=400)
-        if field == 'code' and Product.objects.filter(customer=customer, code=value).exclude(product_id=product_id).exists():
+        if field == 'code' and code_conflict(customer, value, exclude_product=product):
             return JsonResponse({'status': 'error', 'message': _("A product with this code already exists.")}, status=400)
+
+    if field == 'code':
+        # Same contract as the sync API: the old primary stays scannable as an
+        # extra barcode ("never forget a code"). The full edit form is the
+        # explicit desired state of every code and does not do this.
+        changed = value != product.code
+        set_primary_code(product, value)
+        message = (_("Updated. The previous code remains scannable as an extra barcode.")
+                   if changed else _("Updated."))
+        return JsonResponse({'status': 'ok', 'message': message})
 
     setattr(product, field, value)
     product.save(update_fields=[field])
@@ -485,6 +548,17 @@ def products_import(request):
             updated_count = 0
             skipped_rows = []
 
+            # Resolve barcode aliases too: a row carrying a superseded EAN must
+            # update the existing product, not create a duplicate. Two queries
+            # up front instead of one per row; primary codes win over aliases.
+            csv_codes = [row['code'][:255] for _line, row in rows]
+            existing_by_code = {}
+            for barcode in ProductBarcode.objects.filter(
+                    customer=customer, code__in=csv_codes).select_related('product'):
+                existing_by_code[barcode.code] = barcode.product
+            for product in Product.objects.filter(customer=customer, code__in=csv_codes):
+                existing_by_code[product.code] = product
+
             for line_number, row in rows:
                 code = row['code'][:255]
                 description = row['description']
@@ -495,19 +569,23 @@ def products_import(request):
                     skipped_rows.append(line_number)
                     continue
 
-                product, created = Product.objects.update_or_create(
-                    customer=customer,
-                    code=code,
-                    defaults={
-                        'description': description,
-                        'location': location,
-                        'active': active
-                    }
-                )
-
-                if created:
+                product = existing_by_code.get(code)
+                if product is None:
+                    # Register the creation so a duplicate row later in the
+                    # file updates it instead of creating a second product.
+                    existing_by_code[code] = Product.objects.create(
+                        customer=customer,
+                        code=code,
+                        description=description,
+                        location=location,
+                        active=active,
+                    )
                     created_count += 1
                 else:
+                    product.description = description
+                    product.location = location
+                    product.active = active
+                    product.save(update_fields=['description', 'location', 'active'])
                     updated_count += 1
 
             if not created_count and not updated_count:
@@ -949,15 +1027,17 @@ def orders_import(request):
                 created_count += 1
 
                 for line_data in data['lines']:
-                    try:
-                        product = Product.objects.get(customer=customer, code=line_data['product_code'])
+                    # Barcode aliases resolve too: a row carrying a superseded
+                    # EAN must land on the existing product, not be dropped.
+                    product = resolve_product(customer, line_data['product_code'])
+                    if product is not None:
                         OrderLine.objects.create(
                             order=order,
                             product=product,
                             quantity=line_data['amount']
                         )
                         line_count += 1
-                    except Product.DoesNotExist:
+                    else:
                         problems.append(_("order {order}: unknown product {product}").format(
                             order=order_code, product=line_data['product_code']))
 
@@ -1150,11 +1230,16 @@ def health_list(request):
         .annotate(count=Count('id'))
         .order_by('-count')[:10]
     )
+    scanned = [entry['scanned_code'] for entry in top_codes]
     existing_codes = set(
-        Product.objects.filter(
-            customer=customer,
-            code__in=[entry['scanned_code'] for entry in top_codes]
-        ).values_list('code', flat=True)
+        Product.objects.filter(customer=customer, code__in=scanned)
+        .values_list('code', flat=True)
+    )
+    # Alias codes are known products too — offering "Add as product" for them
+    # would dead-end on the duplicate-code check.
+    existing_codes |= set(
+        ProductBarcode.objects.filter(customer=customer, code__in=scanned)
+        .values_list('code', flat=True)
     )
     for entry in top_codes:
         # "Add as product" only makes sense for genuinely unknown codes.

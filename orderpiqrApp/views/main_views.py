@@ -13,8 +13,17 @@ def index(request):
         return redirect(f"{reverse('name_entry')}?next={request.get_full_path()}")
 
     customer = request.user.userprofile.customer
-    product_data = Product.objects.filter(active=True, customer=customer)
-    product_data = product_data.values('product_id', 'code', 'description', 'location')
+    product_data = list(Product.objects.filter(active=True, customer=customer)
+                        .values('product_id', 'code', 'description', 'location'))
+    # Barcode aliases ride along so the client can match any code in physical
+    # circulation (e.g. a superseded EAN) to the same product.
+    aliases = {}
+    for product_id, alias_code in Product.objects.filter(
+            customer=customer, active=True, barcodes__isnull=False
+    ).values_list('product_id', 'barcodes__code'):
+        aliases.setdefault(product_id, []).append(alias_code)
+    for product in product_data:
+        product['barcodes'] = aliases.get(product['product_id'], [])
     settings = get_customer_settings(customer)
 
     # Check if there's an order to load from the queue
@@ -38,7 +47,8 @@ def index(request):
             }
 
     context = {
-        'product_data': json.dumps(list(product_data)),
+        # Raw list: the template serialises it with |json_script (XSS-safe)
+        'product_data': list(product_data),
         'username': device.name,
         'settings': mark_safe(json.dumps(settings)),
         'claimed_order': mark_safe(json.dumps(claimed_order_data)) if claimed_order_data else None,

@@ -2,8 +2,10 @@ import openpyxl
 from django.contrib import admin
 import csv
 from django.core.exceptions import ValidationError
+from django.forms.models import BaseInlineFormSet
 from orderpiqrApp.utils.csv_import import read_csv_rows, PRODUCT_CSV_FIELDS, CSVImportError
-from orderpiqrApp.models import Product, UserProfile
+from orderpiqrApp.models import Product, ProductBarcode, UserProfile
+from orderpiqrApp.utils.products import code_conflict
 from django.contrib import messages
 from django import forms
 from django.utils.translation import gettext_lazy as _
@@ -14,9 +16,31 @@ class ProductUploadForm(forms.Form):
     upload_file = forms.FileField()
 
 
+class ProductBarcodeInlineFormSet(BaseInlineFormSet):
+    def clean(self):
+        # Model-level clean() checks the DB; this catches two identical new
+        # rows in the same submit (they would only collide at save time).
+        super().clean()
+        seen = set()
+        for form in self.forms:
+            if not getattr(form, 'cleaned_data', None) or form.cleaned_data.get('DELETE'):
+                continue
+            code = (form.cleaned_data.get('code') or '').strip()
+            if code and code in seen:
+                form.add_error('code', _("Duplicate barcode in this list."))
+            seen.add(code)
+
+
+class ProductBarcodeInline(admin.TabularInline):
+    model = ProductBarcode
+    formset = ProductBarcodeInlineFormSet
+    extra = 0
+
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('code', 'description', 'location', 'customer')  # Display relevant fields
-    search_fields = ['code', 'description']
+    search_fields = ['code', 'barcodes__code', 'description']
+    inlines = [ProductBarcodeInline]
 
     # actions = ['upload_file']  # Add the CSV upload action to the admin
 
@@ -77,11 +101,14 @@ class ProductAdmin(admin.ModelAdmin):
         """Bulk add or update products"""
         added = 0
         overwritten = 0
-        existing_products = Product.objects.filter(
-            customer=customer,
-            code__in=[item['code'] for item in cleaned_data]
-        )
+        codes = [item['code'] for item in cleaned_data]
+        existing_products = Product.objects.filter(customer=customer, code__in=codes)
         existing_map = {p.code: p for p in existing_products}
+        # Barcode aliases count as existing too — an upload row carrying a
+        # superseded EAN must update its product, not create a duplicate.
+        for barcode in ProductBarcode.objects.filter(
+                customer=customer, code__in=codes).select_related('product'):
+            existing_map.setdefault(barcode.code, barcode.product)
         to_create = []
         to_update = []
 
@@ -180,7 +207,9 @@ class ProductAdmin(admin.ModelAdmin):
         if request.user.groups.filter(name='companyadmin').exists():
             user_profile = UserProfile.objects.get(user=request.user)
             obj.customer = user_profile.customer
-            if Product.objects.filter(code=obj.code, customer=obj.customer).exclude(pk=obj.pk).exists():
+            # Barcode aliases share the code namespace with primary codes.
+            if code_conflict(obj.customer, obj.code,
+                             exclude_product=obj if obj.pk else None):
                 form.add_error(None, _('A product with the code "%(code)s" already exists for this customer.') % {
                     'code': obj.code,
                 })

@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from api.serializers import ProductSerializer, ProductDetailSerializer
 from orderpiqrApp.models import Product, OrderLine
+from orderpiqrApp.utils.products import resolve_product
 from rest_framework import filters
 from django.db.models import Count
 
@@ -88,7 +89,9 @@ class ProductViewSet(viewsets.ModelViewSet):
     ordering = ['location', 'code']
 
     def get_queryset(self):
-        queryset = Product.objects.filter(customer=self.request.user.userprofile.customer)
+        queryset = (Product.objects
+                    .filter(customer=self.request.user.userprofile.customer)
+                    .prefetch_related('barcodes'))
 
         # Manual filtering
         active = self.request.query_params.get('active')
@@ -183,18 +186,14 @@ class ProductViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        try:
-            product = Product.objects.get(
-                code=code,
-                customer=request.user.userprofile.customer
-            )
+        product = resolve_product(request.user.userprofile.customer, code)
+        if product is not None:
             serializer = ProductDetailSerializer(product)
             return Response(serializer.data)
-        except Product.DoesNotExist:
-            return Response(
-                {'detail': 'Product not found'},
-                status=status.HTTP_404_NOT_FOUND
-            )
+        return Response(
+            {'detail': 'Product not found'},
+            status=status.HTTP_404_NOT_FOUND
+        )
 
     @extend_schema(
         summary="Bulk activate/deactivate products",

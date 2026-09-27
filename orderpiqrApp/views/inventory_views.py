@@ -10,6 +10,7 @@ from django.views.decorators.http import require_POST
 from orderpiqrApp.models import Product, InventoryLog
 from orderpiqrApp.utils.devices import resolve_device
 from orderpiqrApp.utils.inventory import is_inventory_enabled, modify_inventory
+from orderpiqrApp.utils.products import resolve_product
 
 
 def get_device_from_request(request):
@@ -38,13 +39,21 @@ def inventory_picker(request):
         from django.urls import reverse
         return redirect(f"{reverse('name_entry')}?next={request.get_full_path()}")
 
-    # Get products as JSON for JavaScript search
-    products = Product.objects.filter(
+    # Get products as JSON for JavaScript search. Barcode aliases ride along so
+    # a scan of any code in circulation (rotated EANs) finds the product.
+    products = list(Product.objects.filter(
         customer=customer,
         active=True
     ).order_by('location', 'code').values(
         'product_id', 'code', 'description', 'location', 'inventory_quantity'
-    )
+    ))
+    aliases = {}
+    for product_id, code in Product.objects.filter(
+            customer=customer, active=True, barcodes__isnull=False
+    ).values_list('product_id', 'barcodes__code'):
+        aliases.setdefault(product_id, []).append(code)
+    for product in products:
+        product['barcodes'] = aliases.get(product['product_id'], [])
 
     context = {
         'customer': customer,
@@ -107,12 +116,8 @@ def inventory_product_lookup(request, code):
     if not is_inventory_enabled(customer):
         return JsonResponse({'status': 'error', 'message': _('Inventory management not enabled')}, status=403)
 
-    try:
-        product = Product.objects.get(
-            customer=customer,
-            code=code,
-            active=True
-        )
+    product = resolve_product(customer, code)
+    if product is not None and product.active:
         return JsonResponse({
             'status': 'ok',
             'product': {
@@ -123,11 +128,10 @@ def inventory_product_lookup(request, code):
                 'inventory_quantity': product.inventory_quantity,
             }
         })
-    except Product.DoesNotExist:
-        return JsonResponse({
-            'status': 'error',
-            'message': _('Product not found')
-        }, status=404)
+    return JsonResponse({
+        'status': 'error',
+        'message': _('Product not found')
+    }, status=404)
 
 
 @login_required

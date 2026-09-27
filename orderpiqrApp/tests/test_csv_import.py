@@ -118,6 +118,29 @@ class ProductsImportViewTests(ImportViewTestBase):
         messages = [m for m in response.context['messages']]
         self.assertTrue(any(m.level_tag == 'error' for m in messages))
 
+    def test_row_with_alias_code_updates_instead_of_duplicating(self):
+        from orderpiqrApp.models import ProductBarcode
+        product = Product.objects.create(
+            customer=self.customer, code='NEW-EAN', description='Widget', location='1')
+        ProductBarcode.objects.create(product=product, code='OLD-EAN')
+
+        response = self.client.post(self.url, {
+            'csv_file': upload("code,description,location\nOLD-EAN,Widget renamed,Shelf 2\n")})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Product.objects.filter(customer=self.customer).count(), 1)
+        product.refresh_from_db()
+        self.assertEqual(product.code, 'NEW-EAN')  # primary untouched
+        self.assertEqual(product.description, 'Widget renamed')
+        self.assertEqual(product.location, 'Shelf 2')
+
+    def test_duplicate_rows_in_one_file_do_not_create_duplicates(self):
+        response = self.client.post(self.url, {
+            'csv_file': upload("code,description\nA1,Widget\nA1,Widget again\n")})
+        self.assertEqual(response.status_code, 302)
+        product = Product.objects.get(customer=self.customer, code='A1')
+        self.assertEqual(product.description, 'Widget again')
+
     def test_uppercase_extension_accepted(self):
         response = self.client.post(self.url, {
             'csv_file': upload("code,description\nA1,Widget\n", name='PRODUCTS.CSV')})
@@ -152,3 +175,18 @@ class OrdersImportViewTests(ImportViewTestBase):
                                name='orders.csv')}, follow=True)
         messages = [m for m in response.context['messages']]
         self.assertTrue(any(m.level_tag in ('error', 'warning') for m in messages))
+
+    def test_line_with_alias_code_resolves_to_the_product(self):
+        from orderpiqrApp.models import ProductBarcode
+        product = Product.objects.get(customer=self.customer, code='SKU-1')
+        ProductBarcode.objects.create(product=product, code='OLD-EAN')
+
+        response = self.client.post(self.url, {
+            'csv_file': upload("order_code,product_code,amount\nORD-3,OLD-EAN,4\n",
+                               name='orders.csv')})
+
+        self.assertEqual(response.status_code, 302)
+        order = Order.objects.get(customer=self.customer, order_code='ORD-3')
+        line = order.lines.get()
+        self.assertEqual(line.product, product)
+        self.assertEqual(line.quantity, 4)

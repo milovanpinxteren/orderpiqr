@@ -13,6 +13,7 @@ from orderpiqrApp.utils.devices import (
     resolve_device_unauthenticated,
 )
 from orderpiqrApp.utils.inventory import decrement_inventory_for_picklist
+from orderpiqrApp.utils.products import resolve_product
 from orderpiqrApp.utils.scan_events import log_scan_event
 
 
@@ -210,7 +211,7 @@ def scan_picklist(request):
 
             # Original product handling
             for product_code in picklist:
-                product = Product.objects.filter(customer=device.customer, code=product_code).first()
+                product = resolve_product(device.customer, product_code)
                 if not product:
                     # Raising (not returning) matters: it rolls back the
                     # transaction, so the order lock and half-built picklist
@@ -277,7 +278,7 @@ def product_pick(request):
         return JsonResponse({"status": "error", "message": "PickList not found for device/customer"}, status=404)
 
     try:
-        product = Product.objects.filter(customer=device.customer, code=product_code).first()
+        product = resolve_product(device.customer, product_code)
         if not product:
             raise Product.DoesNotExist()
     except Product.DoesNotExist:
@@ -353,7 +354,7 @@ def bulk_product_pick(request):
     if not picklist:
         return JsonResponse({"status": "error", "message": "PickList not found"}, status=404)
 
-    product = Product.objects.filter(customer=device.customer, code=product_code).first()
+    product = resolve_product(device.customer, product_code)
     if not product:
         return JsonResponse({"status": "error", "message": "Product not found"}, status=404)
 

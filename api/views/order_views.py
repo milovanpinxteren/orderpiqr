@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from api.serializers import OrderSerializer, OrderDetailSerializer, OrderCreateSerializer
 from orderpiqrApp.models import Order, OrderLine, Product
+from orderpiqrApp.utils.products import resolve_product
 from rest_framework import filters
 from django.db import DatabaseError, transaction
 from django.db.models import Count, Max, Sum
@@ -13,7 +14,10 @@ from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiExam
 
 
 def _upsert_product(customer, line, counters):
-    """Resolve a product by code, creating or updating it from inline line data."""
+    """Resolve a product by code (primary or barcode alias), creating or
+    updating it from inline line data. A code that matches an alias resolves to
+    the existing product instead of spawning a duplicate — this is what keeps
+    supplier EAN rotations from splitting a product in two."""
     code = str(line.get('code') or '').strip()
     if not code:
         raise ValueError('Order line is missing a product code')
@@ -21,7 +25,7 @@ def _upsert_product(customer, line, counters):
     description = str(line.get('description') or '').strip()
     location = str(line.get('location') if line.get('location') is not None else '').strip()
 
-    product = Product.objects.filter(customer=customer, code=code).first()
+    product = resolve_product(customer, code)
     if product is None:
         product = Product.objects.create(
             customer=customer,
@@ -492,9 +496,10 @@ class OrderViewSet(viewsets.ModelViewSet):
         - Existing `in_progress`/`completed` order: never touched — reported as skipped.
         - An order sent with no lines (or only zero quantities) is cancelled if still cancellable.
 
-        Order lines reference products by `code` (not numeric id). Unknown products are
-        created on the fly; known products get their `description`/`location` updated when
-        those fields are provided and differ.
+        Order lines reference products by `code` (not numeric id) — a product's primary
+        code or any of its barcode aliases both resolve to the same product. Unknown codes
+        create a product on the fly; known products get their `description`/`location`
+        updated when those fields are provided and differ.
 
         `status` per order may be `draft` (default, not pickable yet) or `queued` (released
         for picking). `queue_position` is honoured when given, otherwise appended to the queue.

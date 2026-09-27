@@ -76,6 +76,7 @@
             <button class="btn btn-sm btn-secondary" onclick="bulkSimple('activate')">{% trans "Activate" %}</button>
             <button class="btn btn-sm btn-secondary" onclick="bulkSimple('deactivate')">{% trans "Deactivate" %}</button>
             <button class="btn btn-sm btn-secondary" onclick="bulkSetLocation()">{% trans "Set Location" %}</button>
+            <button class="btn btn-sm btn-secondary" onclick="bulkMerge()">{% trans "Merge" %}</button>
             <button class="btn btn-sm btn-danger" onclick="bulkDelete()">{% trans "Delete" %}</button>
         </div>
         <button class="bulk-clear" onclick="ListTools.clearSelection()">✕</button>
@@ -279,6 +280,7 @@ function applyFilters() {
 
 // ---- Bulk actions ----
 {% trans "Delete %s product(s)? Products used in orders are skipped. This cannot be undone." as bulk_delete_msg %}
+{% trans "Merge the selected products into which product? Enter its product code. The codes of the merged products stay scannable as extra barcodes." as bulk_merge_msg %}
 
 function bulkSimple(action) {
     ListTools.bulkAction(action);
@@ -293,6 +295,13 @@ function bulkSetLocation() {
     const loc = prompt('{% trans "Enter new location for selected products:" %}');
     if (loc === null) return;
     ListTools.bulkAction('set_location', { extra: { value: loc } });
+}
+
+function bulkMerge() {
+    if (!ListTools.selectionCount()) return;
+    const code = prompt('{{ bulk_merge_msg|escapejs }}');
+    if (code === null || !code.trim()) return;
+    ListTools.bulkAction('merge', { extra: { value: code.trim() } });
 }
 
 ListTools.init({

@@ -8,6 +8,7 @@ from django.db.models import Max
 from django.utils import timezone
 
 from orderpiqrApp.models import Order, OrderLine, Product
+from orderpiqrApp.utils.products import resolve_product
 from integrations.models import ExternalOrderLink, ProductLink
 
 logger = logging.getLogger(__name__)
@@ -50,7 +51,7 @@ def resolve_line(connection, line, config):
         value = str(value).strip()
         if not value:
             continue
-        product = Product.objects.filter(customer=connection.customer, code=value).first()
+        product = resolve_product(connection.customer, value)
         if product:
             ProductLink.objects.update_or_create(
                 connection=connection,
@@ -80,7 +81,7 @@ def _auto_create_product(connection, line, config):
         code = f"{connection.platform}-{line.external_variant_id}"
     code = _clip(code, 255)
 
-    product = Product.objects.filter(customer=connection.customer, code=code).first()
+    product = resolve_product(connection.customer, code)
     if product is None:
         product = Product.objects.create(
             customer=connection.customer,

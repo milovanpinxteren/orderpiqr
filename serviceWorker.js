@@ -1,4 +1,4 @@
-const CACHE_NAME = 'django-pwa-cache-v8';
+const CACHE_NAME = 'django-pwa-cache-v10';
 const urlsToCache = [
     '/',
     '/offline/',
