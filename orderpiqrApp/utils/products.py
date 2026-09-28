@@ -5,15 +5,36 @@ A product is scannable by its primary ``Product.code`` and by any number of
 Product must go through ``resolve_product`` so the two stay interchangeable —
 suppliers rotate EANs, and during the transition both codes are in circulation.
 """
+import re
+
 from django.db import transaction
 from django.db.models import F, Q
 
 from orderpiqrApp.models import InventoryLog, Product, ProductBarcode
 
+# GS1 element string as 2D scanners emit it: an optional FNC1 (transmitted as
+# the GS control character) followed by AI 01 carrying a GTIN-14. Further AIs
+# (expiry, batch, ...) may trail and are irrelevant for product identity.
+GS1_GTIN_RE = re.compile(r'^\x1d?01(\d{14})')
 
-def resolve_product(customer, code):
-    """Resolve a scan/order-line code to a Product: primary code first, then
-    barcode aliases. Returns None when nothing matches."""
+
+def gs1_candidates(code):
+    """Catalog spellings of the GTIN inside a GS1 element string, or [] when
+    ``code`` is not one. A GTIN-14 zero-pads shorter codes, so the catalog may
+    hold it as EAN-13 or UPC-A."""
+    match = GS1_GTIN_RE.match(code or '')
+    if not match:
+        return []
+    gtin = match.group(1)
+    candidates = [gtin]
+    if gtin.startswith('0'):
+        candidates.append(gtin[1:])   # EAN-13
+    if gtin.startswith('00'):
+        candidates.append(gtin[2:])   # UPC-A
+    return candidates
+
+
+def _resolve_exact(customer, code):
     product = Product.objects.filter(customer=customer, code=code).first()
     if product is not None:
         return product
@@ -22,6 +43,20 @@ def resolve_product(customer, code):
              .select_related('product')
              .first())
     return alias.product if alias else None
+
+
+def resolve_product(customer, code):
+    """Resolve a scan/order-line code to a Product: primary code first, then
+    barcode aliases, then — for GS1 element strings — the embedded GTIN in its
+    possible catalog spellings. Returns None when nothing matches."""
+    product = _resolve_exact(customer, code)
+    if product is not None:
+        return product
+    for candidate in gs1_candidates(code):
+        product = _resolve_exact(customer, candidate)
+        if product is not None:
+            return product
+    return None
 
 
 def code_conflict(customer, code, exclude_product=None):

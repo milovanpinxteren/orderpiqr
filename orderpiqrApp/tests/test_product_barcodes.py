@@ -93,6 +93,53 @@ class ResolveProductTests(ProductBarcodeTestCase):
         self.assertFalse(code_conflict(self.customer, OLD_EAN, exclude_product=self.smoothie))
 
 
+class ResolveGs1Tests(ProductBarcodeTestCase):
+    """2D supplier labels (GS1 DataMatrix) carry the EAN inside AI 01 as a
+    zero-padded GTIN-14, prefixed by FNC1 (the GS control character) and
+    followed by further AIs such as expiry (17) and batch (10). The catalog
+    stores the plain EAN-13/UPC-A, so resolution must extract the GTIN."""
+
+    GS1_NEW_EAN = f"\x1d010{NEW_EAN}17261005"
+
+    def test_gs1_with_fnc1_resolves_primary(self):
+        self.assertEqual(resolve_product(self.customer, self.GS1_NEW_EAN), self.smoothie)
+
+    def test_gs1_without_fnc1_resolves(self):
+        self.assertEqual(resolve_product(self.customer, f"010{NEW_EAN}17261005"),
+                         self.smoothie)
+
+    def test_gs1_resolves_alias(self):
+        self.assertEqual(resolve_product(self.customer, f"\x1d010{OLD_EAN}10BATCH42"),
+                         self.smoothie)
+
+    def test_gs1_unknown_gtin_returns_none(self):
+        self.assertIsNone(resolve_product(self.customer, "\x1d010999999999999917261005"))
+
+    def test_gs1_upc_a_needs_two_zeroes_stripped(self):
+        upc_product = Product.objects.create(
+            customer=self.customer, code='687456927435', description='Made Good bar')
+        self.assertEqual(resolve_product(self.customer, "\x1d010068745692743517261005"),
+                         upc_product)
+
+    def test_gs1_gtin14_stored_as_is_resolves(self):
+        gtin_product = Product.objects.create(
+            customer=self.customer, code='18712345678903', description='Case of smoothies')
+        self.assertEqual(resolve_product(self.customer, "\x1d011871234567890317261005"),
+                         gtin_product)
+
+    def test_pick_with_gs1_code_registers(self):
+        """The picker client posts the raw scanned code; a GS1 label on the
+        physical item must still tick off the picklist line."""
+        self.scan([NEW_EAN])
+
+        response = self.pick(self.GS1_NEW_EAN)
+
+        self.assertEqual(response.status_code, 200)
+        picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
+        pick = ProductPick.objects.get(picklist=picklist, product=self.smoothie)
+        self.assertTrue(pick.successful)
+
+
 class ScanWithAliasTests(ProductBarcodeTestCase):
     def test_picklist_qr_with_old_ean_resolves(self):
         """A paper picklist printed before the EAN change keeps working."""

@@ -7,13 +7,37 @@ import {reportScanEvent} from './scanEventReporter.js';
 const gettext = window.gettext;  // Pull it from the global scope
 
 
+// GS1 element string as 2D scanners emit it: an optional FNC1 (transmitted as
+// the GS control character) followed by AI 01 carrying a GTIN-14. Further AIs
+// (expiry, batch, ...) may trail and are irrelevant for product identity.
+const GS1_GTIN_RE = /^\u001d?01(\d{14})/;
+
+// All codes a scan may mean: the code itself, and — for GS1 element strings —
+// the embedded GTIN-14 plus its EAN-13/UPC-A spellings (a GTIN-14 zero-pads
+// shorter codes, and the catalog stores the short form).
+function scanCodeCandidates(code) {
+    const wanted = String(code).trim();
+    const candidates = [wanted];
+    const match = GS1_GTIN_RE.exec(wanted);
+    if (match) {
+        const gtin = match[1];
+        candidates.push(gtin);
+        if (gtin.startsWith('0')) candidates.push(gtin.slice(1));   // EAN-13
+        if (gtin.startsWith('00')) candidates.push(gtin.slice(2)); // UPC-A
+    }
+    return candidates;
+}
+
 // A product is identified by its primary code or any of its barcode aliases
 // (suppliers rotate EANs; during the transition both are in circulation).
 export function findProductByCode(productData, code) {
-    const wanted = String(code).trim();
-    return productData.find(item =>
-        item.code === wanted || (item.barcodes || []).includes(wanted)
-    ) || null;
+    for (const wanted of scanCodeCandidates(code)) {
+        const product = productData.find(item =>
+            item.code === wanted || (item.barcodes || []).includes(wanted)
+        );
+        if (product) return product;
+    }
+    return null;
 }
 
 // Normalise any scannable code to the product's primary code, so picklist
