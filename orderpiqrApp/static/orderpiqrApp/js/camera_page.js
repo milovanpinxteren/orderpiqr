@@ -2,7 +2,7 @@
 import {initializeScanner, pauseScanner, resumeScanner} from './qrScanner.js';
 import {showNotification} from './notifications.js';
 import {toggleOrderImportance, updateOrderImportanceButton, getIsOrderImportant} from './orderImportance.js';
-import {handlePicklist, sortPicklist, canonicalCode} from './picklistHandler.js';
+import {handlePicklist, sortPicklist, canonicalCode, findProductByCode} from './picklistHandler.js';
 import {updateScannedList} from './domUpdater.js';
 import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprint function
 import {reportScanEvent} from './scanEventReporter.js';
@@ -153,8 +153,17 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
         // raw code is kept for health logging: it tells which physical label
         // generation was scanned, which the canonical code hides.
         const rawCode = String(code).trim();
+        // Fridge-QR stickers and login QRs get caught by the camera; they are
+        // not product barcodes and must not pollute pick-flow health.
+        if (/^https?:\/\//i.test(rawCode)) {
+            showNotification(gettext("That is not a product barcode."), true);
+            return;
+        }
         code = canonicalCode(productData, rawCode);
         const rawSuffix = rawCode !== code ? ` (scanned as ${rawCode})` : '';
+        // Client-side list state, for diagnosing client/server mismatches
+        // from the health page after the fact.
+        const listState = ` [device list: ${currentPicklist.length} left]`;
         if (isOrderImportant) {
             const firstProductCode = currentPicklist[0];
             if (code === firstProductCode) {
@@ -178,7 +187,7 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 reportScanEvent('wrong_product', {
                     scannedCode: rawCode,
                     picklistCode: currentOrderID ? String(currentOrderID) : '',
-                    message: `expected ${firstProductCode}` + (rawSuffix ? `; resolves to ${code}` : '')
+                    message: `expected ${firstProductCode}` + (rawSuffix ? `; resolves to ${code}` : '') + listState
                 });
             }
         } else {
@@ -199,12 +208,43 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                     notifyPicklistCompleted(currentOrderID, csrfToken);
                 }
             } else {
-                showNotification(gettext("Product code not found in the list."), true);
-                reportScanEvent('unknown_product', {
-                    scannedCode: rawCode,
-                    picklistCode: currentOrderID ? String(currentOrderID) : '',
-                    message: rawSuffix ? `resolves to ${code}, which is not on the list` : ''
-                });
+                // Three different problems used to share one message. Telling
+                // them apart matters on the floor: an over-scan of a finished
+                // line needs no action, a wrong grab needs a different item,
+                // and a truly unknown code needs the admin.
+                const knownProduct = findProductByCode(productData, rawCode);
+                const originalTotal = knownProduct ? (originalProductCounts[code] || 0) : 0;
+                if (knownProduct && originalTotal > 0) {
+                    showNotification(
+                        gettext("%(product)s: all %(total)s already picked.")
+                            .replace("%(product)s", knownProduct.description || code)
+                            .replace("%(total)s", originalTotal),
+                        true
+                    );
+                    reportScanEvent('unknown_product', {
+                        scannedCode: rawCode,
+                        picklistCode: currentOrderID ? String(currentOrderID) : '',
+                        message: `already picked: all ${originalTotal} units of ${code} registered` + listState
+                    });
+                } else if (knownProduct) {
+                    showNotification(
+                        gettext("%(product)s is not in this order.")
+                            .replace("%(product)s", knownProduct.description || code),
+                        true
+                    );
+                    reportScanEvent('unknown_product', {
+                        scannedCode: rawCode,
+                        picklistCode: currentOrderID ? String(currentOrderID) : '',
+                        message: `known product ${code} is not in this order` + listState
+                    });
+                } else {
+                    showNotification(gettext("Product code not found in the list."), true);
+                    reportScanEvent('unknown_product', {
+                        scannedCode: rawCode,
+                        picklistCode: currentOrderID ? String(currentOrderID) : '',
+                        message: (rawSuffix ? `resolves to ${code}, which is not on the list` : 'code unknown to catalog') + listState
+                    });
+                }
             }
         }
     } catch (error) {
@@ -212,6 +252,42 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
         showNotification(gettext("An unexpected error occurred, please try again. If this issue persists, contact support"), true);
     }
 }
+
+// Stop-the-line: the server no longer has this device's picklist (taken
+// over by another picker, unlocked by an admin, ...). Every further scan of
+// this dead list would be lost the same way, so picking is blocked until the
+// picker acknowledges — one lost pick instead of a whole list.
+let picklistLostShown = false;
+
+function showPicklistLostOverlay() {
+    if (picklistLostShown) return;
+    picklistLostShown = true;
+    const lostOverlay = document.getElementById('picklist-lost-overlay');
+    if (!lostOverlay) {
+        picklistLostShown = false;
+        showNotification(gettext("This list is no longer assigned to you. Scan the list QR again."), true);
+        return;
+    }
+    pauseScanner();
+    hideBulkPickOverlay();
+    hideConfirmationOverlay();
+    lostOverlay.classList.remove('hidden');
+}
+
+document.getElementById('picklist-lost-ok-btn')?.addEventListener('click', function () {
+    document.getElementById('picklist-lost-overlay').classList.add('hidden');
+    picklistLostShown = false;
+    // The list is dead server-side; clear it locally so the picker starts
+    // over by scanning a list QR instead of picking into the void.
+    currentPicklist.length = 0;
+    currentOrderID = null;
+    Object.keys(originalProductCounts).forEach(key => delete originalProductCounts[key]);
+    updateScannedList(currentPicklist, productData);
+    const codeDisplay = document.getElementById('picklist-code-display');
+    if (codeDisplay) codeDisplay.style.display = 'none';
+    isProcessingScan = false;
+    resumeScanner();
+});
 
 // camera_page.js
 export function onSuccessfulPick(scannedCode, {manualOverride = false} = {}) {
@@ -268,6 +344,9 @@ function notifyProductPicked({orderID, productCode, timeTakenMs, manualOverride 
                         picklistCode: orderID ? String(orderID) : '',
                         message: data.message || `product-pick rejected (HTTP ${response.status})`
                     });
+                    if (data.error_code === 'picklist_not_found') {
+                        showPicklistLostOverlay();
+                    }
                     throw new Error(data.message || `product-pick failed (HTTP ${response.status})`);
                 });
             }
@@ -305,6 +384,9 @@ export function notifyPicklistCompleted(orderID, csrfToken) {
                             picklistCode: orderID ? String(orderID) : '',
                             message: (data && data.message) || 'complete-picklist rejected'
                         });
+                        if (data && data.error_code === 'picklist_not_found') {
+                            showPicklistLostOverlay();
+                        }
                     }
                 })
                 .catch(error => {
@@ -512,6 +594,25 @@ function notifyBulkProductPicked({orderID, productCode, quantity, timeTakenMs, c
                     scannedAt: new Date().toISOString()
                 })
             });
+        })
+        .then(response => {
+            // Same contract as notifyProductPicked: a rejection means the
+            // picks were NOT recorded — report it and stop the line when the
+            // picklist itself is gone.
+            if (!response.ok) {
+                return response.json().catch(() => ({})).then(data => {
+                    reportScanEvent('sync_error', {
+                        scannedCode: productCode,
+                        picklistCode: orderID ? String(orderID) : '',
+                        message: data.message || `bulk-product-pick rejected (HTTP ${response.status})`
+                    });
+                    if (data.error_code === 'picklist_not_found') {
+                        showPicklistLostOverlay();
+                    }
+                    throw new Error(data.message || `bulk-product-pick failed (HTTP ${response.status})`);
+                });
+            }
+            return response;
         });
 }
 

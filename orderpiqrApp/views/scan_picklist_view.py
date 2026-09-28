@@ -275,7 +275,10 @@ def product_pick(request):
         log_scan_event(device.customer, device, 'sync_error',
                        scanned_code=product_code, picklist_code=order_id,
                        message=f"Pick registered but no picklist '{order_id}' exists for this device")
-        return JsonResponse({"status": "error", "message": "PickList not found for device/customer"}, status=404)
+        # error_code lets the client stop the line: without it every further
+        # scan of this dead list is silently lost the same way.
+        return JsonResponse({"status": "error", "error_code": "picklist_not_found",
+                             "message": "PickList not found for device/customer"}, status=404)
 
     try:
         product = resolve_product(device.customer, product_code)
@@ -352,7 +355,8 @@ def bulk_product_pick(request):
                 .select_related("customer", "device")
                 .first())
     if not picklist:
-        return JsonResponse({"status": "error", "message": "PickList not found"}, status=404)
+        return JsonResponse({"status": "error", "error_code": "picklist_not_found",
+                             "message": "PickList not found"}, status=404)
 
     product = resolve_product(device.customer, product_code)
     if not product:
@@ -437,6 +441,7 @@ def complete_picklist(request):
                                message='Completion reported but no picklist exists for this device and order')
                 return JsonResponse({
                     'status': 'error',
+                    'error_code': 'picklist_not_found',
                     'message': 'No picklist found for this device and order'
                 }, status=404)
 

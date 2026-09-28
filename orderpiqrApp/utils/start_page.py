@@ -45,7 +45,9 @@ SETTING_OPTIONS = [
 
 def _auto_url(customer):
     """The pre-setting behaviour: send them wherever their features point."""
-    from orderpiqrApp.utils.inventory import is_inventory_enabled, is_orderpicking_enabled
+    from orderpiqrApp.utils.inventory import (
+        is_inventory_enabled, is_orderpicking_enabled, is_queue_enabled,
+    )
 
     orderpicking = is_orderpicking_enabled(customer)
     inventory = is_inventory_enabled(customer)
@@ -53,7 +55,10 @@ def _auto_url(customer):
     if orderpicking and inventory:
         return reverse('picker_choice')
     if orderpicking:
-        return reverse('queue_picker')
+        # Warehouses without the shared queue start an order by scanning it.
+        if is_queue_enabled(customer):
+            return reverse('queue_picker')
+        return reverse('index')
     if inventory:
         return reverse('inventory_picker')
     return reverse('index')
@@ -67,11 +72,13 @@ def resolve_start_page(customer, override=''):
     than honoured — otherwise turning off order picking would strand every
     picker on a dead page, and a stale QR could outlive the feature it names.
     """
-    from orderpiqrApp.utils.inventory import is_orderpicking_enabled
+    from orderpiqrApp.utils.inventory import is_orderpicking_enabled, is_queue_enabled
 
     choice = override or _customer_choice(customer)
 
     if choice in (SCAN, QUEUE) and not is_orderpicking_enabled(customer):
+        choice = AUTO
+    if choice == QUEUE and not is_queue_enabled(customer):
         choice = AUTO
 
     if choice == SCAN:

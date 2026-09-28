@@ -6,6 +6,100 @@
 {% block page_subtitle %}<p class="page-subtitle">{% trans "Scan failures, rejected picklists and manual overrides" %}</p>{% endblock %}
 
 {% block content %}
+<!-- Health Stats -->
+<div class="stats-grid mb-lg">
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">{% trans "Scan Errors" %}</span>
+            <div class="stat-card-icon {% if scan_issues_24h > 0 %}red{% else %}green{% endif %}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-card-value">{{ scan_issues_24h }}</div>
+        <div class="stat-card-change">{% trans "last 24h" %} &middot; {{ scan_issues_7d }} {% trans "this week" %}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">{% trans "Manual Overrides" %}</span>
+            <div class="stat-card-icon {% if overrides_24h > 0 %}orange{% else %}green{% endif %}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-card-value">{{ overrides_24h }}</div>
+        <div class="stat-card-change">{% trans "last 24h" %} &middot; {{ overrides_7d }} {% trans "this week" %}</div>
+    </div>
+</div>
+
+{% if top_override_codes or top_override_devices %}
+<!-- Manual override breakdown: picks confirmed by hand instead of by scan.
+     Per product this flags wrong barcodes; per picker it flags device or
+     habit problems. -->
+<div class="health-columns mb-lg">
+    <div class="card">
+        <div class="card-header">
+            <h3>{% trans "Most Overridden Products (last 7 days)" %}</h3>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Product" %}</th>
+                            <th class="text-right">{% trans "Overrides" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in top_override_codes %}
+                        <tr>
+                            <td>
+                                {% if entry.description %}{{ entry.description }}<br>{% endif %}
+                                <span class="scan-event-code">{{ entry.scanned_code }}</span>
+                            </td>
+                            <td class="text-right">{{ entry.count }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2" class="text-muted">{% trans "No manual overrides this week." %}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>{% trans "Overrides by Picker (last 7 days)" %}</h3>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Device" %}</th>
+                            <th class="text-right">{% trans "Overrides" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in top_override_devices %}
+                        <tr>
+                            <td>{{ entry.device__name|default:"-" }}</td>
+                            <td class="text-right">{{ entry.count }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2" class="text-muted">{% trans "No manual overrides this week." %}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 {% if stale_picklists %}
 <!-- Stale In-progress Picklists -->
 <div class="card mb-lg">
@@ -282,6 +376,17 @@
     display: flex;
     gap: var(--spacing-xs);
     justify-content: flex-end;
+}
+.health-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+}
+@media (max-width: 768px) {
+    .health-columns {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 {% endblock %}

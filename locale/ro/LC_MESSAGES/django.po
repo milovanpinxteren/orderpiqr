@@ -4371,3 +4371,42 @@ msgstr ""
 
 #~ msgid "Pick 1"
 #~ msgstr "Preia 1"
+
+msgid "Scan Errors"
+msgstr "Erori de scanare"
+
+msgid "Manual Overrides"
+msgstr "Suprascrieri manuale"
+
+msgid "Overrides"
+msgstr "Suprascrieri"
+
+msgid "Most Overridden Products (last 7 days)"
+msgstr "Cele mai suprascrise produse (ultimele 7 zile)"
+
+msgid "Overrides by Picker (last 7 days)"
+msgstr "Suprascrieri manuale per picker (ultimele 7 zile)"
+
+msgid "No manual overrides this week."
+msgstr "Nicio suprascriere manuală săptămâna aceasta."
+
+msgid "The order queue is disabled for your company."
+msgstr "Coada de comenzi este dezactivată pentru compania ta."
+
+msgid "%(name)s has been picking this order for %(duration)s. Take it over? Their progress will be lost."
+msgstr "%(name)s preia această comandă de %(duration)s. O preiei? Progresul lor se va pierde."
+
+msgid "%(name)s is picking this order right now. Take it over? Their progress will be lost."
+msgstr "%(name)s lucrează acum la această comandă. O preiei? Progresul lor se va pierde."
+
+msgid "%(name)s is picking this order right now. Unlock it anyway? Their progress will be lost."
+msgstr "%(name)s lucrează acum la această comandă. O deblochezi oricum? Progresul lor se va pierde."
+
+msgid "This list is no longer yours"
+msgstr "Această listă nu mai este a ta"
+
+msgid "It was taken over or unlocked by someone else. Your last scan was not saved. Scan the list QR again to restart, or check with your team lead."
+msgstr "A fost preluată sau deblocată de altcineva. Ultima ta scanare nu a fost salvată. Scanează din nou codul QR al listei pentru a reîncepe sau vorbește cu șeful de echipă."
+
+msgid "OK, back to the camera"
+msgstr "OK, înapoi la cameră"

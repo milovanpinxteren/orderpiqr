@@ -706,3 +706,15 @@ msgstr "Зупинити камеру"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:150
 msgid "Start camera"
 msgstr "Запустити камеру"
+
+msgid "%(product)s: all %(total)s already picked."
+msgstr "%(product)s: усі %(total)s вже скомплектовано."
+
+msgid "%(product)s is not in this order."
+msgstr "%(product)s не входить до цього замовлення."
+
+msgid "That is not a product barcode."
+msgstr "Це не штрих-код товару."
+
+msgid "This list is no longer assigned to you. Scan the list QR again."
+msgstr "Цей список більше не призначено вам. Відскануйте QR-код списку ще раз."

@@ -4366,3 +4366,42 @@ msgstr "Uw magazijnmedewerkers loggen met dit account in op de picker-app:"
 
 #~ msgid "Pick 1"
 #~ msgstr "1 picken"
+
+msgid "Scan Errors"
+msgstr "Scanfouten"
+
+msgid "Manual Overrides"
+msgstr "Handmatige overrides"
+
+msgid "Overrides"
+msgstr "Overrides"
+
+msgid "Most Overridden Products (last 7 days)"
+msgstr "Meest overreden producten (laatste 7 dagen)"
+
+msgid "Overrides by Picker (last 7 days)"
+msgstr "Overrides per picker (laatste 7 dagen)"
+
+msgid "No manual overrides this week."
+msgstr "Geen handmatige overrides deze week."
+
+msgid "The order queue is disabled for your company."
+msgstr "De orderwachtrij is uitgeschakeld voor jouw bedrijf."
+
+msgid "%(name)s has been picking this order for %(duration)s. Take it over? Their progress will be lost."
+msgstr "%(name)s is al %(duration)s met deze order bezig. Overnemen? Hun voortgang gaat verloren."
+
+msgid "%(name)s is picking this order right now. Take it over? Their progress will be lost."
+msgstr "%(name)s is nu met deze order bezig. Overnemen? Hun voortgang gaat verloren."
+
+msgid "%(name)s is picking this order right now. Unlock it anyway? Their progress will be lost."
+msgstr "%(name)s is nu met deze order bezig. Toch ontgrendelen? Hun voortgang gaat verloren."
+
+msgid "This list is no longer yours"
+msgstr "Deze lijst is niet meer van jou"
+
+msgid "It was taken over or unlocked by someone else. Your last scan was not saved. Scan the list QR again to restart, or check with your team lead."
+msgstr "De lijst is overgenomen of ontgrendeld door iemand anders. Je laatste scan is niet opgeslagen. Scan de lijst-QR opnieuw om te herstarten, of overleg met je teamleider."
+
+msgid "OK, back to the camera"
+msgstr "OK, terug naar de camera"

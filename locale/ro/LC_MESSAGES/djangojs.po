@@ -703,3 +703,15 @@ msgstr "Opriți camera"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:150
 msgid "Start camera"
 msgstr "Porniți camera"
+
+msgid "%(product)s: all %(total)s already picked."
+msgstr "%(product)s: toate cele %(total)s au fost deja preluate."
+
+msgid "%(product)s is not in this order."
+msgstr "%(product)s nu face parte din această comandă."
+
+msgid "That is not a product barcode."
+msgstr "Acesta nu este un cod de bare de produs."
+
+msgid "This list is no longer assigned to you. Scan the list QR again."
+msgstr "Această listă nu îți mai este atribuită. Scanează din nou codul QR al listei."

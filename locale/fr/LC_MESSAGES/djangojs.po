@@ -717,3 +717,15 @@ msgstr "Arrêter la caméra"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:150
 msgid "Start camera"
 msgstr "Démarrer la caméra"
+
+msgid "%(product)s: all %(total)s already picked."
+msgstr "%(product)s : les %(total)s ont déjà été prélevés."
+
+msgid "%(product)s is not in this order."
+msgstr "%(product)s ne fait pas partie de cette commande."
+
+msgid "That is not a product barcode."
+msgstr "Ceci n'est pas un code-barres de produit."
+
+msgid "This list is no longer assigned to you. Scan the list QR again."
+msgstr "Cette liste ne vous est plus attribuée. Scannez à nouveau le QR de la liste."

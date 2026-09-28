@@ -166,6 +166,39 @@ class HealthListTests(ManageHealthTestCase):
         self.assertContains(response, '?code=GHOST-1')
         self.assertNotContains(response, '?code=KNOWN-1')
 
+    def test_override_breakdown_by_product_and_picker(self):
+        Product.objects.create(customer=self.customer, code='BAR-1',
+                               description='Chocolate bar')
+        device_a = self.make_device(name='Phone A')
+        device_b = self.make_device(name='Phone B')
+        for _ in range(3):
+            self.make_event('manual_override', scanned_code='BAR-1', device=device_a)
+        self.make_event('manual_override', scanned_code='NO-PRODUCT', device=device_b)
+        # Outside the 7-day window and other tenants must not count.
+        self.make_event('manual_override', scanned_code='BAR-1', days_ago=8)
+        self.make_event('manual_override', customer=self.other_customer,
+                        scanned_code='BAR-1')
+        # Not an override: must not leak into the override stats.
+        self.make_event('unknown_product', scanned_code='BAR-1', device=device_a)
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.context['overrides_7d'], 4)
+        self.assertEqual(response.context['overrides_24h'], 4)
+        self.assertEqual(response.context['scan_issues_7d'], 1)
+
+        by_code = {e['scanned_code']: e for e in response.context['top_override_codes']}
+        self.assertEqual(by_code['BAR-1']['count'], 3)
+        self.assertEqual(by_code['BAR-1']['description'], 'Chocolate bar')
+        self.assertEqual(by_code['NO-PRODUCT']['description'], '')
+
+        by_device = {e['device__name']: e for e in response.context['top_override_devices']}
+        self.assertEqual(by_device['Phone A']['count'], 3)
+        self.assertEqual(by_device['Phone B']['count'], 1)
+        # Most overridden first.
+        self.assertEqual(response.context['top_override_codes'][0]['scanned_code'], 'BAR-1')
+        self.assertContains(response, 'Chocolate bar')
+
     def test_stale_picklists_listed_with_detail_link(self):
         device = self.make_device()
         stale = self.make_picklist(device, hours_ago=6, code='PL-STUCK')

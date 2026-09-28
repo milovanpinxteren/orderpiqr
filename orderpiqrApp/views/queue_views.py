@@ -15,18 +15,20 @@ from django.db.models import Subquery, OuterRef
 from orderpiqrApp.models import Order, UserProfile, PickList, ProductPick
 from orderpiqrApp.utils.decorators import company_admin_required
 from orderpiqrApp.utils.devices import register_device, resolve_device
+from orderpiqrApp.utils.inventory import is_queue_enabled
 
 
 def _annotate_picker(queryset):
-    """Annotate orders with the device name of the active picker."""
+    """Annotate orders with the device name of the active picker and when they
+    started — take-over/unlock confirmations name who gets interrupted."""
+    active_picklists = PickList.objects.filter(
+        order=OuterRef('pk'),
+        pick_started=True,
+        successful__isnull=True,
+    ).order_by('-created_at')
     return queryset.annotate(
-        picked_by=Subquery(
-            PickList.objects.filter(
-                order=OuterRef('pk'),
-                pick_started=True,
-                successful__isnull=True,
-            ).order_by('-created_at').values('device__name')[:1]
-        )
+        picked_by=Subquery(active_picklists.values('device__name')[:1]),
+        picked_since=Subquery(active_picklists.values('pick_time')[:1]),
     )
 
 
@@ -77,6 +79,9 @@ def queue_display(request):
     except UserProfile.DoesNotExist:
         return render(request, 'queue/display.html', {'error': 'No customer profile found'})
 
+    if not is_queue_enabled(customer):
+        return redirect('index')
+
     orders = get_queue_orders(customer, include_lines=True)
 
     context = {
@@ -96,6 +101,9 @@ def queue_display_partial(request):
     except UserProfile.DoesNotExist:
         return render(request, 'queue/_order_cards.html', {'orders': []})
 
+    if not is_queue_enabled(customer):
+        return render(request, 'queue/_order_cards.html', {'orders': []})
+
     orders = get_queue_orders(customer, include_lines=True)
 
     context = {
@@ -113,6 +121,9 @@ def queue_picker(request):
         customer = request.user.userprofile.customer
     except UserProfile.DoesNotExist:
         return render(request, 'queue/picker.html', {'error': 'No customer profile found'})
+
+    if not is_queue_enabled(customer):
+        return redirect('index')
 
     # Get device for this session (registering last_login as a side effect)
     device = resolve_device(request, customer=customer)
@@ -141,6 +152,9 @@ def queue_picker_partial(request):
     except UserProfile.DoesNotExist:
         return render(request, 'queue/_picker_orders.html', {'orders': []})
 
+    if not is_queue_enabled(customer):
+        return render(request, 'queue/_picker_orders.html', {'orders': []})
+
     orders = _annotate_picker(get_queue_orders(customer, include_lines=True))
 
     context = {
@@ -162,6 +176,12 @@ def queue_claim_order(request, order_id):
         customer = request.user.userprofile.customer
     except UserProfile.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': _('No customer profile')}, status=400)
+
+    if not is_queue_enabled(customer):
+        return JsonResponse({
+            'status': 'error',
+            'message': _('The order queue is disabled for your company.')
+        }, status=403)
 
     try:
         data = json.loads(request.body) if request.body else {}

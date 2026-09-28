@@ -56,6 +56,27 @@ def is_orderpicking_enabled(customer):
         return True  # Default to enabled if setting doesn't exist
 
 
+def is_queue_enabled(customer):
+    """Whether pickers may claim orders from the shared queue. Off for
+    warehouses where pickers only scan printed picklist QRs — claiming a
+    queued order by mistake strands a picklist nobody meant to start."""
+    if not customer:
+        return False
+
+    try:
+        definition = SettingDefinition.objects.get(key='queue_enabled')
+    except SettingDefinition.DoesNotExist:
+        return True  # Default to enabled if setting doesn't exist
+
+    customer_value = CustomerSettingValue.objects.filter(
+        customer=customer,
+        definition=definition
+    ).first()
+
+    raw_value = customer_value.value if customer_value else definition.default_value
+    return definition.cast_value(raw_value) if raw_value else True
+
+
 @transaction.atomic
 def modify_inventory(
     product,

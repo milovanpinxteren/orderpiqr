@@ -25,7 +25,7 @@ from orderpiqrApp.utils.decorators import company_admin_required
 from orderpiqrApp.utils.csv_import import (
     CSVImportError, read_csv_rows, parse_bool, PRODUCT_CSV_FIELDS, ORDER_CSV_FIELDS,
 )
-from orderpiqrApp.utils.inventory import is_inventory_enabled, modify_inventory
+from orderpiqrApp.utils.inventory import is_inventory_enabled, is_queue_enabled, modify_inventory
 from orderpiqrApp.utils.login_qr import active_token, issue_token, login_url
 from orderpiqrApp.utils.products import code_conflict, merge_products, resolve_product, set_alias_codes, set_primary_code
 from orderpiqrApp.utils.start_page import QUEUE, SCAN, TOKEN_START_PAGE_CHOICES
@@ -49,6 +49,7 @@ def get_base_context(request, active_nav='dashboard'):
         'customer': customer,
         'active_nav': active_nav,
         'inventory_enabled': inventory_enabled,
+        'queue_enabled': is_queue_enabled(customer) if customer else False,
     }
 
 
@@ -1245,6 +1246,44 @@ def health_list(request):
         # "Add as product" only makes sense for genuinely unknown codes.
         entry['product_exists'] = entry['scanned_code'] in existing_codes
     context['top_codes'] = top_codes
+
+    # Manual overrides, split by product and picker. A triple-tap override
+    # means scanning did not work for that line: many overrides on one product
+    # point at a wrong barcode on the label or in the catalog, many by one
+    # picker at a device or habit problem.
+    overrides = ScanEvent.objects.filter(customer=customer, event_type='manual_override')
+    overrides_week = overrides.filter(created_at__gte=week_ago)
+    context['overrides_7d'] = overrides_week.count()
+    context['overrides_24h'] = overrides.filter(
+        created_at__gte=timezone.now() - timedelta(hours=24)).count()
+    issues = ScanEvent.objects.filter(customer=customer).exclude(event_type='manual_override')
+    context['scan_issues_7d'] = issues.filter(created_at__gte=week_ago).count()
+    context['scan_issues_24h'] = issues.filter(
+        created_at__gte=timezone.now() - timedelta(hours=24)).count()
+
+    # An override's scanned_code is the picklist's primary product code, so it
+    # resolves to a catalog description directly.
+    top_override_codes = list(
+        overrides_week.exclude(scanned_code='')
+        .values('scanned_code')
+        .annotate(count=Count('id'))
+        .order_by('-count')[:10]
+    )
+    descriptions = dict(
+        Product.objects.filter(
+            customer=customer,
+            code__in=[entry['scanned_code'] for entry in top_override_codes],
+        ).values_list('code', 'description'))
+    for entry in top_override_codes:
+        entry['description'] = descriptions.get(entry['scanned_code'], '')
+    context['top_override_codes'] = top_override_codes
+
+    context['top_override_devices'] = list(
+        overrides_week
+        .values('device__name')
+        .annotate(count=Count('id'))
+        .order_by('-count')[:10]
+    )
 
     # Picklists stuck in progress: started over 4 hours ago and never finished.
     context['stale_picklists'] = PickList.objects.filter(

@@ -4412,3 +4412,42 @@ msgstr ""
 
 #~ msgid "Pick 1"
 #~ msgstr "1 picken"
+
+msgid "Scan Errors"
+msgstr "Scanfehler"
+
+msgid "Manual Overrides"
+msgstr "Manuelle Bestätigungen"
+
+msgid "Overrides"
+msgstr "Bestätigungen"
+
+msgid "Most Overridden Products (last 7 days)"
+msgstr "Am häufigsten manuell bestätigte Produkte (letzte 7 Tage)"
+
+msgid "Overrides by Picker (last 7 days)"
+msgstr "Manuelle Bestätigungen pro Picker (letzte 7 Tage)"
+
+msgid "No manual overrides this week."
+msgstr "Keine manuellen Bestätigungen diese Woche."
+
+msgid "The order queue is disabled for your company."
+msgstr "Die Auftragswarteschlange ist für Ihr Unternehmen deaktiviert."
+
+msgid "%(name)s has been picking this order for %(duration)s. Take it over? Their progress will be lost."
+msgstr "%(name)s pickt diesen Auftrag seit %(duration)s. Übernehmen? Der Fortschritt geht verloren."
+
+msgid "%(name)s is picking this order right now. Take it over? Their progress will be lost."
+msgstr "%(name)s pickt diesen Auftrag gerade. Übernehmen? Der Fortschritt geht verloren."
+
+msgid "%(name)s is picking this order right now. Unlock it anyway? Their progress will be lost."
+msgstr "%(name)s pickt diesen Auftrag gerade. Trotzdem entsperren? Der Fortschritt geht verloren."
+
+msgid "This list is no longer yours"
+msgstr "Diese Liste gehört nicht mehr dir"
+
+msgid "It was taken over or unlocked by someone else. Your last scan was not saved. Scan the list QR again to restart, or check with your team lead."
+msgstr "Sie wurde von jemand anderem übernommen oder entsperrt. Dein letzter Scan wurde nicht gespeichert. Scanne den Listen-QR erneut, um neu zu starten, oder sprich mit deiner Teamleitung."
+
+msgid "OK, back to the camera"
+msgstr "OK, zurück zur Kamera"

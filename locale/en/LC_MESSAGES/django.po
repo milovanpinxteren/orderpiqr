@@ -4352,3 +4352,42 @@ msgstr ""
 
 #~ msgid "Pick 1"
 #~ msgstr "Pick 1"
+
+msgid "Scan Errors"
+msgstr "Scan Errors"
+
+msgid "Manual Overrides"
+msgstr "Manual Overrides"
+
+msgid "Overrides"
+msgstr "Overrides"
+
+msgid "Most Overridden Products (last 7 days)"
+msgstr "Most Overridden Products (last 7 days)"
+
+msgid "Overrides by Picker (last 7 days)"
+msgstr "Overrides by Picker (last 7 days)"
+
+msgid "No manual overrides this week."
+msgstr "No manual overrides this week."
+
+msgid "The order queue is disabled for your company."
+msgstr "The order queue is disabled for your company."
+
+msgid "%(name)s has been picking this order for %(duration)s. Take it over? Their progress will be lost."
+msgstr "%(name)s has been picking this order for %(duration)s. Take it over? Their progress will be lost."
+
+msgid "%(name)s is picking this order right now. Take it over? Their progress will be lost."
+msgstr "%(name)s is picking this order right now. Take it over? Their progress will be lost."
+
+msgid "%(name)s is picking this order right now. Unlock it anyway? Their progress will be lost."
+msgstr "%(name)s is picking this order right now. Unlock it anyway? Their progress will be lost."
+
+msgid "This list is no longer yours"
+msgstr "This list is no longer yours"
+
+msgid "It was taken over or unlocked by someone else. Your last scan was not saved. Scan the list QR again to restart, or check with your team lead."
+msgstr "It was taken over or unlocked by someone else. Your last scan was not saved. Scan the list QR again to restart, or check with your team lead."
+
+msgid "OK, back to the camera"
+msgstr "OK, back to the camera"

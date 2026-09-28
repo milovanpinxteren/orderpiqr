@@ -464,8 +464,13 @@ function removeFromQueue(orderId) {
     });
 }
 
-function unlockOrder(orderId) {
-    if (!confirm('{% trans "Unlock this order? The picker will lose their progress." %}')) return;
+function unlockOrder(orderId, pickedBy) {
+    // Name the picker who gets interrupted — their in-progress picklist is
+    // deleted by the unlock and their scanner will be stopped.
+    const message = pickedBy
+        ? '{% trans "%(name)s is picking this order right now. Unlock it anyway? Their progress will be lost." %}'.replace('%(name)s', pickedBy)
+        : '{% trans "Unlock this order? The picker will lose their progress." %}';
+    if (!confirm(message)) return;
     fetch(`{% url 'queue_unlock_order' order_id=0 %}`.replace('0', orderId), {
         method: 'POST',
         headers: {

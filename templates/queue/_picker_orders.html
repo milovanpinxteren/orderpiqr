@@ -41,7 +41,8 @@
                 {% endif %}
                 <span class="status-badge in-progress">{% trans "In Progress" %}</span>
             </div>
-            <button class="btn-reclaim" onclick="reclaimOrder({{ order.order_id }}, this)">
+            <button class="btn-reclaim"
+                    onclick="reclaimOrder({{ order.order_id }}, this, '{{ order.picked_by|default:''|escapejs }}', '{% if order.picked_since %}{{ order.picked_since|timesince|escapejs }}{% endif %}')">
                 {% trans "Take Over" %}
             </button>
             {% elif order.status == 'completed' %}

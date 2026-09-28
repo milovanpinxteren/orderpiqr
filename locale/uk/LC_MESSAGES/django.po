@@ -4361,3 +4361,42 @@ msgstr ""
 
 #~ msgid "Pick 1"
 #~ msgstr "Скомплектувати 1"
+
+msgid "Scan Errors"
+msgstr "Помилки сканування"
+
+msgid "Manual Overrides"
+msgstr "Ручні підтвердження"
+
+msgid "Overrides"
+msgstr "Підтвердження"
+
+msgid "Most Overridden Products (last 7 days)"
+msgstr "Найчастіше підтверджувані вручну товари (останні 7 днів)"
+
+msgid "Overrides by Picker (last 7 days)"
+msgstr "Ручні підтвердження за комплектувальником (останні 7 днів)"
+
+msgid "No manual overrides this week."
+msgstr "Цього тижня ручних підтверджень немає."
+
+msgid "The order queue is disabled for your company."
+msgstr "Чергу замовлень вимкнено для вашої компанії."
+
+msgid "%(name)s has been picking this order for %(duration)s. Take it over? Their progress will be lost."
+msgstr "%(name)s комплектує це замовлення вже %(duration)s. Перебрати його? Прогрес буде втрачено."
+
+msgid "%(name)s is picking this order right now. Take it over? Their progress will be lost."
+msgstr "%(name)s зараз комплектує це замовлення. Перебрати його? Прогрес буде втрачено."
+
+msgid "%(name)s is picking this order right now. Unlock it anyway? Their progress will be lost."
+msgstr "%(name)s зараз комплектує це замовлення. Все одно розблокувати? Прогрес буде втрачено."
+
+msgid "This list is no longer yours"
+msgstr "Цей список більше не ваш"
+
+msgid "It was taken over or unlocked by someone else. Your last scan was not saved. Scan the list QR again to restart, or check with your team lead."
+msgstr "Його перебрав або розблокував хтось інший. Ваше останнє сканування не збережено. Відскануйте QR-код списку ще раз, щоб почати заново, або зверніться до керівника зміни."
+
+msgid "OK, back to the camera"
+msgstr "OK, назад до камери"

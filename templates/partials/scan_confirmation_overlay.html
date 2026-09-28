@@ -13,6 +13,19 @@
     </div>
 </div>
 
+<!-- Picklist lost overlay: the server no longer has this device's picklist
+     (taken over / unlocked). Blocking, so no further scans are lost. -->
+<div id="picklist-lost-overlay" class="scan-overlay hidden">
+    <div class="scan-overlay-content">
+        <div class="scan-overlay-icon">⚠</div>
+        <h2>{% trans "This list is no longer yours" %}</h2>
+        <p class="pick-secondary">{% trans "It was taken over or unlocked by someone else. Your last scan was not saved. Scan the list QR again to restart, or check with your team lead." %}</p>
+        <button id="picklist-lost-ok-btn" class="overlay-btn" type="button">
+            {% trans "OK, back to the camera" %}
+        </button>
+    </div>
+</div>
+
 <!-- Bulk pick overlay -->
 <div id="bulk-pick-overlay" class="scan-overlay hidden">
     <div class="bulk-pick-overlay-content">

@@ -31,7 +31,7 @@
         </div>
         <div class="order-actions">
             {% if order.status == 'in_progress' %}
-            <button class="btn-unlock" onclick="unlockOrder({{ order.order_id }})" title="{% trans 'Unlock order' %}">🔓</button>
+            <button class="btn-unlock" onclick="unlockOrder({{ order.order_id }}, '{{ order.picked_by|default:''|escapejs }}')" title="{% trans 'Unlock order' %}">🔓</button>
             {% endif %}
             <button class="btn-move" onclick="moveOrder({{ order.order_id }}, 'up')" title="{% trans 'Move up' %}">▲</button>
             <button class="btn-move" onclick="moveOrder({{ order.order_id }}, 'down')" title="{% trans 'Move down' %}">▼</button>

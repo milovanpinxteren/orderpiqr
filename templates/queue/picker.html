@@ -130,8 +130,21 @@
             }
         }
 
-        function reclaimOrder(orderId, button) {
-            if (!confirm('{% trans "This order is being picked by someone else. Are you sure you want to take it over? Their progress will be lost." %}')) {
+        function reclaimOrder(orderId, button, pickedBy, pickedFor) {
+            // Name the colleague who gets interrupted: an abstract confirm is
+            // clicked through, "take this over from Mariana" is not.
+            let message;
+            if (pickedBy && pickedFor) {
+                message = '{% trans "%(name)s has been picking this order for %(duration)s. Take it over? Their progress will be lost." %}'
+                    .replace('%(name)s', pickedBy)
+                    .replace('%(duration)s', pickedFor);
+            } else if (pickedBy) {
+                message = '{% trans "%(name)s is picking this order right now. Take it over? Their progress will be lost." %}'
+                    .replace('%(name)s', pickedBy);
+            } else {
+                message = '{% trans "This order is being picked by someone else. Are you sure you want to take it over? Their progress will be lost." %}';
+            }
+            if (!confirm(message)) {
                 return;
             }
             button.disabled = true;

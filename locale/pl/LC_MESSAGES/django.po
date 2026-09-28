@@ -4356,3 +4356,42 @@ msgstr "Personel magazynu loguje się do aplikacji kompletującego tym kontem:"
 
 #~ msgid "Pick 1"
 #~ msgstr "Pobierz 1"
+
+msgid "Scan Errors"
+msgstr "Błędy skanowania"
+
+msgid "Manual Overrides"
+msgstr "Ręczne potwierdzenia"
+
+msgid "Overrides"
+msgstr "Potwierdzenia"
+
+msgid "Most Overridden Products (last 7 days)"
+msgstr "Najczęściej ręcznie potwierdzane produkty (ostatnie 7 dni)"
+
+msgid "Overrides by Picker (last 7 days)"
+msgstr "Ręczne potwierdzenia wg pickera (ostatnie 7 dni)"
+
+msgid "No manual overrides this week."
+msgstr "Brak ręcznych potwierdzeń w tym tygodniu."
+
+msgid "The order queue is disabled for your company."
+msgstr "Kolejka zamówień jest wyłączona dla Twojej firmy."
+
+msgid "%(name)s has been picking this order for %(duration)s. Take it over? Their progress will be lost."
+msgstr "%(name)s kompletuje to zamówienie od %(duration)s. Przejąć je? Postęp zostanie utracony."
+
+msgid "%(name)s is picking this order right now. Take it over? Their progress will be lost."
+msgstr "%(name)s właśnie kompletuje to zamówienie. Przejąć je? Postęp zostanie utracony."
+
+msgid "%(name)s is picking this order right now. Unlock it anyway? Their progress will be lost."
+msgstr "%(name)s właśnie kompletuje to zamówienie. Odblokować mimo to? Postęp zostanie utracony."
+
+msgid "This list is no longer yours"
+msgstr "Ta lista nie jest już twoja"
+
+msgid "It was taken over or unlocked by someone else. Your last scan was not saved. Scan the list QR again to restart, or check with your team lead."
+msgstr "Została przejęta lub odblokowana przez kogoś innego. Twój ostatni skan nie został zapisany. Zeskanuj ponownie kod QR listy, aby zacząć od nowa, lub skontaktuj się z liderem zespołu."
+
+msgid "OK, back to the camera"
+msgstr "OK, wróć do kamery"
