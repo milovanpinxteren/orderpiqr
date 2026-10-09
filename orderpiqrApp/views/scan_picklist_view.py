@@ -4,8 +4,9 @@ from django.db import IntegrityError, transaction
 from django.http import JsonResponse
 from django.utils import timezone
 import json
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 from orderpiqrApp.models import Device, Order, PickList, Product, ProductPick, ScanEvent
+from orderpiqrApp.utils.build_id import get_build_id
 from orderpiqrApp.utils.devices import (
     get_customer,
     register_device,
@@ -39,6 +40,17 @@ def _resolve_device(request, device_fingerprint):
             'message': 'This device is registered for multiple companies. Please log in.'
         }, status=409)
     return device, None
+
+
+@require_GET
+def client_version(request):
+    """Current client build id, polled by the long-lived scan page.
+
+    The scan page is a PWA pickers leave open for days; it compares this
+    against the build id it was rendered with and reloads itself (at a safe
+    moment) when they differ. Public: the id is a hash of public static files.
+    """
+    return JsonResponse({'buildId': get_build_id()})
 
 
 @require_POST

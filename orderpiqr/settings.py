@@ -181,7 +181,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STORAGES replaced STATICFILES_STORAGE in Django 5.1 — the old setting is
+# silently ignored, which serves plain unhashed static files. The manifest
+# storage hashes filenames (cache-busting on deploy) and its manifest_hash is
+# the scan client's build id (orderpiqrApp.utils.build_id).
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 

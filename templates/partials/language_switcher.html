@@ -112,7 +112,8 @@
 
     <div class="language-dropdown">
         <button type="button" class="language-icon" onclick="toggleLanguageDropdown()">
-            <img src="{% static 'orderpiqrApp/flags/' %}{{ LANGUAGE_CODE }}.png" alt="{{ LANGUAGE_CODE }}"
+            {# The full path must go through {% static %}: manifest storage maps it to the hashed file and raises on a bare directory #}
+            <img src="{% static 'orderpiqrApp/flags/'|add:LANGUAGE_CODE|add:'.png' %}" alt="{{ LANGUAGE_CODE }}"
                  class="flag-icon">
         </button>
         <div id="language-options" class="language-options">
@@ -121,7 +122,7 @@
 
                 <button type="submit" name="language" value="{{ lang_code }}"
                         class="language-option {% if lang_code == LANGUAGE_CODE %}active{% endif %}">
-                    <img src="{% static 'orderpiqrApp/flags/' %}{{ lang_code }}.png" alt="{{ lang_code }}"
+                    <img src="{% static 'orderpiqrApp/flags/'|add:lang_code|add:'.png' %}" alt="{{ lang_code }}"
                          class="flag-icon"> {{ native_name }}
 
                 </button>

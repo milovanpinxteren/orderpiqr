@@ -1,4 +1,4 @@
-const CACHE_NAME = 'django-pwa-cache-v10';
+const CACHE_NAME = 'django-pwa-cache-v11';
 const urlsToCache = [
     '/',
     '/offline/',
@@ -61,7 +61,9 @@ self.addEventListener('activate', event => {
                     return caches.delete(key);
                 })
             )
-        )
+        // Take over open pages immediately so a stale worker never keeps
+        // serving them until the next full navigation.
+        ).then(() => self.clients.claim())
     );
 });
 

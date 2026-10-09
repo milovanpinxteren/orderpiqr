@@ -6,6 +6,7 @@ import {handlePicklist, sortPicklist, canonicalCode, findProductByCode} from './
 import {updateScannedList} from './domUpdater.js';
 import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprint function
 import {reportScanEvent} from './scanEventReporter.js';
+import {initAppUpdater} from './appUpdater.js';
 
 const gettext = window.gettext;
 // Access the productData object injected into the HTML
@@ -792,3 +793,7 @@ if (document.readyState === 'loading') {
     // DOM is already ready
     loadClaimedOrder();
 }
+
+// Self-update: reload for a new deploy, but only while no list is in
+// progress — currentPicklist lives in page memory, a reload would lose it.
+initAppUpdater(() => currentPicklist.length === 0 && !isProcessingScan);

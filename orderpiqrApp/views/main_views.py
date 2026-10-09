@@ -3,6 +3,7 @@ from django.utils.safestring import mark_safe
 from django.urls import reverse
 
 from orderpiqrApp.models import Product, SettingDefinition, CustomerSettingValue, Order
+from orderpiqrApp.utils.build_id import get_build_id
 from orderpiqrApp.utils.devices import resolve_device
 import json
 
@@ -25,6 +26,9 @@ def index(request):
     for product in product_data:
         product['barcodes'] = aliases.get(product['product_id'], [])
     settings = get_customer_settings(customer)
+    # The build id this page was rendered with; the client polls
+    # /orderpiqr/client-version and reloads itself when it changes.
+    settings['build_id'] = get_build_id()
 
     # Check if there's an order to load from the queue
     claimed_order_data = None
