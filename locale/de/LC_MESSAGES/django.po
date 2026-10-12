@@ -4451,3 +4451,23 @@ msgstr "Sie wurde von jemand anderem übernommen oder entsperrt. Dein letzter Sc
 
 msgid "OK, back to the camera"
 msgstr "OK, zurück zur Kamera"
+
+#: templates/manage/health/list.html
+msgid "selected period"
+msgstr "gewählter Zeitraum"
+
+#: templates/manage/health/list.html
+msgid "Most Overridden Products (selected period)"
+msgstr "Am häufigsten manuell bestätigte Produkte (gewählter Zeitraum)"
+
+#: templates/manage/health/list.html
+msgid "Overrides by Picker (selected period)"
+msgstr "Manuelle Bestätigungen pro Picker (gewählter Zeitraum)"
+
+#: templates/manage/health/list.html
+msgid "Top Problem Codes (selected period)"
+msgstr "Häufigste Problemcodes (gewählter Zeitraum)"
+
+#: templates/manage/health/list.html
+msgid "No manual overrides in this period."
+msgstr "Keine manuellen Bestätigungen in diesem Zeitraum."

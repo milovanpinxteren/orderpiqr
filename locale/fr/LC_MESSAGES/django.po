@@ -4438,3 +4438,23 @@ msgstr "Elle a été reprise ou déverrouillée par quelqu'un d'autre. Votre der
 
 msgid "OK, back to the camera"
 msgstr "OK, retour à la caméra"
+
+#: templates/manage/health/list.html
+msgid "selected period"
+msgstr "période sélectionnée"
+
+#: templates/manage/health/list.html
+msgid "Most Overridden Products (selected period)"
+msgstr "Produits les plus remplacés manuellement (période sélectionnée)"
+
+#: templates/manage/health/list.html
+msgid "Overrides by Picker (selected period)"
+msgstr "Remplacements manuels par préparateur (période sélectionnée)"
+
+#: templates/manage/health/list.html
+msgid "Top Problem Codes (selected period)"
+msgstr "Codes problématiques les plus fréquents (période sélectionnée)"
+
+#: templates/manage/health/list.html
+msgid "No manual overrides in this period."
+msgstr "Aucun remplacement manuel sur cette période."

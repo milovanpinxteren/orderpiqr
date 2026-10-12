@@ -4400,3 +4400,23 @@ msgstr "Його перебрав або розблокував хтось ін�
 
 msgid "OK, back to the camera"
 msgstr "OK, назад до камери"
+
+#: templates/manage/health/list.html
+msgid "selected period"
+msgstr "вибраний період"
+
+#: templates/manage/health/list.html
+msgid "Most Overridden Products (selected period)"
+msgstr "Найчастіше підтверджувані вручну товари (вибраний період)"
+
+#: templates/manage/health/list.html
+msgid "Overrides by Picker (selected period)"
+msgstr "Ручні підтвердження за комплектувальником (вибраний період)"
+
+#: templates/manage/health/list.html
+msgid "Top Problem Codes (selected period)"
+msgstr "Найчастіші проблемні коди (вибраний період)"
+
+#: templates/manage/health/list.html
+msgid "No manual overrides in this period."
+msgstr "У цьому періоді ручних підтверджень немає."

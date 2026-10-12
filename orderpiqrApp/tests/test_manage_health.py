@@ -136,6 +136,47 @@ class HealthListTests(ManageHealthTestCase):
         codes = [e.scanned_code for e in response.context['events']]
         self.assertEqual(codes, ['NEW-1'])
 
+    def test_date_filter_drives_stats_and_breakdowns(self):
+        device = self.make_device(name='Phone A')
+        self.make_event('unknown_product', scanned_code='DAY-1', days_ago=3)
+        self.make_event('manual_override', scanned_code='DAY-1',
+                        device=device, days_ago=3)
+        self.make_event('unknown_product', scanned_code='TODAY-1')
+        self.make_event('manual_override', scanned_code='TODAY-1', device=device)
+
+        day = (timezone.now() - timedelta(days=3)).date().isoformat()
+        response = self.client.get(self.url, {'date_from': day, 'date_to': day})
+
+        self.assertTrue(response.context['date_filtered'])
+        self.assertEqual(response.context['scan_issues_period'], 1)
+        self.assertEqual(response.context['overrides_period'], 1)
+        self.assertEqual(
+            [e['scanned_code'] for e in response.context['top_codes']], ['DAY-1'])
+        self.assertEqual(
+            [e['scanned_code'] for e in response.context['top_override_codes']],
+            ['DAY-1'])
+        self.assertContains(response, 'selected period')
+
+    def test_date_filter_reaches_beyond_the_default_week(self):
+        # Without dates the breakdowns cover the rolling last 7 days; a date
+        # window must surface older pick days too.
+        self.make_event('manual_override', scanned_code='OLD-1', days_ago=10)
+
+        day = (timezone.now() - timedelta(days=10)).date().isoformat()
+        response = self.client.get(self.url, {'date_from': day, 'date_to': day})
+        self.assertEqual(response.context['overrides_period'], 1)
+        self.assertEqual(
+            [e['scanned_code'] for e in response.context['top_override_codes']],
+            ['OLD-1'])
+
+    def test_invalid_date_is_ignored(self):
+        self.make_event('unknown_product', scanned_code='NEW-1')
+        response = self.client.get(self.url, {'date_from': 'not-a-date'})
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['date_filtered'])
+        self.assertEqual(
+            [e.scanned_code for e in response.context['events']], ['NEW-1'])
+
     def test_excludes_other_customers_events(self):
         self.make_event('unknown_product', customer=self.other_customer,
                         scanned_code='FOREIGN-1')

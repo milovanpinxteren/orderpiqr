@@ -6,32 +6,63 @@
 {% block page_subtitle %}<p class="page-subtitle">{% trans "Scan failures, rejected picklists and manual overrides" %}</p>{% endblock %}
 
 {% block content %}
+<!-- Filters: the date window drives the stat tiles, the breakdowns and the
+     event list below. Without dates the page shows the rolling 24h/7d view. -->
+<form method="get" action="{% url 'manage_health' %}" class="search-filters">
+    <div class="filter-group">
+        <select class="form-control" name="event_type">
+            <option value="">{% trans "All Types" %}</option>
+            {% for value, label in event_types %}
+            <option value="{{ value }}" {% if event_type_filter == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="filter-group">
+        <input type="date" class="form-control" name="date_from" value="{{ date_from|default:'' }}" placeholder="{% trans 'From' %}">
+    </div>
+    <div class="filter-group">
+        <input type="date" class="form-control" name="date_to" value="{{ date_to|default:'' }}" placeholder="{% trans 'To' %}">
+    </div>
+    <button type="submit" class="btn btn-secondary">{% trans "Filter" %}</button>
+    <a href="{% url 'manage_health' %}" class="btn btn-secondary">{% trans "Clear" %}</a>
+</form>
+
 <!-- Health Stats -->
 <div class="stats-grid mb-lg">
     <div class="stat-card">
         <div class="stat-card-header">
             <span class="stat-card-title">{% trans "Scan Errors" %}</span>
-            <div class="stat-card-icon {% if scan_issues_24h > 0 %}red{% else %}green{% endif %}">
+            <div class="stat-card-icon {% if date_filtered and scan_issues_period or not date_filtered and scan_issues_24h %}red{% else %}green{% endif %}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
                 </svg>
             </div>
         </div>
+        {% if date_filtered %}
+        <div class="stat-card-value">{{ scan_issues_period }}</div>
+        <div class="stat-card-change">{% trans "selected period" %}</div>
+        {% else %}
         <div class="stat-card-value">{{ scan_issues_24h }}</div>
         <div class="stat-card-change">{% trans "last 24h" %} &middot; {{ scan_issues_7d }} {% trans "this week" %}</div>
+        {% endif %}
     </div>
     <div class="stat-card">
         <div class="stat-card-header">
             <span class="stat-card-title">{% trans "Manual Overrides" %}</span>
-            <div class="stat-card-icon {% if overrides_24h > 0 %}orange{% else %}green{% endif %}">
+            <div class="stat-card-icon {% if date_filtered and overrides_period or not date_filtered and overrides_24h %}orange{% else %}green{% endif %}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M9 11l3 3L22 4"/>
                     <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
                 </svg>
             </div>
         </div>
+        {% if date_filtered %}
+        <div class="stat-card-value">{{ overrides_period }}</div>
+        <div class="stat-card-change">{% trans "selected period" %}</div>
+        {% else %}
         <div class="stat-card-value">{{ overrides_24h }}</div>
         <div class="stat-card-change">{% trans "last 24h" %} &middot; {{ overrides_7d }} {% trans "this week" %}</div>
+        {% endif %}
     </div>
 </div>
 
@@ -42,7 +73,7 @@
 <div class="health-columns mb-lg">
     <div class="card">
         <div class="card-header">
-            <h3>{% trans "Most Overridden Products (last 7 days)" %}</h3>
+            <h3>{% if date_filtered %}{% trans "Most Overridden Products (selected period)" %}{% else %}{% trans "Most Overridden Products (last 7 days)" %}{% endif %}</h3>
         </div>
         <div class="card-body p-0">
             <div class="table-container">
@@ -63,7 +94,7 @@
                             <td class="text-right">{{ entry.count }}</td>
                         </tr>
                         {% empty %}
-                        <tr><td colspan="2" class="text-muted">{% trans "No manual overrides this week." %}</td></tr>
+                        <tr><td colspan="2" class="text-muted">{% if date_filtered %}{% trans "No manual overrides in this period." %}{% else %}{% trans "No manual overrides this week." %}{% endif %}</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -72,7 +103,7 @@
     </div>
     <div class="card">
         <div class="card-header">
-            <h3>{% trans "Overrides by Picker (last 7 days)" %}</h3>
+            <h3>{% if date_filtered %}{% trans "Overrides by Picker (selected period)" %}{% else %}{% trans "Overrides by Picker (last 7 days)" %}{% endif %}</h3>
         </div>
         <div class="card-body p-0">
             <div class="table-container">
@@ -90,7 +121,7 @@
                             <td class="text-right">{{ entry.count }}</td>
                         </tr>
                         {% empty %}
-                        <tr><td colspan="2" class="text-muted">{% trans "No manual overrides this week." %}</td></tr>
+                        <tr><td colspan="2" class="text-muted">{% if date_filtered %}{% trans "No manual overrides in this period." %}{% else %}{% trans "No manual overrides this week." %}{% endif %}</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -182,7 +213,7 @@
 <!-- Top Problem Codes -->
 <div class="card mb-lg">
     <div class="card-header">
-        <h3>{% trans "Top Problem Codes (last 7 days)" %}</h3>
+        <h3>{% if date_filtered %}{% trans "Top Problem Codes (selected period)" %}{% else %}{% trans "Top Problem Codes (last 7 days)" %}{% endif %}</h3>
     </div>
     <div class="card-body p-0">
         <div class="table-container">
@@ -215,26 +246,6 @@
     </div>
 </div>
 {% endif %}
-
-<!-- Filters -->
-<form method="get" action="{% url 'manage_health' %}" class="search-filters">
-    <div class="filter-group">
-        <select class="form-control" name="event_type">
-            <option value="">{% trans "All Types" %}</option>
-            {% for value, label in event_types %}
-            <option value="{{ value }}" {% if event_type_filter == value %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="filter-group">
-        <input type="date" class="form-control" name="date_from" value="{{ date_from|default:'' }}" placeholder="{% trans 'From' %}">
-    </div>
-    <div class="filter-group">
-        <input type="date" class="form-control" name="date_to" value="{{ date_to|default:'' }}" placeholder="{% trans 'To' %}">
-    </div>
-    <button type="submit" class="btn btn-secondary">{% trans "Filter" %}</button>
-    <a href="{% url 'manage_health' %}" class="btn btn-secondary">{% trans "Clear" %}</a>
-</form>
 
 <!-- Events Table -->
 <div class="card">

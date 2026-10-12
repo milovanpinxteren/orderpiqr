@@ -1209,24 +1209,39 @@ def health_list(request):
         events = events.filter(event_type=event_type)
         context['event_type_filter'] = event_type
 
-    date_from = request.GET.get('date_from')
+    date_from_raw = request.GET.get('date_from', '')
+    date_from = parse_date(date_from_raw) if date_from_raw else None
     if date_from:
         events = events.filter(created_at__date__gte=date_from)
-        context['date_from'] = date_from
+        context['date_from'] = date_from_raw
 
-    date_to = request.GET.get('date_to')
+    date_to_raw = request.GET.get('date_to', '')
+    date_to = parse_date(date_to_raw) if date_to_raw else None
     if date_to:
         events = events.filter(created_at__date__lte=date_to)
-        context['date_to'] = date_to
+        context['date_to'] = date_to_raw
 
     context['event_types'] = ScanEvent.EVENT_TYPES
 
-    # Top problem codes of the last 7 days. Bulk unknown_product events may
-    # contain comma-joined codes; those are displayed as-is.
+    # The stat tiles and breakdowns follow the selected date window; without
+    # a date filter they default to the rolling last 7 days (tiles also show
+    # the last 24 hours).
+    date_filtered = bool(date_from or date_to)
+    context['date_filtered'] = date_filtered
     week_ago = timezone.now() - timedelta(days=7)
+    window = ScanEvent.objects.filter(customer=customer)
+    if date_filtered:
+        if date_from:
+            window = window.filter(created_at__date__gte=date_from)
+        if date_to:
+            window = window.filter(created_at__date__lte=date_to)
+    else:
+        window = window.filter(created_at__gte=week_ago)
+
+    # Top problem codes in the window. Bulk unknown_product events may
+    # contain comma-joined codes; those are displayed as-is.
     top_codes = list(
-        ScanEvent.objects.filter(customer=customer, created_at__gte=week_ago)
-        .exclude(scanned_code='')
+        window.exclude(scanned_code='')
         .values('scanned_code')
         .annotate(count=Count('id'))
         .order_by('-count')[:10]
@@ -1251,20 +1266,22 @@ def health_list(request):
     # means scanning did not work for that line: many overrides on one product
     # point at a wrong barcode on the label or in the catalog, many by one
     # picker at a device or habit problem.
-    overrides = ScanEvent.objects.filter(customer=customer, event_type='manual_override')
-    overrides_week = overrides.filter(created_at__gte=week_ago)
-    context['overrides_7d'] = overrides_week.count()
-    context['overrides_24h'] = overrides.filter(
-        created_at__gte=timezone.now() - timedelta(hours=24)).count()
-    issues = ScanEvent.objects.filter(customer=customer).exclude(event_type='manual_override')
-    context['scan_issues_7d'] = issues.filter(created_at__gte=week_ago).count()
-    context['scan_issues_24h'] = issues.filter(
-        created_at__gte=timezone.now() - timedelta(hours=24)).count()
+    overrides_window = window.filter(event_type='manual_override')
+    issues_window = window.exclude(event_type='manual_override')
+    if date_filtered:
+        context['overrides_period'] = overrides_window.count()
+        context['scan_issues_period'] = issues_window.count()
+    else:
+        day_ago = timezone.now() - timedelta(hours=24)
+        context['overrides_7d'] = overrides_window.count()
+        context['overrides_24h'] = overrides_window.filter(created_at__gte=day_ago).count()
+        context['scan_issues_7d'] = issues_window.count()
+        context['scan_issues_24h'] = issues_window.filter(created_at__gte=day_ago).count()
 
     # An override's scanned_code is the picklist's primary product code, so it
     # resolves to a catalog description directly.
     top_override_codes = list(
-        overrides_week.exclude(scanned_code='')
+        overrides_window.exclude(scanned_code='')
         .values('scanned_code')
         .annotate(count=Count('id'))
         .order_by('-count')[:10]
@@ -1279,7 +1296,7 @@ def health_list(request):
     context['top_override_codes'] = top_override_codes
 
     context['top_override_devices'] = list(
-        overrides_week
+        overrides_window
         .values('device__name')
         .annotate(count=Count('id'))
         .order_by('-count')[:10]

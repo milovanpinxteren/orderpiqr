@@ -4410,3 +4410,23 @@ msgstr "A fost preluată sau deblocată de altcineva. Ultima ta scanare nu a fos
 
 msgid "OK, back to the camera"
 msgstr "OK, înapoi la cameră"
+
+#: templates/manage/health/list.html
+msgid "selected period"
+msgstr "perioada selectată"
+
+#: templates/manage/health/list.html
+msgid "Most Overridden Products (selected period)"
+msgstr "Cele mai suprascrise produse (perioada selectată)"
+
+#: templates/manage/health/list.html
+msgid "Overrides by Picker (selected period)"
+msgstr "Suprascrieri manuale per picker (perioada selectată)"
+
+#: templates/manage/health/list.html
+msgid "Top Problem Codes (selected period)"
+msgstr "Cele mai frecvente coduri problematice (perioada selectată)"
+
+#: templates/manage/health/list.html
+msgid "No manual overrides in this period."
+msgstr "Nicio suprascriere manuală în această perioadă."

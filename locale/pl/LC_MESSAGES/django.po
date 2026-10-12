@@ -4395,3 +4395,23 @@ msgstr "Została przejęta lub odblokowana przez kogoś innego. Twój ostatni sk
 
 msgid "OK, back to the camera"
 msgstr "OK, wróć do kamery"
+
+#: templates/manage/health/list.html
+msgid "selected period"
+msgstr "wybrany okres"
+
+#: templates/manage/health/list.html
+msgid "Most Overridden Products (selected period)"
+msgstr "Najczęściej ręcznie potwierdzane produkty (wybrany okres)"
+
+#: templates/manage/health/list.html
+msgid "Overrides by Picker (selected period)"
+msgstr "Ręczne potwierdzenia wg pickera (wybrany okres)"
+
+#: templates/manage/health/list.html
+msgid "Top Problem Codes (selected period)"
+msgstr "Najczęstsze problematyczne kody (wybrany okres)"
+
+#: templates/manage/health/list.html
+msgid "No manual overrides in this period."
+msgstr "Brak ręcznych potwierdzeń w wybranym okresie."

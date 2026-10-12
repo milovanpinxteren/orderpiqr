@@ -4405,3 +4405,23 @@ msgstr "De lijst is overgenomen of ontgrendeld door iemand anders. Je laatste sc
 
 msgid "OK, back to the camera"
 msgstr "OK, terug naar de camera"
+
+#: templates/manage/health/list.html
+msgid "selected period"
+msgstr "geselecteerde periode"
+
+#: templates/manage/health/list.html
+msgid "Most Overridden Products (selected period)"
+msgstr "Meest overreden producten (geselecteerde periode)"
+
+#: templates/manage/health/list.html
+msgid "Overrides by Picker (selected period)"
+msgstr "Overrides per picker (geselecteerde periode)"
+
+#: templates/manage/health/list.html
+msgid "Top Problem Codes (selected period)"
+msgstr "Meest voorkomende probleemcodes (geselecteerde periode)"
+
+#: templates/manage/health/list.html
+msgid "No manual overrides in this period."
+msgstr "Geen handmatige overrides in deze periode."

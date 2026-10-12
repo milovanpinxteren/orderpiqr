@@ -4391,3 +4391,23 @@ msgstr "It was taken over or unlocked by someone else. Your last scan was not sa
 
 msgid "OK, back to the camera"
 msgstr "OK, back to the camera"
+
+#: templates/manage/health/list.html
+msgid "selected period"
+msgstr "selected period"
+
+#: templates/manage/health/list.html
+msgid "Most Overridden Products (selected period)"
+msgstr "Most Overridden Products (selected period)"
+
+#: templates/manage/health/list.html
+msgid "Overrides by Picker (selected period)"
+msgstr "Overrides by Picker (selected period)"
+
+#: templates/manage/health/list.html
+msgid "Top Problem Codes (selected period)"
+msgstr "Top Problem Codes (selected period)"
+
+#: templates/manage/health/list.html
+msgid "No manual overrides in this period."
+msgstr "No manual overrides in this period."
