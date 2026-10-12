@@ -275,24 +275,43 @@ function showPicklistLostOverlay() {
     lostOverlay.classList.remove('hidden');
 }
 
-document.getElementById('picklist-lost-ok-btn')?.addEventListener('click', function () {
-    document.getElementById('picklist-lost-overlay').classList.add('hidden');
-    picklistLostShown = false;
-    // The list is dead server-side; clear it locally so the picker starts
-    // over by scanning a list QR instead of picking into the void.
-    currentPicklist.length = 0;
-    currentOrderID = null;
-    Object.keys(originalProductCounts).forEach(key => delete originalProductCounts[key]);
-    updateScannedList(currentPicklist, productData);
-    const codeDisplay = document.getElementById('picklist-code-display');
-    if (codeDisplay) codeDisplay.style.display = 'none';
-    isProcessingScan = false;
-    resumeScanner();
-});
+// Guarded against double-binding: if this module ever loads twice (as it
+// did when hashed and unhashed copies coexisted), a second handler would
+// clear the OTHER instance's live list when the overlay is dismissed.
+const picklistLostOkBtn = document.getElementById('picklist-lost-ok-btn');
+if (picklistLostOkBtn && !picklistLostOkBtn.dataset.bound) {
+    picklistLostOkBtn.dataset.bound = '1';
+    picklistLostOkBtn.addEventListener('click', function () {
+        document.getElementById('picklist-lost-overlay').classList.add('hidden');
+        picklistLostShown = false;
+        // The list is dead server-side; clear it locally so the picker starts
+        // over by scanning a list QR instead of picking into the void.
+        currentPicklist.length = 0;
+        currentOrderID = null;
+        Object.keys(originalProductCounts).forEach(key => delete originalProductCounts[key]);
+        updateScannedList(currentPicklist, productData);
+        const codeDisplay = document.getElementById('picklist-code-display');
+        if (codeDisplay) codeDisplay.style.display = 'none';
+        isProcessingScan = false;
+        resumeScanner();
+    });
+}
 
 // camera_page.js
 export function onSuccessfulPick(scannedCode, {manualOverride = false} = {}) {
     try {
+        if (!currentOrderID) {
+            // Without an active order the pick cannot be attributed; POSTing
+            // it anyway earns a 404 whose stop-the-line overlay then clears a
+            // list that never existed here. Refuse loudly instead.
+            console.error('onSuccessfulPick without an active order', scannedCode);
+            showNotification(gettext("No active picklist — scan the list QR first."), true);
+            reportScanEvent('sync_error', {
+                scannedCode,
+                message: 'pick attempted with no active order on this device'
+            });
+            return;
+        }
         const now = Date.now();
         const timeTakenMs = lastPickTs ? (now - lastPickTs) : null;
         lastPickTs = now;
@@ -357,6 +376,11 @@ function notifyProductPicked({orderID, productCode, timeTakenMs, manualOverride 
 
 
 export function notifyPicklistCompleted(orderID, csrfToken) {
+    if (!orderID) {
+        // Same contract as onSuccessfulPick: no order, nothing to complete.
+        console.error('notifyPicklistCompleted without an order id');
+        return;
+    }
     getDeviceFingerprint()
         .then(deviceFingerprint => {
             fetch('/orderpiqr/complete-picklist', {
@@ -521,6 +545,15 @@ function hideBulkPickOverlay() {
 function executeBulkPick(productCode, quantity, returnToScanner) {
     const ctx = bulkPickContext;
     if (!ctx) return;
+    if (!currentOrderID) {
+        // Same contract as onSuccessfulPick: unattributable picks are refused.
+        console.error('executeBulkPick without an active order', productCode);
+        showNotification(gettext("No active picklist — scan the list QR first."), true);
+        hideBulkPickOverlay();
+        isProcessingScan = false;
+        resumeScanner();
+        return;
+    }
 
     const now = Date.now();
     const timeTakenMs = lastPickTs ? (now - lastPickTs) : null;

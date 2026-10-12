@@ -626,3 +626,11 @@ msgstr "That is not a product barcode."
 
 msgid "This list is no longer assigned to you. Scan the list QR again."
 msgstr "This list is no longer assigned to you. Scan the list QR again."
+
+#: orderpiqrApp/static/orderpiqrApp/js
+msgid "No active picklist — scan the list QR first."
+msgstr "No active picklist — scan the list QR first."
+
+#: orderpiqrApp/static/orderpiqrApp/js
+msgid "Kept %(count)s already-picked item(s) from the previous attempt."
+msgstr "Kept %(count)s already-picked item(s) from the previous attempt."

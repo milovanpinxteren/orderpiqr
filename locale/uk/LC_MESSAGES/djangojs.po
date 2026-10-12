@@ -718,3 +718,11 @@ msgstr "Це не штрих-код товару."
 
 msgid "This list is no longer assigned to you. Scan the list QR again."
 msgstr "Цей список більше не призначено вам. Відскануйте QR-код списку ще раз."
+
+#: orderpiqrApp/static/orderpiqrApp/js
+msgid "No active picklist — scan the list QR first."
+msgstr "Немає активного списку — спочатку відскануйте QR-код списку."
+
+#: orderpiqrApp/static/orderpiqrApp/js
+msgid "Kept %(count)s already-picked item(s) from the previous attempt."
+msgstr "Збережено %(count)s уже зібраних позицій із попередньої спроби."

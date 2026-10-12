@@ -735,3 +735,11 @@ msgstr "Das ist kein Produkt-Barcode."
 
 msgid "This list is no longer assigned to you. Scan the list QR again."
 msgstr "Diese Liste ist dir nicht mehr zugewiesen. Scanne den Listen-QR erneut."
+
+#: orderpiqrApp/static/orderpiqrApp/js
+msgid "No active picklist — scan the list QR first."
+msgstr "Keine aktive Pickliste — zuerst den Listen-QR scannen."
+
+#: orderpiqrApp/static/orderpiqrApp/js
+msgid "Kept %(count)s already-picked item(s) from the previous attempt."
+msgstr "%(count)s bereits gepickte(s) Teil(e) aus dem vorherigen Versuch übernommen."

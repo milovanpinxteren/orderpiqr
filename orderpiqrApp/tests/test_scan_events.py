@@ -152,6 +152,27 @@ class ProductPickCaptureTests(ScanEndpointTestCase):
         pp = ProductPick.objects.get(product=self.smoothie)
         self.assertTrue(pp.successful)
 
+    def test_override_on_dead_picklist_still_logs_manual_override(self):
+        # An override is the picker saying "scanning does not work here";
+        # that signal must be recorded even when the pick itself cannot be.
+        # Regression: the log line sat behind the picklist 404, so a client
+        # bug that POSTed overrides without an order id erased two weeks of
+        # override telemetry (2026-10-09..11).
+        response = self.pick(order_id='ORD-NEVER-SCANNED', manualOverride=True)
+
+        self.assertEqual(response.status_code, 404)
+        event = ScanEvent.objects.get(event_type='manual_override')
+        self.assertEqual(event.scanned_code, 'SMOOTHIE-1')
+        self.assertEqual(event.picklist_code, 'ORD-NEVER-SCANNED')
+        # The lost pick itself still surfaces as a sync_error.
+        self.assertTrue(ScanEvent.objects.filter(event_type='sync_error').exists())
+
+    def test_successful_override_logs_exactly_one_event(self):
+        self.scan(['SMOOTHIE-1'])
+        self.pick(manualOverride=True)
+        self.assertEqual(
+            ScanEvent.objects.filter(event_type='manual_override').count(), 1)
+
     def test_pick_without_picklist_logs_sync_error(self):
         response = self.pick(order_id='ORD-NEVER-SCANNED')
 

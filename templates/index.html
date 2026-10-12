@@ -327,16 +327,23 @@
     });
 </script>
 
-<!-- Ensure the script is loaded here -->
-<script src="{% static 'orderpiqrApp/js/qrScanner.js' %}" type="module"></script>
-<script src="{% static 'orderpiqrApp/js/notifications.js' %}" type="module"></script>
-<script src="{% static 'orderpiqrApp/js/orderImportance.js' %}" type="module"></script>
-<script src="{% static 'orderpiqrApp/js/picklistHandler.js' %}" type="module"></script>
-<script src="{% static 'orderpiqrApp/js/domUpdater.js' %}" type="module"></script>
-<script src="{% static 'orderpiqrApp/js/scanEventReporter.js' %}" type="module"></script>
-<script src="{% static 'orderpiqrApp/js/manualOverride.js' %}" type="module"></script>
+<!-- The ES-module graph is loaded UNHASHED on purpose. Manifest static
+     storage hashes these tag URLs but NOT the relative import specifiers
+     inside the modules, so hashed tags load a second shadow copy of every
+     module next to the one the imports resolve to — the shadow camera_page
+     has an empty picklist, which silently lost every manual override and
+     wiped lists via false stop-the-line overlays (pick day 2026-10-11).
+     Unhashed URLs keep the graph single-instance; deploys still propagate
+     via the short max-age plus the build_id self-update. -->
+<script src="{% get_static_prefix %}orderpiqrApp/js/qrScanner.js" type="module"></script>
+<script src="{% get_static_prefix %}orderpiqrApp/js/notifications.js" type="module"></script>
+<script src="{% get_static_prefix %}orderpiqrApp/js/orderImportance.js" type="module"></script>
+<script src="{% get_static_prefix %}orderpiqrApp/js/picklistHandler.js" type="module"></script>
+<script src="{% get_static_prefix %}orderpiqrApp/js/domUpdater.js" type="module"></script>
+<script src="{% get_static_prefix %}orderpiqrApp/js/scanEventReporter.js" type="module"></script>
+<script src="{% get_static_prefix %}orderpiqrApp/js/manualOverride.js" type="module"></script>
 <script src="{% static 'orderpiqrApp/js/installPrompt.js' %}"></script>
-<script src="{% static 'orderpiqrApp/js/camera_page.js' %}" type="module"></script>
+<script src="{% get_static_prefix %}orderpiqrApp/js/camera_page.js" type="module"></script>
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </body>
 </html>

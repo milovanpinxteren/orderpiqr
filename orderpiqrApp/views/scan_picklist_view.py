@@ -1,3 +1,4 @@
+from collections import Counter
 from datetime import timedelta
 
 from django.db import IntegrityError, transaction
@@ -207,7 +208,15 @@ def scan_picklist(request):
                 pick_list.notes = (pick_list.notes or "") + "\n" + new_note
                 pick_list.save()
 
-                ProductPick.objects.filter(picklist=pick_list).delete()
+                # A restart must not erase recorded work: deleting everything
+                # here turned every accidental or panic re-scan (e.g. after a
+                # stop-the-line overlay) into a wiped list. Pending rows are
+                # rebuilt below; successful rows survive and count against the
+                # re-scanned list's quantities.
+                ProductPick.objects.filter(picklist=pick_list).exclude(successful=True).delete()
+                preserved = Counter(
+                    ProductPick.objects.filter(picklist=pick_list, successful=True)
+                    .values_list('product_id', flat=True))
                 created = False
 
             except PickList.DoesNotExist:
@@ -219,9 +228,11 @@ def scan_picklist(request):
                     pick_started=True,
                     order=order  # Link to order if it exists
                 )
+                preserved = Counter()
                 created = True
 
             # Original product handling
+            already_picked = {}
             for product_code in picklist:
                 product = resolve_product(device.customer, product_code)
                 if not product:
@@ -229,6 +240,12 @@ def scan_picklist(request):
                     # transaction, so the order lock and half-built picklist
                     # don't survive a list we refused.
                     raise Product.DoesNotExist(product_code)
+                if preserved[product.pk] > 0:
+                    # This unit was already picked before the restart; tell
+                    # the client so it drops it from the list on screen.
+                    preserved[product.pk] -= 1
+                    already_picked[product.code] = already_picked.get(product.code, 0) + 1
+                    continue
                 ProductPick.objects.create(
                     product=product,
                     picklist=pick_list,
@@ -258,7 +275,9 @@ def scan_picklist(request):
         'message': 'Picklist processed successfully',
         'created': created,
         'picklist_id': pick_list.picklist_id,
-        'product_count': len(picklist)
+        'product_count': len(picklist),
+        # Units kept from before a restart, keyed by primary product code.
+        'already_picked': already_picked,
     })
 
 
@@ -279,6 +298,15 @@ def product_pick(request):
         return JsonResponse({"status": "error", "message": "Device not found with given fingerprint"}, status=404)
     # Update last_login on activity
     Device.objects.filter(pk=device.pk).update(last_login=timezone.now())
+
+    if manual_override:
+        # Logged before any lookup can fail: an override is a picker telling
+        # us scanning didn't work, and that signal must survive even when the
+        # pick itself cannot be recorded (every override was silently lost
+        # for two weeks because this log sat behind the picklist 404).
+        log_scan_event(device.customer, device, 'manual_override',
+                       scanned_code=product_code, picklist_code=order_id,
+                       message="Pick confirmed manually instead of by scan")
 
     picklist = (PickList.objects.filter(picklist_code=order_id, customer=device.customer, device=device)
                 .select_related("customer", "device")
@@ -321,11 +349,6 @@ def product_pick(request):
     pp.notes = f"{pp.notes}\n{stamp}" if pp.notes else stamp
 
     pp.save(update_fields=["successful", "time_taken", "notes"])
-
-    if manual_override:
-        log_scan_event(device.customer, device, 'manual_override',
-                       scanned_code=product_code, picklist_code=order_id,
-                       message="Pick confirmed manually instead of by scan")
 
     remaining_for_product = qs.filter(successful__isnull=True).count()
 

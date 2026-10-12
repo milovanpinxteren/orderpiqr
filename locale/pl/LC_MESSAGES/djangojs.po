@@ -719,3 +719,11 @@ msgstr "To nie jest kod kreskowy produktu."
 
 msgid "This list is no longer assigned to you. Scan the list QR again."
 msgstr "Ta lista nie jest już do ciebie przypisana. Zeskanuj ponownie kod QR listy."
+
+#: orderpiqrApp/static/orderpiqrApp/js
+msgid "No active picklist — scan the list QR first."
+msgstr "Brak aktywnej listy — najpierw zeskanuj kod QR listy."
+
+#: orderpiqrApp/static/orderpiqrApp/js
+msgid "Kept %(count)s already-picked item(s) from the previous attempt."
+msgstr "Zachowano %(count)s wcześniej skompletowanych pozycji z poprzedniej próby."

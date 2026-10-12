@@ -715,3 +715,11 @@ msgstr "Acesta nu este un cod de bare de produs."
 
 msgid "This list is no longer assigned to you. Scan the list QR again."
 msgstr "Această listă nu îți mai este atribuită. Scanează din nou codul QR al listei."
+
+#: orderpiqrApp/static/orderpiqrApp/js
+msgid "No active picklist — scan the list QR first."
+msgstr "Nicio listă de picking activă — scanați mai întâi codul QR al listei."
+
+#: orderpiqrApp/static/orderpiqrApp/js
+msgid "Kept %(count)s already-picked item(s) from the previous attempt."
+msgstr "S-au păstrat %(count)s articole deja culese din încercarea anterioară."

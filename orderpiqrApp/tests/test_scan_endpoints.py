@@ -99,6 +99,32 @@ class ScanPicklistTests(ScanEndpointTestCase):
         picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
         self.assertEqual(ProductPick.objects.filter(picklist=picklist).count(), 1)
 
+    def test_restart_preserves_recorded_picks(self):
+        # A restart (same device re-scans its list, e.g. after the app
+        # reloaded or a stop-the-line overlay) must not erase recorded work:
+        # successful rows survive, only pending rows are rebuilt, and the
+        # client is told what was kept so it can shorten the list on screen.
+        self.scan(['SMOOTHIE-1', 'SMOOTHIE-1', 'SALAD-1'])
+        self.client.post('/orderpiqr/product-pick', data=json.dumps({
+            'orderID': 'ORD-1', 'productCode': 'SMOOTHIE-1',
+            'deviceFingerprint': FINGERPRINT, 'timeTakenMs': 500,
+        }), content_type='application/json')
+
+        response = self.scan(['SMOOTHIE-1', 'SMOOTHIE-1', 'SALAD-1'])
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['already_picked'], {'SMOOTHIE-1': 1})
+        picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
+        picks = ProductPick.objects.filter(picklist=picklist)
+        self.assertEqual(picks.count(), 3)
+        self.assertEqual(picks.filter(successful=True).count(), 1)
+        self.assertEqual(picks.filter(successful__isnull=True).count(), 2)
+
+    def test_restart_without_recorded_picks_keeps_nothing(self):
+        self.scan(['SMOOTHIE-1'])
+        response = self.scan(['SMOOTHIE-1'])
+        self.assertEqual(response.json()['already_picked'], {})
+
     def test_scan_of_order_held_by_other_device_is_rejected(self):
         order = Order.objects.create(
             customer=self.customer, order_code='ORD-1', status='queued', queue_position=1)

@@ -197,6 +197,28 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
                     })
                         .then(response => response.json().then(data => ({ok: response.ok, data})))
                         .then(({ok, data}) => {
+                            if (ok && data.status === 'ok' && data.already_picked) {
+                                // Restart of a list with recorded work: the
+                                // server kept those picks, so drop them from
+                                // the fresh list instead of making the picker
+                                // redo (and double-record) them.
+                                let kept = 0;
+                                for (const [code, n] of Object.entries(data.already_picked)) {
+                                    for (let i = 0; i < n; i++) {
+                                        const idx = currentPicklist.indexOf(code);
+                                        if (idx === -1) break;
+                                        currentPicklist.splice(idx, 1);
+                                        kept++;
+                                    }
+                                }
+                                if (kept > 0) {
+                                    updateScannedList(currentPicklist, productData);
+                                    showNotification(
+                                        gettext("Kept %(count)s already-picked item(s) from the previous attempt.")
+                                            .replace("%(count)s", kept)
+                                    );
+                                }
+                            }
                             if (!ok || data.status !== 'ok') {
                                 // The server refused the list (unknown product,
                                 // order picked elsewhere, ...). Clear it locally:
