@@ -185,3 +185,103 @@ class UpsertAliasTests(ProductBarcodeAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['products_created'], 1)
         self.assertTrue(Product.objects.filter(customer=self.customer, code='BRAND-NEW').exists())
+
+    def test_line_barcodes_are_set_on_a_newly_created_product(self):
+        """A product first seen on an order line is immediately scannable by the
+        older EAN still on stock — without waiting for a catalog push."""
+        response = self.post({
+            'orders': [{
+                'order_code': 'AMS01-20260927',
+                'lines': [{'code': NEW_EAN, 'quantity': 2, 'barcodes': [OLD_EAN]}],
+            }],
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['products_created'], 1)
+        self.assertEqual(response.data['barcode_conflicts'], [])
+        product = Product.objects.get(customer=self.customer, code=NEW_EAN)
+        self.assertEqual(list(product.barcodes.values_list('code', flat=True)), [OLD_EAN])
+
+    def test_line_barcodes_are_added_to_an_existing_product(self):
+        product = Product.objects.create(
+            customer=self.customer, code=NEW_EAN, description='Broodje')
+
+        response = self.post({
+            'orders': [{
+                'order_code': 'AMS01-20260927',
+                'lines': [{'code': NEW_EAN, 'quantity': 2, 'barcodes': [OLD_EAN]}],
+            }],
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['products_updated'], 1)
+        self.assertEqual(list(product.barcodes.values_list('code', flat=True)), [OLD_EAN])
+
+    def test_line_barcodes_never_remove_an_alias_orderpiqr_already_knows(self):
+        """The sender knows what is in circulation, not what this warehouse
+        retired — so a missing alias is not a removal instruction."""
+        product = Product.objects.create(
+            customer=self.customer, code=NEW_EAN, description='Broodje')
+        ProductBarcode.objects.create(product=product, code=OLD_EAN)
+
+        response = self.post({
+            'orders': [{
+                'order_code': 'AMS01-20260927',
+                'lines': [{'code': NEW_EAN, 'quantity': 2, 'barcodes': []}],
+            }],
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(list(product.barcodes.values_list('code', flat=True)), [OLD_EAN])
+
+    def test_repeated_push_of_the_same_barcodes_is_not_an_update(self):
+        product = Product.objects.create(
+            customer=self.customer, code=NEW_EAN, description='Broodje', location='16')
+        ProductBarcode.objects.create(product=product, code=OLD_EAN)
+
+        response = self.post({
+            'orders': [{
+                'order_code': 'AMS01-20260927',
+                'lines': [{'code': NEW_EAN, 'quantity': 2, 'description': 'Broodje',
+                           'location': '16', 'barcodes': [OLD_EAN]}],
+            }],
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['products_updated'], 0)
+        self.assertEqual(product.barcodes.count(), 1)
+
+    def test_barcode_owned_by_another_product_is_reported_not_stolen(self):
+        product = Product.objects.create(
+            customer=self.customer, code=NEW_EAN, description='Broodje')
+        squatter = Product.objects.create(
+            customer=self.customer, code='SKU-9', description='Wrap')
+        ProductBarcode.objects.create(product=squatter, code=OLD_EAN)
+
+        response = self.post({
+            'orders': [{
+                'order_code': 'AMS01-20260927',
+                'lines': [{'code': NEW_EAN, 'quantity': 2, 'barcodes': [OLD_EAN]}],
+            }],
+        })
+
+        # The order itself must still reach the pickers
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['created'], ['AMS01-20260927'])
+        self.assertEqual(response.data['barcode_conflicts'], [
+            {'code': OLD_EAN, 'product_code': NEW_EAN, 'owned_by': 'SKU-9'},
+        ])
+        self.assertEqual(product.barcodes.count(), 0)
+        self.assertEqual(list(squatter.barcodes.values_list('code', flat=True)), [OLD_EAN])
+
+    def test_a_barcode_equal_to_the_primary_code_is_dropped(self):
+        response = self.post({
+            'orders': [{
+                'order_code': 'AMS01-20260927',
+                'lines': [{'code': NEW_EAN, 'quantity': 1, 'barcodes': [NEW_EAN]}],
+            }],
+        })
+
+        self.assertEqual(response.status_code, 200)
+        product = Product.objects.get(customer=self.customer, code=NEW_EAN)
+        self.assertEqual(product.barcodes.count(), 0)

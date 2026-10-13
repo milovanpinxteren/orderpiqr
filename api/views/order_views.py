@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from api.serializers import OrderSerializer, OrderDetailSerializer, OrderCreateSerializer
 from orderpiqrApp.models import Order, OrderLine, Product
-from orderpiqrApp.utils.products import resolve_product
+from orderpiqrApp.utils.products import add_alias_codes, resolve_product
 from rest_framework import filters
 from django.db import DatabaseError, transaction
 from django.db.models import Count, Max, Sum
@@ -13,11 +13,27 @@ from datetime import timedelta
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiExample, OpenApiResponse, OpenApiParameter
 
 
+def _line_barcodes(customer, product, line, counters):
+    """Add the line's ``barcodes`` as aliases of the product. Returns the number
+    added. Codes another product already owns are skipped and reported in the
+    response, since nothing here can tell which product should keep them."""
+    added, conflicts = add_alias_codes(customer, product, line.get('barcodes') or [])
+    counters['barcode_conflicts'].extend([
+        {'code': code, 'product_code': product.code, 'owned_by': owner_code}
+        for code, owner_code in conflicts
+    ])
+    return added
+
+
 def _upsert_product(customer, line, counters):
     """Resolve a product by code (primary or barcode alias), creating or
     updating it from inline line data. A code that matches an alias resolves to
     the existing product instead of spawning a duplicate — this is what keeps
-    supplier EAN rotations from splitting a product in two."""
+    supplier EAN rotations from splitting a product in two.
+
+    ``barcodes`` on the line are added as aliases, never removed: the sender
+    knows which codes are in circulation today, not which ones this warehouse
+    has decided to retire. Retire those here."""
     code = str(line.get('code') or '').strip()
     if not code:
         raise ValueError('Order line is missing a product code')
@@ -35,6 +51,7 @@ def _upsert_product(customer, line, counters):
             active=True,
         )
         counters['products_created'] += 1
+        _line_barcodes(customer, product, line, counters)
         return product
 
     update_fields = []
@@ -46,6 +63,7 @@ def _upsert_product(customer, line, counters):
         update_fields.append('location')
     if update_fields:
         product.save(update_fields=update_fields)
+    if _line_barcodes(customer, product, line, counters) or update_fields:
         counters['products_updated'] += 1
     return product
 
@@ -501,6 +519,12 @@ class OrderViewSet(viewsets.ModelViewSet):
         create a product on the fly; known products get their `description`/`location`
         updated when those fields are provided and differ.
 
+        A line may carry `barcodes`: the other codes currently in physical circulation for
+        that product (a rotated supplier EAN still on older stock). They are added as
+        scannable aliases and never removed — retire an alias in OrderPiqr itself. A code
+        another product already owns is left where it is and reported under
+        `barcode_conflicts`.
+
         `status` per order may be `draft` (default, not pickable yet) or `queued` (released
         for picking). `queue_position` is honoured when given, otherwise appended to the queue.
 
@@ -533,7 +557,12 @@ class OrderViewSet(viewsets.ModelViewSet):
                                             "code": {"type": "string"},
                                             "quantity": {"type": "integer"},
                                             "description": {"type": "string"},
-                                            "location": {"type": "string"}
+                                            "location": {"type": "string"},
+                                            "barcodes": {
+                                                "type": "array",
+                                                "items": {"type": "string"},
+                                                "description": "Alias codes also in circulation for this product; added, never removed."
+                                            }
                                         },
                                         "required": ["code", "quantity"]
                                     }
@@ -565,6 +594,7 @@ class OrderViewSet(viewsets.ModelViewSet):
                             "cancelled": ["EIN04-20260915"],
                             "products_created": 2,
                             "products_updated": 5,
+                            "barcode_conflicts": [],
                             "errors": []
                         }
                     )
@@ -593,7 +623,7 @@ class OrderViewSet(viewsets.ModelViewSet):
             'skipped': [],
             'cancelled': [],
         }
-        counters = {'products_created': 0, 'products_updated': 0}
+        counters = {'products_created': 0, 'products_updated': 0, 'barcode_conflicts': []}
         errors = []
         payload_codes = set()
 

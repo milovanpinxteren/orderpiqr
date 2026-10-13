@@ -88,6 +88,38 @@ def set_primary_code(product, new_code):
             product=product, customer=product.customer, code=old_code)
 
 
+def add_alias_codes(customer, product, codes):
+    """Add ``codes`` as aliases of ``product``, keeping every alias it already
+    has — the additive counterpart of ``set_alias_codes``, for syncs that know
+    the codes currently in circulation but not which ones were retired.
+
+    The primary code and duplicates are dropped. A code already owned by another
+    product of the same customer is skipped rather than stolen: moving it would
+    send a picker scanning it to the wrong product. Returns
+    ``(added_count, [(code, owner_code), ...])``.
+    """
+    wanted = {str(c).strip() for c in codes if str(c).strip()}
+    wanted.discard(product.code)
+    if not wanted:
+        return 0, []
+
+    with transaction.atomic():
+        existing = set(product.barcodes.values_list('code', flat=True))
+        conflicts = []
+        addable = []
+        for code in sorted(wanted - existing):
+            owner = _resolve_exact(customer, code)
+            if owner is not None and owner.pk != product.pk:
+                conflicts.append((code, owner.code))
+                continue
+            addable.append(code)
+        ProductBarcode.objects.bulk_create([
+            ProductBarcode(product=product, customer=customer, code=code)
+            for code in addable
+        ])
+    return len(addable), conflicts
+
+
 def set_alias_codes(product, codes):
     """Bring the product's alias set to exactly ``codes`` (desired state).
     The primary code is silently dropped from the list. Callers validate
