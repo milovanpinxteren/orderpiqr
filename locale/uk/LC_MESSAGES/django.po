@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 13:15+0200\n"
+"POT-Creation-Date: 2026-10-14 14:30+0200\n"
 "PO-Revision-Date: 2026-09-23 11:00+0200\n"
 "Last-Translator: Milo van Pinxteren <milo@example.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -128,7 +128,7 @@ msgstr "Доставка"
 
 #: .\orderpiqrApp\admin\email_admin.py:49
 #: .\orderpiqrApp\models\scan_events.py:67
-#: .\templates\manage\health\list.html:456
+#: .\templates\manage\health\list.html:422
 msgid "Message"
 msgstr "Повідомлення"
 
@@ -137,7 +137,6 @@ msgstr "Повідомлення"
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:51 .\orderpiqrApp\models\products.py:22
 #: .\orderpiqrApp\models\products.py:57 .\templates\index.html:181
-#: .\templates\manage\health\list.html:296
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -170,9 +169,9 @@ msgstr "Користувач"
 #: .\orderpiqrApp\models\scan_events.py:57
 #: .\templates\manage\dashboard.html:277
 #: .\templates\manage\devices\list.html:47
-#: .\templates\manage\health\list.html:195
-#: .\templates\manage\health\list.html:342
-#: .\templates\manage\health\list.html:455
+#: .\templates\manage\health\list.html:161
+#: .\templates\manage\health\list.html:269
+#: .\templates\manage\health\list.html:421
 #: .\templates\manage\picklists\detail.html:64
 #: .\templates\manage\picklists\list.html:33
 msgid "Device"
@@ -400,7 +399,7 @@ msgstr "Встановлений застосунок"
 
 #: .\orderpiqrApp\models\devices.py:43 .\templates\manage\devices\list.html:20
 #: .\templates\manage\devices\list.html:84
-#: .\templates\manage\health\list.html:224
+#: .\templates\manage\health\list.html:190
 msgid "Browser tab"
 msgstr "Вкладка браузера"
 
@@ -499,8 +498,8 @@ msgstr "Тип зміни"
 #: .\orderpiqrApp\models\inventory.py:55
 #: .\orderpiqrApp\models\scan_events.py:64
 #: .\templates\inventory\picker.html:128
-#: .\templates\manage\health\list.html:262
-#: .\templates\manage\health\list.html:452
+#: .\templates\manage\health\list.html:228
+#: .\templates\manage\health\list.html:418
 #: .\templates\manage\inventory\add_correction.html:55
 #: .\templates\manage\inventory\logs.html:79
 #: .\templates\manage\products\form.html:130
@@ -685,7 +684,7 @@ msgstr ""
 
 #: .\orderpiqrApp\models\orders.py:48 .\orderpiqrApp\models\orders.py:63
 #: .\templates\manage\dashboard.html:221
-#: .\templates\manage\health\list.html:341
+#: .\templates\manage\health\list.html:268
 #: .\templates\manage\picklists\detail.html:9
 #: .\templates\manage\picklists\list.html:32 .\templates\shopify\app.html:208
 msgid "Order"
@@ -854,8 +853,8 @@ msgstr "Додатковий опис або вказівки щодо цьог�
 
 #: .\orderpiqrApp\models\preferences.py:27
 #: .\templates\manage\dashboard.html:275
-#: .\templates\manage\health\list.html:261
-#: .\templates\manage\health\list.html:451
+#: .\templates\manage\health\list.html:227
+#: .\templates\manage\health\list.html:417
 #: .\templates\manage\settings\api_tokens.html:52
 msgid "Type"
 msgstr "Тип"
@@ -1024,7 +1023,7 @@ msgid "Severity"
 msgstr "Рівень"
 
 #: .\orderpiqrApp\models\scan_events.py:65
-#: .\templates\manage\health\list.html:453
+#: .\templates\manage\health\list.html:419
 msgid "Scanned Code"
 msgstr "Відсканований код"
 
@@ -1072,7 +1071,7 @@ msgstr "Автоматично списано за замовленням %(orde
 
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 #: .\templates\manage\dashboard.html:276
-#: .\templates\manage\health\list.html:415
+#: .\templates\manage\health\list.html:345
 #: .\templates\manage\products\list.html:96
 msgid "Code"
 msgstr "Код"
@@ -1249,7 +1248,7 @@ msgstr "Товар '{code}' успішно оновлено."
 #: .\orderpiqrApp\views\manage_views.py:465
 #: .\orderpiqrApp\views\manage_views.py:729
 #: .\orderpiqrApp\views\manage_views.py:958
-#: .\orderpiqrApp\views\manage_views.py:1903
+#: .\orderpiqrApp\views\manage_views.py:1899
 msgid "No customer found."
 msgstr "Клієнта не знайдено."
 
@@ -1263,14 +1262,14 @@ msgstr "Товар '{code}' видалено."
 #: .\orderpiqrApp\views\manage_views.py:461
 #: .\orderpiqrApp\views\manage_views.py:725
 #: .\orderpiqrApp\views\manage_views.py:967
-#: .\orderpiqrApp\views\manage_views.py:1899
+#: .\orderpiqrApp\views\manage_views.py:1895
 msgid "Invalid request method."
 msgstr "Недійсний метод запиту."
 
 #: .\orderpiqrApp\views\manage_views.py:394
 #: .\orderpiqrApp\views\manage_views.py:472
 #: .\orderpiqrApp\views\manage_views.py:734
-#: .\orderpiqrApp\views\manage_views.py:1912
+#: .\orderpiqrApp\views\manage_views.py:1908
 msgid "Invalid request."
 msgstr "Недійсний запит."
 
@@ -1323,7 +1322,9 @@ msgstr "Виберіть щонайменше один інший товар д�
 msgid ""
 "{count} product(s) merged into '{code}'. Their codes remain scannable as "
 "barcodes."
-msgstr "{count} товар(ів) об'єднано в '{code}'. Їхні коди залишаються скануваними як штрихкоди."
+msgstr ""
+"{count} товар(ів) об'єднано в '{code}'. Їхні коди залишаються скануваними як "
+"штрихкоди."
 
 #: .\orderpiqrApp\views\manage_views.py:454
 #: .\orderpiqrApp\views\manage_views.py:815
@@ -1335,9 +1336,9 @@ msgid "Invalid field."
 msgstr "Недійсне поле."
 
 #: .\orderpiqrApp\views\manage_views.py:484
-#: .\orderpiqrApp\views\manage_views.py:1906
-#: .\orderpiqrApp\views\manage_views.py:1961
-#: .\orderpiqrApp\views\manage_views.py:2027
+#: .\orderpiqrApp\views\manage_views.py:1902
+#: .\orderpiqrApp\views\manage_views.py:1957
+#: .\orderpiqrApp\views\manage_views.py:2023
 msgid "Inventory management is not enabled."
 msgstr "Керування запасами не увімкнено."
 
@@ -1346,7 +1347,7 @@ msgid "Quantity cannot be negative."
 msgstr "Кількість не може бути від’ємною."
 
 #: .\orderpiqrApp\views\manage_views.py:490
-#: .\orderpiqrApp\views\manage_views.py:2060
+#: .\orderpiqrApp\views\manage_views.py:2056
 msgid "Invalid quantity value."
 msgstr "Недійсне значення кількості."
 
@@ -1364,7 +1365,8 @@ msgstr "Це поле не може бути порожнім."
 
 #: .\orderpiqrApp\views\manage_views.py:518
 msgid "Updated. The previous code remains scannable as an extra barcode."
-msgstr "Оновлено. Попередній код залишається скануваним як додатковий штрихкод."
+msgstr ""
+"Оновлено. Попередній код залишається скануваним як додатковий штрихкод."
 
 #: .\orderpiqrApp\views\manage_views.py:519
 #: .\orderpiqrApp\views\manage_views.py:525
@@ -1544,68 +1546,68 @@ msgstr "останні 30 днів"
 msgid "last 24 hours"
 msgstr "останні 24 години"
 
-#: .\orderpiqrApp\views\manage_views.py:1311
+#: .\orderpiqrApp\views\manage_views.py:1278
 msgid "Unknown device"
 msgstr "Невідомий пристрій"
 
-#: .\orderpiqrApp\views\manage_views.py:1634
+#: .\orderpiqrApp\views\manage_views.py:1630
 msgid "First name is required."
 msgstr "Ім’я обов’язкове."
 
-#: .\orderpiqrApp\views\manage_views.py:1636
+#: .\orderpiqrApp\views\manage_views.py:1632
 msgid "Email is required."
 msgstr "Email обов’язковий."
 
-#: .\orderpiqrApp\views\manage_views.py:1646
+#: .\orderpiqrApp\views\manage_views.py:1642
 msgid "Profile updated successfully."
 msgstr "Профіль успішно оновлено."
 
-#: .\orderpiqrApp\views\manage_views.py:1655
+#: .\orderpiqrApp\views\manage_views.py:1651
 msgid "Current password is incorrect."
 msgstr "Поточний пароль неправильний."
 
-#: .\orderpiqrApp\views\manage_views.py:1657
+#: .\orderpiqrApp\views\manage_views.py:1653
 msgid "New password must be at least 8 characters."
 msgstr "Новий пароль має містити щонайменше 8 символів."
 
-#: .\orderpiqrApp\views\manage_views.py:1659
+#: .\orderpiqrApp\views\manage_views.py:1655
 msgid "New passwords do not match."
 msgstr "Нові паролі не збігаються."
 
-#: .\orderpiqrApp\views\manage_views.py:1668
+#: .\orderpiqrApp\views\manage_views.py:1664
 msgid "Password changed successfully."
 msgstr "Пароль успішно змінено."
 
-#: .\orderpiqrApp\views\manage_views.py:1675
-#: .\orderpiqrApp\views\manage_views.py:1710
-#: .\orderpiqrApp\views\manage_views.py:1732
+#: .\orderpiqrApp\views\manage_views.py:1671
+#: .\orderpiqrApp\views\manage_views.py:1706
+#: .\orderpiqrApp\views\manage_views.py:1728
 msgid "Picker account not found."
 msgstr "Обліковий запис комплектувальника не знайдено."
 
-#: .\orderpiqrApp\views\manage_views.py:1677
-#: .\orderpiqrApp\views\manage_views.py:1695
+#: .\orderpiqrApp\views\manage_views.py:1673
+#: .\orderpiqrApp\views\manage_views.py:1691
 msgid "Password must be at least 8 characters."
 msgstr "Пароль має містити щонайменше 8 символів."
 
-#: .\orderpiqrApp\views\manage_views.py:1682
+#: .\orderpiqrApp\views\manage_views.py:1678
 #, python-brace-format
 msgid "Password for picker account '{username}' updated."
 msgstr "Пароль для облікового запису комплектувальника '{username}' оновлено."
 
-#: .\orderpiqrApp\views\manage_views.py:1691
+#: .\orderpiqrApp\views\manage_views.py:1687
 msgid "Username is required."
 msgstr "Ім’я користувача обов’язкове."
 
-#: .\orderpiqrApp\views\manage_views.py:1693
+#: .\orderpiqrApp\views\manage_views.py:1689
 msgid "This username is already taken."
 msgstr "Це ім’я користувача вже зайняте."
 
-#: .\orderpiqrApp\views\manage_views.py:1702
+#: .\orderpiqrApp\views\manage_views.py:1698
 #, python-brace-format
 msgid "Picker account '{username}' created."
 msgstr "Обліковий запис комплектувальника '{username}' створено."
 
-#: .\orderpiqrApp\views\manage_views.py:1725
+#: .\orderpiqrApp\views\manage_views.py:1721
 #, python-brace-format
 msgid ""
 "Login QR created for '{username}'. Print it now – it cannot be shown again."
@@ -1613,42 +1615,42 @@ msgstr ""
 "QR-код входу для '{username}' створено. Роздрукуйте його зараз — він більше "
 "не відображатиметься."
 
-#: .\orderpiqrApp\views\manage_views.py:1738
+#: .\orderpiqrApp\views\manage_views.py:1734
 #, python-brace-format
 msgid "Login QR for '{username}' revoked. Printed copies no longer work."
 msgstr ""
 "QR-код входу для '{username}' відкликано. Роздруковані копії більше не діють."
 
-#: .\orderpiqrApp\views\manage_views.py:1822
+#: .\orderpiqrApp\views\manage_views.py:1818
 msgid "Settings saved successfully."
 msgstr "Налаштування успішно збережено."
 
-#: .\orderpiqrApp\views\manage_views.py:1842
+#: .\orderpiqrApp\views\manage_views.py:1838
 msgid "Inventory management is not enabled for your account."
 msgstr "Керування запасами не увімкнено для вашого облікового запису."
 
-#: .\orderpiqrApp\views\manage_views.py:1915
+#: .\orderpiqrApp\views\manage_views.py:1911
 msgid "No logs selected."
 msgstr "Не вибрано жодного запису журналу."
 
-#: .\orderpiqrApp\views\manage_views.py:1925
+#: .\orderpiqrApp\views\manage_views.py:1921
 msgid "No valid logs found."
 msgstr "Дійсних записів журналу не знайдено."
 
-#: .\orderpiqrApp\views\manage_views.py:1948
+#: .\orderpiqrApp\views\manage_views.py:1944
 #, python-format
 msgid "%(count)d log(s) deleted and inventory reverted."
 msgstr "Видалено записів журналу: %(count)d, запаси відновлено."
 
-#: .\orderpiqrApp\views\manage_views.py:2054
+#: .\orderpiqrApp\views\manage_views.py:2050
 msgid "Inventory correction added successfully."
 msgstr "Коригування запасів успішно додано."
 
-#: .\orderpiqrApp\views\manage_views.py:2058
+#: .\orderpiqrApp\views\manage_views.py:2054
 msgid "Product not found."
 msgstr "Товар не знайдено."
 
-#: .\orderpiqrApp\views\manage_views.py:2073
+#: .\orderpiqrApp\views\manage_views.py:2069
 msgid "You have been logged out successfully."
 msgstr "Ви успішно вийшли з системи."
 
@@ -1994,8 +1996,8 @@ msgstr "Зупинити камеру"
 msgid "Enable camera"
 msgstr "Увімкнути камеру"
 
-#: .\templates\index.html:168 .\templates\manage\health\list.html:340
-#: .\templates\manage\health\list.html:454
+#: .\templates\index.html:168 .\templates\manage\health\list.html:267
+#: .\templates\manage\health\list.html:420
 #: .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
 #: .\templates\manage\picklists\list.html:31
@@ -2282,9 +2284,9 @@ msgstr "Переглянути всі"
 
 #: .\templates\manage\dashboard.html:237 .\templates\manage\dashboard.html:283
 #: .\templates\manage\devices\list.html:99
-#: .\templates\manage\health\list.html:237
-#: .\templates\manage\health\list.html:373
-#: .\templates\manage\health\list.html:463
+#: .\templates\manage\health\list.html:203
+#: .\templates\manage\health\list.html:300
+#: .\templates\manage\health\list.html:429
 #: .\templates\manage\orders\list.html:123
 #: .\templates\manage\picklists\list.html:80
 #: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:96
@@ -2305,7 +2307,7 @@ msgid "%(count)s picklist(s) in progress for over 4 hours"
 msgstr "%(count)s лист(ів) комплектації в роботі понад 4 години"
 
 #: .\templates\manage\dashboard.html:274
-#: .\templates\manage\health\list.html:450
+#: .\templates\manage\health\list.html:416
 msgid "When"
 msgstr "Коли"
 
@@ -2377,12 +2379,12 @@ msgid "counts are last 24 hours"
 msgstr "дані за останні 24 години"
 
 #: .\templates\manage\devices\list.html:49
-#: .\templates\manage\health\list.html:196
+#: .\templates\manage\health\list.html:162
 msgid "Phone"
 msgstr "Телефон"
 
 #: .\templates\manage\devices\list.html:50
-#: .\templates\manage\health\list.html:197
+#: .\templates\manage\health\list.html:163
 msgid "App"
 msgstr "Застосунок"
 
@@ -2391,24 +2393,23 @@ msgid "Lists (7d)"
 msgstr "Листи (7 дн.)"
 
 #: .\templates\manage\devices\list.html:52
-#: .\templates\manage\health\list.html:199
+#: .\templates\manage\health\list.html:165
 msgid "Errors"
 msgstr "Помилки"
 
 #: .\templates\manage\devices\list.html:53
-#: .\templates\manage\health\list.html:200
+#: .\templates\manage\health\list.html:166
 msgid "Logouts"
 msgstr "Виходи"
 
 #: .\templates\manage\devices\list.html:54
-#: .\templates\manage\health\list.html:201
-#: .\templates\manage\health\list.html:344
+#: .\templates\manage\health\list.html:167
+#: .\templates\manage\health\list.html:271
 msgid "Restarts"
 msgstr "Перезапуски"
 
 #: .\templates\manage\devices\list.html:55
-#: .\templates\manage\health\list.html:202
-#: .\templates\manage\health\list.html:297
+#: .\templates\manage\health\list.html:168
 msgid "Overrides"
 msgstr "Підтвердження"
 
@@ -2420,7 +2421,10 @@ msgstr "Востаннє в мережі"
 msgid ""
 "Another device carries the same name. A phone that loses its stored identity "
 "registers again as a new device — and is then refused its own picklist."
-msgstr "Інший пристрій має таку саму назву. Телефон, який втратив збережену ідентичність, реєструється знову як новий пристрій — і тоді йому відмовляють у власному листі комплектації."
+msgstr ""
+"Інший пристрій має таку саму назву. Телефон, який втратив збережену "
+"ідентичність, реєструється знову як новий пристрій — і тоді йому відмовляють "
+"у власному листі комплектації."
 
 #: .\templates\manage\devices\list.html:66
 msgid "possible duplicate"
@@ -2431,12 +2435,12 @@ msgid "never named"
 msgstr "без назви"
 
 #: .\templates\manage\devices\list.html:77
-#: .\templates\manage\health\list.html:217
+#: .\templates\manage\health\list.html:183
 msgid "unknown"
 msgstr "невідомо"
 
 #: .\templates\manage\devices\list.html:82
-#: .\templates\manage\health\list.html:222
+#: .\templates\manage\health\list.html:188
 msgid "Installed"
 msgstr "Встановлено"
 
@@ -2445,7 +2449,10 @@ msgid ""
 "Running as a browser tab. Storage can be evicted, which loses the device "
 "identity and locks the picker out of their list. Ask them to install the app "
 "to the home screen."
-msgstr "Працює як вкладка браузера. Сховище може бути очищено, через що втрачається ідентичність пристрою і комплектувальник втрачає доступ до свого листа. Попросіть встановити застосунок на головний екран."
+msgstr ""
+"Працює як вкладка браузера. Сховище може бути очищено, через що втрачається "
+"ідентичність пристрою і комплектувальник втрачає доступ до свого листа. "
+"Попросіть встановити застосунок на головний екран."
 
 #: .\templates\manage\devices\list.html:89
 msgid "This device is still running an older version of the app."
@@ -2497,219 +2504,186 @@ msgid "Scan failures, rejected picklists and manual overrides"
 msgstr ""
 "Невдалі сканування, відхилені листи комплектації та ручні підтвердження"
 
-#: .\templates\manage\health\list.html:14
-msgid "Right now"
-msgstr "Зараз"
-
 #: .\templates\manage\health\list.html:15
-msgid "last hour, independent of the filter below"
-msgstr "остання година, незалежно від фільтра нижче"
-
-#: .\templates\manage\health\list.html:21
-msgid "devices active"
-msgstr "активних пристроїв"
-
-#: .\templates\manage\health\list.html:25
-msgid "lists in progress"
-msgstr "листів у роботі"
-
-#: .\templates\manage\health\list.html:29
-msgid "app restarts"
-msgstr "перезапуски застосунку"
-
-#: .\templates\manage\health\list.html:33
-msgid "sent back to login"
-msgstr "повернуто до входу"
-
-#: .\templates\manage\health\list.html:37
-msgid "app errors"
-msgstr "помилки застосунку"
-
-#: .\templates\manage\health\list.html:41
-msgid "list handovers"
-msgstr "передач листів"
-
-#: .\templates\manage\health\list.html:45
-msgid "on an old app version"
-msgstr "зі старою версією застосунку"
-
-#: .\templates\manage\health\list.html:57
 msgid "Last 24 hours"
 msgstr "Останні 24 години"
 
-#: .\templates\manage\health\list.html:58
+#: .\templates\manage\health\list.html:16
 msgid "Today"
 msgstr "Сьогодні"
 
-#: .\templates\manage\health\list.html:59
+#: .\templates\manage\health\list.html:17
 msgid "Yesterday"
 msgstr "Учора"
 
-#: .\templates\manage\health\list.html:60
+#: .\templates\manage\health\list.html:18
 msgid "Last 7 days"
 msgstr "Останні 7 днів"
 
-#: .\templates\manage\health\list.html:61
+#: .\templates\manage\health\list.html:19
 msgid "Last 30 days"
 msgstr "Останні 30 днів"
 
-#: .\templates\manage\health\list.html:66
+#: .\templates\manage\health\list.html:24
 msgid "All Types"
 msgstr "Усі типи"
 
-#: .\templates\manage\health\list.html:74
+#: .\templates\manage\health\list.html:32
 msgid "Any severity"
 msgstr "Будь-який рівень"
 
-#: .\templates\manage\health\list.html:81
+#: .\templates\manage\health\list.html:39
 #: .\templates\manage\inventory\logs.html:44
 msgid "From"
 msgstr "Від"
 
-#: .\templates\manage\health\list.html:84
+#: .\templates\manage\health\list.html:42
 #: .\templates\manage\inventory\logs.html:47
 msgid "To"
 msgstr "До"
 
-#: .\templates\manage\health\list.html:86
+#: .\templates\manage\health\list.html:44
 #: .\templates\manage\inventory\logs.html:49
 msgid "Filter"
 msgstr "Фільтрувати"
 
-#: .\templates\manage\health\list.html:87
+#: .\templates\manage\health\list.html:45
 #: .\templates\manage\inventory\logs.html:50
 msgid "Clear"
 msgstr "Очистити"
 
-#: .\templates\manage\health\list.html:91
+#: .\templates\manage\health\list.html:49
 #, python-format
 msgid "Showing %(window_label)s"
 msgstr "Показано: %(window_label)s"
 
-#: .\templates\manage\health\list.html:101
+#: .\templates\manage\health\list.html:59
 msgid "Blocking problems"
 msgstr "Блокуючі проблеми"
 
-#: .\templates\manage\health\list.html:109
+#: .\templates\manage\health\list.html:67
 msgid "refused lists, lost picks, logouts"
 msgstr "відхилені листи, втрачені відбори, виходи"
 
-#: .\templates\manage\health\list.html:113
+#: .\templates\manage\health\list.html:71
 msgid "App health"
 msgstr "Стан застосунку"
 
-#: .\templates\manage\health\list.html:121
+#: .\templates\manage\health\list.html:79
 msgid "crashes, restarts, camera failures"
 msgstr "збої, перезапуски, помилки камери"
 
-#: .\templates\manage\health\list.html:125
+#: .\templates\manage\health\list.html:83
 msgid "Scan problems"
 msgstr "Проблеми сканування"
 
-#: .\templates\manage\health\list.html:133
+#: .\templates\manage\health\list.html:91
 msgid "unknown or unreadable codes"
 msgstr "невідомі або нечитані коди"
 
-#: .\templates\manage\health\list.html:137
+#: .\templates\manage\health\list.html:95
 msgid "Manual Overrides"
 msgstr "Ручні підтвердження"
 
-#: .\templates\manage\health\list.html:146
+#: .\templates\manage\health\list.html:104
 msgid "confirmed by hand, not scanned"
 msgstr "підтверджено вручну, не відскановано"
 
-#: .\templates\manage\health\list.html:155
+#: .\templates\manage\health\list.html:113
 msgid "Picking outcomes"
 msgstr "Результати комплектації"
 
-#: .\templates\manage\health\list.html:162
+#: .\templates\manage\health\list.html:120
 msgid "lists completed"
 msgstr "завершено листів"
 
-#: .\templates\manage\health\list.html:166
+#: .\templates\manage\health\list.html:124
 msgid "still open"
 msgstr "ще відкриті"
 
-#: .\templates\manage\health\list.html:170
+#: .\templates\manage\health\list.html:128
 msgid "picks not recorded"
 msgstr "незаписані відбори"
 
-#: .\templates\manage\health\list.html:174
+#: .\templates\manage\health\list.html:132
 msgid "lists restarted"
 msgstr "перезапущено листів"
 
-#: .\templates\manage\health\list.html:178
+#: .\templates\manage\health\list.html:136
 msgid "lines picked"
 msgstr "зібрано позицій"
 
-#: .\templates\manage\health\list.html:187
+#: .\templates\manage\health\list.html:140
+#| msgid "devices active"
+msgid "devices used"
+msgstr "використано пристроїв"
+
+#: .\templates\manage\health\list.html:144
+msgid "on an old app version"
+msgstr "зі старою версією застосунку"
+
+#: .\templates\manage\health\list.html:153
 msgid "By device"
 msgstr "За пристроєм"
 
-#: .\templates\manage\health\list.html:198
+#: .\templates\manage\health\list.html:164
 msgid "Lists"
 msgstr "Листи"
 
-#: .\templates\manage\health\list.html:203
+#: .\templates\manage\health\list.html:169
 msgid "Last seen"
 msgstr "Востаннє в мережі"
 
-#: .\templates\manage\health\list.html:224
+#: .\templates\manage\health\list.html:190
 msgid ""
 "A browser tab can lose its stored identity, which locks the picker out of "
 "their own list."
-msgstr "Вкладка браузера може втратити збережену ідентичність, і комплектувальник втрачає доступ до власного листа."
+msgstr ""
+"Вкладка браузера може втратити збережену ідентичність, і комплектувальник "
+"втрачає доступ до власного листа."
 
-#: .\templates\manage\health\list.html:235
+#: .\templates\manage\health\list.html:201
 msgid "list"
 msgstr "лист"
 
-#: .\templates\manage\health\list.html:240
+#: .\templates\manage\health\list.html:206
 msgid "No device activity in this period."
 msgstr "Немає активності пристроїв за цей період."
 
-#: .\templates\manage\health\list.html:253
+#: .\templates\manage\health\list.html:219
 msgid "What exactly went wrong"
 msgstr "Що саме сталося"
 
-#: .\templates\manage\health\list.html:263
-#: .\templates\manage\health\list.html:416
+#: .\templates\manage\health\list.html:229
 msgid "Events"
 msgstr "Події"
 
-#: .\templates\manage\health\list.html:288
-msgid "Most Overridden Products"
-msgstr "Товари з найбільшою кількістю підтверджень"
-
-#: .\templates\manage\health\list.html:310
-msgid "No manual overrides in this period."
-msgstr "У цьому періоді ручних підтверджень немає."
-
-#: .\templates\manage\health\list.html:324
+#: .\templates\manage\health\list.html:251
 msgid "Stale Picklists"
 msgstr "Застряглі листи комплектації"
 
-#: .\templates\manage\health\list.html:333
+#: .\templates\manage\health\list.html:260
 #, python-format
 msgid ""
 "%(count)s picklist(s) in progress for over 4 hours, holding %(lines)s "
 "unpicked line(s)"
-msgstr "%(count)s лист(ів) комплектації в роботі понад 4 години, з %(lines)s незібраними позиціями"
+msgstr ""
+"%(count)s лист(ів) комплектації в роботі понад 4 години, з %(lines)s "
+"незібраними позиціями"
 
-#: .\templates\manage\health\list.html:334
+#: .\templates\manage\health\list.html:261
 msgid "shown live, not filtered by the date range above"
 msgstr "показано в реальному часі, без фільтра дат вище"
 
-#: .\templates\manage\health\list.html:343
+#: .\templates\manage\health\list.html:270
 msgid "Unpicked"
 msgstr "Не зібрано"
 
-#: .\templates\manage\health\list.html:345
+#: .\templates\manage\health\list.html:272
 msgid "Started"
 msgstr "Розпочато"
 
-#: .\templates\manage\health\list.html:346
-#: .\templates\manage\health\list.html:417
+#: .\templates\manage\health\list.html:273
 #: .\templates\manage\integrations\list.html:30
 #: .\templates\manage\orders\list.html:98
 #: .\templates\manage\picklists\list.html:37
@@ -2718,19 +2692,19 @@ msgstr "Розпочато"
 msgid "Actions"
 msgstr "Дії"
 
-#: .\templates\manage\health\list.html:376
+#: .\templates\manage\health\list.html:303
 #: .\templates\manage\picklists\detail.html:16
 msgid "Mark this picklist as completed? This also completes the linked order."
 msgstr ""
 "Позначити цей лист комплектації як завершений? Це також завершить пов'язане "
 "замовлення."
 
-#: .\templates\manage\health\list.html:382
+#: .\templates\manage\health\list.html:309
 #: .\templates\manage\picklists\detail.html:22
 msgid "Mark completed"
 msgstr "Позначити як завершений"
 
-#: .\templates\manage\health\list.html:384
+#: .\templates\manage\health\list.html:311
 #: .\templates\manage\picklists\detail.html:25
 msgid ""
 "Archive this picklist? It stays in your history but no longer counts as "
@@ -2739,28 +2713,116 @@ msgstr ""
 "Заархівувати цей лист комплектації? Він залишиться в історії, але більше не "
 "вважатиметься застряглим."
 
-#: .\templates\manage\health\list.html:390
+#: .\templates\manage\health\list.html:317
 #: .\templates\manage\picklists\detail.html:31
 msgid "Archive"
 msgstr "Архівувати"
 
-#: .\templates\manage\health\list.html:407
-msgid "Top Problem Codes"
-msgstr "Найчастіші проблемні коди"
+#: .\templates\manage\health\list.html:337
+msgid "Codes that need attention"
+msgstr "Коди, що потребують уваги"
 
-#: .\templates\manage\health\list.html:427
-msgid "Known product"
-msgstr "Відомий товар"
+#: .\templates\manage\health\list.html:346
+#| msgid "What exactly went wrong"
+msgid "What is wrong"
+msgstr "Що не так"
 
-#: .\templates\manage\health\list.html:430
+#: .\templates\manage\health\list.html:347
+#| msgid "View Details"
+msgid "Details"
+msgstr "Деталі"
+
+#: .\templates\manage\health\list.html:348
+msgid "Fix"
+msgstr "Виправити"
+
+#: .\templates\manage\health\list.html:360
+#| msgid "Extra barcodes"
+msgid "extra barcode"
+msgstr "додатковий штрихкод"
+
+#: .\templates\manage\health\list.html:365
+msgid "Not in the catalogue"
+msgstr "Немає в каталозі"
+
+#: .\templates\manage\health\list.html:366
+msgid "scanned, but no product has this code"
+msgstr "відскановано, але жоден товар не має цього коду"
+
+#: .\templates\manage\health\list.html:368
+#| msgid "Barcode only"
+msgid "Barcode does not scan"
+msgstr "Штрихкод не сканується"
+
+#: .\templates\manage\health\list.html:369
+msgid "pickers keep confirming it by hand"
+msgstr "комплектувальники постійно підтверджують його вручну"
+
+#: .\templates\manage\health\list.html:371
+msgid "Scanned outside its order"
+msgstr "Відскановано поза своїм замовленням"
+
+#: .\templates\manage\health\list.html:372
+msgid "the product exists, but was not on that list"
+msgstr "товар існує, але його не було в цьому листі"
+
+#: .\templates\manage\health\list.html:374
+#| msgid "picks not recorded"
+msgid "Picks not recorded"
+msgstr "Відбори не записані"
+
+#: .\templates\manage\health\list.html:375
+msgid "the server refused the pick"
+msgstr "сервер відхилив відбір"
+
+#: .\templates\manage\health\list.html:377
+#| msgid "Unknown product"
+msgid "Unreadable or wrong product"
+msgstr "Нечитаний або неправильний товар"
+
+#: .\templates\manage\health\list.html:381
+#| msgid "confirmed by hand, not scanned"
+msgid "confirmed by hand"
+msgstr "підтверджено вручну"
+
+#: .\templates\manage\health\list.html:382
+msgid "not found on the list"
+msgstr "не знайдено в листі"
+
+#: .\templates\manage\health\list.html:383
+#| msgid "picks not recorded"
+msgid "not recorded"
+msgstr "не записано"
+
+#: .\templates\manage\health\list.html:384
+msgid "unreadable"
+msgstr "нечитаний"
+
+#: .\templates\manage\health\list.html:389
 msgid "Add as product"
 msgstr "Додати як товар"
 
-#: .\templates\manage\health\list.html:499
+#: .\templates\manage\health\list.html:393
+msgid ""
+"Add the code that is physically on the label as an extra barcode, so pickers "
+"can scan it instead of confirming by hand."
+msgstr "Додайте код, який фізично є на етикетці, як додатковий штрихкод, щоб комплектувальники могли сканувати, а не підтверджувати вручну."
+
+#: .\templates\manage\health\list.html:393
+#| msgid "Extra barcodes"
+msgid "Add extra barcode"
+msgstr "Додати штрихкод"
+
+#: .\templates\manage\health\list.html:396
+#| msgid "Known product"
+msgid "Open product"
+msgstr "Відкрити товар"
+
+#: .\templates\manage\health\list.html:465
 msgid "build"
 msgstr "збірка"
 
-#: .\templates\manage\health\list.html:520
+#: .\templates\manage\health\list.html:486
 #: .\templates\manage\inventory\logs.html:136
 #: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:107
@@ -2768,7 +2830,7 @@ msgstr "збірка"
 msgid "Page"
 msgstr "Сторінка"
 
-#: .\templates\manage\health\list.html:520
+#: .\templates\manage\health\list.html:486
 #: .\templates\manage\inventory\logs.html:136
 #: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:107
@@ -2776,11 +2838,11 @@ msgstr "Сторінка"
 msgid "of"
 msgstr "з"
 
-#: .\templates\manage\health\list.html:535
+#: .\templates\manage\health\list.html:501
 msgid "No scan issues found"
 msgstr "Проблем зі скануванням не знайдено"
 
-#: .\templates\manage\health\list.html:536
+#: .\templates\manage\health\list.html:502
 msgid "Failed scans, rejected picklists and manual overrides will appear here."
 msgstr ""
 "Невдалі сканування, відхилені листи комплектації та ручні підтвердження "
@@ -3539,7 +3601,10 @@ msgid ""
 "Alternative codes that also identify this product when scanned — e.g. a "
 "superseded EAN that is still on stock in circulation. Separate codes with a "
 "new line or a comma; a comma can therefore not be part of a code."
-msgstr "Альтернативні коди, які також ідентифікують цей товар під час сканування — наприклад, замінений EAN, що досі в обігу на складі. Розділяйте коди новим рядком або комою; тому кома не може бути частиною коду."
+msgstr ""
+"Альтернативні коди, які також ідентифікують цей товар під час сканування — "
+"наприклад, замінений EAN, що досі в обігу на складі. Розділяйте коди новим "
+"рядком або комою; тому кома не може бути частиною коду."
 
 #: .\templates\manage\products\form.html:48
 msgid "e.g., Aisle 3, Shelf B"
@@ -3707,7 +3772,9 @@ msgstr ""
 msgid ""
 "Merge the selected products into which product? Enter its product code. The "
 "codes of the merged products stay scannable as extra barcodes."
-msgstr "У який товар об'єднати вибрані товари? Введіть його код товару. Коди об'єднаних товарів залишаються скануваними як додаткові штрихкоди."
+msgstr ""
+"У який товар об'єднати вибрані товари? Введіть його код товару. Коди "
+"об'єднаних товарів залишаються скануваними як додаткові штрихкоди."
 
 #: .\templates\manage\products\list.html:295
 msgid "Enter new location for selected products:"
@@ -3986,7 +4053,9 @@ msgstr "Порядок черги збережено"
 msgid ""
 "%%(name)s is picking this order right now. Unlock it anyway? Picks they "
 "already recorded are kept."
-msgstr "%%(name)s зараз комплектує це замовлення. Все одно розблокувати? Уже записані відбори збережуться."
+msgstr ""
+"%%(name)s зараз комплектує це замовлення. Все одно розблокувати? Уже "
+"записані відбори збережуться."
 
 #: .\templates\manage\queue\list.html:472
 msgid "Unlock this order? The picker will lose their progress."
@@ -4184,23 +4253,26 @@ msgstr "Помилка взяття замовлення в роботу"
 msgid ""
 "%%(name)s has been picking this order for %%(duration)s. Take it over? Picks "
 "they already recorded are kept."
-msgstr "%%(name)s комплектує це замовлення вже %%(duration)s. Перехопити? Уже записані відбори збережуться."
+msgstr ""
+"%%(name)s комплектує це замовлення вже %%(duration)s. Перехопити? Уже "
+"записані відбори збережуться."
 
 #: .\templates\queue\picker.html:144
 #, python-format
 msgid ""
 "%%(name)s is picking this order right now. Take it over? Picks they already "
 "recorded are kept."
-msgstr "%%(name)s зараз комплектує це замовлення. Перехопити? Уже записані відбори збережуться."
+msgstr ""
+"%%(name)s зараз комплектує це замовлення. Перехопити? Уже записані відбори "
+"збережуться."
 
 #: .\templates\queue\picker.html:147
-#| msgid ""
-#| "This order is being picked by someone else. Are you sure you want to take "
-#| "it over? Their progress will be lost."
 msgid ""
 "This order is being picked by someone else. Take it over? Picks they already "
 "recorded are kept."
-msgstr "Це замовлення комплектує хтось інший. Перехопити? Уже записані відбори збережуться."
+msgstr ""
+"Це замовлення комплектує хтось інший. Перехопити? Уже записані відбори "
+"збережуться."
 
 #: .\templates\registration\login.html:4
 msgid "Login"

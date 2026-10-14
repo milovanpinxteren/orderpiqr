@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 13:15+0200\n"
+"POT-Creation-Date: 2026-10-14 14:30+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -128,7 +128,7 @@ msgstr "Dostarczenie"
 
 #: .\orderpiqrApp\admin\email_admin.py:49
 #: .\orderpiqrApp\models\scan_events.py:67
-#: .\templates\manage\health\list.html:456
+#: .\templates\manage\health\list.html:422
 msgid "Message"
 msgstr "Wiadomość"
 
@@ -137,7 +137,6 @@ msgstr "Wiadomość"
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:51 .\orderpiqrApp\models\products.py:22
 #: .\orderpiqrApp\models\products.py:57 .\templates\index.html:181
-#: .\templates\manage\health\list.html:296
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -170,9 +169,9 @@ msgstr "Użytkownik"
 #: .\orderpiqrApp\models\scan_events.py:57
 #: .\templates\manage\dashboard.html:277
 #: .\templates\manage\devices\list.html:47
-#: .\templates\manage\health\list.html:195
-#: .\templates\manage\health\list.html:342
-#: .\templates\manage\health\list.html:455
+#: .\templates\manage\health\list.html:161
+#: .\templates\manage\health\list.html:269
+#: .\templates\manage\health\list.html:421
 #: .\templates\manage\picklists\detail.html:64
 #: .\templates\manage\picklists\list.html:33
 msgid "Device"
@@ -400,7 +399,7 @@ msgstr "Zainstalowana aplikacja"
 
 #: .\orderpiqrApp\models\devices.py:43 .\templates\manage\devices\list.html:20
 #: .\templates\manage\devices\list.html:84
-#: .\templates\manage\health\list.html:224
+#: .\templates\manage\health\list.html:190
 msgid "Browser tab"
 msgstr "Karta przeglądarki"
 
@@ -499,8 +498,8 @@ msgstr "Typ zmiany"
 #: .\orderpiqrApp\models\inventory.py:55
 #: .\orderpiqrApp\models\scan_events.py:64
 #: .\templates\inventory\picker.html:128
-#: .\templates\manage\health\list.html:262
-#: .\templates\manage\health\list.html:452
+#: .\templates\manage\health\list.html:228
+#: .\templates\manage\health\list.html:418
 #: .\templates\manage\inventory\add_correction.html:55
 #: .\templates\manage\inventory\logs.html:79
 #: .\templates\manage\products\form.html:130
@@ -686,7 +685,7 @@ msgstr ""
 
 #: .\orderpiqrApp\models\orders.py:48 .\orderpiqrApp\models\orders.py:63
 #: .\templates\manage\dashboard.html:221
-#: .\templates\manage\health\list.html:341
+#: .\templates\manage\health\list.html:268
 #: .\templates\manage\picklists\detail.html:9
 #: .\templates\manage\picklists\list.html:32 .\templates\shopify\app.html:208
 msgid "Order"
@@ -855,8 +854,8 @@ msgstr "Dodatkowy opis lub wskazówki dla tego ustawienia."
 
 #: .\orderpiqrApp\models\preferences.py:27
 #: .\templates\manage\dashboard.html:275
-#: .\templates\manage\health\list.html:261
-#: .\templates\manage\health\list.html:451
+#: .\templates\manage\health\list.html:227
+#: .\templates\manage\health\list.html:417
 #: .\templates\manage\settings\api_tokens.html:52
 msgid "Type"
 msgstr "Typ"
@@ -1025,7 +1024,7 @@ msgid "Severity"
 msgstr "Waga"
 
 #: .\orderpiqrApp\models\scan_events.py:65
-#: .\templates\manage\health\list.html:453
+#: .\templates\manage\health\list.html:419
 msgid "Scanned Code"
 msgstr "Zeskanowany kod"
 
@@ -1073,7 +1072,7 @@ msgstr "Automatycznie odjęto na podstawie zamówienia %(order_code)s"
 
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 #: .\templates\manage\dashboard.html:276
-#: .\templates\manage\health\list.html:415
+#: .\templates\manage\health\list.html:345
 #: .\templates\manage\products\list.html:96
 msgid "Code"
 msgstr "Kod"
@@ -1252,7 +1251,7 @@ msgstr "Produkt '{code}' zaktualizowany pomyślnie."
 #: .\orderpiqrApp\views\manage_views.py:465
 #: .\orderpiqrApp\views\manage_views.py:729
 #: .\orderpiqrApp\views\manage_views.py:958
-#: .\orderpiqrApp\views\manage_views.py:1903
+#: .\orderpiqrApp\views\manage_views.py:1899
 msgid "No customer found."
 msgstr "Nie znaleziono klienta."
 
@@ -1266,14 +1265,14 @@ msgstr "Produkt '{code}' usunięty."
 #: .\orderpiqrApp\views\manage_views.py:461
 #: .\orderpiqrApp\views\manage_views.py:725
 #: .\orderpiqrApp\views\manage_views.py:967
-#: .\orderpiqrApp\views\manage_views.py:1899
+#: .\orderpiqrApp\views\manage_views.py:1895
 msgid "Invalid request method."
 msgstr "Nieprawidłowa metoda żądania."
 
 #: .\orderpiqrApp\views\manage_views.py:394
 #: .\orderpiqrApp\views\manage_views.py:472
 #: .\orderpiqrApp\views\manage_views.py:734
-#: .\orderpiqrApp\views\manage_views.py:1912
+#: .\orderpiqrApp\views\manage_views.py:1908
 msgid "Invalid request."
 msgstr "Nieprawidłowe żądanie."
 
@@ -1325,7 +1324,9 @@ msgstr "Wybierz co najmniej jeden inny produkt do scalenia."
 msgid ""
 "{count} product(s) merged into '{code}'. Their codes remain scannable as "
 "barcodes."
-msgstr "Scalono {count} produkt(ów) w '{code}'. Ich kody pozostają skanowalne jako kody kreskowe."
+msgstr ""
+"Scalono {count} produkt(ów) w '{code}'. Ich kody pozostają skanowalne jako "
+"kody kreskowe."
 
 #: .\orderpiqrApp\views\manage_views.py:454
 #: .\orderpiqrApp\views\manage_views.py:815
@@ -1337,9 +1338,9 @@ msgid "Invalid field."
 msgstr "Nieprawidłowe pole."
 
 #: .\orderpiqrApp\views\manage_views.py:484
-#: .\orderpiqrApp\views\manage_views.py:1906
-#: .\orderpiqrApp\views\manage_views.py:1961
-#: .\orderpiqrApp\views\manage_views.py:2027
+#: .\orderpiqrApp\views\manage_views.py:1902
+#: .\orderpiqrApp\views\manage_views.py:1957
+#: .\orderpiqrApp\views\manage_views.py:2023
 msgid "Inventory management is not enabled."
 msgstr "Zarządzanie inwentarzem nie jest włączone."
 
@@ -1348,7 +1349,7 @@ msgid "Quantity cannot be negative."
 msgstr "Ilość nie może być ujemna."
 
 #: .\orderpiqrApp\views\manage_views.py:490
-#: .\orderpiqrApp\views\manage_views.py:2060
+#: .\orderpiqrApp\views\manage_views.py:2056
 msgid "Invalid quantity value."
 msgstr "Nieprawidłowa wartość ilości."
 
@@ -1366,7 +1367,9 @@ msgstr "To pole nie może być puste."
 
 #: .\orderpiqrApp\views\manage_views.py:518
 msgid "Updated. The previous code remains scannable as an extra barcode."
-msgstr "Zaktualizowano. Poprzedni kod pozostaje skanowalny jako dodatkowy kod kreskowy."
+msgstr ""
+"Zaktualizowano. Poprzedni kod pozostaje skanowalny jako dodatkowy kod "
+"kreskowy."
 
 #: .\orderpiqrApp\views\manage_views.py:519
 #: .\orderpiqrApp\views\manage_views.py:525
@@ -1547,68 +1550,68 @@ msgstr "ostatnie 30 dni"
 msgid "last 24 hours"
 msgstr "ostatnie 24 godziny"
 
-#: .\orderpiqrApp\views\manage_views.py:1311
+#: .\orderpiqrApp\views\manage_views.py:1278
 msgid "Unknown device"
 msgstr "Nieznane urządzenie"
 
-#: .\orderpiqrApp\views\manage_views.py:1634
+#: .\orderpiqrApp\views\manage_views.py:1630
 msgid "First name is required."
 msgstr "Imię jest wymagane."
 
-#: .\orderpiqrApp\views\manage_views.py:1636
+#: .\orderpiqrApp\views\manage_views.py:1632
 msgid "Email is required."
 msgstr "Email jest wymagany."
 
-#: .\orderpiqrApp\views\manage_views.py:1646
+#: .\orderpiqrApp\views\manage_views.py:1642
 msgid "Profile updated successfully."
 msgstr "Profil zaktualizowany pomyślnie."
 
-#: .\orderpiqrApp\views\manage_views.py:1655
+#: .\orderpiqrApp\views\manage_views.py:1651
 msgid "Current password is incorrect."
 msgstr "Obecne hasło jest nieprawidłowe."
 
-#: .\orderpiqrApp\views\manage_views.py:1657
+#: .\orderpiqrApp\views\manage_views.py:1653
 msgid "New password must be at least 8 characters."
 msgstr "Nowe hasło musi zawierać co najmniej 8 znaków."
 
-#: .\orderpiqrApp\views\manage_views.py:1659
+#: .\orderpiqrApp\views\manage_views.py:1655
 msgid "New passwords do not match."
 msgstr "Nowe hasła nie są zgodne."
 
-#: .\orderpiqrApp\views\manage_views.py:1668
+#: .\orderpiqrApp\views\manage_views.py:1664
 msgid "Password changed successfully."
 msgstr "Hasło zmienione pomyślnie."
 
-#: .\orderpiqrApp\views\manage_views.py:1675
-#: .\orderpiqrApp\views\manage_views.py:1710
-#: .\orderpiqrApp\views\manage_views.py:1732
+#: .\orderpiqrApp\views\manage_views.py:1671
+#: .\orderpiqrApp\views\manage_views.py:1706
+#: .\orderpiqrApp\views\manage_views.py:1728
 msgid "Picker account not found."
 msgstr "Nie znaleziono konta kompletującego."
 
-#: .\orderpiqrApp\views\manage_views.py:1677
-#: .\orderpiqrApp\views\manage_views.py:1695
+#: .\orderpiqrApp\views\manage_views.py:1673
+#: .\orderpiqrApp\views\manage_views.py:1691
 msgid "Password must be at least 8 characters."
 msgstr "Hasło musi mieć co najmniej 8 znaków."
 
-#: .\orderpiqrApp\views\manage_views.py:1682
+#: .\orderpiqrApp\views\manage_views.py:1678
 #, python-brace-format
 msgid "Password for picker account '{username}' updated."
 msgstr "Hasło konta kompletującego '{username}' zostało zaktualizowane."
 
-#: .\orderpiqrApp\views\manage_views.py:1691
+#: .\orderpiqrApp\views\manage_views.py:1687
 msgid "Username is required."
 msgstr "Nazwa użytkownika jest wymagana."
 
-#: .\orderpiqrApp\views\manage_views.py:1693
+#: .\orderpiqrApp\views\manage_views.py:1689
 msgid "This username is already taken."
 msgstr "Ta nazwa użytkownika jest już zajęta."
 
-#: .\orderpiqrApp\views\manage_views.py:1702
+#: .\orderpiqrApp\views\manage_views.py:1698
 #, python-brace-format
 msgid "Picker account '{username}' created."
 msgstr "Utworzono konto kompletującego '{username}'."
 
-#: .\orderpiqrApp\views\manage_views.py:1725
+#: .\orderpiqrApp\views\manage_views.py:1721
 #, python-brace-format
 msgid ""
 "Login QR created for '{username}'. Print it now – it cannot be shown again."
@@ -1616,43 +1619,43 @@ msgstr ""
 "Utworzono kod QR logowania dla '{username}'. Wydrukuj go teraz – nie "
 "zostanie pokazany ponownie."
 
-#: .\orderpiqrApp\views\manage_views.py:1738
+#: .\orderpiqrApp\views\manage_views.py:1734
 #, python-brace-format
 msgid "Login QR for '{username}' revoked. Printed copies no longer work."
 msgstr ""
 "Kod QR logowania dla '{username}' został unieważniony. Wydrukowane kopie już "
 "nie działają."
 
-#: .\orderpiqrApp\views\manage_views.py:1822
+#: .\orderpiqrApp\views\manage_views.py:1818
 msgid "Settings saved successfully."
 msgstr "Ustawienia zapisane pomyślnie."
 
-#: .\orderpiqrApp\views\manage_views.py:1842
+#: .\orderpiqrApp\views\manage_views.py:1838
 msgid "Inventory management is not enabled for your account."
 msgstr "Zarządzanie inwentarzem nie jest włączone dla Twojego konta."
 
-#: .\orderpiqrApp\views\manage_views.py:1915
+#: .\orderpiqrApp\views\manage_views.py:1911
 msgid "No logs selected."
 msgstr "Nie wybrano wpisów dziennika."
 
-#: .\orderpiqrApp\views\manage_views.py:1925
+#: .\orderpiqrApp\views\manage_views.py:1921
 msgid "No valid logs found."
 msgstr "Nie znaleziono prawidłowych wpisów dziennika."
 
-#: .\orderpiqrApp\views\manage_views.py:1948
+#: .\orderpiqrApp\views\manage_views.py:1944
 #, python-format
 msgid "%(count)d log(s) deleted and inventory reverted."
 msgstr "Usunięto wpisy dziennika (%(count)d) i cofnięto zmiany inwentarza."
 
-#: .\orderpiqrApp\views\manage_views.py:2054
+#: .\orderpiqrApp\views\manage_views.py:2050
 msgid "Inventory correction added successfully."
 msgstr "Korekta inwentarza została dodana pomyślnie."
 
-#: .\orderpiqrApp\views\manage_views.py:2058
+#: .\orderpiqrApp\views\manage_views.py:2054
 msgid "Product not found."
 msgstr "Nie znaleziono produktu."
 
-#: .\orderpiqrApp\views\manage_views.py:2073
+#: .\orderpiqrApp\views\manage_views.py:2069
 msgid "You have been logged out successfully."
 msgstr "Zostałeś pomyślnie wylogowany."
 
@@ -1997,8 +2000,8 @@ msgstr "Zatrzymaj kamerę"
 msgid "Enable camera"
 msgstr "Włącz kamerę"
 
-#: .\templates\index.html:168 .\templates\manage\health\list.html:340
-#: .\templates\manage\health\list.html:454
+#: .\templates\index.html:168 .\templates\manage\health\list.html:267
+#: .\templates\manage\health\list.html:420
 #: .\templates\manage\picklists\detail.html:4
 #: .\templates\manage\picklists\detail.html:5
 #: .\templates\manage\picklists\list.html:31
@@ -2285,9 +2288,9 @@ msgstr "Zobacz wszystko"
 
 #: .\templates\manage\dashboard.html:237 .\templates\manage\dashboard.html:283
 #: .\templates\manage\devices\list.html:99
-#: .\templates\manage\health\list.html:237
-#: .\templates\manage\health\list.html:373
-#: .\templates\manage\health\list.html:463
+#: .\templates\manage\health\list.html:203
+#: .\templates\manage\health\list.html:300
+#: .\templates\manage\health\list.html:429
 #: .\templates\manage\orders\list.html:123
 #: .\templates\manage\picklists\list.html:80
 #: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:96
@@ -2308,7 +2311,7 @@ msgid "%(count)s picklist(s) in progress for over 4 hours"
 msgstr "%(count)s list(y) kompletacyjne w toku od ponad 4 godzin"
 
 #: .\templates\manage\dashboard.html:274
-#: .\templates\manage\health\list.html:450
+#: .\templates\manage\health\list.html:416
 msgid "When"
 msgstr "Kiedy"
 
@@ -2380,12 +2383,12 @@ msgid "counts are last 24 hours"
 msgstr "liczby z ostatnich 24 godzin"
 
 #: .\templates\manage\devices\list.html:49
-#: .\templates\manage\health\list.html:196
+#: .\templates\manage\health\list.html:162
 msgid "Phone"
 msgstr "Telefon"
 
 #: .\templates\manage\devices\list.html:50
-#: .\templates\manage\health\list.html:197
+#: .\templates\manage\health\list.html:163
 msgid "App"
 msgstr "Aplikacja"
 
@@ -2394,24 +2397,23 @@ msgid "Lists (7d)"
 msgstr "Listy (7 dni)"
 
 #: .\templates\manage\devices\list.html:52
-#: .\templates\manage\health\list.html:199
+#: .\templates\manage\health\list.html:165
 msgid "Errors"
 msgstr "Błędy"
 
 #: .\templates\manage\devices\list.html:53
-#: .\templates\manage\health\list.html:200
+#: .\templates\manage\health\list.html:166
 msgid "Logouts"
 msgstr "Wylogowania"
 
 #: .\templates\manage\devices\list.html:54
-#: .\templates\manage\health\list.html:201
-#: .\templates\manage\health\list.html:344
+#: .\templates\manage\health\list.html:167
+#: .\templates\manage\health\list.html:271
 msgid "Restarts"
 msgstr "Restarty"
 
 #: .\templates\manage\devices\list.html:55
-#: .\templates\manage\health\list.html:202
-#: .\templates\manage\health\list.html:297
+#: .\templates\manage\health\list.html:168
 msgid "Overrides"
 msgstr "Potwierdzenia"
 
@@ -2423,7 +2425,10 @@ msgstr "Ostatnio widziane"
 msgid ""
 "Another device carries the same name. A phone that loses its stored identity "
 "registers again as a new device — and is then refused its own picklist."
-msgstr "Inne urządzenie ma tę samą nazwę. Telefon, który utraci zapisaną tożsamość, rejestruje się ponownie jako nowe urządzenie — i wtedy odmawia mu się własnej listy kompletacyjnej."
+msgstr ""
+"Inne urządzenie ma tę samą nazwę. Telefon, który utraci zapisaną tożsamość, "
+"rejestruje się ponownie jako nowe urządzenie — i wtedy odmawia mu się "
+"własnej listy kompletacyjnej."
 
 #: .\templates\manage\devices\list.html:66
 msgid "possible duplicate"
@@ -2434,12 +2439,12 @@ msgid "never named"
 msgstr "bez nazwy"
 
 #: .\templates\manage\devices\list.html:77
-#: .\templates\manage\health\list.html:217
+#: .\templates\manage\health\list.html:183
 msgid "unknown"
 msgstr "nieznany"
 
 #: .\templates\manage\devices\list.html:82
-#: .\templates\manage\health\list.html:222
+#: .\templates\manage\health\list.html:188
 msgid "Installed"
 msgstr "Zainstalowana"
 
@@ -2448,7 +2453,10 @@ msgid ""
 "Running as a browser tab. Storage can be evicted, which loses the device "
 "identity and locks the picker out of their list. Ask them to install the app "
 "to the home screen."
-msgstr "Działa jako karta przeglądarki. Pamięć może zostać wyczyszczona, co powoduje utratę tożsamości urządzenia i blokuje kompletatorowi dostęp do listy. Poproś o zainstalowanie aplikacji na ekranie głównym."
+msgstr ""
+"Działa jako karta przeglądarki. Pamięć może zostać wyczyszczona, co powoduje "
+"utratę tożsamości urządzenia i blokuje kompletatorowi dostęp do listy. "
+"Poproś o zainstalowanie aplikacji na ekranie głównym."
 
 #: .\templates\manage\devices\list.html:89
 msgid "This device is still running an older version of the app."
@@ -2500,219 +2508,186 @@ msgstr "Kondycja procesu kompletacji"
 msgid "Scan failures, rejected picklists and manual overrides"
 msgstr "Nieudane skany, odrzucone listy kompletacyjne i ręczne potwierdzenia"
 
-#: .\templates\manage\health\list.html:14
-msgid "Right now"
-msgstr "Teraz"
-
 #: .\templates\manage\health\list.html:15
-msgid "last hour, independent of the filter below"
-msgstr "ostatnia godzina, niezależnie od filtra poniżej"
-
-#: .\templates\manage\health\list.html:21
-msgid "devices active"
-msgstr "aktywne urządzenia"
-
-#: .\templates\manage\health\list.html:25
-msgid "lists in progress"
-msgstr "listy w toku"
-
-#: .\templates\manage\health\list.html:29
-msgid "app restarts"
-msgstr "restarty aplikacji"
-
-#: .\templates\manage\health\list.html:33
-msgid "sent back to login"
-msgstr "odesłani do logowania"
-
-#: .\templates\manage\health\list.html:37
-msgid "app errors"
-msgstr "błędy aplikacji"
-
-#: .\templates\manage\health\list.html:41
-msgid "list handovers"
-msgstr "przekazane listy"
-
-#: .\templates\manage\health\list.html:45
-msgid "on an old app version"
-msgstr "ze starą wersją aplikacji"
-
-#: .\templates\manage\health\list.html:57
 msgid "Last 24 hours"
 msgstr "Ostatnie 24 godziny"
 
-#: .\templates\manage\health\list.html:58
+#: .\templates\manage\health\list.html:16
 msgid "Today"
 msgstr "Dziś"
 
-#: .\templates\manage\health\list.html:59
+#: .\templates\manage\health\list.html:17
 msgid "Yesterday"
 msgstr "Wczoraj"
 
-#: .\templates\manage\health\list.html:60
+#: .\templates\manage\health\list.html:18
 msgid "Last 7 days"
 msgstr "Ostatnie 7 dni"
 
-#: .\templates\manage\health\list.html:61
+#: .\templates\manage\health\list.html:19
 msgid "Last 30 days"
 msgstr "Ostatnie 30 dni"
 
-#: .\templates\manage\health\list.html:66
+#: .\templates\manage\health\list.html:24
 msgid "All Types"
 msgstr "Wszystkie typy"
 
-#: .\templates\manage\health\list.html:74
+#: .\templates\manage\health\list.html:32
 msgid "Any severity"
 msgstr "Dowolna waga"
 
-#: .\templates\manage\health\list.html:81
+#: .\templates\manage\health\list.html:39
 #: .\templates\manage\inventory\logs.html:44
 msgid "From"
 msgstr "Od"
 
-#: .\templates\manage\health\list.html:84
+#: .\templates\manage\health\list.html:42
 #: .\templates\manage\inventory\logs.html:47
 msgid "To"
 msgstr "Do"
 
-#: .\templates\manage\health\list.html:86
+#: .\templates\manage\health\list.html:44
 #: .\templates\manage\inventory\logs.html:49
 msgid "Filter"
 msgstr "Filtruj"
 
-#: .\templates\manage\health\list.html:87
+#: .\templates\manage\health\list.html:45
 #: .\templates\manage\inventory\logs.html:50
 msgid "Clear"
 msgstr "Wyczyść"
 
-#: .\templates\manage\health\list.html:91
+#: .\templates\manage\health\list.html:49
 #, python-format
 msgid "Showing %(window_label)s"
 msgstr "Pokazano: %(window_label)s"
 
-#: .\templates\manage\health\list.html:101
+#: .\templates\manage\health\list.html:59
 msgid "Blocking problems"
 msgstr "Problemy blokujące"
 
-#: .\templates\manage\health\list.html:109
+#: .\templates\manage\health\list.html:67
 msgid "refused lists, lost picks, logouts"
 msgstr "odrzucone listy, utracone pobrania, wylogowania"
 
-#: .\templates\manage\health\list.html:113
+#: .\templates\manage\health\list.html:71
 msgid "App health"
 msgstr "Stan aplikacji"
 
-#: .\templates\manage\health\list.html:121
+#: .\templates\manage\health\list.html:79
 msgid "crashes, restarts, camera failures"
 msgstr "awarie, restarty, błędy kamery"
 
-#: .\templates\manage\health\list.html:125
+#: .\templates\manage\health\list.html:83
 msgid "Scan problems"
 msgstr "Problemy ze skanowaniem"
 
-#: .\templates\manage\health\list.html:133
+#: .\templates\manage\health\list.html:91
 msgid "unknown or unreadable codes"
 msgstr "nieznane lub nieczytelne kody"
 
-#: .\templates\manage\health\list.html:137
+#: .\templates\manage\health\list.html:95
 msgid "Manual Overrides"
 msgstr "Ręczne potwierdzenia"
 
-#: .\templates\manage\health\list.html:146
+#: .\templates\manage\health\list.html:104
 msgid "confirmed by hand, not scanned"
 msgstr "potwierdzone ręcznie, nie zeskanowane"
 
-#: .\templates\manage\health\list.html:155
+#: .\templates\manage\health\list.html:113
 msgid "Picking outcomes"
 msgstr "Wyniki kompletacji"
 
-#: .\templates\manage\health\list.html:162
+#: .\templates\manage\health\list.html:120
 msgid "lists completed"
 msgstr "ukończone listy"
 
-#: .\templates\manage\health\list.html:166
+#: .\templates\manage\health\list.html:124
 msgid "still open"
 msgstr "nadal otwarte"
 
-#: .\templates\manage\health\list.html:170
+#: .\templates\manage\health\list.html:128
 msgid "picks not recorded"
 msgstr "niezapisane pobrania"
 
-#: .\templates\manage\health\list.html:174
+#: .\templates\manage\health\list.html:132
 msgid "lists restarted"
 msgstr "zrestartowane listy"
 
-#: .\templates\manage\health\list.html:178
+#: .\templates\manage\health\list.html:136
 msgid "lines picked"
 msgstr "skompletowane pozycje"
 
-#: .\templates\manage\health\list.html:187
+#: .\templates\manage\health\list.html:140
+#| msgid "devices active"
+msgid "devices used"
+msgstr "użyte urządzenia"
+
+#: .\templates\manage\health\list.html:144
+msgid "on an old app version"
+msgstr "ze starą wersją aplikacji"
+
+#: .\templates\manage\health\list.html:153
 msgid "By device"
 msgstr "Według urządzenia"
 
-#: .\templates\manage\health\list.html:198
+#: .\templates\manage\health\list.html:164
 msgid "Lists"
 msgstr "Listy"
 
-#: .\templates\manage\health\list.html:203
+#: .\templates\manage\health\list.html:169
 msgid "Last seen"
 msgstr "Ostatnio widziane"
 
-#: .\templates\manage\health\list.html:224
+#: .\templates\manage\health\list.html:190
 msgid ""
 "A browser tab can lose its stored identity, which locks the picker out of "
 "their own list."
-msgstr "Karta przeglądarki może utracić zapisaną tożsamość, co blokuje kompletatorowi dostęp do własnej listy."
+msgstr ""
+"Karta przeglądarki może utracić zapisaną tożsamość, co blokuje "
+"kompletatorowi dostęp do własnej listy."
 
-#: .\templates\manage\health\list.html:235
+#: .\templates\manage\health\list.html:201
 msgid "list"
 msgstr "lista"
 
-#: .\templates\manage\health\list.html:240
+#: .\templates\manage\health\list.html:206
 msgid "No device activity in this period."
 msgstr "Brak aktywności urządzeń w tym okresie."
 
-#: .\templates\manage\health\list.html:253
+#: .\templates\manage\health\list.html:219
 msgid "What exactly went wrong"
 msgstr "Co dokładnie się nie udało"
 
-#: .\templates\manage\health\list.html:263
-#: .\templates\manage\health\list.html:416
+#: .\templates\manage\health\list.html:229
 msgid "Events"
 msgstr "Zdarzenia"
 
-#: .\templates\manage\health\list.html:288
-msgid "Most Overridden Products"
-msgstr "Produkty najczęściej potwierdzane ręcznie"
-
-#: .\templates\manage\health\list.html:310
-msgid "No manual overrides in this period."
-msgstr "Brak ręcznych potwierdzeń w wybranym okresie."
-
-#: .\templates\manage\health\list.html:324
+#: .\templates\manage\health\list.html:251
 msgid "Stale Picklists"
 msgstr "Zablokowane listy kompletacyjne"
 
-#: .\templates\manage\health\list.html:333
+#: .\templates\manage\health\list.html:260
 #, python-format
 msgid ""
 "%(count)s picklist(s) in progress for over 4 hours, holding %(lines)s "
 "unpicked line(s)"
-msgstr "%(count)s lista/listy kompletacyjne w toku od ponad 4 godzin, z %(lines)s niezrealizowanymi pozycjami"
+msgstr ""
+"%(count)s lista/listy kompletacyjne w toku od ponad 4 godzin, z %(lines)s "
+"niezrealizowanymi pozycjami"
 
-#: .\templates\manage\health\list.html:334
+#: .\templates\manage\health\list.html:261
 msgid "shown live, not filtered by the date range above"
 msgstr "widok na żywo, bez filtra zakresu dat powyżej"
 
-#: .\templates\manage\health\list.html:343
+#: .\templates\manage\health\list.html:270
 msgid "Unpicked"
 msgstr "Niezrealizowane"
 
-#: .\templates\manage\health\list.html:345
+#: .\templates\manage\health\list.html:272
 msgid "Started"
 msgstr "Rozpoczęto"
 
-#: .\templates\manage\health\list.html:346
-#: .\templates\manage\health\list.html:417
+#: .\templates\manage\health\list.html:273
 #: .\templates\manage\integrations\list.html:30
 #: .\templates\manage\orders\list.html:98
 #: .\templates\manage\picklists\list.html:37
@@ -2721,19 +2696,19 @@ msgstr "Rozpoczęto"
 msgid "Actions"
 msgstr "Akcje"
 
-#: .\templates\manage\health\list.html:376
+#: .\templates\manage\health\list.html:303
 #: .\templates\manage\picklists\detail.html:16
 msgid "Mark this picklist as completed? This also completes the linked order."
 msgstr ""
 "Oznaczyć tę listę kompletacyjną jako ukończoną? Spowoduje to również "
 "ukończenie powiązanego zamówienia."
 
-#: .\templates\manage\health\list.html:382
+#: .\templates\manage\health\list.html:309
 #: .\templates\manage\picklists\detail.html:22
 msgid "Mark completed"
 msgstr "Oznacz jako ukończoną"
 
-#: .\templates\manage\health\list.html:384
+#: .\templates\manage\health\list.html:311
 #: .\templates\manage\picklists\detail.html:25
 msgid ""
 "Archive this picklist? It stays in your history but no longer counts as "
@@ -2742,28 +2717,116 @@ msgstr ""
 "Zarchiwizować tę listę kompletacyjną? Pozostanie w historii, ale nie będzie "
 "już liczona jako zablokowana."
 
-#: .\templates\manage\health\list.html:390
+#: .\templates\manage\health\list.html:317
 #: .\templates\manage\picklists\detail.html:31
 msgid "Archive"
 msgstr "Archiwizuj"
 
-#: .\templates\manage\health\list.html:407
-msgid "Top Problem Codes"
-msgstr "Najczęstsze problematyczne kody"
+#: .\templates\manage\health\list.html:337
+msgid "Codes that need attention"
+msgstr "Kody wymagające uwagi"
 
-#: .\templates\manage\health\list.html:427
-msgid "Known product"
-msgstr "Znany produkt"
+#: .\templates\manage\health\list.html:346
+#| msgid "What exactly went wrong"
+msgid "What is wrong"
+msgstr "Co jest nie tak"
 
-#: .\templates\manage\health\list.html:430
+#: .\templates\manage\health\list.html:347
+#| msgid "View Details"
+msgid "Details"
+msgstr "Szczegóły"
+
+#: .\templates\manage\health\list.html:348
+msgid "Fix"
+msgstr "Napraw"
+
+#: .\templates\manage\health\list.html:360
+#| msgid "Extra barcodes"
+msgid "extra barcode"
+msgstr "dodatkowy kod kreskowy"
+
+#: .\templates\manage\health\list.html:365
+msgid "Not in the catalogue"
+msgstr "Brak w katalogu"
+
+#: .\templates\manage\health\list.html:366
+msgid "scanned, but no product has this code"
+msgstr "zeskanowany, ale żaden produkt nie ma tego kodu"
+
+#: .\templates\manage\health\list.html:368
+#| msgid "Barcode only"
+msgid "Barcode does not scan"
+msgstr "Kod kreskowy się nie skanuje"
+
+#: .\templates\manage\health\list.html:369
+msgid "pickers keep confirming it by hand"
+msgstr "kompletatorzy ciągle potwierdzają go ręcznie"
+
+#: .\templates\manage\health\list.html:371
+msgid "Scanned outside its order"
+msgstr "Zeskanowany poza swoim zamówieniem"
+
+#: .\templates\manage\health\list.html:372
+msgid "the product exists, but was not on that list"
+msgstr "produkt istnieje, ale nie był na tej liście"
+
+#: .\templates\manage\health\list.html:374
+#| msgid "picks not recorded"
+msgid "Picks not recorded"
+msgstr "Pobrania niezapisane"
+
+#: .\templates\manage\health\list.html:375
+msgid "the server refused the pick"
+msgstr "serwer odrzucił pobranie"
+
+#: .\templates\manage\health\list.html:377
+#| msgid "Unknown product"
+msgid "Unreadable or wrong product"
+msgstr "Nieczytelny lub zły produkt"
+
+#: .\templates\manage\health\list.html:381
+#| msgid "confirmed by hand, not scanned"
+msgid "confirmed by hand"
+msgstr "potwierdzone ręcznie"
+
+#: .\templates\manage\health\list.html:382
+msgid "not found on the list"
+msgstr "nie znaleziono na liście"
+
+#: .\templates\manage\health\list.html:383
+#| msgid "picks not recorded"
+msgid "not recorded"
+msgstr "niezapisane"
+
+#: .\templates\manage\health\list.html:384
+msgid "unreadable"
+msgstr "nieczytelne"
+
+#: .\templates\manage\health\list.html:389
 msgid "Add as product"
 msgstr "Dodaj jako produkt"
 
-#: .\templates\manage\health\list.html:499
+#: .\templates\manage\health\list.html:393
+msgid ""
+"Add the code that is physically on the label as an extra barcode, so pickers "
+"can scan it instead of confirming by hand."
+msgstr "Dodaj kod, który fizycznie znajduje się na etykiecie, jako dodatkowy kod kreskowy, aby kompletatorzy mogli skanować zamiast potwierdzać ręcznie."
+
+#: .\templates\manage\health\list.html:393
+#| msgid "Extra barcodes"
+msgid "Add extra barcode"
+msgstr "Dodaj kod kreskowy"
+
+#: .\templates\manage\health\list.html:396
+#| msgid "Known product"
+msgid "Open product"
+msgstr "Otwórz produkt"
+
+#: .\templates\manage\health\list.html:465
 msgid "build"
 msgstr "wersja"
 
-#: .\templates\manage\health\list.html:520
+#: .\templates\manage\health\list.html:486
 #: .\templates\manage\inventory\logs.html:136
 #: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:107
@@ -2771,7 +2834,7 @@ msgstr "wersja"
 msgid "Page"
 msgstr "Strona"
 
-#: .\templates\manage\health\list.html:520
+#: .\templates\manage\health\list.html:486
 #: .\templates\manage\inventory\logs.html:136
 #: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:107
@@ -2779,11 +2842,11 @@ msgstr "Strona"
 msgid "of"
 msgstr "z"
 
-#: .\templates\manage\health\list.html:535
+#: .\templates\manage\health\list.html:501
 msgid "No scan issues found"
 msgstr "Nie znaleziono problemów ze skanowaniem"
 
-#: .\templates\manage\health\list.html:536
+#: .\templates\manage\health\list.html:502
 msgid "Failed scans, rejected picklists and manual overrides will appear here."
 msgstr ""
 "Nieudane skany, odrzucone listy kompletacyjne i ręczne potwierdzenia pojawią "
@@ -3540,7 +3603,10 @@ msgid ""
 "Alternative codes that also identify this product when scanned — e.g. a "
 "superseded EAN that is still on stock in circulation. Separate codes with a "
 "new line or a comma; a comma can therefore not be part of a code."
-msgstr "Alternatywne kody, które również identyfikują ten produkt przy skanowaniu — np. wycofany EAN wciąż obecny w zapasach. Rozdzielaj kody nową linią lub przecinkiem; przecinek nie może więc być częścią kodu."
+msgstr ""
+"Alternatywne kody, które również identyfikują ten produkt przy skanowaniu — "
+"np. wycofany EAN wciąż obecny w zapasach. Rozdzielaj kody nową linią lub "
+"przecinkiem; przecinek nie może więc być częścią kodu."
 
 #: .\templates\manage\products\form.html:48
 msgid "e.g., Aisle 3, Shelf B"
@@ -3709,7 +3775,9 @@ msgstr ""
 msgid ""
 "Merge the selected products into which product? Enter its product code. The "
 "codes of the merged products stay scannable as extra barcodes."
-msgstr "Do którego produktu scalić wybrane produkty? Podaj jego kod produktu. Kody scalonych produktów pozostają skanowalne jako dodatkowe kody kreskowe."
+msgstr ""
+"Do którego produktu scalić wybrane produkty? Podaj jego kod produktu. Kody "
+"scalonych produktów pozostają skanowalne jako dodatkowe kody kreskowe."
 
 #: .\templates\manage\products\list.html:295
 msgid "Enter new location for selected products:"
@@ -3988,7 +4056,9 @@ msgstr "Kolejność zamówień zapisana"
 msgid ""
 "%%(name)s is picking this order right now. Unlock it anyway? Picks they "
 "already recorded are kept."
-msgstr "%%(name)s właśnie kompletuje to zamówienie. Odblokować mimo to? Już zapisane pobrania zostaną zachowane."
+msgstr ""
+"%%(name)s właśnie kompletuje to zamówienie. Odblokować mimo to? Już zapisane "
+"pobrania zostaną zachowane."
 
 #: .\templates\manage\queue\list.html:472
 msgid "Unlock this order? The picker will lose their progress."
@@ -4186,23 +4256,26 @@ msgstr "Błąd przejmowania zamówienia"
 msgid ""
 "%%(name)s has been picking this order for %%(duration)s. Take it over? Picks "
 "they already recorded are kept."
-msgstr "%%(name)s kompletuje to zamówienie od %%(duration)s. Przejąć? Już zapisane pobrania zostaną zachowane."
+msgstr ""
+"%%(name)s kompletuje to zamówienie od %%(duration)s. Przejąć? Już zapisane "
+"pobrania zostaną zachowane."
 
 #: .\templates\queue\picker.html:144
 #, python-format
 msgid ""
 "%%(name)s is picking this order right now. Take it over? Picks they already "
 "recorded are kept."
-msgstr "%%(name)s właśnie kompletuje to zamówienie. Przejąć? Już zapisane pobrania zostaną zachowane."
+msgstr ""
+"%%(name)s właśnie kompletuje to zamówienie. Przejąć? Już zapisane pobrania "
+"zostaną zachowane."
 
 #: .\templates\queue\picker.html:147
-#| msgid ""
-#| "This order is being picked by someone else. Are you sure you want to take "
-#| "it over? Their progress will be lost."
 msgid ""
 "This order is being picked by someone else. Take it over? Picks they already "
 "recorded are kept."
-msgstr "To zamówienie kompletuje ktoś inny. Przejąć? Już zapisane pobrania zostaną zachowane."
+msgstr ""
+"To zamówienie kompletuje ktoś inny. Przejąć? Już zapisane pobrania zostaną "
+"zachowane."
 
 #: .\templates\registration\login.html:4
 msgid "Login"

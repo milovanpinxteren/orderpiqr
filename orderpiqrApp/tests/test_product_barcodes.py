@@ -525,9 +525,14 @@ class HealthPageAliasTests(CompanyAdminTestCase):
         response = self.client.get(reverse('manage_health'))
 
         self.assertEqual(response.status_code, 200)
-        by_code = {entry['scanned_code']: entry for entry in response.context['top_codes']}
-        self.assertTrue(by_code[OLD_EAN]['product_exists'])
-        self.assertFalse(by_code['REALLY-UNKNOWN']['product_exists'])
+        by_code = {row['code']: row for row in response.context['problem_codes']}
+        # An alias resolves to its product, so the health page must not offer to
+        # create a product for it — that would dead-end on the duplicate check.
+        self.assertEqual(by_code[OLD_EAN]['product'], self.smoothie)
+        self.assertTrue(by_code[OLD_EAN]['is_alias'])
+        self.assertNotEqual(by_code[OLD_EAN]['diagnosis'], 'unknown_code')
+        self.assertIsNone(by_code['REALLY-UNKNOWN']['product'])
+        self.assertEqual(by_code['REALLY-UNKNOWN']['diagnosis'], 'unknown_code')
 
 
 class AdminSaveModelTests(ProductBarcodeTestCase):

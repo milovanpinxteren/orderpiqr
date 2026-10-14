@@ -6,48 +6,6 @@
 {% block page_subtitle %}<p class="page-subtitle">{% trans "Scan failures, rejected picklists and manual overrides" %}</p>{% endblock %}
 
 {% block content %}
-<!-- "Right now" strip. Deliberately outside the date window: this is the part
-     that answers a phone call, and every counter in it was unmeasurable before
-     — restarts, logouts and crashes produced no event at all. -->
-<div class="card mb-lg">
-    <div class="card-header">
-        <h3>{% trans "Right now" %}</h3>
-        <span class="text-muted">{% trans "last hour, independent of the filter below" %}</span>
-    </div>
-    <div class="card-body">
-        <div class="live-strip">
-            <div class="live-item">
-                <div class="live-value">{{ live.devices_active }}<span class="live-of">/{{ live.devices_total }}</span></div>
-                <div class="live-label">{% trans "devices active" %}</div>
-            </div>
-            <div class="live-item">
-                <div class="live-value">{{ live.lists_in_progress }}</div>
-                <div class="live-label">{% trans "lists in progress" %}</div>
-            </div>
-            <div class="live-item {% if live.app_restarts %}live-warn{% endif %}">
-                <div class="live-value">{{ live.app_restarts }}</div>
-                <div class="live-label">{% trans "app restarts" %}</div>
-            </div>
-            <div class="live-item {% if live.auth_bounces %}live-bad{% endif %}">
-                <div class="live-value">{{ live.auth_bounces }}</div>
-                <div class="live-label">{% trans "sent back to login" %}</div>
-            </div>
-            <div class="live-item {% if live.client_errors %}live-bad{% endif %}">
-                <div class="live-value">{{ live.client_errors }}</div>
-                <div class="live-label">{% trans "app errors" %}</div>
-            </div>
-            <div class="live-item {% if live.lock_takeovers %}live-warn{% endif %}">
-                <div class="live-value">{{ live.lock_takeovers }}</div>
-                <div class="live-label">{% trans "list handovers" %}</div>
-            </div>
-            <div class="live-item {% if devices_on_old_build %}live-warn{% endif %}">
-                <div class="live-value">{{ devices_on_old_build }}</div>
-                <div class="live-label">{% trans "on an old app version" %}</div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- One window drives every number below it: tiles, breakdowns and the event
      list. (Stale picklists stay deliberately live — they are a thing to fix
      now, and the card says so.) -->
@@ -177,6 +135,14 @@
                 <div class="live-value">{{ outcomes.lines_total }}</div>
                 <div class="live-label">{% trans "lines picked" %}</div>
             </div>
+            <div class="live-item">
+                <div class="live-value">{{ outcomes.devices_used }}</div>
+                <div class="live-label">{% trans "devices used" %}</div>
+            </div>
+            <div class="live-item {% if outcomes.devices_on_old_build %}live-warn{% endif %}">
+                <div class="live-value">{{ outcomes.devices_on_old_build }}</div>
+                <div class="live-label">{% trans "on an old app version" %}</div>
+            </div>
         </div>
     </div>
 </div>
@@ -278,45 +244,6 @@
 </div>
 {% endif %}
 
-{% if top_override_codes %}
-<!-- Manual override breakdown: picks confirmed by hand instead of by scan.
-     Per product this flags wrong barcodes; per picker it flags device or
-     habit problems. -->
-<div class="health-columns mb-lg">
-    <div class="card">
-        <div class="card-header">
-            <h3>{% trans "Most Overridden Products" %}</h3>
-            <span class="text-muted">{{ window_label }}</span>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>{% trans "Product" %}</th>
-                            <th class="text-right">{% trans "Overrides" %}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for entry in top_override_codes %}
-                        <tr>
-                            <td>
-                                {% if entry.description %}{{ entry.description }}<br>{% endif %}
-                                <span class="scan-event-code">{{ entry.scanned_code }}</span>
-                            </td>
-                            <td class="text-right">{{ entry.count }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr><td colspan="2" class="text-muted">{% trans "No manual overrides in this period." %}</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
-
 {% if stale_picklists %}
 <!-- Stale In-progress Picklists -->
 <div class="card mb-lg">
@@ -400,11 +327,14 @@
 </div>
 {% endif %}
 
-{% if top_codes %}
-<!-- Top Problem Codes -->
+{% if problem_codes %}
+<!-- One table, with the cause named and the fix one click away. The old
+     version summed opposite problems into a single "Events" count and then
+     printed "Known product" where an action belonged, which answered neither
+     "what is wrong with this code" nor "what do I do about it". -->
 <div class="card mb-lg">
     <div class="card-header">
-        <h3>{% trans "Top Problem Codes" %}</h3>
+        <h3>{% trans "Codes that need attention" %}</h3>
         <span class="text-muted">{{ window_label }}</span>
     </div>
     <div class="card-body p-0">
@@ -413,21 +343,57 @@
                 <thead>
                     <tr>
                         <th>{% trans "Code" %}</th>
-                        <th>{% trans "Events" %}</th>
-                        <th class="text-right">{% trans "Actions" %}</th>
+                        <th>{% trans "What is wrong" %}</th>
+                        <th>{% trans "Details" %}</th>
+                        <th class="text-right">{% trans "Fix" %}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for entry in top_codes %}
+                    {% for row in problem_codes %}
                     <tr>
-                        <td><span class="scan-event-code">{{ entry.scanned_code }}</span></td>
-                        <td>{{ entry.count }}</td>
-                        <td class="text-right">
-                            {% if entry.product_exists %}
-                            <span class="badge badge-secondary">{% trans "Known product" %}</span>
+                        <td>
+                            {% if row.product %}
+                            <strong>{{ row.product.description }}</strong><br>
+                            {% endif %}
+                            <span class="scan-event-code">{{ row.code }}</span>
+                            {% if row.is_alias %}
+                            <br><span class="text-muted">{% trans "extra barcode" %}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if row.diagnosis == 'unknown_code' %}
+                            <span class="badge badge-danger">{% trans "Not in the catalogue" %}</span>
+                            <br><span class="text-muted">{% trans "scanned, but no product has this code" %}</span>
+                            {% elif row.diagnosis == 'not_scanning' %}
+                            <span class="badge badge-warning">{% trans "Barcode does not scan" %}</span>
+                            <br><span class="text-muted">{% trans "pickers keep confirming it by hand" %}</span>
+                            {% elif row.diagnosis == 'not_in_order' %}
+                            <span class="badge badge-warning">{% trans "Scanned outside its order" %}</span>
+                            <br><span class="text-muted">{% trans "the product exists, but was not on that list" %}</span>
+                            {% elif row.diagnosis == 'not_recorded' %}
+                            <span class="badge badge-danger">{% trans "Picks not recorded" %}</span>
+                            <br><span class="text-muted">{% trans "the server refused the pick" %}</span>
                             {% else %}
-                            <a href="{% url 'manage_product_create' %}?code={{ entry.scanned_code|urlencode }}"
+                            <span class="badge badge-warning">{% trans "Unreadable or wrong product" %}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted">
+                            {% if row.overrides %}{{ row.overrides }}&times; {% trans "confirmed by hand" %}<br>{% endif %}
+                            {% if row.not_found %}{{ row.not_found }}&times; {% trans "not found on the list" %}<br>{% endif %}
+                            {% if row.not_recorded %}{{ row.not_recorded }}&times; {% trans "not recorded" %}<br>{% endif %}
+                            {% if row.unreadable %}{{ row.unreadable }}&times; {% trans "unreadable" %}{% endif %}
+                        </td>
+                        <td class="text-right">
+                            {% if row.diagnosis == 'unknown_code' %}
+                            <a href="{% url 'manage_product_create' %}?code={{ row.code|urlencode }}"
                                class="btn btn-sm btn-primary">{% trans "Add as product" %}</a>
+                            {% elif row.diagnosis == 'not_scanning' and row.product %}
+                            <a href="{% url 'manage_product_edit' row.product.product_id %}"
+                               class="btn btn-sm btn-primary"
+                               title="{% trans 'Add the code that is physically on the label as an extra barcode, so pickers can scan it instead of confirming by hand.' %}">{% trans "Add extra barcode" %}</a>
+                            {% elif row.product %}
+                            <a href="{% url 'manage_product_edit' row.product.product_id %}"
+                               class="btn btn-sm btn-secondary">{% trans "Open product" %}</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -540,7 +506,7 @@
 </div>
 
 <style>
-/* "Right now" / outcome strips: a row of plain numbers that stays readable
+/* Outcome strip: a row of plain numbers that stays readable
    when it wraps onto two lines on a narrow screen. */
 .live-strip {
     display: flex;
@@ -635,17 +601,6 @@ a.stat-card:hover {
     display: flex;
     gap: var(--spacing-xs);
     justify-content: flex-end;
-}
-.health-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-lg);
-    align-items: start;
-}
-@media (max-width: 768px) {
-    .health-columns {
-        grid-template-columns: 1fr;
-    }
 }
 </style>
 {% endblock %}

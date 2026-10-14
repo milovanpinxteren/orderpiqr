@@ -1242,39 +1242,6 @@ HEALTH_TILE_TYPES = {
 }
 
 
-def _add_live_strip(context, customer):
-    """Is it happening right now? Deliberately ignores the date window.
-
-    These are the counters that answer the phone call. Every one of them was
-    unmeasurable before: restarts, logouts and crashes produced no event at all.
-    """
-    now = timezone.now()
-    hour_ago = now - timedelta(hours=1)
-    recent = ScanEvent.objects.filter(customer=customer, created_at__gte=hour_ago)
-
-    by_type = dict(recent.values_list('event_type').annotate(n=Count('id')).values_list('event_type', 'n'))
-    context['live'] = {
-        'devices_active': Device.objects.filter(
-            customer=customer, last_login__gte=now - timedelta(minutes=15)).count(),
-        'devices_total': Device.objects.filter(customer=customer).count(),
-        'lists_in_progress': PickList.objects.filter(
-            customer=customer, pick_started=True, successful__isnull=True,
-            archived=False).count(),
-        'app_restarts': by_type.get('app_lifecycle', 0),
-        'auth_bounces': by_type.get('auth_bounce', 0),
-        'client_errors': by_type.get('client_error', 0) + by_type.get('camera_error', 0),
-        'lock_takeovers': by_type.get('lock_takeover', 0),
-    }
-
-    # Devices still running an older client than the one we serve. A bad deploy
-    # mid-rollout looks exactly like "the app broke this morning".
-    current_build = get_build_id()
-    context['current_build'] = current_build
-    context['devices_on_old_build'] = Device.objects.filter(
-        customer=customer, last_login__gte=now - timedelta(days=1),
-    ).exclude(last_build_id='').exclude(last_build_id=current_build).count()
-
-
 def _add_health_tiles(context, window):
     """Headline counts per problem kind, each one a link that filters the list."""
     counts = dict(window.values_list('event_type').annotate(n=Count('id'))
@@ -1349,6 +1316,70 @@ def _add_device_breakdown(context, customer, window, start, end):
         rows.values(), key=lambda r: (r['errors'] + r['bounces'], r['overrides']), reverse=True)
 
 
+def _add_problem_codes(context, customer, window):
+    """Codes that need attention, with the cause named and a fix to click.
+
+    This replaces a "Top Problem Codes" table that listed a code, a single
+    event count, and the word "Known product" where an action belonged. It was
+    worse than unhelpful: it summed two opposite problems into one number.
+    On Healthy Fridge's real data, 8721352510154 was 26 manual overrides out of
+    29 (the label does not scan) while 8721352510079 was 46 unknown_product out
+    of 52 (scanned into an order it is not part of). Same row count, opposite
+    causes, opposite fixes.
+    """
+    rows = {}
+    for entry in (window.exclude(scanned_code='')
+                  .values('scanned_code', 'event_type')
+                  .annotate(n=Count('id'))):
+        row = rows.setdefault(entry['scanned_code'], {
+            'code': entry['scanned_code'],
+            'total': 0, 'overrides': 0, 'not_found': 0, 'not_recorded': 0, 'unreadable': 0,
+        })
+        count = entry['n']
+        row['total'] += count
+        event_type = entry['event_type']
+        if event_type == 'manual_override':
+            row['overrides'] += count
+        elif event_type == 'unknown_product':
+            row['not_found'] += count
+        elif event_type == 'sync_error':
+            row['not_recorded'] += count
+        elif event_type in ('wrong_product', 'picklist_parse_error'):
+            row['unreadable'] += count
+
+    top = sorted(rows.values(), key=lambda r: -r['total'])[:10]
+    codes = [r['code'] for r in top]
+
+    products = {p.code: p for p in Product.objects.filter(customer=customer, code__in=codes)}
+    # An alias is a known product too — offering "Add as product" for one would
+    # dead-end on the duplicate-code check.
+    aliases = {b.code: b.product for b in ProductBarcode.objects
+               .filter(customer=customer, code__in=codes).select_related('product')}
+
+    for row in top:
+        product = products.get(row['code']) or aliases.get(row['code'])
+        row['product'] = product
+        row['is_alias'] = row['code'] in aliases and row['code'] not in products
+
+        if product is None:
+            # Nothing in the catalog answers to this code.
+            row['diagnosis'] = 'unknown_code'
+        elif row['overrides'] >= max(row['not_found'], row['not_recorded'], row['unreadable']):
+            # Pickers keep confirming this line by hand, which is them telling
+            # us the barcode on the label does not scan.
+            row['diagnosis'] = 'not_scanning'
+        elif row['not_recorded'] >= max(row['not_found'], row['unreadable']):
+            row['diagnosis'] = 'not_recorded'
+        elif row['not_found'] >= row['unreadable']:
+            # A code the catalog knows, reported unknown: it was scanned for an
+            # order it is not part of, or every unit was already picked.
+            row['diagnosis'] = 'not_in_order'
+        else:
+            row['diagnosis'] = 'unreadable'
+
+    context['problem_codes'] = top
+
+
 def _add_pick_outcomes(context, customer, start, end):
     """Did the work actually get recorded? The metric that measures real harm.
 
@@ -1365,6 +1396,13 @@ def _add_pick_outcomes(context, customer, start, end):
         picklist_id__in=completed_ids, successful__isnull=True).count()
 
     restarted = picklists.filter(notes__contains='Restarted by device')
+
+    # Fleet facts for the same window, so every number on the page describes one
+    # period. A device still on an older build matters because a half-rolled-out
+    # deploy looks exactly like "the app broke this morning".
+    devices_used = picklists.exclude(device__isnull=True).values('device_id').distinct().count()
+    current_build = get_build_id()
+    context['current_build'] = current_build
     context['outcomes'] = {
         'lists_total': picklists.count(),
         'lists_completed': len(completed_ids),
@@ -1373,6 +1411,10 @@ def _add_pick_outcomes(context, customer, start, end):
         'lines_lost': lost_lines,
         'lines_lost_pct': round(100.0 * lost_lines / total_lines, 1) if total_lines else 0.0,
         'lists_restarted': restarted.count(),
+        'devices_used': devices_used,
+        'devices_on_old_build': Device.objects.filter(
+            customer=customer, last_login__gte=start, last_login__lte=end,
+        ).exclude(last_build_id='').exclude(last_build_id=current_build).count(),
     }
 
 
@@ -1432,57 +1474,11 @@ def health_list(request):
     context['event_types'] = ScanEvent.EVENT_TYPES
     context['severities'] = ScanEvent.SEVERITIES
 
-    _add_live_strip(context, customer)
     _add_health_tiles(context, window)
     _add_device_breakdown(context, customer, window, start, end)
     _add_pick_outcomes(context, customer, start, end)
 
-    # Top problem codes in the window. Bulk unknown_product events may
-    # contain comma-joined codes; those are displayed as-is.
-    top_codes = list(
-        window.exclude(scanned_code='')
-        .values('scanned_code')
-        .annotate(count=Count('id'))
-        .order_by('-count')[:10]
-    )
-    scanned = [entry['scanned_code'] for entry in top_codes]
-    existing_codes = set(
-        Product.objects.filter(customer=customer, code__in=scanned)
-        .values_list('code', flat=True)
-    )
-    # Alias codes are known products too — offering "Add as product" for them
-    # would dead-end on the duplicate-code check.
-    existing_codes |= set(
-        ProductBarcode.objects.filter(customer=customer, code__in=scanned)
-        .values_list('code', flat=True)
-    )
-    for entry in top_codes:
-        # "Add as product" only makes sense for genuinely unknown codes.
-        entry['product_exists'] = entry['scanned_code'] in existing_codes
-    context['top_codes'] = top_codes
-
-    # Manual overrides, split by product and picker. A triple-tap override
-    # means scanning did not work for that line: many overrides on one product
-    # point at a wrong barcode on the label or in the catalog, many by one
-    # picker at a device or habit problem.
-    overrides_window = window.filter(event_type='manual_override')
-
-    # An override's scanned_code is the picklist's primary product code, so it
-    # resolves to a catalog description directly.
-    top_override_codes = list(
-        overrides_window.exclude(scanned_code='')
-        .values('scanned_code')
-        .annotate(count=Count('id'))
-        .order_by('-count')[:10]
-    )
-    descriptions = dict(
-        Product.objects.filter(
-            customer=customer,
-            code__in=[entry['scanned_code'] for entry in top_override_codes],
-        ).values_list('code', 'description'))
-    for entry in top_override_codes:
-        entry['description'] = descriptions.get(entry['scanned_code'], '')
-    context['top_override_codes'] = top_override_codes
+    _add_problem_codes(context, customer, window)
 
     # Deliberately NOT window-filtered: a stuck list is a thing to go and fix
     # now, not a historical statistic. Labelled as such on the page, because

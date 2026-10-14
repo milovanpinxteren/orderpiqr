@@ -10,7 +10,8 @@ from django.utils import timezone
 from django.utils.translation import activate
 
 from orderpiqrApp.models import (
-    Customer, Device, PickList, Product, ProductPick, ScanEvent, UserProfile,
+    Customer, Device, PickList, Product, ProductBarcode, ProductPick, ScanEvent,
+    UserProfile,
 )
 
 
@@ -151,10 +152,7 @@ class HealthListTests(ManageHealthTestCase):
         self.assertEqual(response.context['tiles']['scanning'], 1)
         self.assertEqual(response.context['tiles']['overrides'], 1)
         self.assertEqual(
-            [e['scanned_code'] for e in response.context['top_codes']], ['DAY-1'])
-        self.assertEqual(
-            [e['scanned_code'] for e in response.context['top_override_codes']],
-            ['DAY-1'])
+            [r['code'] for r in response.context['problem_codes']], ['DAY-1'])
 
     def test_date_filter_reaches_beyond_the_default_window(self):
         # Without dates the page shows the last 24 hours; a date window must
@@ -165,8 +163,7 @@ class HealthListTests(ManageHealthTestCase):
         response = self.client.get(self.url, {'date_from': day, 'date_to': day})
         self.assertEqual(response.context['tiles']['overrides'], 1)
         self.assertEqual(
-            [e['scanned_code'] for e in response.context['top_override_codes']],
-            ['OLD-1'])
+            [r['code'] for r in response.context['problem_codes']], ['OLD-1'])
 
     def test_invalid_date_falls_back_to_the_default_window(self):
         self.make_event('unknown_product', scanned_code='NEW-1')
@@ -183,7 +180,10 @@ class HealthListTests(ManageHealthTestCase):
         self.assertEqual(len(response.context['events']), 0)
         self.assertNotContains(response, 'FOREIGN-1')
 
-    def test_top_codes_flag_unknown_vs_existing_products(self):
+    def test_problem_codes_name_the_cause_not_just_a_count(self):
+        # The old card summed every event type into one number and printed
+        # "Known product" where an action belonged, so it could not tell a
+        # missing catalogue entry from a label that will not scan.
         Product.objects.create(customer=self.customer, code='KNOWN-1',
                                description='A known product')
         for _ in range(3):
@@ -193,18 +193,67 @@ class HealthListTests(ManageHealthTestCase):
         self.make_event('unknown_product', scanned_code='ANCIENT-1', days_ago=8)
 
         response = self.client.get(self.url)
-        top_codes = response.context['top_codes']
-        by_code = {entry['scanned_code']: entry for entry in top_codes}
+        rows = response.context['problem_codes']
+        by_code = {r['code']: r for r in rows}
 
         self.assertNotIn('ANCIENT-1', by_code)
-        self.assertEqual(by_code['GHOST-1']['count'], 3)
-        self.assertFalse(by_code['GHOST-1']['product_exists'])
-        self.assertTrue(by_code['KNOWN-1']['product_exists'])
-        # Ordered by count, most frequent first.
-        self.assertEqual(top_codes[0]['scanned_code'], 'GHOST-1')
-        # The "Add as product" prefill link only for genuinely unknown codes.
+        self.assertEqual(by_code['GHOST-1']['total'], 3)
+        self.assertEqual(by_code['GHOST-1']['not_found'], 3)
+        self.assertIsNone(by_code['GHOST-1']['product'])
+        self.assertEqual(by_code['GHOST-1']['diagnosis'], 'unknown_code')
+        self.assertEqual(by_code['KNOWN-1']['diagnosis'], 'unreadable')
+        # Ordered by total, most frequent first.
+        self.assertEqual(rows[0]['code'], 'GHOST-1')
+        # The "Add as product" prefill only for genuinely unknown codes.
         self.assertContains(response, '?code=GHOST-1')
         self.assertNotContains(response, '?code=KNOWN-1')
+
+    def test_overrides_on_a_known_product_read_as_a_barcode_problem(self):
+        # Pickers confirming a line by hand are telling us the label does not
+        # scan; the fix is an extra barcode, so the row must say so and link to
+        # the product rather than offer "add as product".
+        product = Product.objects.create(customer=self.customer, code='SMOOTHIE-1',
+                                         description='Smoothie orange')
+        for _ in range(5):
+            self.make_event('manual_override', scanned_code='SMOOTHIE-1')
+        self.make_event('unknown_product', scanned_code='SMOOTHIE-1')
+
+        response = self.client.get(self.url)
+        row = {r['code']: r for r in response.context['problem_codes']}['SMOOTHIE-1']
+
+        self.assertEqual(row['diagnosis'], 'not_scanning')
+        self.assertEqual(row['overrides'], 5)
+        self.assertEqual(row['not_found'], 1)
+        self.assertEqual(row['product'], product)
+        self.assertContains(
+            response, reverse('manage_product_edit', args=[product.product_id]))
+
+    def test_known_product_reported_unknown_reads_as_scanned_outside_its_order(self):
+        Product.objects.create(customer=self.customer, code='WRAP-1',
+                               description='Wrap salmon')
+        for _ in range(4):
+            self.make_event('unknown_product', scanned_code='WRAP-1')
+        self.make_event('manual_override', scanned_code='WRAP-1')
+
+        response = self.client.get(self.url)
+        row = {r['code']: r for r in response.context['problem_codes']}['WRAP-1']
+
+        self.assertEqual(row['diagnosis'], 'not_in_order')
+
+    def test_an_alias_code_is_not_offered_as_a_new_product(self):
+        product = Product.objects.create(customer=self.customer, code='PRIMARY-1',
+                                         description='Rotated EAN product')
+        ProductBarcode.objects.create(customer=self.customer, product=product,
+                                      code='OLD-EAN-1')
+        self.make_event('unknown_product', scanned_code='OLD-EAN-1')
+
+        response = self.client.get(self.url)
+        row = {r['code']: r for r in response.context['problem_codes']}['OLD-EAN-1']
+
+        self.assertEqual(row['product'], product)
+        self.assertTrue(row['is_alias'])
+        self.assertNotEqual(row['diagnosis'], 'unknown_code')
+        self.assertNotContains(response, '?code=OLD-EAN-1')
 
     def test_override_breakdown_by_product_and_device(self):
         Product.objects.create(customer=self.customer, code='BAR-1',
@@ -226,18 +275,19 @@ class HealthListTests(ManageHealthTestCase):
         self.assertEqual(response.context['tiles']['overrides'], 4)
         self.assertEqual(response.context['tiles']['scanning'], 1)
 
-        by_code = {e['scanned_code']: e for e in response.context['top_override_codes']}
-        self.assertEqual(by_code['BAR-1']['count'], 3)
-        self.assertEqual(by_code['BAR-1']['description'], 'Chocolate bar')
-        self.assertEqual(by_code['NO-PRODUCT']['description'], '')
+        # Overrides per code are one named cause in the codes table now, rather
+        # than a separate card that could not say what to do about them.
+        by_code = {r['code']: r for r in response.context['problem_codes']}
+        self.assertEqual(by_code['BAR-1']['overrides'], 3)
+        self.assertEqual(by_code['BAR-1']['diagnosis'], 'not_scanning')
+        self.assertIsNone(by_code['NO-PRODUCT']['product'])
+        self.assertEqual(by_code['NO-PRODUCT']['diagnosis'], 'unknown_code')
 
-        # Per-device override counts now live in the device breakdown, next to
+        # Per-device override counts live in the device breakdown, next to
         # errors, logouts and restarts, so one bad phone is visible at a glance.
         by_device = {row['name']: row for row in response.context['device_rows']}
         self.assertEqual(by_device['Phone A']['overrides'], 3)
         self.assertEqual(by_device['Phone B']['overrides'], 1)
-        # Most overridden first.
-        self.assertEqual(response.context['top_override_codes'][0]['scanned_code'], 'BAR-1')
         self.assertContains(response, 'Chocolate bar')
 
     def test_stale_picklists_listed_with_detail_link(self):
@@ -269,14 +319,16 @@ class HealthListTests(ManageHealthTestCase):
         self.assertEqual(response.context['stale_pending_lines'], 1)
 
 
-class HealthLiveStripTests(ManageHealthTestCase):
-    """The counters that answer a phone call, none of which existed before."""
+class HealthTileTests(ManageHealthTestCase):
+    """Problems grouped by kind, every count obeying the one date window."""
 
     def setUp(self):
         super().setUp()
         self.url = reverse('manage_health')
 
-    def test_live_strip_counts_the_silences(self):
+    def test_the_silences_are_counted(self):
+        # None of these existed as events before: crashes, logouts, reloads and
+        # lock handovers produced nothing at all.
         device = self.make_device()
         self.make_event('auth_bounce', device=device)
         self.make_event('client_error', device=device, reason='uncaught_error')
@@ -284,23 +336,22 @@ class HealthLiveStripTests(ManageHealthTestCase):
         self.make_event('app_lifecycle', device=device, reason='self_update_reload')
         self.make_event('lock_takeover', device=device)
 
-        live = self.client.get(self.url).context['live']
+        tiles = self.client.get(self.url).context['tiles']
 
-        self.assertEqual(live['auth_bounces'], 1)
-        self.assertEqual(live['client_errors'], 2)   # client + camera
-        self.assertEqual(live['app_restarts'], 1)
-        self.assertEqual(live['lock_takeovers'], 1)
+        self.assertEqual(tiles['blocking'], 1)                     # auth_bounce
+        self.assertEqual(tiles['app'], 4)   # client + camera + lifecycle + takeover
 
-    def test_live_strip_ignores_the_date_window(self):
-        # It is about now, not about the filter — that is the whole point.
-        self.make_event('auth_bounce')
+    def test_every_count_obeys_the_window(self):
+        # The old page had a one-hour strip above a filtered body, so one screen
+        # described two different periods.
+        self.make_event('auth_bounce', days_ago=30)
         day = (timezone.now() - timedelta(days=30)).date().isoformat()
-        response = self.client.get(self.url, {'date_from': day, 'date_to': day})
-        self.assertEqual(response.context['live']['auth_bounces'], 1)
 
-    def test_old_events_do_not_count_as_live(self):
-        self.make_event('auth_bounce', days_ago=2)
-        self.assertEqual(self.client.get(self.url).context['live']['auth_bounces'], 0)
+        inside = self.client.get(self.url, {'date_from': day, 'date_to': day})
+        self.assertEqual(inside.context['tiles']['blocking'], 1)
+
+        outside = self.client.get(self.url)
+        self.assertEqual(outside.context['tiles']['blocking'], 0)
 
     def test_tiles_group_by_kind_of_problem(self):
         self.make_event('picklist_rejected')
