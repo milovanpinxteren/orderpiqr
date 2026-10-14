@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 12:56+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,19 +30,18 @@ msgstr "Descriere — note opționale despre dispozitiv sau locație."
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:46
 msgid "Last login — when this device last authenticated/was used."
 msgstr ""
-"Ultima autentificare — când acest dispozitiv s-a autentificat/a fost folosit"
-" ultima dată."
+"Ultima autentificare — când acest dispozitiv s-a autentificat/a fost folosit "
+"ultima dată."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:51
 msgid "Lists picked — how many picklists this device/user completed."
 msgstr ""
-"Liste preluate — câte liste de preluare a finalizat acest "
-"dispozitiv/utilizator."
+"Liste preluate — câte liste de preluare a finalizat acest dispozitiv/"
+"utilizator."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:56
 msgid "Customer — company admins only see their own devices."
-msgstr ""
-"Client — administratorii companiei își văd doar propriile dispozitive."
+msgstr "Client — administratorii companiei își văd doar propriile dispozitive."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:62
 msgid "Add a new device here when granting scanning access."
@@ -60,46 +59,46 @@ msgstr "Deschideți un dispozitiv pentru a-i vedea detaliile."
 msgid ""
 "<h1>🎉 All set! You’ve completed the Orderpiqr tour.</h1><br>        Next "
 "steps:<br>        • <b>Add your products</b> in the admin panel.<br>        "
-"• <b>Create an order</b> and <b>generate a PDF picklist</b> for your "
-"team.<br>        • On your phone, visit <a href='https://app.orderpiqr.nl' "
+"• <b>Create an order</b> and <b>generate a PDF picklist</b> for your team."
+"<br>        • On your phone, visit <a href='https://app.orderpiqr.nl' "
 "target='_blank'>app.orderpiqr.nl</a>         and log in with your order "
 "picker account.<br>        • <b>Scan the QR code</b> on your newly created "
-"picklist.<br>        • Start picking your first order!<br><br>"
-"                <h2>Important information</h2>        We recommend using "
-"<b>Google Chrome</b> for full functionality — you can also         "
-"<b>install the web app</b> directly from your browser for quick "
-"access.<br><br>        On your phone, you can adjust settings such as "
-"<b>language</b>, <b>picking order</b>,         and <b>sorting order</b>. If "
-"you’d like us to set up default preferences for you, just let us "
-"know.<br><br>        If you have any questions or would like additional "
-"features, email         <a "
-"href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> or schedule a call via"
-"         <a href='https://www.orderpiqr.nl' "
+"picklist.<br>        • Start picking your first order!"
+"<br><br>                <h2>Important information</h2>        We recommend "
+"using <b>Google Chrome</b> for full functionality — you can also         "
+"<b>install the web app</b> directly from your browser for quick access."
+"<br><br>        On your phone, you can adjust settings such as <b>language</"
+"b>, <b>picking order</b>,         and <b>sorting order</b>. If you’d like us "
+"to set up default preferences for you, just let us know.<br><br>        If "
+"you have any questions or would like additional features, email         <a "
+"href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> or schedule a call "
+"via         <a href='https://www.orderpiqr.nl' "
 "target='_blank'>www.orderpiqr.nl</a>.<br><br>        Your first <b>50 "
-"picklists per month are free</b>! After that, you’ll receive a notification"
-"         before any billing begins — no subscriptions, no hidden costs."
+"picklists per month are free</b>! After that, you’ll receive a "
+"notification         before any billing begins — no subscriptions, no hidden "
+"costs."
 msgstr ""
-"<h1>🎉 Gata! Ați finalizat turul Orderpiqr.</h1><br>        Pașii "
-"următori:<br>        • <b>Adăugați produsele</b> în panoul de "
-"administrare.<br>        • <b>Creați o comandă</b> și <b>generați o listă de"
-" preluare PDF</b> pentru echipa dumneavoastră.<br>        • Pe telefon, "
-"accesați <a href='https://app.orderpiqr.nl' "
-"target='_blank'>app.orderpiqr.nl</a>         și autentificați-vă cu contul "
-"dumneavoastră de operator.<br>        • <b>Scanați codul QR</b> de pe lista "
-"de preluare nou creată.<br>        • Începeți să preluați prima "
-"comandă!<br><br>                <h2>Informații importante</h2>        "
-"Recomandăm folosirea <b>Google Chrome</b> pentru funcționalitate completă — "
-"puteți de asemenea         să <b>instalați aplicația web</b> direct din "
-"browser pentru acces rapid.<br><br>        Pe telefon puteți ajusta setări "
-"precum <b>limba</b>, <b>ordinea de preluare</b>         și <b>ordinea de "
-"sortare</b>. Dacă doriți să configurăm noi preferințele implicite pentru "
-"dumneavoastră, spuneți-ne.<br><br>        Dacă aveți întrebări sau doriți "
-"funcționalități suplimentare, scrieți la         <a "
-"href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> sau programați un apel"
-" prin         <a href='https://www.orderpiqr.nl' "
+"<h1>🎉 Gata! Ați finalizat turul Orderpiqr.</h1><br>        Pașii următori:"
+"<br>        • <b>Adăugați produsele</b> în panoul de administrare."
+"<br>        • <b>Creați o comandă</b> și <b>generați o listă de preluare "
+"PDF</b> pentru echipa dumneavoastră.<br>        • Pe telefon, accesați <a "
+"href='https://app.orderpiqr.nl' target='_blank'>app.orderpiqr.nl</a>         "
+"și autentificați-vă cu contul dumneavoastră de operator.<br>        • "
+"<b>Scanați codul QR</b> de pe lista de preluare nou creată.<br>        • "
+"Începeți să preluați prima comandă!<br><br>                <h2>Informații "
+"importante</h2>        Recomandăm folosirea <b>Google Chrome</b> pentru "
+"funcționalitate completă — puteți de asemenea         să <b>instalați "
+"aplicația web</b> direct din browser pentru acces rapid.<br><br>        Pe "
+"telefon puteți ajusta setări precum <b>limba</b>, <b>ordinea de preluare</"
+"b>         și <b>ordinea de sortare</b>. Dacă doriți să configurăm noi "
+"preferințele implicite pentru dumneavoastră, spuneți-ne.<br><br>        Dacă "
+"aveți întrebări sau doriți funcționalități suplimentare, scrieți la         "
+"<a href='mailto:info@orderpiqr.nl'>info@orderpiqr.nl</a> sau programați un "
+"apel prin         <a href='https://www.orderpiqr.nl' "
 "target='_blank'>www.orderpiqr.nl</a>.<br><br>        Primele <b>50 de liste "
-"de preluare pe lună sunt gratuite</b>! După aceea, veți primi o notificare"
-"         înainte de orice facturare — fără abonamente, fără costuri ascunse."
+"de preluare pe lună sunt gratuite</b>! După aceea, veți primi o "
+"notificare         înainte de orice facturare — fără abonamente, fără "
+"costuri ascunse."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:107
 msgid "Finish"
@@ -141,8 +140,8 @@ msgid ""
 msgstr ""
 "Importați comenzi în masă prin CSV/XLSX. Antete obligatorii: "
 "<code>order_code</code>, <code>product_code</code>, <code>quantity</code>. "
-"Codurile de produs necunoscute sunt respinse. Comenzile existente cu același"
-" cod sunt suprascrise (liniile lor sunt înlocuite)."
+"Codurile de produs necunoscute sunt respinse. Comenzile existente cu același "
+"cod sunt suprascrise (liniile lor sunt înlocuite)."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:76
 msgid "Search by order code (and other fields) to find orders quickly."
@@ -159,8 +158,8 @@ msgstr "Selectați una sau mai multe comenzi, apoi alegeți „%(label)s”."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:91
 msgid ""
-"Select one or more orders, then choose “%(label)s” to generate a batch of QR"
-" PDFs."
+"Select one or more orders, then choose “%(label)s” to generate a batch of QR "
+"PDFs."
 msgstr ""
 "Selectați una sau mai multe comenzi, apoi alegeți „%(label)s” pentru a "
 "genera un lot de PDF-uri cu coduri QR."
@@ -188,8 +187,8 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:111
 msgid "Next, open <b>Pick Lists</b> to review and print PDFs with QR codes."
 msgstr ""
-"Apoi, deschideți <b>Liste de preluare</b> pentru a verifica și a imprima "
-"PDF-uri cu coduri QR."
+"Apoi, deschideți <b>Liste de preluare</b> pentru a verifica și a imprima PDF-"
+"uri cu coduri QR."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:119
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:89
@@ -217,8 +216,7 @@ msgstr "Cod listă de preluare — ID unic folosit în aplicație/coduri QR."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:50
 msgid "Device — who/what performed the picking (helps with accountability)."
-msgstr ""
-"Dispozitiv — cine/ce a efectuat preluarea (ajută la responsabilizare)."
+msgstr "Dispozitiv — cine/ce a efectuat preluarea (ajută la responsabilizare)."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:55
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:167
@@ -252,8 +250,7 @@ msgstr ""
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:83
 msgid ""
-"Next: <b>Devices</b> — manage which devices can scan and see who picked "
-"what."
+"Next: <b>Devices</b> — manage which devices can scan and see who picked what."
 msgstr ""
 "Urmează: <b>Dispozitive</b> — gestionați ce dispozitive pot scana și vedeți "
 "cine a preluat ce."
@@ -290,8 +287,7 @@ msgstr "Succes general — starea pe scurt, dintr-o privire."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:183
 msgid ""
-"Item-level results (Product Picks). Each row shows what happened per "
-"product."
+"Item-level results (Product Picks). Each row shows what happened per product."
 msgstr ""
 "Rezultate la nivel de articol (Preluări produs). Fiecare rând arată ce s-a "
 "întâmplat pentru fiecare produs."
@@ -318,8 +314,8 @@ msgid ""
 "Tip: items not picked (unsuccessful) help you spot shortages or scanning "
 "mistakes."
 msgstr ""
-"Sfat: articolele nepreluate (fără succes) vă ajută să identificați lipsurile"
-" de stoc sau greșelile de scanare."
+"Sfat: articolele nepreluate (fără succes) vă ajută să identificați lipsurile "
+"de stoc sau greșelile de scanare."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:33
 msgid "This is your product catalog. Let's set it up."
@@ -362,11 +358,11 @@ msgstr ""
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:61
 msgid ""
-"You can also enable a CSV/XLSX upload on this page. When present, it adds or"
-" overwrites by product code for the current customer."
+"You can also enable a CSV/XLSX upload on this page. When present, it adds or "
+"overwrites by product code for the current customer."
 msgstr ""
-"Puteți activa și o încărcare CSV/XLSX pe această pagină. Când este prezentă,"
-" adaugă sau suprascrie după codul produsului pentru clientul curent."
+"Puteți activa și o încărcare CSV/XLSX pe această pagină. Când este prezentă, "
+"adaugă sau suprascrie după codul produsului pentru clientul curent."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:66
 msgid "Search by code or description to find items quickly."
@@ -448,45 +444,56 @@ msgstr "Deschideți <b>Produse</b> pentru a începe."
 msgid "Go to Products"
 msgstr "Mergi la Produse"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:34
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:35
 msgid "Could not load product data from server"
 msgstr "Nu s-au putut încărca datele produselor de pe server"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:38
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:39
 msgid "No product data found on page"
 msgstr "Nu s-au găsit date despre produse pe pagină"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:47
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:48
 msgid "Offline mode: using cached product data"
 msgstr "Mod offline: se folosesc datele de produse din cache"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:50
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:51
 msgid "Cached product data is not usable"
 msgstr "Datele de produse din cache nu sunt utilizabile"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:53
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:54
 msgid "No product data available while offline"
 msgstr "Nu sunt disponibile date despre produse în modul offline"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:104
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:105
 msgid "This picklist is already in progress. Restart it from the beginning?"
-msgstr ""
-"Această listă de preluare este deja în curs. O reîncepi de la început?"
+msgstr "Această listă de preluare este deja în curs. O reîncepi de la început?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:162
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:188
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:160
+msgid "That is not a product barcode."
+msgstr "Acesta nu este un cod de bare de produs."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:178
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:204
 msgid "Scanned %(product)s"
 msgstr "Scanat: %(product)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:171
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:187
 msgid "Incorrect scan, please try again."
 msgstr "Scanare incorectă, te rugăm să încerci din nou."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:196
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:220
+msgid "%(product)s: all %(total)s already picked."
+msgstr "%(product)s: toate cele %(total)s au fost deja preluate."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:232
+msgid "%(product)s is not in this order."
+msgstr "%(product)s nu face parte din această comandă."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:242
 msgid "Product code not found in the list."
 msgstr "Codul produsului nu a fost găsit în listă."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:205
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:253
 msgid ""
 "An unexpected error occurred, please try again. If this issue persists, "
 "contact support"
@@ -494,73 +501,83 @@ msgstr ""
 "A apărut o eroare neașteptată. Te rugăm să încerci din nou. Dacă problema "
 "persistă, contactează suportul tehnic."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:224
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:269
+msgid "This list is no longer assigned to you. Scan the list QR again."
+msgstr ""
+"Această listă nu îți mai este atribuită. Scanează din nou codul QR al listei."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:308
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:554
+msgid "No active picklist — scan the list QR first."
+msgstr "Nicio listă de picking activă — scanați mai întâi codul QR al listei."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:327
 msgid "Could not update product pick."
 msgstr "Nu s-a putut actualiza preluarea produsului."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:290
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:401
 msgid "Picklist completed!"
 msgstr "Listă de preluare finalizată!"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:294
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:305
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:405
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:419
 msgid "Error completing picklist."
 msgstr "Eroare la finalizarea listei de preluare."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:310
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:181
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:424
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:252
 msgid "Error getting device fingerprint."
 msgstr "Eroare la obținerea amprentei dispozitivului."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:318
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:432
 msgid "No product data was found, cannot update list"
 msgstr "Nu au fost găsite date despre produse, nu se poate actualiza lista."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:338
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:452
 msgid "Picked %(picked)s of %(total)s"
 msgstr "%(picked)s din %(total)s preluate"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:344
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:458
 msgid "<strong>%(total)s</strong> in total"
 msgstr "<strong>%(total)s</strong> în total"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:346
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:460
 msgid "Take %(remaining)s more"
 msgstr "Mai ia %(remaining)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:349
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:463
 msgid "Take <strong>%(remaining)s</strong> more"
 msgstr "Mai ia <strong>%(remaining)s</strong>"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:351
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:465
 msgid "%(total)s in total"
 msgstr "%(total)s în total"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:416
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:533
 msgid "All %(total)s taken"
 msgstr "Toate cele %(total)s luate"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:417
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:534
 msgid "Pick All"
 msgstr "Preia tot"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:454
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:583
 msgid "Could not update bulk product pick."
 msgstr "Nu s-a putut actualiza preluarea în bloc."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:461
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:590
 msgid "Picked %(quantity)s of %(product)s"
 msgstr "%(quantity)s din %(product)s preluate"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:535
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:686
 msgid "Please enter a valid quantity"
 msgstr "Introduceți o cantitate validă"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:634
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:785
 msgid "Cannot load order: product data not available"
 msgstr "Nu se poate încărca comanda: datele produsului nu sunt disponibile"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:672
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:823
 msgid "Order loaded from queue"
 msgstr "Comandă încărcată din coadă"
 
@@ -619,25 +636,25 @@ msgstr "Importanța ordinii: Activată"
 msgid "Order Importance: Disabled"
 msgstr "Importanța ordinii: Dezactivată"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:49
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:91
 msgid "New list found, start this list?"
 msgstr "Listă nouă găsită, începi această listă?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:64
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:106
 msgid "Could not determine product/quantity structure in picklist."
 msgstr ""
 "Nu s-a putut determina structura produs/cantitate din lista de preluare."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:75
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:88
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:119
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:132
 msgid "Product row is invalid"
 msgstr "Rândul de produs este invalid"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:97
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:141
 msgid "Product data is empty, cannot update list."
 msgstr "Datele produsului sunt goale, nu se poate actualiza lista."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:109
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:153
 msgid ""
 "Unknown product code(s): %(codes)s. Ask your admin to add them, then scan "
 "the list again."
@@ -645,42 +662,46 @@ msgstr ""
 "Cod(uri) de produs necunoscut(e): %(codes)s. Cere administratorului să le "
 "adauge, apoi scanează lista din nou."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:135
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:179
 msgid "Picklist added"
 msgstr "Listă de preluare adăugată"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:164
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:176
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:222
+msgid "Kept %(count)s already-picked item(s) from the previous attempt."
+msgstr "S-au păstrat %(count)s articole deja culese din încercarea anterioară."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:235
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:247
 msgid "Error sending picklist."
 msgstr "Eroare la trimiterea listei de preluare."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:198
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:269
 msgid "Unexpected error while parsing picklist."
 msgstr "Eroare neașteptată la interpretarea listei de preluare."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:208
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:279
 msgid "Invalid QR code structure. Please check the format"
 msgstr "Structură invalidă a codului QR. Vă rugăm să verificați formatul"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:224
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:295
 msgid ""
-"Ambiguous picklist: both fields look like product codes. Set the picklist QR"
-" format in your settings to resolve this."
+"Ambiguous picklist: both fields look like product codes. Set the picklist QR "
+"format in your settings to resolve this."
 msgstr ""
 "Listă de preluare ambiguă: ambele câmpuri par coduri de produs. Setează "
 "formatul QR al listei în setări pentru a rezolva."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:231
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:302
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Niciun câmp din rândul listei de ridicare nu corespunde unui cod de produs "
 "cunoscut."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:37
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:49
 msgid "No camera found on this device."
 msgstr "Nu a fost găsită nicio cameră pe acest dispozitiv."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:45
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:60
 msgid ""
 "Camera access was denied. Allow camera access for this site in your browser "
 "settings, then tap the button below."
@@ -688,38 +709,18 @@ msgstr ""
 "Accesul la cameră a fost refuzat. Permiteți accesul la cameră pentru acest "
 "site din setările browserului, apoi apăsați butonul de mai jos."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:80
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:96
 msgid "Could not start the camera."
 msgstr "Camera nu a putut fi pornită."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:142
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:158
 msgid "Camera %(number)s"
 msgstr "Camera %(number)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:150
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
 msgid "Stop camera"
 msgstr "Opriți camera"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:150
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
 msgid "Start camera"
 msgstr "Porniți camera"
-
-msgid "%(product)s: all %(total)s already picked."
-msgstr "%(product)s: toate cele %(total)s au fost deja preluate."
-
-msgid "%(product)s is not in this order."
-msgstr "%(product)s nu face parte din această comandă."
-
-msgid "That is not a product barcode."
-msgstr "Acesta nu este un cod de bare de produs."
-
-msgid "This list is no longer assigned to you. Scan the list QR again."
-msgstr "Această listă nu îți mai este atribuită. Scanează din nou codul QR al listei."
-
-#: orderpiqrApp/static/orderpiqrApp/js
-msgid "No active picklist — scan the list QR first."
-msgstr "Nicio listă de picking activă — scanați mai întâi codul QR al listei."
-
-#: orderpiqrApp/static/orderpiqrApp/js
-msgid "Kept %(count)s already-picked item(s) from the previous attempt."
-msgstr "S-au păstrat %(count)s articole deja culese din încercarea anterioară."
