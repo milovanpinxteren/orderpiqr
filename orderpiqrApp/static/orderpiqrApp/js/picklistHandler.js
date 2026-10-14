@@ -193,6 +193,11 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
                             orderID: orderID,
                             picklist: currentPicklist,
                             deviceFingerprint: deviceFingerprint,  // Add fingerprint to the request
+                            // Device context, recorded once per list rather
+                            // than once per pick: which build this phone runs,
+                            // and whether the app is installed or a browser tab
+                            // (a tab can lose its identity to storage eviction).
+                            ...(window.orderpiqrHealth ? window.orderpiqrHealth.context() : {}),
                         })
                     })
                         .then(response => response.json().then(data => ({ok: response.ok, data})))

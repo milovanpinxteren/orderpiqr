@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from orderpiqrApp.utils.devices import (
     get_customer,
     get_fingerprint,
+    pin_device_cookie,
     register_device,
     remember_fingerprint,
     resolve_device,
@@ -151,13 +152,18 @@ def qr_login(request, token):
     if request.method == 'POST':
         login(request, login_token.user)  # cycles the session key
         login_token.mark_used()
-        remember_fingerprint(request, get_fingerprint(request, request.POST))
+        fingerprint = get_fingerprint(request, request.POST)
+        remember_fingerprint(request, fingerprint)
         destination = resolve_start_page(login_token.customer, login_token.start_page)
         if resolve_device(request):
-            return redirect(destination)
+            # Pin the durable cookie on the way in: re-scanning the login QR is
+            # the recovery path pickers are told to use, so it is exactly where
+            # a sturdier copy of the identity should be (re)issued.
+            return pin_device_cookie(redirect(destination), fingerprint)
         # An unregistered phone names itself first, then carries on to the same
         # destination rather than falling back to the default landing page.
-        return redirect(f"{reverse('name_entry')}?next={quote(destination)}")
+        return pin_device_cookie(
+            redirect(f"{reverse('name_entry')}?next={quote(destination)}"), fingerprint)
 
     response = render(request, 'registration/qr_login.html', {
         'token': login_token,
@@ -212,7 +218,9 @@ def name_entry(request):
             if device is None:
                 messages.error(request, _('Your account is not linked to a customer.'))
             else:
-                return redirect(next_url)
+                # Pin the durable cookie the moment the device is named, so the
+                # identity survives localStorage being evicted later.
+                return pin_device_cookie(redirect(next_url), device_fingerprint)
 
     return render(request, 'registration/name_entry.html', {'next': next_url})
 

@@ -6,14 +6,74 @@
 {% block page_subtitle %}<p class="page-subtitle">{% trans "Scan failures, rejected picklists and manual overrides" %}</p>{% endblock %}
 
 {% block content %}
-<!-- Filters: the date window drives the stat tiles, the breakdowns and the
-     event list below. Without dates the page shows the rolling 24h/7d view. -->
+<!-- "Right now" strip. Deliberately outside the date window: this is the part
+     that answers a phone call, and every counter in it was unmeasurable before
+     — restarts, logouts and crashes produced no event at all. -->
+<div class="card mb-lg">
+    <div class="card-header">
+        <h3>{% trans "Right now" %}</h3>
+        <span class="text-muted">{% trans "last hour, independent of the filter below" %}</span>
+    </div>
+    <div class="card-body">
+        <div class="live-strip">
+            <div class="live-item">
+                <div class="live-value">{{ live.devices_active }}<span class="live-of">/{{ live.devices_total }}</span></div>
+                <div class="live-label">{% trans "devices active" %}</div>
+            </div>
+            <div class="live-item">
+                <div class="live-value">{{ live.lists_in_progress }}</div>
+                <div class="live-label">{% trans "lists in progress" %}</div>
+            </div>
+            <div class="live-item {% if live.app_restarts %}live-warn{% endif %}">
+                <div class="live-value">{{ live.app_restarts }}</div>
+                <div class="live-label">{% trans "app restarts" %}</div>
+            </div>
+            <div class="live-item {% if live.auth_bounces %}live-bad{% endif %}">
+                <div class="live-value">{{ live.auth_bounces }}</div>
+                <div class="live-label">{% trans "sent back to login" %}</div>
+            </div>
+            <div class="live-item {% if live.client_errors %}live-bad{% endif %}">
+                <div class="live-value">{{ live.client_errors }}</div>
+                <div class="live-label">{% trans "app errors" %}</div>
+            </div>
+            <div class="live-item {% if live.lock_takeovers %}live-warn{% endif %}">
+                <div class="live-value">{{ live.lock_takeovers }}</div>
+                <div class="live-label">{% trans "list handovers" %}</div>
+            </div>
+            <div class="live-item {% if devices_on_old_build %}live-warn{% endif %}">
+                <div class="live-value">{{ devices_on_old_build }}</div>
+                <div class="live-label">{% trans "on an old app version" %}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- One window drives every number below it: tiles, breakdowns and the event
+     list. (Stale picklists stay deliberately live — they are a thing to fix
+     now, and the card says so.) -->
 <form method="get" action="{% url 'manage_health' %}" class="search-filters">
+    <div class="filter-group">
+        <select class="form-control" name="preset" onchange="this.form.submit()">
+            <option value="24h" {% if preset == '24h' %}selected{% endif %}>{% trans "Last 24 hours" %}</option>
+            <option value="today" {% if preset == 'today' %}selected{% endif %}>{% trans "Today" %}</option>
+            <option value="yesterday" {% if preset == 'yesterday' %}selected{% endif %}>{% trans "Yesterday" %}</option>
+            <option value="7d" {% if preset == '7d' %}selected{% endif %}>{% trans "Last 7 days" %}</option>
+            <option value="30d" {% if preset == '30d' %}selected{% endif %}>{% trans "Last 30 days" %}</option>
+        </select>
+    </div>
     <div class="filter-group">
         <select class="form-control" name="event_type">
             <option value="">{% trans "All Types" %}</option>
             {% for value, label in event_types %}
             <option value="{{ value }}" {% if event_type_filter == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="filter-group">
+        <select class="form-control" name="severity">
+            <option value="">{% trans "Any severity" %}</option>
+            {% for value, label in severities %}
+            <option value="{{ value }}" {% if severity_filter == value %}selected{% endif %}>{{ label }}</option>
             {% endfor %}
         </select>
     </div>
@@ -27,53 +87,206 @@
     <a href="{% url 'manage_health' %}" class="btn btn-secondary">{% trans "Clear" %}</a>
 </form>
 
-<!-- Health Stats -->
+<p class="text-muted mb-lg">
+    {% blocktrans %}Showing {{ window_label }}{% endblocktrans %}:
+    {{ window_start|date:"j M Y H:i" }} &ndash; {{ window_end|date:"j M Y H:i" }}
+</p>
+
+<!-- Tiles by kind of problem, not by event type: a blocking lockout should
+     never hide behind a pile of routine unknown-barcode warnings. Each one
+     filters the event list below. -->
 <div class="stats-grid mb-lg">
-    <div class="stat-card">
+    <a class="stat-card" href="?preset={{ preset }}&amp;tile=blocking">
         <div class="stat-card-header">
-            <span class="stat-card-title">{% trans "Scan Errors" %}</span>
-            <div class="stat-card-icon {% if date_filtered and scan_issues_period or not date_filtered and scan_issues_24h %}red{% else %}green{% endif %}">
+            <span class="stat-card-title">{% trans "Blocking problems" %}</span>
+            <div class="stat-card-icon {% if tiles.blocking %}red{% else %}green{% endif %}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><line x1="4.9" y1="4.9" x2="19.1" y2="19.1"/>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-card-value">{{ tiles.blocking }}</div>
+        <div class="stat-card-change">{% trans "refused lists, lost picks, logouts" %}</div>
+    </a>
+    <a class="stat-card" href="?preset={{ preset }}&amp;tile=app">
+        <div class="stat-card-header">
+            <span class="stat-card-title">{% trans "App health" %}</span>
+            <div class="stat-card-icon {% if tiles.app %}orange{% else %}green{% endif %}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-card-value">{{ tiles.app }}</div>
+        <div class="stat-card-change">{% trans "crashes, restarts, camera failures" %}</div>
+    </a>
+    <a class="stat-card" href="?preset={{ preset }}&amp;tile=scanning">
+        <div class="stat-card-header">
+            <span class="stat-card-title">{% trans "Scan problems" %}</span>
+            <div class="stat-card-icon {% if tiles.scanning %}orange{% else %}green{% endif %}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
                 </svg>
             </div>
         </div>
-        {% if date_filtered %}
-        <div class="stat-card-value">{{ scan_issues_period }}</div>
-        <div class="stat-card-change">{% trans "selected period" %}</div>
-        {% else %}
-        <div class="stat-card-value">{{ scan_issues_24h }}</div>
-        <div class="stat-card-change">{% trans "last 24h" %} &middot; {{ scan_issues_7d }} {% trans "this week" %}</div>
-        {% endif %}
-    </div>
-    <div class="stat-card">
+        <div class="stat-card-value">{{ tiles.scanning }}</div>
+        <div class="stat-card-change">{% trans "unknown or unreadable codes" %}</div>
+    </a>
+    <a class="stat-card" href="?preset={{ preset }}&amp;tile=overrides">
         <div class="stat-card-header">
             <span class="stat-card-title">{% trans "Manual Overrides" %}</span>
-            <div class="stat-card-icon {% if date_filtered and overrides_period or not date_filtered and overrides_24h %}orange{% else %}green{% endif %}">
+            <div class="stat-card-icon {% if tiles.overrides %}orange{% else %}green{% endif %}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M9 11l3 3L22 4"/>
                     <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
                 </svg>
             </div>
         </div>
-        {% if date_filtered %}
-        <div class="stat-card-value">{{ overrides_period }}</div>
-        <div class="stat-card-change">{% trans "selected period" %}</div>
-        {% else %}
-        <div class="stat-card-value">{{ overrides_24h }}</div>
-        <div class="stat-card-change">{% trans "last 24h" %} &middot; {{ overrides_7d }} {% trans "this week" %}</div>
-        {% endif %}
+        <div class="stat-card-value">{{ tiles.overrides }}</div>
+        <div class="stat-card-change">{% trans "confirmed by hand, not scanned" %}</div>
+    </a>
+</div>
+
+<!-- Did the work actually get recorded? Lines left pending on a list the app
+     marked complete are picks the picker made and the server never stored —
+     the metric that measures real harm, and the one nothing ever showed. -->
+<div class="card mb-lg">
+    <div class="card-header">
+        <h3>{% trans "Picking outcomes" %}</h3>
+        <span class="text-muted">{{ window_label }}</span>
+    </div>
+    <div class="card-body">
+        <div class="live-strip">
+            <div class="live-item">
+                <div class="live-value">{{ outcomes.lists_completed }}<span class="live-of">/{{ outcomes.lists_total }}</span></div>
+                <div class="live-label">{% trans "lists completed" %}</div>
+            </div>
+            <div class="live-item {% if outcomes.lists_open %}live-warn{% endif %}">
+                <div class="live-value">{{ outcomes.lists_open }}</div>
+                <div class="live-label">{% trans "still open" %}</div>
+            </div>
+            <div class="live-item {% if outcomes.lines_lost %}live-bad{% endif %}">
+                <div class="live-value">{{ outcomes.lines_lost }}</div>
+                <div class="live-label">{% trans "picks not recorded" %} ({{ outcomes.lines_lost_pct }}%)</div>
+            </div>
+            <div class="live-item {% if outcomes.lists_restarted %}live-warn{% endif %}">
+                <div class="live-value">{{ outcomes.lists_restarted }}</div>
+                <div class="live-label">{% trans "lists restarted" %}</div>
+            </div>
+            <div class="live-item">
+                <div class="live-value">{{ outcomes.lines_total }}</div>
+                <div class="live-label">{% trans "lines picked" %}</div>
+            </div>
+        </div>
     </div>
 </div>
 
-{% if top_override_codes or top_override_devices %}
+<!-- The table that turns "the app crashes" into "it crashes on that phone". -->
+<div class="card mb-lg">
+    <div class="card-header">
+        <h3>{% trans "By device" %}</h3>
+        <span class="text-muted">{{ window_label }}</span>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{% trans "Device" %}</th>
+                        <th>{% trans "Phone" %}</th>
+                        <th>{% trans "App" %}</th>
+                        <th class="text-right">{% trans "Lists" %}</th>
+                        <th class="text-right">{% trans "Errors" %}</th>
+                        <th class="text-right">{% trans "Logouts" %}</th>
+                        <th class="text-right">{% trans "Restarts" %}</th>
+                        <th class="text-right">{% trans "Overrides" %}</th>
+                        <th>{% trans "Last seen" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in device_rows %}
+                    <tr>
+                        <td>
+                            {% if row.device_id %}
+                            <a href="?preset={{ preset }}&amp;device={{ row.device_id }}"><strong>{{ row.name }}</strong></a>
+                            {% else %}
+                            <strong>{{ row.name }}</strong>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted">
+                            {% if row.os %}{{ row.os }} {{ row.os_version }}{% else %}<span class="text-muted">{% trans "unknown" %}</span>{% endif %}
+                            {% if row.browser %}<br><span class="text-muted">{{ row.browser }}</span>{% endif %}
+                        </td>
+                        <td>
+                            {% if row.installed %}
+                            <span class="badge badge-secondary">{% trans "Installed" %}</span>
+                            {% elif row.browser_tab %}
+                            <span class="badge badge-warning" title="{% trans 'A browser tab can lose its stored identity, which locks the picker out of their own list.' %}">{% trans "Browser tab" %}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-right">{{ row.lists }}</td>
+                        <td class="text-right">{% if row.errors %}<strong>{{ row.errors }}</strong>{% else %}0{% endif %}</td>
+                        <td class="text-right">{% if row.bounces %}<strong>{{ row.bounces }}</strong>{% else %}0{% endif %}</td>
+                        <td class="text-right">{{ row.restarts }}</td>
+                        <td class="text-right">
+                            {{ row.overrides }}
+                            {% if row.override_rate %}<br><span class="text-muted">{{ row.override_rate }}/{% trans "list" %}</span>{% endif %}
+                        </td>
+                        <td class="text-muted">{% if row.last_seen %}{{ row.last_seen|timesince }} {% trans "ago" %}{% else %}-{% endif %}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="9" class="text-muted">{% trans "No device activity in this period." %}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% if top_reasons %}
+<!-- Grouped by reason, not just type: "unknown product" covered three
+     different failures whose only distinction lived in free text. -->
+<div class="card mb-lg">
+    <div class="card-header">
+        <h3>{% trans "What exactly went wrong" %}</h3>
+        <span class="text-muted">{{ window_label }}</span>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{% trans "Type" %}</th>
+                        <th>{% trans "Reason" %}</th>
+                        <th class="text-right">{% trans "Events" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in top_reasons %}
+                    <tr>
+                        <td>{{ entry.event_type }}</td>
+                        <td><span class="scan-event-code">{{ entry.reason }}</span></td>
+                        <td class="text-right">{{ entry.count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if top_override_codes %}
 <!-- Manual override breakdown: picks confirmed by hand instead of by scan.
      Per product this flags wrong barcodes; per picker it flags device or
      habit problems. -->
 <div class="health-columns mb-lg">
     <div class="card">
         <div class="card-header">
-            <h3>{% if date_filtered %}{% trans "Most Overridden Products (selected period)" %}{% else %}{% trans "Most Overridden Products (last 7 days)" %}{% endif %}</h3>
+            <h3>{% trans "Most Overridden Products" %}</h3>
+            <span class="text-muted">{{ window_label }}</span>
         </div>
         <div class="card-body p-0">
             <div class="table-container">
@@ -94,34 +307,7 @@
                             <td class="text-right">{{ entry.count }}</td>
                         </tr>
                         {% empty %}
-                        <tr><td colspan="2" class="text-muted">{% if date_filtered %}{% trans "No manual overrides in this period." %}{% else %}{% trans "No manual overrides this week." %}{% endif %}</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <h3>{% if date_filtered %}{% trans "Overrides by Picker (selected period)" %}{% else %}{% trans "Overrides by Picker (last 7 days)" %}{% endif %}</h3>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>{% trans "Device" %}</th>
-                            <th class="text-right">{% trans "Overrides" %}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for entry in top_override_devices %}
-                        <tr>
-                            <td>{{ entry.device__name|default:"-" }}</td>
-                            <td class="text-right">{{ entry.count }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr><td colspan="2" class="text-muted">{% if date_filtered %}{% trans "No manual overrides in this period." %}{% else %}{% trans "No manual overrides this week." %}{% endif %}</td></tr>
+                        <tr><td colspan="2" class="text-muted">{% trans "No manual overrides in this period." %}</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -144,7 +330,8 @@
                 <line x1="12" y1="9" x2="12" y2="13"/>
                 <line x1="12" y1="17" x2="12.01" y2="17"/>
             </svg>
-            {% blocktrans with count=stale_picklists|length %}{{ count }} picklist(s) in progress for over 4 hours{% endblocktrans %}
+            {% blocktrans with count=stale_picklists|length lines=stale_pending_lines %}{{ count }} picklist(s) in progress for over 4 hours, holding {{ lines }} unpicked line(s){% endblocktrans %}
+            &mdash; {% trans "shown live, not filtered by the date range above" %}
         </div>
         <div class="table-container">
             <table class="table">
@@ -153,6 +340,8 @@
                         <th>{% trans "Picklist" %}</th>
                         <th>{% trans "Order" %}</th>
                         <th>{% trans "Device" %}</th>
+                        <th class="text-right">{% trans "Unpicked" %}</th>
+                        <th class="text-right">{% trans "Restarts" %}</th>
                         <th>{% trans "Started" %}</th>
                         <th class="text-right">{% trans "Actions" %}</th>
                     </tr>
@@ -179,6 +368,8 @@
                             <span class="text-muted">-</span>
                             {% endif %}
                         </td>
+                        <td class="text-right">{% if picklist.pending_lines %}<strong>{{ picklist.pending_lines }}</strong>{% else %}0{% endif %}</td>
+                        <td class="text-right">{{ picklist.restart_count }}</td>
                         <td class="text-muted">{{ picklist.pick_time|timesince }} {% trans "ago" %}</td>
                         <td class="text-right">
                             <div class="stale-actions">
@@ -213,7 +404,8 @@
 <!-- Top Problem Codes -->
 <div class="card mb-lg">
     <div class="card-header">
-        <h3>{% if date_filtered %}{% trans "Top Problem Codes (selected period)" %}{% else %}{% trans "Top Problem Codes (last 7 days)" %}{% endif %}</h3>
+        <h3>{% trans "Top Problem Codes" %}</h3>
+        <span class="text-muted">{{ window_label }}</span>
     </div>
     <div class="card-body p-0">
         <div class="table-container">
@@ -257,6 +449,7 @@
                     <tr>
                         <th>{% trans "When" %}</th>
                         <th>{% trans "Type" %}</th>
+                        <th>{% trans "Reason" %}</th>
                         <th>{% trans "Scanned Code" %}</th>
                         <th>{% trans "Picklist" %}</th>
                         <th>{% trans "Device" %}</th>
@@ -266,13 +459,16 @@
                 <tbody>
                     {% for event in events %}
                     <tr>
-                        <td class="text-muted" title="{{ event.created_at|date:'M j, Y H:i' }}">
-                            {{ event.created_at|timesince }} {% trans "ago" %}
+                        <td class="text-muted" title="{{ event.occurred_at|date:'M j, Y H:i:s' }}">
+                            {{ event.occurred_at|timesince }} {% trans "ago" %}
                         </td>
                         <td>
-                            <span class="badge badge-{% if event.event_type == 'manual_override' %}info{% elif event.event_type == 'picklist_parse_error' or event.event_type == 'picklist_rejected' %}warning{% else %}danger{% endif %}">
+                            <span class="badge badge-{% if event.severity == 'error' %}danger{% elif event.severity == 'warning' %}warning{% else %}info{% endif %}">
                                 {{ event.get_event_type_display }}
                             </span>
+                        </td>
+                        <td>
+                            {% if event.reason %}<span class="scan-event-code">{{ event.reason }}</span>{% else %}<span class="text-muted">-</span>{% endif %}
                         </td>
                         <td>
                             {% if event.scanned_code %}
@@ -297,7 +493,11 @@
                         </td>
                         <td>
                             {% if event.message %}
-                            <span title="{{ event.message }}">{{ event.message|truncatewords:8 }}</span>
+                            <details class="event-message">
+                                <summary>{{ event.message|truncatewords:8 }}</summary>
+                                <span>{{ event.message }}</span>
+                                {% if event.build_id %}<br><span class="text-muted">{% trans "build" %} {{ event.build_id }}</span>{% endif %}
+                            </details>
                             {% else %}
                             <span class="text-muted">-</span>
                             {% endif %}
@@ -340,6 +540,54 @@
 </div>
 
 <style>
+/* "Right now" / outcome strips: a row of plain numbers that stays readable
+   when it wraps onto two lines on a narrow screen. */
+.live-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+}
+.live-item {
+    min-width: 110px;
+}
+.live-value {
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--text-primary);
+}
+.live-of {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+.live-label {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+.live-warn .live-value { color: #e67700; }
+.live-bad .live-value { color: var(--danger, #c92a2a); }
+
+/* Tiles are links now — keep them looking like cards, not like text links. */
+a.stat-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+a.stat-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/* Full message on demand: truncating to eight words and hiding the rest in a
+   title attribute made the useful half of every event unreadable. */
+.event-message summary {
+    cursor: pointer;
+    list-style: revert;
+}
+.event-message[open] summary {
+    color: var(--text-secondary);
+}
+
 .pagination-info {
     padding: 0 var(--spacing-md);
     color: var(--text-secondary);

@@ -1,3 +1,4 @@
+from collections import Counter
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
@@ -16,6 +17,7 @@ from orderpiqrApp.models import Order, UserProfile, PickList, ProductPick
 from orderpiqrApp.utils.decorators import company_admin_required
 from orderpiqrApp.utils.devices import register_device, resolve_device
 from orderpiqrApp.utils.inventory import is_queue_enabled
+from orderpiqrApp.utils.scan_events import log_scan_event
 
 
 def _annotate_picker(queryset):
@@ -218,15 +220,39 @@ def queue_claim_order(request, order_id):
                         'status': 'error',
                         'message': _('This order is already being picked')
                     }, status=409)
-                # Force reclaim: delete old active picklist
+                # Force reclaim: take the order off the device that holds it.
+                #
+                # This used to delete the previous picker's ProductPick rows
+                # outright — the same mistake the restart path made until v124,
+                # on a path nobody was watching. Work already recorded is real
+                # physical work: deleting it means the stock left the shelf with
+                # no record, no inventory decrement and no write-back. Keep the
+                # successful rows (archived with the old picklist, which is also
+                # what billing counts) and only drop the pending ones.
                 old_picklists = PickList.objects.filter(
                     order=order,
                     pick_started=True,
                     successful__isnull=True,
-                )
+                ).select_related('device')
+                # The row itself is left in place: when the claiming device
+                # loads the order, scan_picklist adopts it through the normal
+                # restart path, which rebuilds the pending rows and reports
+                # already_picked so the new picker's on-screen list is short by
+                # exactly the work that was already done.
                 for pl in old_picklists:
-                    ProductPick.objects.filter(picklist=pl).delete()
-                    pl.delete()
+                    kept = ProductPick.objects.filter(picklist=pl, successful=True).count()
+                    ProductPick.objects.filter(picklist=pl).exclude(successful=True).delete()
+                    pl.notes = ((pl.notes or '') + '\n' + (
+                        f"Force-reclaimed by device {device.name} at "
+                        f"{timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M')}; "
+                        f"{kept} recorded pick(s) preserved")).strip()
+                    pl.save()
+                    log_scan_event(
+                        customer, pl.device, 'picklist_rejected',
+                        picklist_code=pl.picklist_code or '',
+                        reason='force_reclaimed',
+                        message=(f"Order taken over by {device.name}; "
+                                 f"{kept} recorded pick(s) preserved"))
 
             if order.status == 'completed':
                 return JsonResponse({
@@ -264,13 +290,27 @@ def queue_claim_order(request, order_id):
                 pick_list.pick_started = True
                 pick_list.order = order
                 pick_list.save()
-                # Clear existing product picks
-                ProductPick.objects.filter(picklist=pick_list).delete()
+                # Rebuild only the pending rows. Deleting everything here was
+                # the third way to destroy recorded work (after the restart
+                # path, fixed in v124, and force reclaim): claiming an order
+                # whose picklist already held successful picks erased them, so
+                # stock had left the shelf with no record, no inventory
+                # decrement and no platform write-back.
+                ProductPick.objects.filter(picklist=pick_list).exclude(successful=True).delete()
 
-            # Create ProductPick entries from order lines
+            # Create ProductPick entries from order lines, skipping units that
+            # were already picked before this claim — the returned picklist is
+            # what the picker sees on screen, so it must show remaining work,
+            # not work someone already did.
+            preserved = Counter(
+                ProductPick.objects.filter(picklist=pick_list, successful=True)
+                .values_list('product_id', flat=True))
             picklist_products = []
             for line in order.lines.select_related('product').all():
                 for _i in range(line.quantity):
+                    if preserved[line.product_id] > 0:
+                        preserved[line.product_id] -= 1
+                        continue
                     ProductPick.objects.create(
                         product=line.product,
                         picklist=pick_list,

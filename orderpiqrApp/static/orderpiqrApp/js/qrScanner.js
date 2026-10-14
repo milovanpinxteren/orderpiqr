@@ -20,6 +20,16 @@ let onScan = null;
 let isRunning = false;
 let isPaused = false;
 
+// Reached through the global rather than an import: clientHealth.js is a
+// classic script and must stay outside this module graph.
+function reportCameraError(reason, message) {
+    try {
+        if (window.orderpiqrHealth) {
+            window.orderpiqrHealth.report('camera_error', {reason, message});
+        }
+    } catch (e) { /* diagnostics must never break the scanner */ }
+}
+
 export function initializeScanner(onScanCallback) {
     onScan = onScanCallback;
     scannerInstance = new Html5Qrcode("reader");
@@ -35,6 +45,7 @@ function startCamera() {
         .then(found => {
             cameras = found || [];
             if (cameras.length === 0) {
+                reportCameraError('no_camera', 'No camera found on this device');
                 showCameraError(gettext("No camera found on this device."));
                 return;
             }
@@ -43,6 +54,9 @@ function startCamera() {
         })
         .catch(err => {
             console.error('Camera permission/enumeration failed:', err);
+            // A denied camera is otherwise indistinguishable from a picker who
+            // simply stopped scanning.
+            reportCameraError('permission_denied', 'Camera access denied or enumeration failed: ' + err);
             showCameraError(gettext("Camera access was denied. Allow camera access for this site in your browser settings, then tap the button below."));
         });
 }
@@ -78,6 +92,7 @@ function startWith(cameraId) {
             console.error('Error starting camera:', err);
             isRunning = false;
             syncStopButton();
+            reportCameraError('start_failed', 'Camera failed to start: ' + err);
             showCameraError(gettext("Could not start the camera."));
         });
 }

@@ -12,7 +12,9 @@
     <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
     <link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
     <script src="{% url 'javascript-catalog' %}"></script>
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <!-- Self-hosted: a third-party CDN outage must never stop a shift.
+         Byte-identical to the pinned version these pages used to fetch. -->
+    <script src="{% static 'orderpiqrApp/js/vendor/html5-qrcode-2.3.8.min.js' %}" type="text/javascript"></script>
     <title>{% trans "Inventory" %}</title>
 </head>
 <body>

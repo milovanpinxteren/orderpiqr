@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'orderpiqrApp/css/queue_manage.css' %}">
     <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <!-- Self-hosted: a third-party CDN outage must never stop a shift.
+         Byte-identical to the pinned version these pages used to fetch. -->
+    <script src="{% static 'orderpiqrApp/js/vendor/htmx-1.9.10.min.js' %}"></script>
+    <script src="{% static 'orderpiqrApp/js/vendor/sortable-1.15.0.min.js' %}"></script>
     <title>{% trans "Manage Queue" %} - {{ customer.company_name }}</title>
 </head>
 <body>

@@ -55,7 +55,10 @@ function handleManualOverride(code) {
     // Same follow-up as a scan: for a multi-quantity line this opens the bulk
     // overlay ("All N taken" / stepper), so products without a barcode don't
     // need a triple-tap per unit.
-    showPickFollowUpOverlay(code, product ? product.description : code);
+    // manualOverride: true so that "All N taken" on this overlay is logged as an
+    // override as well — otherwise only the first unit of an unscannable line
+    // ever counted.
+    showPickFollowUpOverlay(code, product ? product.description : code, {manualOverride: true});
 
     if (currentPicklist.length === 0) {
         notifyPicklistCompleted(currentOrderID, csrfToken);

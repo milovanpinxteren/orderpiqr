@@ -15,6 +15,21 @@ const IDLE_SETTLE_MS = 8000;
 let updatePending = false;
 let settleTimer = null;
 
+// A self-update reload is indistinguishable from a crash or a logout unless we
+// say so. Reached through the global because clientHealth.js is a classic
+// script that must stay outside this module graph.
+function reportReload(trigger, loadedBuildId) {
+    try {
+        if (window.orderpiqrHealth) {
+            window.orderpiqrHealth.report('app_lifecycle', {
+                reason: 'self_update_reload',
+                severity: 'info',
+                message: `Reloading for a new build (${trigger}), was on ${loadedBuildId}`
+            });
+        }
+    } catch (e) { /* never block the reload */ }
+}
+
 export function initAppUpdater(isIdle) {
     const loadedBuildId = window.SETTINGS?.build_id;
     if (!loadedBuildId || loadedBuildId === 'dev') return;
@@ -44,6 +59,7 @@ export function initAppUpdater(isIdle) {
             settleTimer = null;
             if (isIdle()) {
                 console.log('[AppUpdater] New build available, reloading');
+                reportReload('idle', loadedBuildId);
                 location.reload();
             }
         }, IDLE_SETTLE_MS);
@@ -52,6 +68,7 @@ export function initAppUpdater(isIdle) {
     document.addEventListener('visibilitychange', () => {
         // App sent to the background: nothing on screen to interrupt.
         if (document.visibilityState === 'hidden' && updatePending && isIdle()) {
+            reportReload('backgrounded', loadedBuildId);
             location.reload();
         }
     });

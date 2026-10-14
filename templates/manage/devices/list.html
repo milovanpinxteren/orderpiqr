@@ -6,57 +6,107 @@
 {% block page_subtitle %}<p class="page-subtitle">{% trans "View registered picking devices" %}</p>{% endblock %}
 
 {% block content %}
-<!-- Devices Grid -->
+<!-- Summary first: these three numbers are the ones that explain most support
+     calls — a phone running in a browser tab can silently lose its stored
+     identity and get locked out of its own list, and several rows for one
+     person is that having already happened. -->
+<div class="stats-grid mb-lg">
+    <div class="stat-card">
+        <div class="stat-card-header"><span class="stat-card-title">{% trans "Devices" %}</span></div>
+        <div class="stat-card-value">{{ devices|length }}</div>
+        <div class="stat-card-change">{% trans "registered" %}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-header"><span class="stat-card-title">{% trans "Browser tab" %}</span></div>
+        <div class="stat-card-value">{{ browser_tab_count }}</div>
+        <div class="stat-card-change">{% trans "not installed as an app" %}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-header"><span class="stat-card-title">{% trans "Possible duplicates" %}</span></div>
+        <div class="stat-card-value">{{ duplicate_count }}</div>
+        <div class="stat-card-change">{% trans "same name, several devices" %}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-header"><span class="stat-card-title">{% trans "Unknown setup" %}</span></div>
+        <div class="stat-card-value">{{ unknown_mode_count }}</div>
+        <div class="stat-card-change">{% trans "not seen since the update" %}</div>
+    </div>
+</div>
+
 {% if devices %}
-<div class="devices-grid">
-    {% for device in devices %}
-    <div class="device-card {% if device.is_active %}active{% endif %}">
-        <div class="device-header">
-            <div class="device-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="5" y="2" width="14" height="20" rx="2"/>
-                    <path d="M12 18h.01"/>
-                </svg>
-            </div>
-            <div class="device-status">
-                {% if device.is_active %}
-                <span class="status-indicator active"></span>
-                <span class="status-text">{% trans "Online" %}</span>
-                {% else %}
-                <span class="status-indicator"></span>
-                <span class="status-text">{% trans "Offline" %}</span>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="device-body">
-            <h3 class="device-name">{{ device.name|default:device.device_id|truncatechars:20 }}</h3>
-
-            <div class="device-info">
-                <div class="info-row">
-                    <span class="info-label">{% trans "Picks" %}</span>
-                    <span class="info-value">{{ device.lists_picked }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">{% trans "Last Seen" %}</span>
-                    <span class="info-value">
-                        {% if device.last_login %}
-                        {{ device.last_login|timesince }} {% trans "ago" %}
-                        {% else %}
-                        <span class="text-muted">{% trans "Never" %}</span>
-                        {% endif %}
-                    </span>
-                </div>
-                {% if device.description %}
-                <div class="info-row">
-                    <span class="info-label">{% trans "Note" %}</span>
-                    <span class="info-value">{{ device.description|truncatechars:30 }}</span>
-                </div>
-                {% endif %}
-            </div>
+<div class="card">
+    <div class="card-header">
+        <h3>{% trans "Devices" %}</h3>
+        <span class="text-muted">{% trans "problem devices first" %} &middot; {% trans "counts are last 24 hours" %}</span>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{% trans "Device" %}</th>
+                        <th>{% trans "Picker" %}</th>
+                        <th>{% trans "Phone" %}</th>
+                        <th>{% trans "App" %}</th>
+                        <th class="text-right">{% trans "Lists (7d)" %}</th>
+                        <th class="text-right">{% trans "Errors" %}</th>
+                        <th class="text-right">{% trans "Logouts" %}</th>
+                        <th class="text-right">{% trans "Restarts" %}</th>
+                        <th class="text-right">{% trans "Overrides" %}</th>
+                        <th>{% trans "Last Seen" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for device in devices %}
+                    <tr>
+                        <td>
+                            <span class="status-indicator {% if device.is_active %}active{% endif %}"></span>
+                            <strong>{{ device.name|default:device.device_id|truncatechars:28 }}</strong>
+                            {% if device.possible_duplicate %}
+                            <br><span class="badge badge-warning" title="{% trans 'Another device carries the same name. A phone that loses its stored identity registers again as a new device — and is then refused its own picklist.' %}">{% trans "possible duplicate" %}</span>
+                            {% endif %}
+                            {% if device.unnamed %}
+                            <br><span class="badge badge-secondary">{% trans "never named" %}</span>
+                            {% endif %}
+                            {% if device.description %}
+                            <br><span class="text-muted">{{ device.description|truncatechars:40 }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted">{{ device.user.username|default:"-" }}</td>
+                        <td class="text-muted">
+                            {% if device.os %}{{ device.os }} {{ device.os_version }}{% else %}<span class="text-muted">{% trans "unknown" %}</span>{% endif %}
+                            {% if device.browser %}<br><span class="text-muted">{{ device.browser }} {{ device.browser_version }}</span>{% endif %}
+                        </td>
+                        <td>
+                            {% if device.display_mode == 'standalone' %}
+                            <span class="badge badge-secondary">{% trans "Installed" %}</span>
+                            {% elif device.display_mode == 'browser' %}
+                            <span class="badge badge-warning" title="{% trans 'Running as a browser tab. Storage can be evicted, which loses the device identity and locks the picker out of their list. Ask them to install the app to the home screen.' %}">{% trans "Browser tab" %}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                            {% if device.build_outdated %}
+                            <br><span class="badge badge-warning" title="{% trans 'This device is still running an older version of the app.' %}">{% trans "old version" %}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-right">{{ device.lists_week }}</td>
+                        <td class="text-right">{% if device.errors_today %}<strong>{{ device.errors_today }}</strong>{% else %}0{% endif %}</td>
+                        <td class="text-right">{% if device.bounces_today %}<strong>{{ device.bounces_today }}</strong>{% else %}0{% endif %}</td>
+                        <td class="text-right">{{ device.restarts_today }}</td>
+                        <td class="text-right">{{ device.overrides_today }}</td>
+                        <td class="text-muted">
+                            {% if device.last_login %}
+                            <span title="{{ device.last_login|date:'j M Y H:i' }}">{{ device.last_login|timesince }} {% trans "ago" %}</span>
+                            {% else %}
+                            <span class="text-muted">{% trans "Never" %}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-    {% endfor %}
 </div>
 {% else %}
 <div class="card">

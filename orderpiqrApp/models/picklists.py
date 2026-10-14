@@ -13,7 +13,10 @@ class PickList(models.Model):
     picklist_code = models.CharField(_("Picklist Code"), max_length=255, null=True, blank=True)
     device = models.ForeignKey(Device, on_delete=models.CASCADE, verbose_name=_("Device"))
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
-    updated_at = models.DateTimeField(_("Updated At"), auto_now_add=True)
+    # auto_now (not auto_now_add): this was a duplicate of created_at that never
+    # moved, so "when was this list last touched" was unanswerable — which is
+    # what you need to tell a dead lock from a picker who is still working.
+    updated_at = models.DateTimeField(_("Updated At"), auto_now=True)
     pick_started = models.BooleanField(_("Pick Started"), null=True, blank=True)
     pick_time = models.DateTimeField(_("Pick Time"), auto_now_add=True, null=True, blank=True)
     time_taken = models.DurationField(_("Time Taken"), null=True, blank=True)

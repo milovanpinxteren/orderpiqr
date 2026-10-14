@@ -471,13 +471,13 @@ function renderPickProgress(progressEl, fillEl, prominentEl, secondaryEl, remain
 // override), show the follow-up overlay when more of the same product remain:
 // the bulk overlay when enabled and more than one is left, the tap-to-continue
 // confirmation otherwise. The overlay's dismiss handlers resume the scanner.
-export function showPickFollowUpOverlay(productCode, productLabel) {
+export function showPickFollowUpOverlay(productCode, productLabel, {manualOverride = false} = {}) {
     const remainingCount = currentPicklist.filter(c => c === productCode).length;
     if (remainingCount === 0) return;
     const totalCount = originalProductCounts[productCode] || remainingCount + 1;
     pauseScanner();
     if (window.SETTINGS?.bulk_pick_enabled === true && remainingCount > 1) {
-        showBulkPickOverlay(productLabel, productCode, remainingCount, totalCount);
+        showBulkPickOverlay(productLabel, productCode, remainingCount, totalCount, manualOverride);
     } else {
         showConfirmationOverlay(productLabel, remainingCount, totalCount);
     }
@@ -517,8 +517,11 @@ const bulkPickPlusBtn = document.getElementById('bulk-pick-plus');
 
 let bulkPickContext = null;
 
-function showBulkPickOverlay(productDescription, productCode, remainingCount, totalCount) {
-    bulkPickContext = { productCode, remainingCount, totalCount, productDescription };
+function showBulkPickOverlay(productDescription, productCode, remainingCount, totalCount, manualOverride = false) {
+    // manualOverride rides along so that confirming the rest of an unscannable
+    // line is counted as an override too, not just the triple-tap that opened
+    // this overlay.
+    bulkPickContext = { productCode, remainingCount, totalCount, productDescription, manualOverride };
 
     bulkOverlayProductName.textContent = productDescription;
     renderPickProgress(bulkOverlayPickedProgress, bulkOverlayProgressFill, bulkOverlayRemainingCount, bulkOverlaySecondaryCount, remainingCount, totalCount);
@@ -571,7 +574,10 @@ function executeBulkPick(productCode, quantity, returnToScanner) {
     updateScannedList(currentPicklist, productData);
 
     // Send to server
-    notifyBulkProductPicked({ orderID: currentOrderID, productCode, quantity, timeTakenMs, csrfToken })
+    notifyBulkProductPicked({
+        orderID: currentOrderID, productCode, quantity, timeTakenMs,
+        manualOverride: ctx.manualOverride === true, csrfToken
+    })
         .catch(function (err) {
             console.error('bulk-product-pick update failed', err);
             showNotification(gettext("Could not update bulk product pick."), true);
@@ -600,7 +606,9 @@ function executeBulkPick(productCode, quantity, returnToScanner) {
         resumeScanner();
     } else if (newRemaining > 1) {
         const totalCount = originalProductCounts[productCode] || 0;
-        showBulkPickOverlay(desc, productCode, newRemaining, totalCount);
+        // ctx was captured before hideBulkPickOverlay() cleared it — keep the
+        // override flag across a chained bulk confirmation.
+        showBulkPickOverlay(desc, productCode, newRemaining, totalCount, ctx.manualOverride === true);
     } else if (newRemaining === 1) {
         const totalCount = originalProductCounts[productCode] || 0;
         showConfirmationOverlay(desc, newRemaining, totalCount);
@@ -610,7 +618,7 @@ function executeBulkPick(productCode, quantity, returnToScanner) {
     }
 }
 
-function notifyBulkProductPicked({orderID, productCode, quantity, timeTakenMs, csrfToken}) {
+function notifyBulkProductPicked({orderID, productCode, quantity, timeTakenMs, manualOverride = false, csrfToken}) {
     return getDeviceFingerprint()
         .then(function (deviceFingerprint) {
             return fetch('/orderpiqr/bulk-product-pick', {
@@ -625,6 +633,7 @@ function notifyBulkProductPicked({orderID, productCode, quantity, timeTakenMs, c
                     quantity,
                     timeTakenMs,
                     deviceFingerprint,
+                    manualOverride,          // bulk confirm of an unscannable line
                     scannedAt: new Date().toISOString()
                 })
             });

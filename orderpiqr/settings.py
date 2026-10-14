@@ -53,6 +53,16 @@ if DEBUG:
 # directly), so point them at the branded page instead of Django's default.
 CSRF_FAILURE_VIEW = 'orderpiqr.error_views.csrf_failure'
 
+# Pickers authenticate once by scanning their login QR and then stay on the
+# scan page for weeks. Django's default session is 14 days *from login* and
+# never renews (SESSION_SAVE_EVERY_REQUEST defaults to False), so an actively
+# used phone was silently logged out mid-shift exactly two weeks after its QR
+# scan — with nothing recorded anywhere. Renew on every request instead, and
+# measure the window from last activity.
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 60  # 60 days of inactivity
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
 LOGIN_URL = '/login/'  # Adjust this URL to match your login view or URL pattern
 LOGIN_REDIRECT_URL = '/'  # You can set this to any page you'd like as a fallback
 LOGOUT_REDIRECT_URL = '/'  # Redirect to custom login page

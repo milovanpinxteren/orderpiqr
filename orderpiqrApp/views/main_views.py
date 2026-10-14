@@ -4,12 +4,19 @@ from django.urls import reverse
 
 from orderpiqrApp.models import Product, SettingDefinition, CustomerSettingValue, Order
 from orderpiqrApp.utils.build_id import get_build_id
-from orderpiqrApp.utils.devices import resolve_device
+from orderpiqrApp.utils.devices import pin_device_cookie, resolve_device
+from orderpiqrApp.utils.scan_events import log_auth_bounce
 import json
 
 def index(request):
     device = resolve_device(request, touch=False)
     if not device:
+        # The picker is being sent off the scan page — to name entry, and from
+        # there to login if the session is gone. This is what "it kicked me
+        # out" means, and it used to leave no trace at all. Attribute it to
+        # whatever the fingerprint alone can resolve; some bounces are
+        # genuinely unattributable, which is itself worth knowing.
+        log_auth_bounce(request)
         # Redirect to name_entry with next parameter to return here after
         return redirect(f"{reverse('name_entry')}?next={request.get_full_path()}")
 
@@ -57,7 +64,11 @@ def index(request):
         'settings': mark_safe(json.dumps(settings)),
         'claimed_order': mark_safe(json.dumps(claimed_order_data)) if claimed_order_data else None,
     }
-    return render(request, 'index.html', context)
+    # Re-issue the durable device cookie on every app open: it rolls the
+    # lifetime forward for a phone in daily use, and gives a device that only
+    # ever had localStorage the copy that survives storage eviction.
+    return pin_device_cookie(
+        render(request, 'index.html', context), device.device_fingerprint)
 
 
 def get_customer_settings(customer):

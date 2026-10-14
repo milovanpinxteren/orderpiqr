@@ -1,5 +1,5 @@
 from collections import Counter
-from datetime import timedelta
+from datetime import timedelta, timezone as dt_timezone
 
 from django.db import IntegrityError, transaction
 from django.http import JsonResponse
@@ -8,15 +8,22 @@ import json
 from django.views.decorators.http import require_GET, require_POST
 from orderpiqrApp.models import Device, Order, PickList, Product, ProductPick, ScanEvent
 from orderpiqrApp.utils.build_id import get_build_id
+from django.utils.dateparse import parse_datetime
 from orderpiqrApp.utils.devices import (
     get_customer,
     register_device,
     resolve_device,
     resolve_device_unauthenticated,
+    stamp_device_context,
 )
 from orderpiqrApp.utils.inventory import decrement_inventory_for_picklist
 from orderpiqrApp.utils.products import resolve_product
 from orderpiqrApp.utils.scan_events import log_scan_event
+
+# How long a picklist lock survives its holder going silent. Device.last_login
+# is stamped on every pick, so a live picker refreshes this continuously; only
+# a device that has stopped talking to us loses its claim.
+STALE_LOCK_AFTER = timedelta(minutes=10)
 
 
 def _resolve_device(request, device_fingerprint):
@@ -43,6 +50,29 @@ def _resolve_device(request, device_fingerprint):
     return device, None
 
 
+def _parse_client_ts(value):
+    """Device-clock timestamp from a queued event, or None.
+
+    A phone's clock can be wrong or deliberately set far ahead; a timestamp
+    outside a sane window around now is dropped rather than stored, so it can
+    never drag a dashboard's time axis off scale.
+    """
+    if not value:
+        return None
+    try:
+        parsed = parse_datetime(str(value))
+        if parsed is None:
+            return None
+        if timezone.is_naive(parsed):
+            parsed = timezone.make_aware(parsed, dt_timezone.utc)
+        now = timezone.now()
+        if not (now - timedelta(days=7) <= parsed <= now + timedelta(minutes=5)):
+            return None
+        return parsed
+    except (ValueError, TypeError, OverflowError):
+        return None
+
+
 @require_GET
 def client_version(request):
     """Current client build id, polled by the long-lived scan page.
@@ -58,8 +88,8 @@ def client_version(request):
 def scan_event(request):
     """Fire-and-forget pick-flow health logging from the picker client.
 
-    POST /orderpiqr/scan-event with JSON
-    {eventType, scannedCode, picklistCode, message, deviceFingerprint}.
+    POST /orderpiqr/scan-event with JSON {eventType, scannedCode, picklistCode,
+    message, deviceFingerprint, reason, severity, buildId, clientTs, displayMode}.
     Responds {'status': 'ok'} whether or not anything was stored — the endpoint
     must not leak device/customer existence, and it must never create a write
     surface for unauthenticated callers beyond resolvable devices.
@@ -92,6 +122,8 @@ def scan_event(request):
         # Unresolvable device and no authenticated customer: swallow silently.
         return JsonResponse({'status': 'ok'})
 
+    stamp_device_context(device, request, payload=data)
+
     log_scan_event(
         customer,
         device,
@@ -99,6 +131,10 @@ def scan_event(request):
         scanned_code=data.get('scannedCode') or '',
         picklist_code=data.get('picklistCode') or '',
         message=data.get('message') or '',
+        reason=data.get('reason') or '',
+        severity=data.get('severity'),
+        build_id=data.get('buildId') or '',
+        client_ts=_parse_client_ts(data.get('clientTs')),
     )
     return JsonResponse({'status': 'ok'})
 
@@ -135,8 +171,18 @@ def scan_picklist(request):
         # Update last_login on activity
         device.last_login = local_time
         device.save(update_fields=['last_login'])
+        # Once per list, not once per pick: these values barely ever change.
+        stamp_device_context(device, request, payload=data)
     else:
         if not request.user.is_authenticated:
+            # The picker is about to be sent back to the login screen. Attribute
+            # it to whatever tenant the fingerprint alone can resolve — often
+            # nothing, which is precisely why this bounce was invisible before.
+            orphan, ambiguous = resolve_device_unauthenticated(device_fingerprint)
+            if orphan is not None and not ambiguous:
+                log_scan_event(orphan.customer, orphan, 'auth_bounce',
+                               picklist_code=order_id, reason='session_lost',
+                               message='Scanned a list with no session — sent back to login')
             return JsonResponse({
                 'status': 'error',
                 'message': 'Device not found and user not authenticated'
@@ -175,17 +221,35 @@ def scan_picklist(request):
                     # Matched on picklist_code (unique per customer), not the
                     # order FK — a picklist that predates the queue claim may
                     # have order=None.
-                    held_by_other = PickList.objects.filter(
+                    holders = list(PickList.objects.filter(
                         picklist_code=order_id,
                         customer=device.customer,
                         pick_started=True,
                         successful__isnull=True,
-                    ).exclude(device=device).exists()
-                    if held_by_other:
-                        message = 'This order is already being picked by another device'
-                        log_scan_event(device.customer, device, 'picklist_rejected',
-                                       picklist_code=order_id, message=message)
-                        return JsonResponse({'status': 'error', 'message': message}, status=409)
+                    ).exclude(device=device).select_related('device'))
+                    if holders:
+                        # A device identity is only a UUID in localStorage, so a
+                        # picker whose storage was evicted comes back as "another
+                        # device" and gets locked out of their own list with no
+                        # way forward. Hand the list over when the holder has
+                        # gone quiet: the restart path below preserves every
+                        # successful pick, so a takeover never loses work.
+                        now = timezone.now()
+                        last_seen = max(h.device.last_login for h in holders)
+                        if last_seen > now - STALE_LOCK_AFTER:
+                            message = 'This order is already being picked by another device'
+                            log_scan_event(device.customer, device, 'picklist_rejected',
+                                           picklist_code=order_id, message=message)
+                            return JsonResponse({'status': 'error', 'message': message}, status=409)
+
+                        held_by = ', '.join(sorted(
+                            (h.device.name or f'device {h.device.pk}').strip() for h in holders))
+                        idle_minutes = int((now - last_seen).total_seconds() // 60)
+                        log_scan_event(
+                            device.customer, device, 'lock_takeover',
+                            picklist_code=order_id,
+                            message=(f"Took over a stale lock held by {held_by} "
+                                     f"(idle {idle_minutes}m); picks already recorded are preserved"))
                 elif order.status == 'completed':
                     message = 'This order has already been completed'
                     log_scan_event(device.customer, device, 'picklist_rejected',
@@ -378,6 +442,7 @@ def bulk_product_pick(request):
         return JsonResponse({"status": "error", "message": "quantity must be at least 1"}, status=400)
 
     quantity = int(quantity)
+    manual_override = bool(payload.get("manualOverride", False))
 
     device, device_error = _resolve_device(request, device_fp)
     if device_error:
@@ -386,10 +451,25 @@ def bulk_product_pick(request):
         return JsonResponse({"status": "error", "message": "Device not found"}, status=404)
     Device.objects.filter(pk=device.pk).update(last_login=timezone.now())
 
+    if manual_override:
+        # Same contract as product_pick: logged before any lookup can fail. This
+        # is the high-volume override path — "All N taken" after a triple-tap on
+        # an unscannable line — and it was counted as zero, so every override
+        # figure we have under-reports the products that cannot be scanned.
+        log_scan_event(device.customer, device, 'manual_override',
+                       scanned_code=product_code, picklist_code=order_id,
+                       message=f"{quantity} units confirmed manually instead of by scan")
+
     picklist = (PickList.objects.filter(picklist_code=order_id, customer=device.customer, device=device)
                 .select_related("customer", "device")
                 .first())
     if not picklist:
+        # Without this the bulk path's stop-the-line 404 was only ever recorded
+        # by the client, i.e. never when the phone was offline.
+        log_scan_event(device.customer, device, 'sync_error',
+                       scanned_code=product_code, picklist_code=order_id,
+                       message=f"Bulk pick of {quantity} registered but no picklist "
+                               f"'{order_id}' exists for this device")
         return JsonResponse({"status": "error", "error_code": "picklist_not_found",
                              "message": "PickList not found"}, status=404)
 

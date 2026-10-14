@@ -5,6 +5,7 @@ PickList row, and a queued order must stay queued (not locked in_progress) so
 another picker can still claim it.
 """
 import json
+from datetime import timedelta
 
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
@@ -12,7 +13,8 @@ from django.utils import timezone
 from django.utils.translation import activate
 
 from orderpiqrApp.models import (
-    Customer, Device, Order, OrderLine, PickList, Product, ProductPick, UserProfile,
+    Customer, Device, Order, OrderLine, PickList, Product, ProductPick, ScanEvent,
+    UserProfile,
 )
 
 FINGERPRINT = 'test-device-fp'
@@ -144,6 +146,85 @@ class ScanPicklistTests(ScanEndpointTestCase):
         # The first device's picklist must survive the rejected takeover.
         picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
         self.assertEqual(picklist.device, self.device)
+
+    def _held_order(self, picklist=('SMOOTHIE-1',)):
+        """Scan ORD-1 as self.device so the order is locked in_progress.
+
+        The holder check only runs for order-backed picklists, so the Order row
+        is what makes a lock exist at all.
+        """
+        order = Order.objects.create(
+            customer=self.customer, order_code='ORD-1', status='queued', queue_position=1)
+        OrderLine.objects.create(order=order, product=self.smoothie, quantity=1)
+        self.scan(list(picklist))
+        return order
+
+    def _other_device(self, last_login):
+        return Device.objects.create(
+            user=self.picker, customer=self.customer, device_fingerprint='other-fp',
+            name='Other phone', description='', last_login=last_login, lists_picked=0)
+
+    def _scan_as_other(self, picklist=('SMOOTHIE-1',)):
+        return self.client.post('/orderpiqr/scan-picklist', data=json.dumps({
+            'orderID': 'ORD-1',
+            'picklist': list(picklist),
+            'deviceFingerprint': 'other-fp',
+        }), content_type='application/json')
+
+    def test_stale_lock_is_handed_over_to_the_rescanning_device(self):
+        # A device identity is only a localStorage UUID, so a picker whose
+        # storage was evicted returns as "another device" and was locked out of
+        # their own list forever. Once the holder has gone quiet, hand it over.
+        self._held_order(['SMOOTHIE-1', 'SALAD-1'])
+        Device.objects.filter(pk=self.device.pk).update(
+            last_login=timezone.now() - timedelta(minutes=45))
+        self._other_device(last_login=timezone.now())
+
+        response = self._scan_as_other(['SMOOTHIE-1', 'SALAD-1'])
+
+        self.assertEqual(response.status_code, 200)
+        picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
+        self.assertEqual(picklist.device.device_fingerprint, 'other-fp')
+
+    def test_stale_lock_takeover_preserves_recorded_picks(self):
+        self._held_order(['SMOOTHIE-1', 'SMOOTHIE-1', 'SALAD-1'])
+        self.client.post('/orderpiqr/product-pick', data=json.dumps({
+            'orderID': 'ORD-1', 'productCode': 'SMOOTHIE-1',
+            'deviceFingerprint': FINGERPRINT, 'timeTakenMs': 500,
+        }), content_type='application/json')
+        Device.objects.filter(pk=self.device.pk).update(
+            last_login=timezone.now() - timedelta(hours=2))
+        self._other_device(last_login=timezone.now())
+
+        response = self._scan_as_other(['SMOOTHIE-1', 'SMOOTHIE-1', 'SALAD-1'])
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['already_picked'], {'SMOOTHIE-1': 1})
+        picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
+        self.assertEqual(
+            ProductPick.objects.filter(picklist=picklist, successful=True).count(), 1)
+
+    def test_stale_lock_takeover_is_logged(self):
+        self._held_order()
+        Device.objects.filter(pk=self.device.pk).update(
+            last_login=timezone.now() - timedelta(minutes=30))
+        self._other_device(last_login=timezone.now())
+
+        self._scan_as_other()
+
+        event = ScanEvent.objects.get(event_type='lock_takeover')
+        self.assertEqual(event.picklist_code, 'ORD-1')
+        self.assertIn('Test phone', event.message)
+
+    def test_live_holder_still_blocks_and_is_logged_as_rejected(self):
+        self._held_order()
+        self._other_device(last_login=timezone.now())
+
+        response = self._scan_as_other()
+
+        self.assertEqual(response.status_code, 409)
+        self.assertTrue(ScanEvent.objects.filter(event_type='picklist_rejected').exists())
+        self.assertFalse(ScanEvent.objects.filter(event_type='lock_takeover').exists())
 
     def test_unknown_product_from_another_customer_is_still_unknown(self):
         other = Customer.objects.create(name='Other company')

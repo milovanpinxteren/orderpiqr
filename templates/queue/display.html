@@ -9,7 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'orderpiqrApp/css/queue_display.css' %}">
     <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- Self-hosted: a third-party CDN outage must never stop a shift.
+         Byte-identical to the pinned version these pages used to fetch. -->
+    <script src="{% static 'orderpiqrApp/js/vendor/htmx-1.9.10.min.js' %}"></script>
     <title>{% trans "Order Queue" %} - {{ customer.company_name }}</title>
 </head>
 <body>

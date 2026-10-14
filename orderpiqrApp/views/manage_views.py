@@ -13,7 +13,8 @@ from django.db.models.functions import TruncDate
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from django.utils.translation import gettext as _
-from datetime import timedelta
+from collections import Counter
+from datetime import datetime, time, timedelta
 import json
 import csv
 import io
@@ -25,11 +26,12 @@ from orderpiqrApp.utils.decorators import company_admin_required
 from orderpiqrApp.utils.csv_import import (
     CSVImportError, read_csv_rows, parse_bool, PRODUCT_CSV_FIELDS, ORDER_CSV_FIELDS,
 )
+from orderpiqrApp.utils.build_id import get_build_id
 from orderpiqrApp.utils.inventory import is_inventory_enabled, is_queue_enabled, modify_inventory
 from orderpiqrApp.utils.login_qr import active_token, issue_token, login_url
 from orderpiqrApp.utils.products import code_conflict, merge_products, resolve_product, set_alias_codes, set_primary_code
 from orderpiqrApp.utils.start_page import QUEUE, SCAN, TOKEN_START_PAGE_CHOICES
-from orderpiqrApp.models import Product, ProductBarcode, Order, OrderLine, PickList, Device, CustomerSettingValue, SettingDefinition, InventoryLog, ScanEvent
+from orderpiqrApp.models import Product, ProductBarcode, Order, OrderLine, PickList, ProductPick, Device, CustomerSettingValue, SettingDefinition, InventoryLog, ScanEvent
 from django.contrib.auth.models import User
 
 
@@ -1189,19 +1191,222 @@ def picklist_close(request, picklist_id):
 # Pick-flow Health
 # ============================================
 
+def _health_window(request):
+    """Resolve the dashboard's time window from the query string.
+
+    Returns (start, end, preset, label). Every number on the page is computed
+    from this one window — the previous version filtered the event list by the
+    dates but the tiles by a separate rolling 7 days, and ignored the filter
+    entirely for stale picklists, so three parts of one screen could describe
+    three different periods.
+
+    The default is the last 24 hours rather than the calendar day: shifts run
+    into the evening, and the question is almost always asked the next morning.
+    """
+    now = timezone.now()
+    date_from = parse_date(request.GET.get('date_from', '') or '')
+    date_to = parse_date(request.GET.get('date_to', '') or '')
+
+    if date_from or date_to:
+        start = (timezone.make_aware(datetime.combine(date_from, time.min))
+                 if date_from else now - timedelta(days=365))
+        end = (timezone.make_aware(datetime.combine(date_to, time.max))
+               if date_to else now)
+        return start, end, 'custom', _('custom range')
+
+    preset = request.GET.get('preset') or '24h'
+    today = timezone.localdate(now)
+    if preset == 'today':
+        return (timezone.make_aware(datetime.combine(today, time.min)), now,
+                'today', _('today'))
+    if preset == 'yesterday':
+        yesterday = today - timedelta(days=1)
+        return (timezone.make_aware(datetime.combine(yesterday, time.min)),
+                timezone.make_aware(datetime.combine(yesterday, time.max)),
+                'yesterday', _('yesterday'))
+    if preset == '7d':
+        return now - timedelta(days=7), now, '7d', _('last 7 days')
+    if preset == '30d':
+        return now - timedelta(days=30), now, '30d', _('last 30 days')
+    return now - timedelta(hours=24), now, '24h', _('last 24 hours')
+
+
+# Which event types roll up into each headline tile. Severity answers "how bad",
+# these answer "what kind of problem is it" — the split that lets a blocking
+# lockout stop hiding behind a pile of routine unknown-barcode warnings.
+HEALTH_TILE_TYPES = {
+    'blocking': ['picklist_rejected', 'sync_error', 'auth_bounce'],
+    'scanning': ['unknown_product', 'wrong_product', 'picklist_parse_error'],
+    'overrides': ['manual_override'],
+    'app': ['client_error', 'camera_error', 'app_lifecycle', 'lock_takeover'],
+}
+
+
+def _add_live_strip(context, customer):
+    """Is it happening right now? Deliberately ignores the date window.
+
+    These are the counters that answer the phone call. Every one of them was
+    unmeasurable before: restarts, logouts and crashes produced no event at all.
+    """
+    now = timezone.now()
+    hour_ago = now - timedelta(hours=1)
+    recent = ScanEvent.objects.filter(customer=customer, created_at__gte=hour_ago)
+
+    by_type = dict(recent.values_list('event_type').annotate(n=Count('id')).values_list('event_type', 'n'))
+    context['live'] = {
+        'devices_active': Device.objects.filter(
+            customer=customer, last_login__gte=now - timedelta(minutes=15)).count(),
+        'devices_total': Device.objects.filter(customer=customer).count(),
+        'lists_in_progress': PickList.objects.filter(
+            customer=customer, pick_started=True, successful__isnull=True,
+            archived=False).count(),
+        'app_restarts': by_type.get('app_lifecycle', 0),
+        'auth_bounces': by_type.get('auth_bounce', 0),
+        'client_errors': by_type.get('client_error', 0) + by_type.get('camera_error', 0),
+        'lock_takeovers': by_type.get('lock_takeover', 0),
+    }
+
+    # Devices still running an older client than the one we serve. A bad deploy
+    # mid-rollout looks exactly like "the app broke this morning".
+    current_build = get_build_id()
+    context['current_build'] = current_build
+    context['devices_on_old_build'] = Device.objects.filter(
+        customer=customer, last_login__gte=now - timedelta(days=1),
+    ).exclude(last_build_id='').exclude(last_build_id=current_build).count()
+
+
+def _add_health_tiles(context, window):
+    """Headline counts per problem kind, each one a link that filters the list."""
+    counts = dict(window.values_list('event_type').annotate(n=Count('id'))
+                  .values_list('event_type', 'n'))
+    context['tiles'] = {
+        key: sum(counts.get(event_type, 0) for event_type in types)
+        for key, types in HEALTH_TILE_TYPES.items()
+    }
+    context['severity_counts'] = dict(
+        window.values_list('severity').annotate(n=Count('id')).values_list('severity', 'n'))
+
+    # The slug that distinguishes cases sharing an event_type. Before this
+    # existed, three different failures were all just "unknown_product" and the
+    # real difference lived in free text nothing could group by.
+    context['top_reasons'] = list(
+        window.exclude(reason='')
+        .values('event_type', 'reason')
+        .annotate(count=Count('id'))
+        .order_by('-count')[:10])
+
+
+def _add_device_breakdown(context, customer, window, start, end):
+    """One row per device: the table that turns "the app crashes" into "that phone".
+
+    Device 630 overrode 27.6% of its lines on a shift where another phone sat
+    at 0.3% — invisible until the numbers are put side by side.
+    """
+    rows = {}
+    for entry in (window.values('device_id', 'device__name', 'event_type')
+                  .annotate(n=Count('id'))):
+        device_id = entry['device_id']
+        row = rows.setdefault(device_id, {
+            'device_id': device_id,
+            'name': (entry['device__name'] or '').strip() or _('Unknown device'),
+            'errors': 0, 'overrides': 0, 'restarts': 0, 'bounces': 0, 'total': 0,
+        })
+        count = entry['n']
+        row['total'] += count
+        event_type = entry['event_type']
+        if event_type == 'manual_override':
+            row['overrides'] += count
+        elif event_type == 'app_lifecycle':
+            row['restarts'] += count
+        elif event_type == 'auth_bounce':
+            row['bounces'] += count
+        elif event_type in ('client_error', 'camera_error', 'sync_error', 'picklist_rejected'):
+            row['errors'] += count
+
+    lists_done = dict(
+        PickList.objects
+        .filter(customer=customer, pick_time__gte=start, pick_time__lte=end)
+        .values_list('device_id').annotate(n=Count('picklist_id'))
+        .values_list('device_id', 'n'))
+
+    devices = {d.device_id: d for d in Device.objects.filter(customer=customer)}
+    for device_id, row in rows.items():
+        device = devices.get(device_id)
+        row['lists'] = lists_done.get(device_id, 0)
+        row['last_seen'] = device.last_login if device else None
+        row['browser'] = device.browser if device else ''
+        row['os'] = device.os if device else ''
+        row['os_version'] = device.os_version if device else ''
+        row['display_mode'] = device.get_display_mode_display() if device and device.display_mode else ''
+        row['installed'] = bool(device and device.display_mode == 'standalone')
+        row['browser_tab'] = bool(device and device.display_mode == 'browser')
+        row['build'] = device.last_build_id if device else ''
+        # Overrides per list is the comparable number — raw counts just track
+        # who picked most.
+        row['override_rate'] = round(row['overrides'] / row['lists'], 1) if row['lists'] else None
+
+    context['device_rows'] = sorted(
+        rows.values(), key=lambda r: (r['errors'] + r['bounces'], r['overrides']), reverse=True)
+
+
+def _add_pick_outcomes(context, customer, start, end):
+    """Did the work actually get recorded? The metric that measures real harm.
+
+    Lines left pending on a list the client marked complete are picks the
+    picker made and the server never stored. On 2026-10-11 that was 15.2% of
+    all lines; nothing on this page would have shown it.
+    """
+    picklists = PickList.objects.filter(
+        customer=customer, pick_time__gte=start, pick_time__lte=end, archived=False)
+
+    completed_ids = list(picklists.filter(successful=True).values_list('picklist_id', flat=True))
+    total_lines = ProductPick.objects.filter(picklist__in=picklists).count()
+    lost_lines = ProductPick.objects.filter(
+        picklist_id__in=completed_ids, successful__isnull=True).count()
+
+    restarted = picklists.filter(notes__contains='Restarted by device')
+    context['outcomes'] = {
+        'lists_total': picklists.count(),
+        'lists_completed': len(completed_ids),
+        'lists_open': picklists.filter(successful__isnull=True).count(),
+        'lines_total': total_lines,
+        'lines_lost': lost_lines,
+        'lines_lost_pct': round(100.0 * lost_lines / total_lines, 1) if total_lines else 0.0,
+        'lists_restarted': restarted.count(),
+    }
+
+
 @company_admin_required
 def health_list(request):
-    """Pick-flow health: scan failures, rejected picklists and manual
-    overrides, with the recurring problem codes of the last 7 days."""
+    """Pick-flow health: what went wrong for pickers, on which device, when.
+
+    Built to answer a complaint like "the app crashed and kicked people out"
+    without a developer: the live strip says whether it is happening now, the
+    tiles say what kind of problem it is, and the per-device table says whether
+    it is one phone or all of them.
+    """
     context = get_base_context(request, 'health')
     customer = context['customer']
 
     if not customer:
         return redirect('manage_dashboard')
 
-    events = ScanEvent.objects.filter(
-        customer=customer
-    ).select_related('device').order_by('-created_at')
+    start, end, preset, window_label = _health_window(request)
+    context.update({
+        'preset': preset,
+        'window_label': window_label,
+        'window_start': start,
+        'window_end': end,
+        'date_from': request.GET.get('date_from', ''),
+        'date_to': request.GET.get('date_to', ''),
+    })
+
+    window = ScanEvent.objects.filter(
+        customer=customer, created_at__gte=start, created_at__lte=end)
+
+    events = (ScanEvent.objects
+              .filter(customer=customer, created_at__gte=start, created_at__lte=end)
+              .select_related('device').order_by('-created_at'))
 
     # Filters
     event_type = request.GET.get('event_type')
@@ -1209,34 +1414,28 @@ def health_list(request):
         events = events.filter(event_type=event_type)
         context['event_type_filter'] = event_type
 
-    date_from_raw = request.GET.get('date_from', '')
-    date_from = parse_date(date_from_raw) if date_from_raw else None
-    if date_from:
-        events = events.filter(created_at__date__gte=date_from)
-        context['date_from'] = date_from_raw
+    severity = request.GET.get('severity')
+    if severity in dict(ScanEvent.SEVERITIES):
+        events = events.filter(severity=severity)
+        context['severity_filter'] = severity
 
-    date_to_raw = request.GET.get('date_to', '')
-    date_to = parse_date(date_to_raw) if date_to_raw else None
-    if date_to:
-        events = events.filter(created_at__date__lte=date_to)
-        context['date_to'] = date_to_raw
+    tile = request.GET.get('tile')
+    if tile in HEALTH_TILE_TYPES:
+        events = events.filter(event_type__in=HEALTH_TILE_TYPES[tile])
+        context['tile_filter'] = tile
+
+    device_filter = request.GET.get('device')
+    if device_filter and device_filter.isdigit():
+        events = events.filter(device_id=int(device_filter))
+        context['device_filter'] = int(device_filter)
 
     context['event_types'] = ScanEvent.EVENT_TYPES
+    context['severities'] = ScanEvent.SEVERITIES
 
-    # The stat tiles and breakdowns follow the selected date window; without
-    # a date filter they default to the rolling last 7 days (tiles also show
-    # the last 24 hours).
-    date_filtered = bool(date_from or date_to)
-    context['date_filtered'] = date_filtered
-    week_ago = timezone.now() - timedelta(days=7)
-    window = ScanEvent.objects.filter(customer=customer)
-    if date_filtered:
-        if date_from:
-            window = window.filter(created_at__date__gte=date_from)
-        if date_to:
-            window = window.filter(created_at__date__lte=date_to)
-    else:
-        window = window.filter(created_at__gte=week_ago)
+    _add_live_strip(context, customer)
+    _add_health_tiles(context, window)
+    _add_device_breakdown(context, customer, window, start, end)
+    _add_pick_outcomes(context, customer, start, end)
 
     # Top problem codes in the window. Bulk unknown_product events may
     # contain comma-joined codes; those are displayed as-is.
@@ -1267,16 +1466,6 @@ def health_list(request):
     # point at a wrong barcode on the label or in the catalog, many by one
     # picker at a device or habit problem.
     overrides_window = window.filter(event_type='manual_override')
-    issues_window = window.exclude(event_type='manual_override')
-    if date_filtered:
-        context['overrides_period'] = overrides_window.count()
-        context['scan_issues_period'] = issues_window.count()
-    else:
-        day_ago = timezone.now() - timedelta(hours=24)
-        context['overrides_7d'] = overrides_window.count()
-        context['overrides_24h'] = overrides_window.filter(created_at__gte=day_ago).count()
-        context['scan_issues_7d'] = issues_window.count()
-        context['scan_issues_24h'] = issues_window.filter(created_at__gte=day_ago).count()
 
     # An override's scanned_code is the picklist's primary product code, so it
     # resolves to a catalog description directly.
@@ -1295,21 +1484,30 @@ def health_list(request):
         entry['description'] = descriptions.get(entry['scanned_code'], '')
     context['top_override_codes'] = top_override_codes
 
-    context['top_override_devices'] = list(
-        overrides_window
-        .values('device__name')
-        .annotate(count=Count('id'))
-        .order_by('-count')[:10]
-    )
-
-    # Picklists stuck in progress: started over 4 hours ago and never finished.
-    context['stale_picklists'] = PickList.objects.filter(
+    # Deliberately NOT window-filtered: a stuck list is a thing to go and fix
+    # now, not a historical statistic. Labelled as such on the page, because
+    # silently ignoring the date filter is what made this card confusing.
+    stale = list(PickList.objects.filter(
         customer=customer,
         pick_started=True,
         successful__isnull=True,
         archived=False,
         pick_time__lt=timezone.now() - timedelta(hours=4)
-    ).select_related('order', 'device').order_by('pick_time')
+    ).select_related('order', 'device').order_by('pick_time'))
+
+    # How much work is actually trapped in each one, and whether the picker had
+    # to keep restarting it — both already stored, neither ever shown.
+    pending_counts = dict(
+        ProductPick.objects
+        .filter(picklist__in=stale, successful__isnull=True)
+        .values_list('picklist')
+        .annotate(n=Count('id'))
+        .values_list('picklist', 'n'))
+    for picklist in stale:
+        picklist.pending_lines = pending_counts.get(picklist.picklist_id, 0)
+        picklist.restart_count = (picklist.notes or '').count('Restarted by device')
+    context['stale_picklists'] = stale
+    context['stale_pending_lines'] = sum(p.pending_lines for p in stale)
 
     # Pagination
     paginator = Paginator(events, 25)
@@ -1327,28 +1525,78 @@ def health_list(request):
 
 @company_admin_required
 def devices_list(request):
-    """List all devices (read-only)."""
+    """What each picker's phone actually is, and how it is behaving.
+
+    This page used to show a name, an online dot and a lifetime list count,
+    which could not answer any of the questions people actually ask: is it an
+    old phone, is it running in a browser tab instead of the installed app, is
+    it stuck on an old build, is it the one producing all the errors.
+    """
     context = get_base_context(request, 'devices')
     customer = context['customer']
 
     if not customer:
         return redirect('manage_dashboard')
 
-    # Get devices
-    devices = Device.objects.filter(customer=customer).select_related('user')
-
-    # Add activity status
     now = timezone.now()
-    for device in devices:
-        if device.last_login:
-            device.is_active = (now - device.last_login) < timedelta(minutes=15)
-        else:
-            device.is_active = False
+    day_ago = now - timedelta(days=1)
+    week_ago = now - timedelta(days=7)
 
-    # Ordering
-    devices = devices.order_by('-last_login')
+    devices = list(Device.objects.filter(customer=customer).select_related('user'))
+
+    # Errors and overrides per device over the last 24 hours, in one query.
+    recent_events = (ScanEvent.objects
+                     .filter(customer=customer, created_at__gte=day_ago)
+                     .values('device_id', 'event_type')
+                     .annotate(n=Count('id')))
+    per_device = {}
+    for entry in recent_events:
+        bucket = per_device.setdefault(entry['device_id'], {})
+        bucket[entry['event_type']] = entry['n']
+
+    lists_week = dict(
+        PickList.objects
+        .filter(customer=customer, pick_time__gte=week_ago)
+        .values_list('device_id').annotate(n=Count('picklist_id'))
+        .values_list('device_id', 'n'))
+
+    current_build = get_build_id()
+    for device in devices:
+        counts = per_device.get(device.device_id, {})
+        device.is_active = bool(device.last_login and (now - device.last_login) < timedelta(minutes=15))
+        device.errors_today = (counts.get('client_error', 0) + counts.get('camera_error', 0)
+                               + counts.get('sync_error', 0) + counts.get('picklist_rejected', 0))
+        device.overrides_today = counts.get('manual_override', 0)
+        device.restarts_today = counts.get('app_lifecycle', 0)
+        device.bounces_today = counts.get('auth_bounce', 0)
+        device.lists_week = lists_week.get(device.device_id, 0)
+        # An outdated build is only meaningful for a device we have heard from
+        # recently; a phone last seen in September is simply gone.
+        device.build_outdated = bool(
+            device.last_build_id and current_build
+            and device.last_build_id != current_build
+            and device.last_login and device.last_login >= week_ago)
+        device.unnamed = device.name.startswith('Auto-created device') or not device.name.strip()
+
+    # Problem devices first, then most recently seen.
+    devices.sort(key=lambda d: (
+        -(d.errors_today + d.bounces_today),
+        -d.overrides_today,
+        -(d.last_login.timestamp() if d.last_login else 0),
+    ))
+
+    # Several rows for one human is the fingerprint-churn signature: a device
+    # identity is only a localStorage UUID, so storage eviction mints a new one
+    # and locks the picker out of their own list.
+    names = Counter((d.name or '').strip().lower() for d in devices if (d.name or '').strip())
+    for device in devices:
+        device.possible_duplicate = names[(device.name or '').strip().lower()] > 1
 
     context['devices'] = devices
+    context['current_build'] = current_build
+    context['duplicate_count'] = sum(1 for d in devices if d.possible_duplicate)
+    context['browser_tab_count'] = sum(1 for d in devices if d.display_mode == 'browser')
+    context['unknown_mode_count'] = sum(1 for d in devices if not d.display_mode)
 
     return render(request, 'manage/devices/list.html', context)
 

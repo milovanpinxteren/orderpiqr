@@ -20,7 +20,9 @@
     {% block extra_css %}{% endblock %}
 
     <!-- HTMX for dynamic updates -->
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- Self-hosted: a third-party CDN outage must never stop a shift.
+         Byte-identical to the pinned version these pages used to fetch. -->
+    <script src="{% static 'orderpiqrApp/js/vendor/htmx-1.9.10.min.js' %}"></script>
 
     <!-- i18n JavaScript -->
     <script src="{% url 'javascript-catalog' %}"></script>

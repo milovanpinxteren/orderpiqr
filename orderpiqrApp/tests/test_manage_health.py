@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.utils.translation import activate
 
 from orderpiqrApp.models import (
-    Customer, Device, PickList, Product, ScanEvent, UserProfile,
+    Customer, Device, PickList, Product, ProductPick, ScanEvent, UserProfile,
 )
 
 
@@ -147,33 +147,32 @@ class HealthListTests(ManageHealthTestCase):
         day = (timezone.now() - timedelta(days=3)).date().isoformat()
         response = self.client.get(self.url, {'date_from': day, 'date_to': day})
 
-        self.assertTrue(response.context['date_filtered'])
-        self.assertEqual(response.context['scan_issues_period'], 1)
-        self.assertEqual(response.context['overrides_period'], 1)
+        self.assertEqual(response.context['preset'], 'custom')
+        self.assertEqual(response.context['tiles']['scanning'], 1)
+        self.assertEqual(response.context['tiles']['overrides'], 1)
         self.assertEqual(
             [e['scanned_code'] for e in response.context['top_codes']], ['DAY-1'])
         self.assertEqual(
             [e['scanned_code'] for e in response.context['top_override_codes']],
             ['DAY-1'])
-        self.assertContains(response, 'selected period')
 
-    def test_date_filter_reaches_beyond_the_default_week(self):
-        # Without dates the breakdowns cover the rolling last 7 days; a date
-        # window must surface older pick days too.
+    def test_date_filter_reaches_beyond_the_default_window(self):
+        # Without dates the page shows the last 24 hours; a date window must
+        # surface older pick days too.
         self.make_event('manual_override', scanned_code='OLD-1', days_ago=10)
 
         day = (timezone.now() - timedelta(days=10)).date().isoformat()
         response = self.client.get(self.url, {'date_from': day, 'date_to': day})
-        self.assertEqual(response.context['overrides_period'], 1)
+        self.assertEqual(response.context['tiles']['overrides'], 1)
         self.assertEqual(
             [e['scanned_code'] for e in response.context['top_override_codes']],
             ['OLD-1'])
 
-    def test_invalid_date_is_ignored(self):
+    def test_invalid_date_falls_back_to_the_default_window(self):
         self.make_event('unknown_product', scanned_code='NEW-1')
         response = self.client.get(self.url, {'date_from': 'not-a-date'})
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(response.context['date_filtered'])
+        self.assertEqual(response.context['preset'], '24h')
         self.assertEqual(
             [e.scanned_code for e in response.context['events']], ['NEW-1'])
 
@@ -190,7 +189,7 @@ class HealthListTests(ManageHealthTestCase):
         for _ in range(3):
             self.make_event('unknown_product', scanned_code='GHOST-1')
         self.make_event('wrong_product', scanned_code='KNOWN-1')
-        # Outside the 7-day window: must not appear at all.
+        # Outside the default window: must not appear at all.
         self.make_event('unknown_product', scanned_code='ANCIENT-1', days_ago=8)
 
         response = self.client.get(self.url)
@@ -207,7 +206,7 @@ class HealthListTests(ManageHealthTestCase):
         self.assertContains(response, '?code=GHOST-1')
         self.assertNotContains(response, '?code=KNOWN-1')
 
-    def test_override_breakdown_by_product_and_picker(self):
+    def test_override_breakdown_by_product_and_device(self):
         Product.objects.create(customer=self.customer, code='BAR-1',
                                description='Chocolate bar')
         device_a = self.make_device(name='Phone A')
@@ -215,7 +214,7 @@ class HealthListTests(ManageHealthTestCase):
         for _ in range(3):
             self.make_event('manual_override', scanned_code='BAR-1', device=device_a)
         self.make_event('manual_override', scanned_code='NO-PRODUCT', device=device_b)
-        # Outside the 7-day window and other tenants must not count.
+        # Outside the default window and other tenants must not count.
         self.make_event('manual_override', scanned_code='BAR-1', days_ago=8)
         self.make_event('manual_override', customer=self.other_customer,
                         scanned_code='BAR-1')
@@ -224,18 +223,19 @@ class HealthListTests(ManageHealthTestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.context['overrides_7d'], 4)
-        self.assertEqual(response.context['overrides_24h'], 4)
-        self.assertEqual(response.context['scan_issues_7d'], 1)
+        self.assertEqual(response.context['tiles']['overrides'], 4)
+        self.assertEqual(response.context['tiles']['scanning'], 1)
 
         by_code = {e['scanned_code']: e for e in response.context['top_override_codes']}
         self.assertEqual(by_code['BAR-1']['count'], 3)
         self.assertEqual(by_code['BAR-1']['description'], 'Chocolate bar')
         self.assertEqual(by_code['NO-PRODUCT']['description'], '')
 
-        by_device = {e['device__name']: e for e in response.context['top_override_devices']}
-        self.assertEqual(by_device['Phone A']['count'], 3)
-        self.assertEqual(by_device['Phone B']['count'], 1)
+        # Per-device override counts now live in the device breakdown, next to
+        # errors, logouts and restarts, so one bad phone is visible at a glance.
+        by_device = {row['name']: row for row in response.context['device_rows']}
+        self.assertEqual(by_device['Phone A']['overrides'], 3)
+        self.assertEqual(by_device['Phone B']['overrides'], 1)
         # Most overridden first.
         self.assertEqual(response.context['top_override_codes'][0]['scanned_code'], 'BAR-1')
         self.assertContains(response, 'Chocolate bar')
@@ -247,6 +247,148 @@ class HealthListTests(ManageHealthTestCase):
         self.assertContains(response, 'PL-STUCK')
         self.assertContains(
             response, reverse('manage_picklist_detail', args=[stale.picklist_id]))
+
+    def test_stale_picklists_show_trapped_work_and_restarts(self):
+        # How much is stuck inside a dead lock, and whether the picker had to
+        # keep restarting it, were both already stored and never shown.
+        device = self.make_device()
+        stale = self.make_picklist(device, hours_ago=6, code='PL-STUCK')
+        product = Product.objects.create(customer=self.customer, code='P-1',
+                                         description='Thing')
+        ProductPick.objects.create(product=product, picklist=stale, quantity=1)
+        ProductPick.objects.create(product=product, picklist=stale, quantity=1,
+                                   successful=True)
+        PickList.objects.filter(pk=stale.pk).update(
+            notes='Restarted by device Scanner 1 at x\nRestarted by device Scanner 1 at y')
+
+        response = self.client.get(self.url)
+
+        listed = response.context['stale_picklists'][0]
+        self.assertEqual(listed.pending_lines, 1)
+        self.assertEqual(listed.restart_count, 2)
+        self.assertEqual(response.context['stale_pending_lines'], 1)
+
+
+class HealthLiveStripTests(ManageHealthTestCase):
+    """The counters that answer a phone call, none of which existed before."""
+
+    def setUp(self):
+        super().setUp()
+        self.url = reverse('manage_health')
+
+    def test_live_strip_counts_the_silences(self):
+        device = self.make_device()
+        self.make_event('auth_bounce', device=device)
+        self.make_event('client_error', device=device, reason='uncaught_error')
+        self.make_event('camera_error', device=device, reason='permission_denied')
+        self.make_event('app_lifecycle', device=device, reason='self_update_reload')
+        self.make_event('lock_takeover', device=device)
+
+        live = self.client.get(self.url).context['live']
+
+        self.assertEqual(live['auth_bounces'], 1)
+        self.assertEqual(live['client_errors'], 2)   # client + camera
+        self.assertEqual(live['app_restarts'], 1)
+        self.assertEqual(live['lock_takeovers'], 1)
+
+    def test_live_strip_ignores_the_date_window(self):
+        # It is about now, not about the filter — that is the whole point.
+        self.make_event('auth_bounce')
+        day = (timezone.now() - timedelta(days=30)).date().isoformat()
+        response = self.client.get(self.url, {'date_from': day, 'date_to': day})
+        self.assertEqual(response.context['live']['auth_bounces'], 1)
+
+    def test_old_events_do_not_count_as_live(self):
+        self.make_event('auth_bounce', days_ago=2)
+        self.assertEqual(self.client.get(self.url).context['live']['auth_bounces'], 0)
+
+    def test_tiles_group_by_kind_of_problem(self):
+        self.make_event('picklist_rejected')
+        self.make_event('auth_bounce')
+        self.make_event('unknown_product', scanned_code='X')
+        self.make_event('manual_override', scanned_code='Y')
+        self.make_event('client_error', reason='uncaught_error')
+
+        tiles = self.client.get(self.url).context['tiles']
+
+        self.assertEqual(tiles['blocking'], 2)   # rejected + bounce
+        self.assertEqual(tiles['scanning'], 1)
+        self.assertEqual(tiles['overrides'], 1)
+        self.assertEqual(tiles['app'], 1)
+
+    def test_tile_link_filters_the_event_list(self):
+        self.make_event('picklist_rejected', scanned_code='BLOCKED-1')
+        self.make_event('unknown_product', scanned_code='SCANNED-1')
+
+        response = self.client.get(self.url, {'tile': 'blocking'})
+        codes = [e.scanned_code for e in response.context['events']]
+        self.assertEqual(codes, ['BLOCKED-1'])
+
+    def test_severity_filter(self):
+        self.make_event('manual_override', scanned_code='INFO-1', severity='info')
+        self.make_event('sync_error', scanned_code='ERR-1', severity='error')
+
+        response = self.client.get(self.url, {'severity': 'error'})
+        self.assertEqual([e.scanned_code for e in response.context['events']], ['ERR-1'])
+
+    def test_device_filter(self):
+        device = self.make_device(name='Phone A')
+        other = self.make_device(name='Phone B')
+        self.make_event('sync_error', scanned_code='A-1', device=device)
+        self.make_event('sync_error', scanned_code='B-1', device=other)
+
+        response = self.client.get(self.url, {'device': device.device_id})
+        self.assertEqual([e.scanned_code for e in response.context['events']], ['A-1'])
+
+
+class HealthOutcomeTests(ManageHealthTestCase):
+    """Picks the picker made that the server never recorded — the metric that
+    measures real harm, and the one the page never showed."""
+
+    def setUp(self):
+        super().setUp()
+        self.url = reverse('manage_health')
+        self.device = self.make_device()
+        self.product = Product.objects.create(customer=self.customer, code='P-1',
+                                              description='Thing')
+
+    def _list(self, code, successful, picked, pending):
+        picklist = PickList.objects.create(
+            customer=self.customer, device=self.device, picklist_code=code,
+            pick_started=True, successful=successful)
+        for _ in range(picked):
+            ProductPick.objects.create(product=self.product, picklist=picklist,
+                                       quantity=1, successful=True)
+        for _ in range(pending):
+            ProductPick.objects.create(product=self.product, picklist=picklist,
+                                       quantity=1)
+        return picklist
+
+    def test_lines_left_pending_on_a_completed_list_count_as_lost(self):
+        self._list('PL-OK', successful=True, picked=8, pending=2)
+
+        outcomes = self.client.get(self.url).context['outcomes']
+
+        self.assertEqual(outcomes['lists_completed'], 1)
+        self.assertEqual(outcomes['lines_total'], 10)
+        self.assertEqual(outcomes['lines_lost'], 2)
+        self.assertEqual(outcomes['lines_lost_pct'], 20.0)
+
+    def test_pending_lines_on_an_open_list_are_not_lost(self):
+        # Still being picked is not the same as silently dropped.
+        self._list('PL-OPEN', successful=None, picked=1, pending=4)
+
+        outcomes = self.client.get(self.url).context['outcomes']
+
+        self.assertEqual(outcomes['lists_open'], 1)
+        self.assertEqual(outcomes['lines_lost'], 0)
+
+    def test_restarted_lists_are_counted(self):
+        picklist = self._list('PL-R', successful=True, picked=1, pending=0)
+        PickList.objects.filter(pk=picklist.pk).update(
+            notes='Restarted by device Scanner 1 at 2026-10-13 21:04')
+
+        self.assertEqual(self.client.get(self.url).context['outcomes']['lists_restarted'], 1)
 
 
 class PicklistCloseTests(ManageHealthTestCase):

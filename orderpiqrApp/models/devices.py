@@ -20,8 +20,31 @@ class Device(models.Model):
     name = models.CharField(_("Name"), max_length=255)
     description = models.TextField(_("Description"))
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name=_("Customer"))
+    # Despite the name this is last *activity*: stamped on every pick, not only
+    # at login. It is what tells a live picker from an abandoned lock.
     last_login = models.DateTimeField(_("Last Login"))
     lists_picked = models.IntegerField(_("Lists Picked"))
+
+    # What this device actually is. Parsed from the user agent, which
+    # django_user_agents has been putting on every request all along without
+    # anything reading it — so "is it one old phone or all of them?" was
+    # unanswerable. Diagnostic only; the raw UA string is deliberately not kept.
+    browser = models.CharField(_("Browser"), max_length=64, blank=True, default='')
+    browser_version = models.CharField(_("Browser Version"), max_length=32, blank=True, default='')
+    os = models.CharField(_("Operating System"), max_length=64, blank=True, default='')
+    os_version = models.CharField(_("OS Version"), max_length=32, blank=True, default='')
+    device_family = models.CharField(_("Device"), max_length=64, blank=True, default='')
+
+    # 'standalone' = installed PWA, 'browser' = a plain tab. A browser tab is
+    # subject to storage eviction that wipes the device identity, so this is the
+    # field that separates "old phone" from "never installed the app".
+    DISPLAY_MODES = [
+        ('standalone', _('Installed app')),
+        ('browser', _('Browser tab')),
+    ]
+    display_mode = models.CharField(_("Display Mode"), max_length=16, blank=True, default='',
+                                    choices=DISPLAY_MODES)
+    last_build_id = models.CharField(_("Last Build"), max_length=64, blank=True, default='')
 
     class Meta:
         verbose_name = _("Device")

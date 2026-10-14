@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="{% static 'orderpiqrApp/css/queue_picker.css' %}">
     <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
     <link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- Self-hosted: a third-party CDN outage must never stop a shift.
+         Byte-identical to the pinned version these pages used to fetch. -->
+    <script src="{% static 'orderpiqrApp/js/vendor/htmx-1.9.10.min.js' %}"></script>
     <title>{% trans "Pick Queue" %}</title>
 </head>
 <body>
@@ -135,14 +137,14 @@
             // clicked through, "take this over from Mariana" is not.
             let message;
             if (pickedBy && pickedFor) {
-                message = '{% trans "%(name)s has been picking this order for %(duration)s. Take it over? Their progress will be lost." %}'
+                message = '{% trans "%(name)s has been picking this order for %(duration)s. Take it over? Picks they already recorded are kept." %}'
                     .replace('%(name)s', pickedBy)
                     .replace('%(duration)s', pickedFor);
             } else if (pickedBy) {
-                message = '{% trans "%(name)s is picking this order right now. Take it over? Their progress will be lost." %}'
+                message = '{% trans "%(name)s is picking this order right now. Take it over? Picks they already recorded are kept." %}'
                     .replace('%(name)s', pickedBy);
             } else {
-                message = '{% trans "This order is being picked by someone else. Are you sure you want to take it over? Their progress will be lost." %}';
+                message = '{% trans "This order is being picked by someone else. Take it over? Picks they already recorded are kept." %}';
             }
             if (!confirm(message)) {
                 return;

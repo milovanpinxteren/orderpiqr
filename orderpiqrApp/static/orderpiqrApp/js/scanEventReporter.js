@@ -5,6 +5,12 @@
 // them on their dashboard. Reporting is best-effort by design: every error is
 // swallowed and callers must never await the result — a broken report must
 // never break picking.
+//
+// Delivery is delegated to window.orderpiqrHealth (clientHealth.js, a classic
+// script loaded in <head>) so that both reporters share one offline queue.
+// It is reached through the global rather than an import on purpose: pulling
+// clientHealth.js into this module graph would subject it to the hashed-static
+// rule that broke v123.
 import {getDeviceFingerprint} from './fingerprint.js';
 
 // Client-side dedupe: the scanner keeps re-firing while the phone hovers over
@@ -12,14 +18,10 @@ import {getDeviceFingerprint} from './fingerprint.js';
 const recentReports = new Map();  // "eventType|scannedCode" -> last report ts
 const DEDUPE_WINDOW_MS = 5000;
 
-export function reportScanEvent(eventType, {scannedCode = '', picklistCode = '', message = ''} = {}) {
+export function reportScanEvent(eventType, {scannedCode = '', picklistCode = '', message = '', reason = ''} = {}) {
     try {
-        if (!navigator.onLine) {
-            return;  // the report would fail anyway; picking continues offline
-        }
-
         const now = Date.now();
-        const dedupeKey = `${eventType}|${scannedCode}`;
+        const dedupeKey = `${eventType}|${scannedCode}|${reason}`;
         const lastReported = recentReports.get(dedupeKey);
         if (lastReported && now - lastReported < DEDUPE_WINDOW_MS) {
             return;
@@ -33,6 +35,16 @@ export function reportScanEvent(eventType, {scannedCode = '', picklistCode = '',
             }
         }
 
+        // Preferred path: queues when offline instead of dropping. Events used
+        // to be discarded outright whenever navigator.onLine was false, so the
+        // errors that happen during a warehouse connectivity drop — the ones
+        // that look most like a crash — were invisible by construction.
+        if (window.orderpiqrHealth) {
+            window.orderpiqrHealth.report(eventType, {scannedCode, picklistCode, message, reason});
+            return;
+        }
+
+        // Fallback for pages that don't load clientHealth.js.
         getDeviceFingerprint()
             .then(deviceFingerprint => fetch('/orderpiqr/scan-event', {
                 method: 'POST',
@@ -45,7 +57,10 @@ export function reportScanEvent(eventType, {scannedCode = '', picklistCode = '',
                     scannedCode,
                     picklistCode,
                     message,
-                    deviceFingerprint
+                    reason,
+                    deviceFingerprint,
+                    buildId: window.SETTINGS?.build_id || '',
+                    clientTs: new Date().toISOString()
                 })
             }))
             .catch(() => { /* reporting must never break picking */ });

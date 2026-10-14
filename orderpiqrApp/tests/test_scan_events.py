@@ -191,6 +191,59 @@ class ProductPickCaptureTests(ScanEndpointTestCase):
         self.assertEqual(event.picklist_code, 'ORD-1')
 
 
+class BulkProductPickCaptureTests(ScanEndpointTestCase):
+    """The bulk path is how an unscannable multi-quantity line gets confirmed
+    ("All N taken" after a triple-tap), so it carries the bulk of the real
+    override volume. It logged none of it, and its stop-the-line 404 was only
+    ever recorded by the client — i.e. never while the phone was offline.
+    """
+
+    def bulk_pick(self, product_code='SMOOTHIE-1', order_id='ORD-1', quantity=3, **overrides):
+        payload = {
+            'orderID': order_id,
+            'productCode': product_code,
+            'deviceFingerprint': FINGERPRINT,
+            'quantity': quantity,
+            'timeTakenMs': 1200,
+        }
+        payload.update(overrides)
+        return self.client.post('/orderpiqr/bulk-product-pick', data=json.dumps(payload),
+                                content_type='application/json')
+
+    def test_bulk_override_logs_event_with_the_quantity(self):
+        self.scan(['SMOOTHIE-1', 'SMOOTHIE-1', 'SMOOTHIE-1'])
+        response = self.bulk_pick(manualOverride=True)
+
+        self.assertEqual(response.status_code, 200)
+        event = ScanEvent.objects.get(event_type='manual_override')
+        self.assertEqual(event.scanned_code, 'SMOOTHIE-1')
+        self.assertEqual(event.picklist_code, 'ORD-1')
+        self.assertEqual(event.device, self.device)
+        self.assertIn('3', event.message)
+
+    def test_normal_bulk_pick_logs_no_override(self):
+        self.scan(['SMOOTHIE-1', 'SMOOTHIE-1', 'SMOOTHIE-1'])
+        response = self.bulk_pick()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(ScanEvent.objects.filter(event_type='manual_override').exists())
+
+    def test_bulk_override_on_dead_picklist_still_logs_override(self):
+        response = self.bulk_pick(order_id='ORD-NEVER-SCANNED', manualOverride=True)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertTrue(ScanEvent.objects.filter(event_type='manual_override').exists())
+
+    def test_bulk_pick_without_picklist_logs_sync_error(self):
+        response = self.bulk_pick(order_id='ORD-NEVER-SCANNED')
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json()['error_code'], 'picklist_not_found')
+        event = ScanEvent.objects.get(event_type='sync_error')
+        self.assertEqual(event.scanned_code, 'SMOOTHIE-1')
+        self.assertEqual(event.picklist_code, 'ORD-NEVER-SCANNED')
+
+
 class CompletePicklistCaptureTests(ScanEndpointTestCase):
     def test_completing_unknown_picklist_logs_sync_error(self):
         response = self.complete('ORD-NEVER-SCANNED')

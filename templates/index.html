@@ -37,6 +37,13 @@
     <link rel="apple-touch-startup-image" href="{% static 'icons/splash-1640x2360.png' %}" media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2)">
     <link rel="apple-touch-startup-image" href="{% static 'icons/splash-1668x2388.png' %}" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)">
     <link rel="apple-touch-startup-image" href="{% static 'icons/splash-2048x2732.png' %}" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)">
+    <!-- Loaded first and as a CLASSIC script on purpose: it installs the error
+         handlers that catch a module throwing at import time, which is the
+         failure pickers experience as "the app crashed" (page renders, nothing
+         responds). It imports nothing and nothing imports it, so a hashed
+         static URL is safe here — unlike the module graph at the end of
+         <body>, which must stay unhashed. -->
+    <script src="{% static 'orderpiqrApp/js/clientHealth.js' %}"></script>
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/serviceWorker.js', {scope: '/'})
@@ -45,6 +52,12 @@
                 })
                 .catch(function (error) {
                     console.error('Service Worker registration failed:', error);
+                    if (window.orderpiqrHealth) {
+                        window.orderpiqrHealth.report('client_error', {
+                            reason: 'service_worker_failed',
+                            message: 'Service worker registration failed: ' + error
+                        });
+                    }
                 });
         }
     </script>
@@ -344,6 +357,14 @@
 <script src="{% get_static_prefix %}orderpiqrApp/js/manualOverride.js" type="module"></script>
 <script src="{% static 'orderpiqrApp/js/installPrompt.js' %}"></script>
 <script src="{% get_static_prefix %}orderpiqrApp/js/camera_page.js" type="module"></script>
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<!-- Self-hosted (was https://unpkg.com/html5-qrcode, byte-identical to 2.3.8
+     min). This was the only third-party script the scan page needed at
+     runtime, and its failure was catastrophic *and* silent: Html5Qrcode ends
+     up undefined, the module that constructs it throws at import time, and the
+     whole scan page renders normally while doing nothing. A warehouse cannot
+     pick because a CDN had a bad minute. Classic script with no imports, so a
+     hashed URL is safe — and it must keep loading before the deferred modules,
+     which is why it stays here rather than moving into <head>. -->
+<script src="{% static 'orderpiqrApp/js/vendor/html5-qrcode-2.3.8.min.js' %}" type="text/javascript"></script>
 </body>
 </html>
