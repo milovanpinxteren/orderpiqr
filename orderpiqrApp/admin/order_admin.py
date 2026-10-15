@@ -4,7 +4,7 @@ from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 from django import forms
 from orderpiqrApp.models import Order, OrderLine, Product, UserProfile, PickList, ProductPick
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, ngettext
 from orderpiqrApp.utils.qr_pdf_generator import QRPDFGenerator  # You’ll build this next
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -72,9 +72,15 @@ class OrderAdmin(admin.ModelAdmin):
                 skipped += 1
 
         if added:
-            self.message_user(request, _("%(count)s order(s) added to queue.") % {"count": added}, level=messages.SUCCESS)
+            self.message_user(request, ngettext(
+                "%(count)s order added to queue.",
+                "%(count)s orders added to queue.",
+                added) % {"count": added}, level=messages.SUCCESS)
         if skipped:
-            self.message_user(request, _("%(count)s order(s) skipped (not in draft status).") % {"count": skipped}, level=messages.WARNING)
+            self.message_user(request, ngettext(
+                "%(count)s order skipped (not in draft status).",
+                "%(count)s orders skipped (not in draft status).",
+                skipped) % {"count": skipped}, level=messages.WARNING)
 
     @admin.action(description=_("Remove selected orders from queue"))
     def remove_from_queue(self, request, queryset):
@@ -86,7 +92,10 @@ class OrderAdmin(admin.ModelAdmin):
             removed += 1
 
         if removed:
-            self.message_user(request, _("%(count)s order(s) removed from queue.") % {"count": removed}, level=messages.SUCCESS)
+            self.message_user(request, ngettext(
+                "%(count)s order removed from queue.",
+                "%(count)s orders removed from queue.",
+                removed) % {"count": removed}, level=messages.SUCCESS)
 
     list_display = ('order_code', 'customer', 'status', 'queue_position', 'created_at')
     list_filter = ['status', 'customer']

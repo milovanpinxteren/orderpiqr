@@ -283,25 +283,45 @@ function addToQueue(orderId) {
 }
 
 // ---- Bulk actions ----
-{% trans "Delete %s order(s)? Orders currently being picked are skipped. This cannot be undone." as bulk_delete_msg %}
-{% trans "Add %s order(s) to the queue? Only draft orders are added." as bulk_queue_msg %}
-{% trans "Remove %s order(s) from the queue? Only queued orders are affected." as bulk_unqueue_msg %}
-{% trans "Reset %s order(s) to draft? In-progress orders are unclaimed and their picking progress is discarded. Completed and cancelled orders are skipped." as bulk_reset_msg %}
+// The count is only known at click time, so the plural form is chosen in JS
+// with ngettext. The English literals live here, in the JavaScript: no
+// translated text passes through the template layer, so an apostrophe in a
+// translation can never break this script block.
 
 function bulkDelete() {
-    ListTools.bulkAction('delete', { confirmMessage: '{{ bulk_delete_msg|escapejs }}' });
+    ListTools.bulkAction('delete', {
+        confirmMessage: n => interpolate(ngettext(
+            'Delete %(count)s order? Orders currently being picked are skipped. This cannot be undone.',
+            'Delete %(count)s orders? Orders currently being picked are skipped. This cannot be undone.',
+            n), {count: n}, true)
+    });
 }
 
 function bulkResetToDraft() {
-    ListTools.bulkAction('reset_to_draft', { confirmMessage: '{{ bulk_reset_msg|escapejs }}' });
+    ListTools.bulkAction('reset_to_draft', {
+        confirmMessage: n => interpolate(ngettext(
+            'Reset %(count)s order to draft? In-progress orders are unclaimed and their picking progress is discarded. Completed and cancelled orders are skipped.',
+            'Reset %(count)s orders to draft? In-progress orders are unclaimed and their picking progress is discarded. Completed and cancelled orders are skipped.',
+            n), {count: n}, true)
+    });
 }
 
 function bulkAddToQueue() {
-    ListTools.bulkAction('add_to_queue', { confirmMessage: '{{ bulk_queue_msg|escapejs }}' });
+    ListTools.bulkAction('add_to_queue', {
+        confirmMessage: n => interpolate(ngettext(
+            'Add %(count)s order to the queue? Only draft orders are added.',
+            'Add %(count)s orders to the queue? Only draft orders are added.',
+            n), {count: n}, true)
+    });
 }
 
 function bulkRemoveFromQueue() {
-    ListTools.bulkAction('remove_from_queue', { confirmMessage: '{{ bulk_unqueue_msg|escapejs }}' });
+    ListTools.bulkAction('remove_from_queue', {
+        confirmMessage: n => interpolate(ngettext(
+            'Remove %(count)s order from the queue? Only queued orders are affected.',
+            'Remove %(count)s orders from the queue? Only queued orders are affected.',
+            n), {count: n}, true)
+    });
 }
 
 ListTools.init({

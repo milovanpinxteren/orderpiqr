@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-15 13:46+0200\n"
+"POT-Creation-Date: 2026-10-15 15:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -444,7 +444,7 @@ msgid "Error completing picklist."
 msgstr ""
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:424
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:252
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:265
 msgid "Error getting device fingerprint."
 msgstr ""
 
@@ -534,8 +534,8 @@ msgstr ""
 msgid "Select all %s matching this filter"
 msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:121
-#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:124
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:125
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:128
 msgid "An error occurred"
 msgstr ""
 
@@ -555,57 +555,63 @@ msgstr ""
 msgid "Order Importance: Disabled"
 msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:91
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:93
 msgid "New list found, start this list?"
 msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:106
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:108
 msgid "Could not determine product/quantity structure in picklist."
 msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:119
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:132
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:121
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:134
 msgid "Product row is invalid"
 msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:141
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:143
 msgid "Product data is empty, cannot update list."
 msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:153
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:156
 msgid ""
-"Unknown product code(s): %(codes)s. Ask your admin to add them, then scan "
-"the list again."
-msgstr ""
+"Unknown product code: %(codes)s. Ask your admin to add it, then scan the "
+"list again."
+msgid_plural ""
+"Unknown product codes: %(codes)s. Ask your admin to add them, then scan the "
+"list again."
+msgstr[0] ""
+msgstr[1] ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:179
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:190
 msgid "Picklist added"
 msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:222
-msgid "Kept %(count)s already-picked item(s) from the previous attempt."
-msgstr "Kept %(count)s already-picked item(s) from the previous attempt."
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:234
+msgid "Kept %(count)s already-picked item from the previous attempt."
+msgid_plural "Kept %(count)s already-picked items from the previous attempt."
+msgstr[0] ""
+msgstr[1] ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:235
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:247
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:248
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:260
 msgid "Error sending picklist."
 msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:269
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:282
 msgid "Unexpected error while parsing picklist."
 msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:279
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:292
 msgid "Invalid QR code structure. Please check the format"
 msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:295
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:308
 msgid ""
 "Ambiguous picklist: both fields look like product codes. Set the picklist QR "
 "format in your settings to resolve this."
 msgstr ""
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:302
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:315
 msgid "Neither field in the picklist row matches a known product code."
 msgstr "Neither field in the picklist row matches a known product code."
 
@@ -636,6 +642,49 @@ msgstr "Stop camera"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
 msgid "Start camera"
 msgstr "Start camera"
+
+#: .\templates\manage\orders\list.html:294
+msgid ""
+"Delete %(count)s order? Orders currently being picked are skipped. This "
+"cannot be undone."
+msgid_plural ""
+"Delete %(count)s orders? Orders currently being picked are skipped. This "
+"cannot be undone."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\templates\manage\orders\list.html:303
+msgid ""
+"Reset %(count)s order to draft? In-progress orders are unclaimed and their "
+"picking progress is discarded. Completed and cancelled orders are skipped."
+msgid_plural ""
+"Reset %(count)s orders to draft? In-progress orders are unclaimed and their "
+"picking progress is discarded. Completed and cancelled orders are skipped."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\templates\manage\orders\list.html:312
+msgid "Add %(count)s order to the queue? Only draft orders are added."
+msgid_plural "Add %(count)s orders to the queue? Only draft orders are added."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\templates\manage\orders\list.html:321
+msgid "Remove %(count)s order from the queue? Only queued orders are affected."
+msgid_plural ""
+"Remove %(count)s orders from the queue? Only queued orders are affected."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\templates\manage\products\list.html:301
+msgid ""
+"Delete %(count)s product? Products used in orders are skipped. This cannot "
+"be undone."
+msgid_plural ""
+"Delete %(count)s products? Products used in orders are skipped. This cannot "
+"be undone."
+msgstr[0] ""
+msgstr[1] ""
 
 #: .\templates\shopify\app.html:324
 msgid "Could not load status"

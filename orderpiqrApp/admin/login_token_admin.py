@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, ngettext
 
 from orderpiqrApp.models import PickerLoginToken
 
@@ -36,8 +36,10 @@ class PickerLoginTokenAdmin(admin.ModelAdmin):
         for token in queryset.filter(revoked_at__isnull=True):
             token.revoke()
             revoked += 1
-        self.message_user(
-            request, _("%(count)s login QR(s) revoked.") % {"count": revoked})
+        self.message_user(request, ngettext(
+            "%(count)s login QR revoked.",
+            "%(count)s login QRs revoked.",
+            revoked) % {"count": revoked})
 
 
 admin.site.register(PickerLoginToken, PickerLoginTokenAdmin)

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-15 13:46+0200\n"
+"POT-Creation-Date: 2026-10-15 15:06+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -529,7 +529,7 @@ msgid "Error completing picklist."
 msgstr "Eroare la finalizarea listei de preluare."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:424
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:252
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:265
 msgid "Error getting device fingerprint."
 msgstr "Eroare la obținerea amprentei dispozitivului."
 
@@ -619,8 +619,8 @@ msgstr "Golește selecția"
 msgid "Select all %s matching this filter"
 msgstr "Selectează toate cele %s rezultate care corespund filtrului"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:121
-#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:124
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:125
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:128
 msgid "An error occurred"
 msgstr "A apărut o eroare"
 
@@ -640,55 +640,69 @@ msgstr "Ordine fixă de scanare: Activată"
 msgid "Order Importance: Disabled"
 msgstr "Ordine fixă de scanare: Dezactivată"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:91
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:93
 msgid "New list found, start this list?"
 msgstr "Listă nouă găsită, începi această listă?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:106
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:108
 msgid "Could not determine product/quantity structure in picklist."
 msgstr ""
 "Nu s-a putut determina structura produs/cantitate din lista de preluare."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:119
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:132
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:121
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:134
 msgid "Product row is invalid"
 msgstr "Rândul de produs este invalid"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:141
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:143
 msgid "Product data is empty, cannot update list."
 msgstr "Datele produsului sunt goale, nu se poate actualiza lista."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:153
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:156
 msgid ""
-"Unknown product code(s): %(codes)s. Ask your admin to add them, then scan "
-"the list again."
-msgstr ""
-"Cod(uri) de produs necunoscut(e): %(codes)s. Cere administratorului să le "
+"Unknown product code: %(codes)s. Ask your admin to add it, then scan the "
+"list again."
+msgid_plural ""
+"Unknown product codes: %(codes)s. Ask your admin to add them, then scan the "
+"list again."
+msgstr[0] ""
+"Cod de produs necunoscut: %(codes)s. Cere administratorului să îl adauge, "
+"apoi scanează lista din nou."
+msgstr[1] ""
+"Coduri de produs necunoscute: %(codes)s. Cere administratorului să le "
+"adauge, apoi scanează lista din nou."
+msgstr[2] ""
+"Coduri de produs necunoscute: %(codes)s. Cere administratorului să le "
 "adauge, apoi scanează lista din nou."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:179
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:190
 msgid "Picklist added"
 msgstr "Listă de preluare adăugată"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:222
-msgid "Kept %(count)s already-picked item(s) from the previous attempt."
-msgstr ""
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:234
+msgid "Kept %(count)s already-picked item from the previous attempt."
+msgid_plural "Kept %(count)s already-picked items from the previous attempt."
+msgstr[0] ""
+"S-a păstrat %(count)s articol deja preluat din încercarea anterioară."
+msgstr[1] ""
 "S-au păstrat %(count)s articole deja preluate din încercarea anterioară."
+msgstr[2] ""
+"S-au păstrat %(count)s de articole deja preluate din încercarea anterioară."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:235
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:247
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:248
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:260
 msgid "Error sending picklist."
 msgstr "Eroare la trimiterea listei de preluare."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:269
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:282
 msgid "Unexpected error while parsing picklist."
 msgstr "Eroare neașteptată la interpretarea listei de preluare."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:279
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:292
 msgid "Invalid QR code structure. Please check the format"
 msgstr "Structură invalidă a codului QR. Vă rugăm să verificați formatul"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:295
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:308
 msgid ""
 "Ambiguous picklist: both fields look like product codes. Set the picklist QR "
 "format in your settings to resolve this."
@@ -696,7 +710,7 @@ msgstr ""
 "Listă de preluare ambiguă: ambele câmpuri par coduri de produs. Setează "
 "formatul QR al listei în setări pentru a rezolva."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:302
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:315
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Niciun câmp din rândul listei de preluare nu corespunde unui cod de produs "
@@ -729,6 +743,84 @@ msgstr "Opriți camera"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
 msgid "Start camera"
 msgstr "Porniți camera"
+
+#: .\templates\manage\orders\list.html:294
+msgid ""
+"Delete %(count)s order? Orders currently being picked are skipped. This "
+"cannot be undone."
+msgid_plural ""
+"Delete %(count)s orders? Orders currently being picked are skipped. This "
+"cannot be undone."
+msgstr[0] ""
+"Ștergeți %(count)s comandă? Comenzile care se preiau în acest moment sunt "
+"omise. Această acțiune nu poate fi anulată."
+msgstr[1] ""
+"Ștergeți %(count)s comenzi? Comenzile care se preiau în acest moment sunt "
+"omise. Această acțiune nu poate fi anulată."
+msgstr[2] ""
+"Ștergeți %(count)s de comenzi? Comenzile care se preiau în acest moment sunt "
+"omise. Această acțiune nu poate fi anulată."
+
+#: .\templates\manage\orders\list.html:303
+msgid ""
+"Reset %(count)s order to draft? In-progress orders are unclaimed and their "
+"picking progress is discarded. Completed and cancelled orders are skipped."
+msgid_plural ""
+"Reset %(count)s orders to draft? In-progress orders are unclaimed and their "
+"picking progress is discarded. Completed and cancelled orders are skipped."
+msgstr[0] ""
+"Readuceți %(count)s comandă la schiță? Comenzilor în curs li se anulează "
+"revendicarea, iar progresul preluării este șters. Comenzile finalizate și "
+"anulate sunt omise."
+msgstr[1] ""
+"Readuceți %(count)s comenzi la schiță? Comenzilor în curs li se anulează "
+"revendicarea, iar progresul preluării este șters. Comenzile finalizate și "
+"anulate sunt omise."
+msgstr[2] ""
+"Readuceți %(count)s de comenzi la schiță? Comenzilor în curs li se anulează "
+"revendicarea, iar progresul preluării este șters. Comenzile finalizate și "
+"anulate sunt omise."
+
+#: .\templates\manage\orders\list.html:312
+msgid "Add %(count)s order to the queue? Only draft orders are added."
+msgid_plural "Add %(count)s orders to the queue? Only draft orders are added."
+msgstr[0] ""
+"Adăugați %(count)s comandă în coadă? Sunt adăugate doar comenzile schiță."
+msgstr[1] ""
+"Adăugați %(count)s comenzi în coadă? Sunt adăugate doar comenzile schiță."
+msgstr[2] ""
+"Adăugați %(count)s de comenzi în coadă? Sunt adăugate doar comenzile schiță."
+
+#: .\templates\manage\orders\list.html:321
+msgid "Remove %(count)s order from the queue? Only queued orders are affected."
+msgid_plural ""
+"Remove %(count)s orders from the queue? Only queued orders are affected."
+msgstr[0] ""
+"Eliminați %(count)s comandă din coadă? Sunt afectate doar comenzile din "
+"coadă."
+msgstr[1] ""
+"Eliminați %(count)s comenzi din coadă? Sunt afectate doar comenzile din "
+"coadă."
+msgstr[2] ""
+"Eliminați %(count)s de comenzi din coadă? Sunt afectate doar comenzile din "
+"coadă."
+
+#: .\templates\manage\products\list.html:301
+msgid ""
+"Delete %(count)s product? Products used in orders are skipped. This cannot "
+"be undone."
+msgid_plural ""
+"Delete %(count)s products? Products used in orders are skipped. This cannot "
+"be undone."
+msgstr[0] ""
+"Ștergeți %(count)s produs? Produsele folosite în comenzi sunt omise. Această "
+"acțiune nu poate fi anulată."
+msgstr[1] ""
+"Ștergeți %(count)s produse? Produsele folosite în comenzi sunt omise. "
+"Această acțiune nu poate fi anulată."
+msgstr[2] ""
+"Ștergeți %(count)s de produse? Produsele folosite în comenzi sunt omise. "
+"Această acțiune nu poate fi anulată."
 
 #: .\templates\shopify\app.html:324
 msgid "Could not load status"

@@ -1,4 +1,4 @@
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, pgettext_lazy
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -17,7 +17,9 @@ class Device(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("User"))
     device_id = models.AutoField(primary_key=True)
     device_fingerprint = models.CharField(_("Device Fingerprint"), max_length=255, null=True, blank=True)
-    name = models.CharField(_("Name"), max_length=255)
+    # Translators: the label a warehouse gives a phone or tablet, e.g.
+    # "Scanner 3" or "Tablet packing bench". Not a person's name.
+    name = models.CharField(pgettext_lazy("device", "Name"), max_length=255)
     description = models.TextField(_("Description"))
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name=_("Customer"))
     # Despite the name this is last *activity*: stamped on every pick, not only

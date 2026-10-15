@@ -9,7 +9,7 @@ import views only deal with clean dict rows.
 import csv
 import io
 
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext as _, ngettext
 
 
 class CSVImportError(Exception):
@@ -74,12 +74,15 @@ def read_csv_rows(uploaded_file, fields, max_size=5 * 1024 * 1024):
     missing = [name for name, spec in fields.items()
                if spec.get('required') and name not in column_map]
     if missing:
-        raise CSVImportError(
-            _("Could not find the required column(s) {missing}. "
-              "Found columns: {found}. Please use the format shown below.").format(
-                missing=', '.join('"%s"' % m for m in missing),
-                found=', '.join('"%s"' % h.strip() for h in raw_header if h.strip()) or '-',
-            ))
+        raise CSVImportError(ngettext(
+            "Could not find the required column %(missing)s. "
+            "Found columns: %(found)s. Please use the format shown below.",
+            "Could not find the required columns %(missing)s. "
+            "Found columns: %(found)s. Please use the format shown below.",
+            len(missing)) % {
+                'missing': ', '.join('"%s"' % m for m in missing),
+                'found': ', '.join('"%s"' % h.strip() for h in raw_header if h.strip()) or '-',
+            })
 
     rows = []
     for line_number, raw_row in enumerate(reader, start=2):

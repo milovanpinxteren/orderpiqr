@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-15 13:46+0200\n"
+"POT-Creation-Date: 2026-10-15 15:06+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -533,7 +533,7 @@ msgid "Error completing picklist."
 msgstr "Błąd podczas kończenia listy kompletacyjnej."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:424
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:252
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:265
 msgid "Error getting device fingerprint."
 msgstr "Błąd podczas pobierania odcisku urządzenia."
 
@@ -623,8 +623,8 @@ msgstr "Wyczyść zaznaczenie"
 msgid "Select all %s matching this filter"
 msgstr "Zaznacz wszystkie pasujące do filtra: %s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:121
-#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:124
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:125
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:128
 msgid "An error occurred"
 msgstr "Wystąpił błąd"
 
@@ -644,55 +644,70 @@ msgstr "Kolejność produktów: Włączona"
 msgid "Order Importance: Disabled"
 msgstr "Kolejność produktów: Wyłączona"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:91
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:93
 msgid "New list found, start this list?"
 msgstr "Znaleziono nową listę, rozpocząć ją?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:106
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:108
 msgid "Could not determine product/quantity structure in picklist."
 msgstr ""
 "Nie udało się określić struktury produktów/ilości w liście kompletacyjnej."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:119
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:132
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:121
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:134
 msgid "Product row is invalid"
 msgstr "Wiersz produktu jest nieprawidłowy"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:141
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:143
 msgid "Product data is empty, cannot update list."
 msgstr "Brak danych produktu, nie można zaktualizować listy."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:153
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:156
 msgid ""
-"Unknown product code(s): %(codes)s. Ask your admin to add them, then scan "
-"the list again."
-msgstr ""
-"Nieznane kody produktów: %(codes)s. Poproś administratora o ich dodanie, a "
-"następnie zeskanuj listę ponownie."
+"Unknown product code: %(codes)s. Ask your admin to add it, then scan the "
+"list again."
+msgid_plural ""
+"Unknown product codes: %(codes)s. Ask your admin to add them, then scan the "
+"list again."
+msgstr[0] ""
+"Nieznany kod produktu: %(codes)s. Poproś administratora, aby go dodał, i "
+"zeskanuj listę ponownie."
+msgstr[1] ""
+"Nieznane kody produktów: %(codes)s. Poproś administratora, aby je dodał, i "
+"zeskanuj listę ponownie."
+msgstr[2] ""
+"Nieznane kody produktów: %(codes)s. Poproś administratora, aby je dodał, i "
+"zeskanuj listę ponownie."
+msgstr[3] ""
+"Nieznane kody produktów: %(codes)s. Poproś administratora, aby je dodał, i "
+"zeskanuj listę ponownie."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:179
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:190
 msgid "Picklist added"
 msgstr "Lista kompletacyjna dodana"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:222
-msgid "Kept %(count)s already-picked item(s) from the previous attempt."
-msgstr ""
-"Zachowano %(count)s wcześniej skompletowanych pozycji z poprzedniej próby."
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:234
+msgid "Kept %(count)s already-picked item from the previous attempt."
+msgid_plural "Kept %(count)s already-picked items from the previous attempt."
+msgstr[0] "Zachowano %(count)s już pobraną pozycję z poprzedniej próby."
+msgstr[1] "Zachowano %(count)s już pobrane pozycje z poprzedniej próby."
+msgstr[2] "Zachowano %(count)s już pobranych pozycji z poprzedniej próby."
+msgstr[3] "Zachowano %(count)s już pobranych pozycji z poprzedniej próby."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:235
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:247
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:248
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:260
 msgid "Error sending picklist."
 msgstr "Błąd podczas wysyłania listy kompletacyjnej."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:269
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:282
 msgid "Unexpected error while parsing picklist."
 msgstr "Nieoczekiwany błąd podczas przetwarzania listy kompletacyjnej."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:279
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:292
 msgid "Invalid QR code structure. Please check the format"
 msgstr "Nieprawidłowa struktura kodu QR. Sprawdź format"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:295
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:308
 msgid ""
 "Ambiguous picklist: both fields look like product codes. Set the picklist QR "
 "format in your settings to resolve this."
@@ -700,7 +715,7 @@ msgstr ""
 "Niejednoznaczna lista kompletacyjna: oba pola wyglądają jak kody produktów. "
 "Ustaw format kodu QR listy w ustawieniach, aby to rozwiązać."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:302
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:315
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Żadne pole w wierszu listy kompletacyjnej nie odpowiada znanemu kodowi "
@@ -733,6 +748,97 @@ msgstr "Zatrzymaj kamerę"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
 msgid "Start camera"
 msgstr "Uruchom kamerę"
+
+#: .\templates\manage\orders\list.html:294
+msgid ""
+"Delete %(count)s order? Orders currently being picked are skipped. This "
+"cannot be undone."
+msgid_plural ""
+"Delete %(count)s orders? Orders currently being picked are skipped. This "
+"cannot be undone."
+msgstr[0] ""
+"Usunąć %(count)s zamówienie? Zamówienia aktualnie kompletowane zostaną "
+"pominięte. Tego nie można cofnąć."
+msgstr[1] ""
+"Usunąć %(count)s zamówienia? Zamówienia aktualnie kompletowane zostaną "
+"pominięte. Tego nie można cofnąć."
+msgstr[2] ""
+"Usunąć %(count)s zamówień? Zamówienia aktualnie kompletowane zostaną "
+"pominięte. Tego nie można cofnąć."
+msgstr[3] ""
+"Usunąć %(count)s zamówień? Zamówienia aktualnie kompletowane zostaną "
+"pominięte. Tego nie można cofnąć."
+
+#: .\templates\manage\orders\list.html:303
+msgid ""
+"Reset %(count)s order to draft? In-progress orders are unclaimed and their "
+"picking progress is discarded. Completed and cancelled orders are skipped."
+msgid_plural ""
+"Reset %(count)s orders to draft? In-progress orders are unclaimed and their "
+"picking progress is discarded. Completed and cancelled orders are skipped."
+msgstr[0] ""
+"Przywrócić %(count)s zamówienie do szkicu? Zamówienia w trakcie realizacji "
+"zostaną zwolnione, a ich postęp kompletacji odrzucony. Zamówienia zakończone "
+"i anulowane zostaną pominięte."
+msgstr[1] ""
+"Przywrócić %(count)s zamówienia do szkicu? Zamówienia w trakcie realizacji "
+"zostaną zwolnione, a ich postęp kompletacji odrzucony. Zamówienia zakończone "
+"i anulowane zostaną pominięte."
+msgstr[2] ""
+"Przywrócić %(count)s zamówień do szkicu? Zamówienia w trakcie realizacji "
+"zostaną zwolnione, a ich postęp kompletacji odrzucony. Zamówienia zakończone "
+"i anulowane zostaną pominięte."
+msgstr[3] ""
+"Przywrócić %(count)s zamówień do szkicu? Zamówienia w trakcie realizacji "
+"zostaną zwolnione, a ich postęp kompletacji odrzucony. Zamówienia zakończone "
+"i anulowane zostaną pominięte."
+
+#: .\templates\manage\orders\list.html:312
+msgid "Add %(count)s order to the queue? Only draft orders are added."
+msgid_plural "Add %(count)s orders to the queue? Only draft orders are added."
+msgstr[0] ""
+"Dodać %(count)s zamówienie do kolejki? Dodane zostaną tylko zamówienia "
+"robocze."
+msgstr[1] ""
+"Dodać %(count)s zamówienia do kolejki? Dodane zostaną tylko zamówienia "
+"robocze."
+msgstr[2] ""
+"Dodać %(count)s zamówień do kolejki? Dodane zostaną tylko zamówienia robocze."
+msgstr[3] ""
+"Dodać %(count)s zamówień do kolejki? Dodane zostaną tylko zamówienia robocze."
+
+#: .\templates\manage\orders\list.html:321
+msgid "Remove %(count)s order from the queue? Only queued orders are affected."
+msgid_plural ""
+"Remove %(count)s orders from the queue? Only queued orders are affected."
+msgstr[0] ""
+"Usunąć %(count)s zamówienie z kolejki? Dotyczy to tylko zamówień w kolejce."
+msgstr[1] ""
+"Usunąć %(count)s zamówienia z kolejki? Dotyczy to tylko zamówień w kolejce."
+msgstr[2] ""
+"Usunąć %(count)s zamówień z kolejki? Dotyczy to tylko zamówień w kolejce."
+msgstr[3] ""
+"Usunąć %(count)s zamówień z kolejki? Dotyczy to tylko zamówień w kolejce."
+
+#: .\templates\manage\products\list.html:301
+msgid ""
+"Delete %(count)s product? Products used in orders are skipped. This cannot "
+"be undone."
+msgid_plural ""
+"Delete %(count)s products? Products used in orders are skipped. This cannot "
+"be undone."
+msgstr[0] ""
+"Usunąć %(count)s produkt? Produkty używane w zamówieniach zostaną pominięte. "
+"Tego nie można cofnąć."
+msgstr[1] ""
+"Usunąć %(count)s produkty? Produkty używane w zamówieniach zostaną "
+"pominięte. Tego nie można cofnąć."
+msgstr[2] ""
+"Usunąć %(count)s produktów? Produkty używane w zamówieniach zostaną "
+"pominięte. Tego nie można cofnąć."
+msgstr[3] ""
+"Usunąć %(count)s produktów? Produkty używane w zamówieniach zostaną "
+"pominięte. Tego nie można cofnąć."
 
 #: .\templates\shopify\app.html:324
 msgid "Could not load status"

@@ -286,7 +286,6 @@ function applyFilters() {
 }
 
 // ---- Bulk actions ----
-{% trans "Delete %s product(s)? Products used in orders are skipped. This cannot be undone." as bulk_delete_msg %}
 {% trans "Merge the selected products into which product? Enter its product code. The codes of the merged products stay scannable as extra barcodes." as bulk_merge_msg %}
 
 function bulkSimple(action) {
@@ -294,7 +293,15 @@ function bulkSimple(action) {
 }
 
 function bulkDelete() {
-    ListTools.bulkAction('delete', { confirmMessage: '{{ bulk_delete_msg|escapejs }}' });
+    // Plural form chosen in JS: the count is only known at click time, and
+    // keeping the English literals here keeps translated text out of the
+    // template layer (an apostrophe can never break this script block).
+    ListTools.bulkAction('delete', {
+        confirmMessage: n => interpolate(ngettext(
+            'Delete %(count)s product? Products used in orders are skipped. This cannot be undone.',
+            'Delete %(count)s products? Products used in orders are skipped. This cannot be undone.',
+            n), {count: n}, true)
+    });
 }
 
 function bulkSetLocation() {

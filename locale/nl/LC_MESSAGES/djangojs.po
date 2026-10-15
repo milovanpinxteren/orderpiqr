@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-15 13:46+0200\n"
+"POT-Creation-Date: 2026-10-15 15:06+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -523,7 +523,7 @@ msgid "Error completing picklist."
 msgstr "Fout bij het afronden van de picklijst."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:424
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:252
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:265
 msgid "Error getting device fingerprint."
 msgstr "Fout bij ophalen van apparaat-ID."
 
@@ -613,8 +613,8 @@ msgstr "Selectie wissen"
 msgid "Select all %s matching this filter"
 msgstr "Selecteer alle %s resultaten die aan dit filter voldoen"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:121
-#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:124
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:125
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:128
 msgid "An error occurred"
 msgstr "Er is een fout opgetreden"
 
@@ -634,53 +634,61 @@ msgstr "Vaste scanvolgorde: Ingeschakeld"
 msgid "Order Importance: Disabled"
 msgstr "Vaste scanvolgorde: Uitgeschakeld"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:91
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:93
 msgid "New list found, start this list?"
 msgstr "Nieuwe lijst gevonden, wil je deze starten?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:106
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:108
 msgid "Could not determine product/quantity structure in picklist."
 msgstr "Kon de structuur van product/aantal in de picklijst niet bepalen."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:119
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:132
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:121
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:134
 msgid "Product row is invalid"
 msgstr "Productrij is ongeldig"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:141
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:143
 msgid "Product data is empty, cannot update list."
 msgstr "Productgegevens zijn leeg, lijst kan niet worden bijgewerkt."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:153
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:156
 msgid ""
-"Unknown product code(s): %(codes)s. Ask your admin to add them, then scan "
-"the list again."
-msgstr ""
-"Onbekende productcode(s): %(codes)s. Vraag je beheerder om ze toe te voegen "
-"en scan de lijst daarna opnieuw."
+"Unknown product code: %(codes)s. Ask your admin to add it, then scan the "
+"list again."
+msgid_plural ""
+"Unknown product codes: %(codes)s. Ask your admin to add them, then scan the "
+"list again."
+msgstr[0] ""
+"Onbekende productcode: %(codes)s. Vraag je beheerder om deze toe te voegen "
+"en scan de lijst dan opnieuw."
+msgstr[1] ""
+"Onbekende productcodes: %(codes)s. Vraag je beheerder om deze toe te voegen "
+"en scan de lijst dan opnieuw."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:179
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:190
 msgid "Picklist added"
 msgstr "Picklijst toegevoegd"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:222
-msgid "Kept %(count)s already-picked item(s) from the previous attempt."
-msgstr "%(count)s eerder gepickte item(s) uit de vorige poging behouden."
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:234
+msgid "Kept %(count)s already-picked item from the previous attempt."
+msgid_plural "Kept %(count)s already-picked items from the previous attempt."
+msgstr[0] "%(count)s al gepickt artikel uit de vorige poging bewaard."
+msgstr[1] "%(count)s al gepickte artikelen uit de vorige poging bewaard."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:235
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:247
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:248
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:260
 msgid "Error sending picklist."
 msgstr "Fout bij verzenden van picklijst."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:269
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:282
 msgid "Unexpected error while parsing picklist."
 msgstr "Onverwachte fout bij het lezen van de picklijst."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:279
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:292
 msgid "Invalid QR code structure. Please check the format"
 msgstr "Ongeldige structuur van de QR-code. Controleer het formaat"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:295
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:308
 msgid ""
 "Ambiguous picklist: both fields look like product codes. Set the picklist QR "
 "format in your settings to resolve this."
@@ -688,7 +696,7 @@ msgstr ""
 "Onduidelijke picklijst: beide velden lijken op productcodes. Stel het "
 "formaat van de picklijst-QR in bij je instellingen om dit op te lossen."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:302
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:315
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Geen van beide velden in de picklijstregel komt overeen met een bekende "
@@ -721,6 +729,71 @@ msgstr "Camera stoppen"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
 msgid "Start camera"
 msgstr "Camera starten"
+
+#: .\templates\manage\orders\list.html:294
+msgid ""
+"Delete %(count)s order? Orders currently being picked are skipped. This "
+"cannot be undone."
+msgid_plural ""
+"Delete %(count)s orders? Orders currently being picked are skipped. This "
+"cannot be undone."
+msgstr[0] ""
+"%(count)s order verwijderen? Orders die momenteel gepickt worden, worden "
+"overgeslagen. Dit kan niet ongedaan worden gemaakt."
+msgstr[1] ""
+"%(count)s orders verwijderen? Orders die momenteel gepickt worden, worden "
+"overgeslagen. Dit kan niet ongedaan worden gemaakt."
+
+#: .\templates\manage\orders\list.html:303
+msgid ""
+"Reset %(count)s order to draft? In-progress orders are unclaimed and their "
+"picking progress is discarded. Completed and cancelled orders are skipped."
+msgid_plural ""
+"Reset %(count)s orders to draft? In-progress orders are unclaimed and their "
+"picking progress is discarded. Completed and cancelled orders are skipped."
+msgstr[0] ""
+"%(count)s order terugzetten naar concept? Orders in behandeling worden "
+"vrijgegeven en hun pickvoortgang wordt gewist. Voltooide en geannuleerde "
+"orders worden overgeslagen."
+msgstr[1] ""
+"%(count)s orders terugzetten naar concept? Orders in behandeling worden "
+"vrijgegeven en hun pickvoortgang wordt gewist. Voltooide en geannuleerde "
+"orders worden overgeslagen."
+
+#: .\templates\manage\orders\list.html:312
+msgid "Add %(count)s order to the queue? Only draft orders are added."
+msgid_plural "Add %(count)s orders to the queue? Only draft orders are added."
+msgstr[0] ""
+"%(count)s order aan de wachtrij toevoegen? Alleen conceptorders worden "
+"toegevoegd."
+msgstr[1] ""
+"%(count)s orders aan de wachtrij toevoegen? Alleen conceptorders worden "
+"toegevoegd."
+
+#: .\templates\manage\orders\list.html:321
+msgid "Remove %(count)s order from the queue? Only queued orders are affected."
+msgid_plural ""
+"Remove %(count)s orders from the queue? Only queued orders are affected."
+msgstr[0] ""
+"%(count)s order uit de wachtrij verwijderen? Alleen orders in de wachtrij "
+"worden aangepast."
+msgstr[1] ""
+"%(count)s orders uit de wachtrij verwijderen? Alleen orders in de wachtrij "
+"worden aangepast."
+
+#: .\templates\manage\products\list.html:301
+msgid ""
+"Delete %(count)s product? Products used in orders are skipped. This cannot "
+"be undone."
+msgid_plural ""
+"Delete %(count)s products? Products used in orders are skipped. This cannot "
+"be undone."
+msgstr[0] ""
+"%(count)s product verwijderen? Producten die in orders gebruikt worden, "
+"worden overgeslagen. Dit kan niet ongedaan worden gemaakt."
+msgstr[1] ""
+"%(count)s producten verwijderen? Producten die in orders gebruikt worden, "
+"worden overgeslagen. Dit kan niet ongedaan worden gemaakt."
 
 #: .\templates\shopify\app.html:324
 msgid "Could not load status"

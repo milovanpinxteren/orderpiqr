@@ -5,6 +5,8 @@ import {showNotification} from './notifications.js';
 import {reportScanEvent} from './scanEventReporter.js';
 
 const gettext = window.gettext;  // Pull it from the global scope
+const ngettext = window.ngettext;
+const interpolate = window.interpolate;
 
 
 // GS1 element string as 2D scanners emit it: an optional FNC1 (transmitted as
@@ -150,8 +152,17 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
             const unknownCodes = [...new Set(currentPicklist.filter(c => !knownCodes.has(c)))];
             if (unknownCodes.length > 0) {
                 showNotification(
-                    gettext("Unknown product code(s): %(codes)s. Ask your admin to add them, then scan the list again.")
-                        .replace("%(codes)s", unknownCodes.join(", ")),
+                    interpolate(ngettext(
+                        'Unknown product code: %(codes)s. Ask your admin to add it, then scan the list again.',
+                        'Unknown product codes: %(codes)s. Ask your admin to add them, then scan the list again.',
+                        // Cap the list: a mis-scanned sheet can make every
+                        // line unknown, and the whole join would otherwise go
+                        // into a notification on a phone. The count stays the
+                        // true total, so the ellipsis marks the truncation.
+                        unknownCodes.length), {
+                            codes: unknownCodes.slice(0, 10).join(", ")
+                                   + (unknownCodes.length > 10 ? ", …" : ""),
+                        }, true),
                     true
                 );
                 reportScanEvent('unknown_product', {
@@ -219,8 +230,10 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
                                 if (kept > 0) {
                                     updateScannedList(currentPicklist, productData);
                                     showNotification(
-                                        gettext("Kept %(count)s already-picked item(s) from the previous attempt.")
-                                            .replace("%(count)s", kept)
+                                        interpolate(ngettext(
+                                            'Kept %(count)s already-picked item from the previous attempt.',
+                                            'Kept %(count)s already-picked items from the previous attempt.',
+                                            kept), {count: kept}, true)
                                     );
                                 }
                             }

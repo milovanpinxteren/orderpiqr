@@ -202,7 +202,12 @@ def check_compiled(catalog, po_path, locale, domain, problems):
         return
 
     try:
-        compiled = {entry.msgid: entry for entry in polib.mofile(str(mo_path))}
+        # Keyed by (msgctxt, msgid), not msgid alone: `Name` exists three times
+        # under different contexts (company / device / product) and German,
+        # French and Romanian translate each differently, so collapsing on
+        # msgid alone reported those three locales as permanently stale.
+        compiled = {(entry.msgctxt or '', entry.msgid): entry
+                    for entry in polib.mofile(str(mo_path))}
     except Exception as exc:  # a truncated or corrupt .mo
         problems.append(f'{locale}/{domain}: UNREADABLE {mo_path.name}: {exc}')
         return
@@ -213,19 +218,21 @@ def check_compiled(catalog, po_path, locale, domain, problems):
     for entry in catalog:
         if entry.obsolete or 'fuzzy' in entry.flags:
             continue
+        key = (entry.msgctxt or '', entry.msgid)
+        label = f'{entry.msgctxt}|{entry.msgid}' if entry.msgctxt else entry.msgid
         if entry.msgid_plural:
             expected = entry.msgstr_plural or {}
             if not any(expected.values()):
                 continue
-            actual = compiled.get(entry.msgid)
+            actual = compiled.get(key)
             if actual is None or dict(actual.msgstr_plural) != dict(expected):
-                stale.append(entry.msgid)
+                stale.append(label)
         else:
             if not entry.msgstr:
                 continue
-            actual = compiled.get(entry.msgid)
+            actual = compiled.get(key)
             if actual is None or actual.msgstr != entry.msgstr:
-                stale.append(entry.msgid)
+                stale.append(label)
 
     if stale:
         problems.append(

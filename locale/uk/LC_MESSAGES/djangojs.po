@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-15 13:46+0200\n"
+"POT-Creation-Date: 2026-10-15 15:06+0200\n"
 "PO-Revision-Date: 2026-09-23 11:00+0200\n"
 "Last-Translator: Milo van Pinxteren <milo@example.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -402,7 +402,7 @@ msgstr "Перейти до замовлень"
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:124
 msgid "Skip to Pick Lists"
-msgstr "Перейти до листів комплектації"
+msgstr "Одразу до листів комплектації"
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:38
 msgid ""
@@ -538,7 +538,7 @@ msgid "Error completing picklist."
 msgstr "Помилка завершення листа комплектації."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:424
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:252
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:265
 msgid "Error getting device fingerprint."
 msgstr "Помилка отримання відбитка пристрою."
 
@@ -628,8 +628,8 @@ msgstr "Очистити вибір"
 msgid "Select all %s matching this filter"
 msgstr "Вибрати всі записи, що відповідають цьому фільтру (%s)"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:121
-#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:124
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:125
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:128
 msgid "An error occurred"
 msgstr "Сталася помилка"
 
@@ -649,53 +649,73 @@ msgstr "Порядок сканування: увімкнено"
 msgid "Order Importance: Disabled"
 msgstr "Порядок сканування: вимкнено"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:91
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:93
 msgid "New list found, start this list?"
 msgstr "Знайдено новий лист. Розпочати його?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:106
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:108
 msgid "Could not determine product/quantity structure in picklist."
 msgstr "Не вдалося визначити структуру товар/кількість у листі комплектації."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:119
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:132
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:121
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:134
 msgid "Product row is invalid"
 msgstr "Рядок товару недійсний"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:141
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:143
 msgid "Product data is empty, cannot update list."
 msgstr "Дані товарів порожні, неможливо оновити лист."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:153
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:156
 msgid ""
-"Unknown product code(s): %(codes)s. Ask your admin to add them, then scan "
-"the list again."
-msgstr ""
+"Unknown product code: %(codes)s. Ask your admin to add it, then scan the "
+"list again."
+msgid_plural ""
+"Unknown product codes: %(codes)s. Ask your admin to add them, then scan the "
+"list again."
+msgstr[0] ""
+"Невідомий код товару: %(codes)s. Попросіть адміністратора додати його, а "
+"потім відскануйте лист знову."
+msgstr[1] ""
+"Невідомі коди товарів: %(codes)s. Попросіть адміністратора додати їх, а "
+"потім відскануйте лист знову."
+msgstr[2] ""
+"Невідомі коди товарів: %(codes)s. Попросіть адміністратора додати їх, а "
+"потім відскануйте лист знову."
+msgstr[3] ""
 "Невідомі коди товарів: %(codes)s. Попросіть адміністратора додати їх, а "
 "потім відскануйте лист знову."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:179
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:190
 msgid "Picklist added"
 msgstr "Лист комплектації додано"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:222
-msgid "Kept %(count)s already-picked item(s) from the previous attempt."
-msgstr "Збережено %(count)s уже зібраних позицій із попередньої спроби."
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:234
+msgid "Kept %(count)s already-picked item from the previous attempt."
+msgid_plural "Kept %(count)s already-picked items from the previous attempt."
+msgstr[0] ""
+"Збережено %(count)s уже скомплектовану позицію з попередньої спроби."
+msgstr[1] ""
+"Збережено %(count)s уже скомплектовані позиції з попередньої спроби."
+msgstr[2] ""
+"Збережено %(count)s уже скомплектованих позицій з попередньої спроби."
+msgstr[3] ""
+"Збережено %(count)s уже скомплектованих позицій з попередньої спроби."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:235
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:247
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:248
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:260
 msgid "Error sending picklist."
 msgstr "Помилка надсилання листа комплектації."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:269
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:282
 msgid "Unexpected error while parsing picklist."
 msgstr "Неочікувана помилка під час розбору листа комплектації."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:279
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:292
 msgid "Invalid QR code structure. Please check the format"
 msgstr "Недійсна структура QR-коду. Перевірте формат"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:295
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:308
 msgid ""
 "Ambiguous picklist: both fields look like product codes. Set the picklist QR "
 "format in your settings to resolve this."
@@ -703,7 +723,7 @@ msgstr ""
 "Неоднозначний лист комплектації: обидва поля схожі на коди товарів. "
 "Установіть формат QR-коду листа в налаштуваннях, щоб вирішити це."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:302
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:315
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
 "Жодне поле в рядку листа комплектації не відповідає відомому коду товару."
@@ -735,6 +755,95 @@ msgstr "Зупинити камеру"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
 msgid "Start camera"
 msgstr "Запустити камеру"
+
+#: .\templates\manage\orders\list.html:294
+msgid ""
+"Delete %(count)s order? Orders currently being picked are skipped. This "
+"cannot be undone."
+msgid_plural ""
+"Delete %(count)s orders? Orders currently being picked are skipped. This "
+"cannot be undone."
+msgstr[0] ""
+"Видалити %(count)s замовлення? Замовлення, які зараз комплектуються, буде "
+"пропущено. Цю дію неможливо скасувати."
+msgstr[1] ""
+"Видалити %(count)s замовлення? Замовлення, які зараз комплектуються, буде "
+"пропущено. Цю дію неможливо скасувати."
+msgstr[2] ""
+"Видалити %(count)s замовлень? Замовлення, які зараз комплектуються, буде "
+"пропущено. Цю дію неможливо скасувати."
+msgstr[3] ""
+"Видалити %(count)s замовлень? Замовлення, які зараз комплектуються, буде "
+"пропущено. Цю дію неможливо скасувати."
+
+#: .\templates\manage\orders\list.html:303
+msgid ""
+"Reset %(count)s order to draft? In-progress orders are unclaimed and their "
+"picking progress is discarded. Completed and cancelled orders are skipped."
+msgid_plural ""
+"Reset %(count)s orders to draft? In-progress orders are unclaimed and their "
+"picking progress is discarded. Completed and cancelled orders are skipped."
+msgstr[0] ""
+"Повернути %(count)s замовлення до чернетки? Замовлення, що виконуються, буде "
+"знято з комплектувальників, а їхній прогрес комплектації втрачено. Завершені "
+"та скасовані замовлення буде пропущено."
+msgstr[1] ""
+"Повернути %(count)s замовлення до чернетки? Замовлення, що виконуються, буде "
+"знято з комплектувальників, а їхній прогрес комплектації втрачено. Завершені "
+"та скасовані замовлення буде пропущено."
+msgstr[2] ""
+"Повернути %(count)s замовлень до чернетки? Замовлення, що виконуються, буде "
+"знято з комплектувальників, а їхній прогрес комплектації втрачено. Завершені "
+"та скасовані замовлення буде пропущено."
+msgstr[3] ""
+"Повернути %(count)s замовлень до чернетки? Замовлення, що виконуються, буде "
+"знято з комплектувальників, а їхній прогрес комплектації втрачено. Завершені "
+"та скасовані замовлення буде пропущено."
+
+#: .\templates\manage\orders\list.html:312
+msgid "Add %(count)s order to the queue? Only draft orders are added."
+msgid_plural "Add %(count)s orders to the queue? Only draft orders are added."
+msgstr[0] ""
+"Додати %(count)s замовлення до черги? Додаються лише чернетки замовлень."
+msgstr[1] ""
+"Додати %(count)s замовлення до черги? Додаються лише чернетки замовлень."
+msgstr[2] ""
+"Додати %(count)s замовлень до черги? Додаються лише чернетки замовлень."
+msgstr[3] ""
+"Додати %(count)s замовлень до черги? Додаються лише чернетки замовлень."
+
+#: .\templates\manage\orders\list.html:321
+msgid "Remove %(count)s order from the queue? Only queued orders are affected."
+msgid_plural ""
+"Remove %(count)s orders from the queue? Only queued orders are affected."
+msgstr[0] ""
+"Вилучити %(count)s замовлення з черги? Це стосується лише замовлень у черзі."
+msgstr[1] ""
+"Вилучити %(count)s замовлення з черги? Це стосується лише замовлень у черзі."
+msgstr[2] ""
+"Вилучити %(count)s замовлень з черги? Це стосується лише замовлень у черзі."
+msgstr[3] ""
+"Вилучити %(count)s замовлень з черги? Це стосується лише замовлень у черзі."
+
+#: .\templates\manage\products\list.html:301
+msgid ""
+"Delete %(count)s product? Products used in orders are skipped. This cannot "
+"be undone."
+msgid_plural ""
+"Delete %(count)s products? Products used in orders are skipped. This cannot "
+"be undone."
+msgstr[0] ""
+"Видалити %(count)s товар? Товари, які використовуються в замовленнях, буде "
+"пропущено. Цю дію неможливо скасувати."
+msgstr[1] ""
+"Видалити %(count)s товари? Товари, які використовуються в замовленнях, буде "
+"пропущено. Цю дію неможливо скасувати."
+msgstr[2] ""
+"Видалити %(count)s товарів? Товари, які використовуються в замовленнях, буде "
+"пропущено. Цю дію неможливо скасувати."
+msgstr[3] ""
+"Видалити %(count)s товарів? Товари, які використовуються в замовленнях, буде "
+"пропущено. Цю дію неможливо скасувати."
 
 #: .\templates\shopify\app.html:324
 msgid "Could not load status"

@@ -7,7 +7,7 @@ from reportlab.platypus import Table, TableStyle
 from reportlab.lib import colors
 from django.conf import settings
 import os
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, pgettext_lazy
 import uuid
 from django.templatetags.static import static
 from django.contrib.staticfiles import finders
@@ -78,7 +78,18 @@ class QRPDFGenerator:
             c.drawInlineImage(qr, qr_x, qr_y, width=qr_width, height=qr_height)
 
             # Product Table
-            data = [[_("Code"), _("Name"), _("Location"), _("Quantity")]]
+            # Kept on its own line: xgettext attaches a comment to the first
+            # extracted call on the following line, so while this was inline
+            # in the list below, the note landed on "Code" instead. Everything
+            # from the tagged line down is copied into all six catalogs, so
+            # developer notes belong above it — and must not themselves name
+            # the tag, or extraction starts here instead.
+            #
+            # Translators: column header on the printed picklist. The column
+            # holds the product description a picker reads off the shelf, so
+            # this is the product's name — not a person's.
+            product_name_header = pgettext_lazy("product", "Name")
+            data = [[_("Code"), product_name_header, _("Location"), _("Quantity")]]
             for line in order.lines.all():
                 data.append([
                     line.product.code,

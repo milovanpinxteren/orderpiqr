@@ -12,7 +12,7 @@ from django.db.models import Count, Q, Sum, Max
 from django.db.models.functions import TruncDate
 from django.utils import timezone
 from django.utils.dateparse import parse_date
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext as _, ngettext
 from collections import Counter
 from datetime import datetime, time, timedelta
 import json
@@ -415,20 +415,35 @@ def products_bulk_action(request):
         deleted = deletable.count()
         skipped = count - deleted
         deletable.delete()
-        message = _("{count} product(s) deleted.").format(count=deleted)
+        message = ngettext(
+            "%(count)s product deleted.",
+            "%(count)s products deleted.",
+            deleted) % {'count': deleted}
         if skipped:
-            message += " " + _("{count} product(s) skipped because they are used in orders.").format(count=skipped)
+            message += " " + ngettext(
+                "%(count)s product skipped because it is used in orders.",
+                "%(count)s products skipped because they are used in orders.",
+                skipped) % {'count': skipped}
         return JsonResponse({'status': 'ok', 'message': message})
     elif action == 'activate':
         products.update(active=True)
-        return JsonResponse({'status': 'ok', 'message': _("{count} product(s) activated.").format(count=count)})
+        return JsonResponse({'status': 'ok', 'message': ngettext(
+            "%(count)s product activated.",
+            "%(count)s products activated.",
+            count) % {'count': count}})
     elif action == 'deactivate':
         products.update(active=False)
-        return JsonResponse({'status': 'ok', 'message': _("{count} product(s) deactivated.").format(count=count)})
+        return JsonResponse({'status': 'ok', 'message': ngettext(
+            "%(count)s product deactivated.",
+            "%(count)s products deactivated.",
+            count) % {'count': count}})
     elif action == 'set_location':
         new_location = data.get('value', '').strip()
         products.update(location=new_location)
-        return JsonResponse({'status': 'ok', 'message': _("{count} product(s) updated.").format(count=count)})
+        return JsonResponse({'status': 'ok', 'message': ngettext(
+            "%(count)s product updated.",
+            "%(count)s products updated.",
+            count) % {'count': count}})
     elif action == 'merge':
         # Merge the selected products into the one identified by `value`
         # (its product code). Their codes stay scannable as barcode aliases.
@@ -447,9 +462,10 @@ def products_bulk_action(request):
         with transaction.atomic():
             for source in sources:
                 merge_products(target, source, user=request.user)
-        return JsonResponse({'status': 'ok', 'message': _(
-            "{count} product(s) merged into '{code}'. Their codes remain scannable as barcodes."
-        ).format(count=len(sources), code=target.code)})
+        return JsonResponse({'status': 'ok', 'message': ngettext(
+            "%(count)s product merged into '%(code)s'. Its code remains scannable as a barcode.",
+            "%(count)s products merged into '%(code)s'. Their codes remain scannable as barcodes.",
+            len(sources)) % {'count': len(sources), 'code': target.code}})
     else:
         return JsonResponse({'status': 'error', 'message': _("Unknown action.")}, status=400)
 
@@ -602,9 +618,17 @@ def products_import(request):
                 created=created_count, updated=updated_count
             ))
             if skipped_rows:
-                messages.warning(request, _(
-                    "{count} row(s) were skipped because the product code or description was empty (rows: {rows})."
-                ).format(count=len(skipped_rows), rows=', '.join(str(r) for r in skipped_rows[:10])))
+                messages.warning(request, ngettext(
+                    "%(count)s row was skipped because the product code or description was empty (row: %(rows)s).",
+                    "%(count)s rows were skipped because the product code or description was empty (rows: %(rows)s).",
+                    len(skipped_rows)) % {
+                        'count': len(skipped_rows),
+                        # The count is the true total but the list is capped,
+                        # so mark the truncation: "50 rows were skipped (rows:
+                        # 2, 3, ... 11)" otherwise reads as the complete list.
+                        'rows': ', '.join(str(r) for r in skipped_rows[:10])
+                                + (', …' if len(skipped_rows) > 10 else ''),
+                    })
             return redirect('manage_products')
 
         except CSVImportError as e:
@@ -751,9 +775,15 @@ def orders_bulk_action(request):
         deleted = deletable.count()
         skipped = count - deleted
         deletable.delete()
-        message = _("{count} order(s) deleted.").format(count=deleted)
+        message = ngettext(
+            "%(count)s order deleted.",
+            "%(count)s orders deleted.",
+            deleted) % {'count': deleted}
         if skipped:
-            message += " " + _("{count} in-progress order(s) skipped.").format(count=skipped)
+            message += " " + ngettext(
+                "%(count)s in-progress order skipped.",
+                "%(count)s in-progress orders skipped.",
+                skipped) % {'count': skipped}
         return JsonResponse({'status': 'ok', 'message': message})
 
     elif action == 'add_to_queue':
@@ -770,18 +800,30 @@ def orders_bulk_action(request):
             Order.objects.bulk_update(drafts, ['status', 'queue_position'])
         added = len(drafts)
         skipped = count - added
-        message = _("{count} order(s) added to the queue.").format(count=added)
+        message = ngettext(
+            "%(count)s order added to the queue.",
+            "%(count)s orders added to the queue.",
+            added) % {'count': added}
         if skipped:
-            message += " " + _("{count} order(s) skipped (not draft).").format(count=skipped)
+            message += " " + ngettext(
+                "%(count)s order skipped (not draft).",
+                "%(count)s orders skipped (not draft).",
+                skipped) % {'count': skipped}
         return JsonResponse({'status': 'ok', 'message': message})
 
     elif action == 'remove_from_queue':
         removed = orders.filter(status='queued').update(
             status='draft', queue_position=None)
         skipped = count - removed
-        message = _("{count} order(s) removed from the queue.").format(count=removed)
+        message = ngettext(
+            "%(count)s order removed from the queue.",
+            "%(count)s orders removed from the queue.",
+            removed) % {'count': removed}
         if skipped:
-            message += " " + _("{count} order(s) skipped (not queued).").format(count=skipped)
+            message += " " + ngettext(
+                "%(count)s order skipped (not queued).",
+                "%(count)s orders skipped (not queued).",
+                skipped) % {'count': skipped}
         return JsonResponse({'status': 'ok', 'message': message})
 
     elif action == 'reset_to_draft':
@@ -807,9 +849,15 @@ def orders_bulk_action(request):
             Order.objects.bulk_update(targets, ['status', 'queue_position'])
         reset = len(targets)
         skipped = count - reset
-        message = _("{count} order(s) reset to draft.").format(count=reset)
+        message = ngettext(
+            "%(count)s order reset to draft.",
+            "%(count)s orders reset to draft.",
+            reset) % {'count': reset}
         if skipped:
-            message += " " + _("{count} order(s) skipped (already draft, completed or cancelled).").format(count=skipped)
+            message += " " + ngettext(
+                "%(count)s order skipped (already draft, completed or cancelled).",
+                "%(count)s orders skipped (already draft, completed or cancelled).",
+                skipped) % {'count': skipped}
         return JsonResponse({'status': 'ok', 'message': message})
 
     return JsonResponse({'status': 'error', 'message': _("Unknown action.")}, status=400)
@@ -1941,7 +1989,10 @@ def inventory_logs_bulk_delete(request):
 
     return JsonResponse({
         'status': 'ok',
-        'message': _("%(count)d log(s) deleted and inventory reverted.") % {'count': deleted_count},
+        'message': ngettext(
+            "%(count)s log entry deleted and inventory reverted.",
+            "%(count)s log entries deleted and inventory reverted.",
+            deleted_count) % {'count': deleted_count},
         'deleted_count': deleted_count
     })
 

@@ -95,7 +95,11 @@ const ListTools = (function () {
         if (!count) return;
 
         if (options.confirmMessage) {
-            const msg = interpolate(options.confirmMessage, [count]);
+            // A function lets the caller pick the plural form for this count
+            // (ngettext); a plain string keeps the old "%s" interpolation.
+            const msg = typeof options.confirmMessage === 'function'
+                ? options.confirmMessage(count)
+                : interpolate(options.confirmMessage, [count]);
             if (!confirm(msg)) return;
         }
 
