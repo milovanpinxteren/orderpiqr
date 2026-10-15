@@ -1,7 +1,8 @@
 from django.apps import AppConfig
+from django.utils.translation import gettext_lazy as _
 
 
 class IntegrationsWoocommerceConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'integrations_woocommerce'
-    verbose_name = 'WooCommerce integration'
+    verbose_name = _('WooCommerce integration')

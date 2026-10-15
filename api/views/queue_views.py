@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.utils.translation import gettext as _
 from django.db import transaction
 from django.db.models import Count, Max
 from django.utils import timezone
@@ -79,7 +80,7 @@ def queue_list(request):
     customer = get_customer_from_request(request)
     if not customer:
         return Response(
-            {'detail': 'No customer profile found'},
+            {'detail': _('No customer profile found')},
             status=status.HTTP_400_BAD_REQUEST
         )
 
@@ -159,7 +160,7 @@ def queue_stats(request):
     customer = get_customer_from_request(request)
     if not customer:
         return Response(
-            {'detail': 'No customer profile found'},
+            {'detail': _('No customer profile found')},
             status=status.HTTP_400_BAD_REQUEST
         )
 
@@ -232,7 +233,7 @@ def queue_add_order(request, order_id):
     customer = get_customer_from_request(request)
     if not customer:
         return Response(
-            {'detail': 'No customer profile found'},
+            {'detail': _('No customer profile found')},
             status=status.HTTP_400_BAD_REQUEST
         )
 
@@ -245,7 +246,7 @@ def queue_add_order(request, order_id):
 
             if order.status != 'draft':
                 return Response(
-                    {'detail': 'Only draft orders can be added to queue'},
+                    {'detail': _('Only draft orders can be added to queue')},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -261,14 +262,14 @@ def queue_add_order(request, order_id):
 
             return Response({
                 'status': 'ok',
-                'message': 'Order added to queue',
+                'message': _('Order added to queue'),
                 'order_id': order.order_id,
                 'queue_position': order.queue_position
             })
 
     except Order.DoesNotExist:
         return Response(
-            {'detail': 'Order not found'},
+            {'detail': _('Order not found')},
             status=status.HTTP_404_NOT_FOUND
         )
 
@@ -313,7 +314,7 @@ def queue_remove_order(request, order_id):
     customer = get_customer_from_request(request)
     if not customer:
         return Response(
-            {'detail': 'No customer profile found'},
+            {'detail': _('No customer profile found')},
             status=status.HTTP_400_BAD_REQUEST
         )
 
@@ -326,7 +327,7 @@ def queue_remove_order(request, order_id):
 
             if order.status not in ['queued', 'in_progress']:
                 return Response(
-                    {'detail': 'Order is not in queue'},
+                    {'detail': _('Order is not in queue')},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -336,13 +337,13 @@ def queue_remove_order(request, order_id):
 
             return Response({
                 'status': 'ok',
-                'message': 'Order removed from queue',
+                'message': _('Order removed from queue'),
                 'order_id': order.order_id
             })
 
     except Order.DoesNotExist:
         return Response(
-            {'detail': 'Order not found'},
+            {'detail': _('Order not found')},
             status=status.HTTP_404_NOT_FOUND
         )
 
@@ -410,7 +411,7 @@ def queue_claim_order(request, order_id):
     customer = get_customer_from_request(request)
     if not customer:
         return Response(
-            {'detail': 'No customer profile found'},
+            {'detail': _('No customer profile found')},
             status=status.HTTP_400_BAD_REQUEST
         )
 
@@ -428,7 +429,7 @@ def queue_claim_order(request, order_id):
 
     if not device:
         return Response(
-            {'detail': 'Device not found. Please register your device first.'},
+            {'detail': _('Device not found. Please register your device first.')},
             status=status.HTTP_400_BAD_REQUEST
         )
 
@@ -441,19 +442,19 @@ def queue_claim_order(request, order_id):
 
             if order.status == 'in_progress':
                 return Response(
-                    {'detail': 'This order is already being picked'},
+                    {'detail': _('This order is already being picked')},
                     status=status.HTTP_409_CONFLICT
                 )
 
             if order.status == 'completed':
                 return Response(
-                    {'detail': 'This order has already been completed'},
+                    {'detail': _('This order has already been completed')},
                     status=status.HTTP_409_CONFLICT
                 )
 
             if order.status != 'queued':
                 return Response(
-                    {'detail': 'This order is not available for picking'},
+                    {'detail': _('This order is not available for picking')},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -488,7 +489,7 @@ def queue_claim_order(request, order_id):
             picklist_products = []
             lines = order.lines.select_related('product').all()
             for line in lines:
-                for _ in range(line.quantity):
+                for _i in range(line.quantity):
                     ProductPick.objects.create(
                         product=line.product,
                         picklist=pick_list,
@@ -498,7 +499,7 @@ def queue_claim_order(request, order_id):
 
             return Response({
                 'status': 'ok',
-                'message': 'Order claimed successfully',
+                'message': _('Order claimed successfully'),
                 'order_code': order.order_code,
                 'picklist': picklist_products,
                 'redirect_url': '/'
@@ -506,7 +507,7 @@ def queue_claim_order(request, order_id):
 
     except Order.DoesNotExist:
         return Response(
-            {'detail': 'Order not found'},
+            {'detail': _('Order not found')},
             status=status.HTTP_404_NOT_FOUND
         )
 
@@ -565,7 +566,7 @@ def queue_reorder(request):
     customer = get_customer_from_request(request)
     if not customer:
         return Response(
-            {'detail': 'No customer profile found'},
+            {'detail': _('No customer profile found')},
             status=status.HTTP_400_BAD_REQUEST
         )
 
@@ -588,7 +589,7 @@ def queue_reorder(request):
 
             return Response({
                 'status': 'ok',
-                'message': 'Queue reordered'
+                'message': _('Queue reordered')
             })
 
     except Exception as e:
@@ -647,7 +648,7 @@ def queue_move_order(request, order_id, direction):
     customer = get_customer_from_request(request)
     if not customer:
         return Response(
-            {'detail': 'No customer profile found'},
+            {'detail': _('No customer profile found')},
             status=status.HTTP_400_BAD_REQUEST
         )
 
@@ -689,12 +690,13 @@ def queue_move_order(request, order_id, direction):
 
             return Response({
                 'status': 'ok',
-                'message': f'Order moved {direction}',
+                'message': (_('Order moved up') if direction == 'up'
+                            else _('Order moved down')),
                 'new_position': order.queue_position
             })
 
     except Order.DoesNotExist:
         return Response(
-            {'detail': 'Order not found or not in queue'},
+            {'detail': _('Order not found or not in queue')},
             status=status.HTTP_404_NOT_FOUND
         )

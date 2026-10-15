@@ -3,11 +3,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 13:46+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: xx\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27,7 +27,7 @@ msgstr ""
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:41
 msgid "Description — optional notes about the device or location."
-msgstr "Beschrijving — optionele notities over het apparaat of de locatie."
+msgstr "Omschrijving — optionele notities over het apparaat of de locatie."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:46
 msgid "Last login — when this device last authenticated/was used."
@@ -37,7 +37,7 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:51
 msgid "Lists picked — how many picklists this device/user completed."
 msgstr ""
-"Picklijsten voltooid — hoeveel picklijsten dit apparaat/gebruiker heeft "
+"Lijsten gepickt — hoeveel picklijsten dit apparaat/deze gebruiker heeft "
 "afgerond."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:56
@@ -50,11 +50,11 @@ msgstr "Voeg hier een nieuw apparaat toe wanneer u scantoegang verleent."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:67
 msgid "Search devices by name or description."
-msgstr "Voeg hier een nieuw apparaat toe om toegang tot scannen te verlenen."
+msgstr "Zoek apparaten op naam of omschrijving."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:73
 msgid "Open a device to view its details."
-msgstr "Zoek apparaten op naam of beschrijving."
+msgstr "Open een apparaat om de details te bekijken."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:80
 msgid ""
@@ -84,11 +84,11 @@ msgstr ""
 "een order aan</b> en <b>genereer een PDF-picklijst</b> voor je team.<br>• "
 "Open op je telefoon <a href='https://app.orderpiqr.nl' "
 "target='_blank'>app.orderpiqr.nl</a> en log in met je orderpicker-account."
-"<br>• <b>Scan de QR-code</b> op je nieuw aangemaakte picklijst.<br>• "
-"<b>Begin met het picken van je eerste order!</b><br><br><h2>Belangrijke "
-"informatie</h2>We raden aan om <b>Google Chrome</b> te gebruiken voor "
-"volledige functionaliteit — je kunt de webapp ook <b>direct vanuit je "
-"browser installeren</b> voor snelle toegang.<br><br>Op je telefoon kun je "
+"<br>• <b>Scan de QR-code</b> op je nieuw aangemaakte picklijst.<br>• Begin "
+"met het picken van je eerste order!<br><br><h2>Belangrijke informatie</h2>We "
+"raden aan om <b>Google Chrome</b> te gebruiken voor volledige "
+"functionaliteit — je kunt de webapp ook <b>direct vanuit je browser "
+"installeren</b> voor snelle toegang.<br><br>Op je telefoon kun je "
 "instellingen aanpassen, zoals <b>taal</b>, <b>pickingvolgorde</b> en "
 "<b>sorteervolgorde</b>. Wil je dat wij standaardinstellingen voor je "
 "instellen? Laat het ons weten.<br><br>Heb je vragen of wil je extra "
@@ -107,8 +107,8 @@ msgstr "Afronden"
 msgid ""
 "This is your Orders page. Create or import orders, then generate picklists."
 msgstr ""
-"Dit is je Bestellingen/Orders-pagina. Maak of importeer orders en genereer "
-"vervolgens picklijsten."
+"Dit is je Orders-pagina. Maak of importeer orders en genereer vervolgens "
+"picklijsten."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:51
 msgid "Order code — your primary identifier used across imports and PDFs."
@@ -182,7 +182,7 @@ msgid ""
 "duration, success, and items not picked."
 msgstr ""
 "Na het genereren kun je de resultaten bekijken in <b>Picklijsten</b>: zie "
-"wie heeft gepickt, de duur, het succes en niet-gepikte items."
+"wie heeft gepickt, de duur, het succes en niet-gepickte items."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\order.js:111
 msgid "Next, open <b>Pick Lists</b> to review and print PDFs with QR codes."
@@ -194,6 +194,7 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:89
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:209
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:89
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:32
 msgid "Close"
 msgstr "Sluiten"
 
@@ -226,7 +227,7 @@ msgstr "Picktijd — wanneer het picken is gestart."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:60
 msgid "Time taken — how long the pick took (performance metric)."
-msgstr "Duur — hoe lang de pick heeft geduurd (prestatiemeting)."
+msgstr "Benodigde tijd — hoe lang de pick heeft geduurd (prestatiemeting)."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:65
 msgid ""
@@ -276,7 +277,7 @@ msgstr ""
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:172
 msgid "Total time taken — duration of this picklist."
-msgstr "Totale duur — de looptijd van deze picklijst."
+msgstr "Totale benodigde tijd — de looptijd van deze picklijst."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:177
 msgid "Overall success — quick status at a glance."
@@ -299,7 +300,7 @@ msgstr "Aantal — eenheden die voor dit product zijn gepickt."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:199
 msgid "Time taken — how long this item took to pick."
-msgstr "Duur — hoe lang het duurde om dit item te picken."
+msgstr "Benodigde tijd — hoe lang het duurde om dit item te picken."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:204
 msgid "Successful — if not checked, this item was not picked successfully."
@@ -311,7 +312,7 @@ msgid ""
 "Tip: items not picked (unsuccessful) help you spot shortages or scanning "
 "mistakes."
 msgstr ""
-"Tip: niet-gepickte items (onsuccesvol) helpen tekorten of scanfouten te "
+"Tip: niet-gepickte items (niet succesvol) helpen tekorten of scanfouten te "
 "herkennen."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:33
@@ -328,7 +329,7 @@ msgstr ""
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:41
 msgid "Description. Human-readable item name for pickers."
-msgstr "Omschrijving. Menselijke productnaam voor pickers."
+msgstr "Omschrijving. Leesbare productnaam voor pickers."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:45
 msgid "Location. Bin/shelf—helps optimize walking route."
@@ -377,12 +378,12 @@ msgid ""
 "All set here. Continue to <b>Orders</b> to generate an order. Make sure you "
 "have created/imported products before you do."
 msgstr ""
-"Hier is alles klaar. Ga verder naar <b>Bestellingen</b> om een order te "
-"genereren. Zorg dat je eerst producten hebt aangemaakt/geïmporteerd."
+"Hier is alles klaar. Ga verder naar <b>Orders</b> om een order te genereren. "
+"Zorg dat je eerst producten hebt aangemaakt/geïmporteerd."
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:116
 msgid "Go to Orders"
-msgstr "Ga naar Bestellingen"
+msgstr "Ga naar Orders"
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:124
 msgid "Skip to Pick Lists"
@@ -412,7 +413,7 @@ msgid ""
 "can also create a picklist on the fly.)"
 msgstr ""
 "Orders — Maak orders handmatig of via API/import. (Het scannen van een "
-"picklijst-QR kan ook direct een order en picklijst aanmaken.)"
+"picklijst-QR kan ook direct een picklijst aanmaken.)"
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:54
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\start.js:56
@@ -449,6 +450,7 @@ msgid "No product data found on page"
 msgstr "Geen productgegevens op de pagina gevonden"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:48
+#: .\templates\index.html:241
 msgid "Offline mode: using cached product data"
 msgstr "Offlinemodus: er worden gecachte productgegevens gebruikt"
 
@@ -457,6 +459,7 @@ msgid "Cached product data is not usable"
 msgstr "Gecachte productgegevens zijn niet bruikbaar"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:54
+#: .\templates\index.html:243
 msgid "No product data available while offline"
 msgstr "Geen productgegevens beschikbaar tijdens offline gebruik"
 
@@ -471,7 +474,7 @@ msgstr "Dat is geen productbarcode."
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:178
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:204
 msgid "Scanned %(product)s"
-msgstr "%(product)s Gescand"
+msgstr "%(product)s gescand"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:187
 msgid "Incorrect scan, please try again."
@@ -512,12 +515,12 @@ msgstr "Kon productpick niet bijwerken."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:401
 msgid "Picklist completed!"
-msgstr "Picklijst toegevoegd"
+msgstr "Picklijst voltooid!"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:405
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:419
 msgid "Error completing picklist."
-msgstr "Fout bij verzenden van picklijst."
+msgstr "Fout bij het afronden van de picklijst."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:424
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:252
@@ -671,11 +674,11 @@ msgstr "Fout bij verzenden van picklijst."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:269
 msgid "Unexpected error while parsing picklist."
-msgstr "Fout bij lezen van de picklijst."
+msgstr "Onverwachte fout bij het lezen van de picklijst."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:279
 msgid "Invalid QR code structure. Please check the format"
-msgstr "Ongeldige QR code, controleer QR-code format"
+msgstr "Ongeldige structuur van de QR-code. Controleer het formaat"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:295
 msgid ""
@@ -688,7 +691,7 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:302
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
-"Geen van beide velden in de picklijsregel komt overeen met een bekende "
+"Geen van beide velden in de picklijstregel komt overeen met een bekende "
 "productcode."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:49
@@ -718,3 +721,148 @@ msgstr "Camera stoppen"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
 msgid "Start camera"
 msgstr "Camera starten"
+
+#: .\templates\shopify\app.html:324
+msgid "Could not load status"
+msgstr "Kon de status niet laden"
+
+#: .\templates\shopify\app.html:344
+msgid "Linking…"
+msgstr "Koppelen…"
+
+#: .\templates\shopify\app.html:356
+msgid "Linked to %(name)s"
+msgstr "Gekoppeld aan %(name)s"
+
+#: .\templates\shopify\app.html:362
+msgid "Linking failed"
+msgstr "Koppelen mislukt"
+
+#: .\templates\shopify\app.html:366
+msgid "Link account"
+msgstr "Account koppelen"
+
+#: .\templates\shopify\app.html:385
+msgid "Variant %(id)s"
+msgstr "Variant %(id)s"
+
+#: .\templates\shopify\app.html:388
+msgid "Product code"
+msgstr "Productcode"
+
+#: .\templates\shopify\app.html:390
+msgid "Link"
+msgstr "Koppelen"
+
+#: .\templates\shopify\app.html:398
+msgid "Linked"
+msgstr "Gekoppeld"
+
+#: .\templates\shopify\app.html:401
+msgid "Link failed"
+msgstr "Koppelen mislukt"
+
+#: .\templates\shopify\app.html:422
+msgid "Password set"
+msgstr "Wachtwoord ingesteld"
+
+#: .\templates\shopify\app.html:425
+msgid "Failed"
+msgstr "Mislukt"
+
+#: .\templates\shopify\app.html:443
+msgid "Settings saved"
+msgstr "Instellingen opgeslagen"
+
+#: .\templates\shopify\app.html:443
+msgid "Save failed"
+msgstr "Opslaan mislukt"
+
+#: .\templates\shopify\app.html:459
+msgid "Sync queued…"
+msgstr "Synchronisatie in de wachtrij…"
+
+#: .\templates\shopify\app.html:463
+msgid "Syncing… %(processed)s / %(total)s product"
+msgid_plural "Syncing… %(processed)s / %(total)s products"
+msgstr[0] "Synchroniseren… %(processed)s / %(total)s product"
+msgstr[1] "Synchroniseren… %(processed)s / %(total)s producten"
+
+#: .\templates\shopify\app.html:468
+msgid "Syncing… %(processed)s product"
+msgid_plural "Syncing… %(processed)s products"
+msgstr[0] "Synchroniseren… %(processed)s product"
+msgstr[1] "Synchroniseren… %(processed)s producten"
+
+#: .\templates\shopify\app.html:473
+msgid "Last sync: %(linked)s linked, %(unresolved)s need mapping"
+msgstr ""
+"Laatste synchronisatie: %(linked)s gekoppeld, %(unresolved)s moeten nog "
+"gekoppeld worden"
+
+#: .\templates\shopify\app.html:477
+msgid "Sync failed — try again or contact support"
+msgstr ""
+"Synchronisatie mislukt — probeer het opnieuw of neem contact op met support"
+
+#: .\templates\shopify\app.html:504
+msgid "Product sync started"
+msgstr "Productsynchronisatie gestart"
+
+#: .\templates\shopify\app.html:507
+msgid "Could not start sync"
+msgstr "Kon de synchronisatie niet starten"
+
+#: .\templates\shopify\app.html:562
+msgid "cancelled"
+msgstr "geannuleerd"
+
+#: .\templates\shopify\app.html:572
+msgid "imported"
+msgstr "geïmporteerd"
+
+#: .\templates\shopify\app.html:582
+msgid "%(count)s order loaded"
+msgid_plural "%(count)s orders loaded"
+msgstr[0] "%(count)s order geladen"
+msgstr[1] "%(count)s orders geladen"
+
+#: .\templates\shopify\app.html:595
+msgid "Push %(count)s to OrderPiqr"
+msgstr "%(count)s naar OrderPiqr sturen"
+
+#: .\templates\shopify\app.html:596
+msgid "Push selected to OrderPiqr"
+msgstr "Geselecteerde naar OrderPiqr sturen"
+
+#: .\templates\shopify\app.html:606
+msgid "Loading orders…"
+msgstr "Orders laden…"
+
+#: .\templates\shopify\app.html:611
+msgid "Could not load orders."
+msgstr "Kon de orders niet laden."
+
+#: .\templates\shopify\app.html:644
+msgid "Pushing… %(done)s/%(total)s"
+msgstr "Versturen… %(done)s/%(total)s"
+
+#: .\templates\shopify\app.html:651
+msgid "Push failed"
+msgstr "Versturen mislukt"
+
+#: .\templates\shopify\app.html:655
+msgid "%(count)s imported"
+msgstr "%(count)s geïmporteerd"
+
+#: .\templates\shopify\app.html:658
+msgid "%(count)s already in OrderPiqr"
+msgstr "%(count)s al in OrderPiqr"
+
+#: .\templates\shopify\app.html:661
+msgid "%(count)s need product mapping"
+msgstr "%(count)s moeten nog aan een product gekoppeld worden"
+
+#: .\templates\shopify\app.html:664
+msgid "%(count)s skipped"
+msgstr "%(count)s overgeslagen"

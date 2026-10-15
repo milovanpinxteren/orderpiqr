@@ -77,7 +77,7 @@
                             <span class="badge badge-secondary">{% trans "Pending" %}</span>
                             {% endif %}
                         </td>
-                        <td class="text-muted">{{ picklist.created_at|timesince }} {% trans "ago" %}</td>
+                        <td class="text-muted">{% blocktrans with since=picklist.created_at|timesince trimmed %}{{ since }} ago{% endblocktrans %}</td>
                         <td>
                             <div class="table-actions">
                                 <a href="{% url 'manage_picklist_detail' picklist.picklist_id %}"
@@ -104,7 +104,7 @@
             {% endif %}
 
             <span class="pagination-info">
-                {% trans "Page" %} {{ picklists.number }} {% trans "of" %} {{ paginator.num_pages }}
+                {% blocktrans with num=picklists.number total=paginator.num_pages trimmed %}Page {{ num }} of {{ total }}{% endblocktrans %}
             </span>
 
             {% if picklists.has_next %}

@@ -1,4 +1,5 @@
 from django.db import IntegrityError, transaction
+from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from orderpiqrApp.models import Product, OrderLine
@@ -70,15 +71,15 @@ class ProductSerializer(serializers.ModelSerializer):
         for code in codes:
             code = str(code).strip()
             if not code:
-                raise serializers.ValidationError({'barcodes': 'Barcodes cannot be empty.'})
+                raise serializers.ValidationError({'barcodes': _('Barcodes cannot be empty.')})
             if code in seen:
                 raise serializers.ValidationError(
-                    {'barcodes': f'Duplicate code "{code}" in request.'})
+                    {'barcodes': _('Duplicate code "%(code)s" in request.') % {'code': code}})
             seen.add(code)
             if code_conflict(customer, code, exclude_product=self.instance):
                 raise serializers.ValidationError(
                     {'code' if 'code' in attrs and code == attrs['code'] else 'barcodes':
-                     f'Code "{code}" is already in use by another product.'})
+                     _('Code "%(code)s" is already in use by another product.') % {'code': code}})
         return attrs
 
     def create(self, validated_data):
@@ -92,7 +93,7 @@ class ProductSerializer(serializers.ModelSerializer):
             # validate() checks conflicts, but a concurrent write can still win
             # the race to the unique constraint — report it, don't 500.
             raise serializers.ValidationError(
-                {'barcodes': 'A code in this request was just taken by another product.'})
+                {'barcodes': _('A code in this request was just taken by another product.')})
         return product
 
     def update(self, instance, validated_data):
@@ -112,7 +113,8 @@ class ProductSerializer(serializers.ModelSerializer):
             # E.g. the demoted old primary already exists as another product's
             # alias (possible via surfaces that predate code_conflict checks).
             raise serializers.ValidationError(
-                {'code': 'The replaced code conflicts with an existing barcode of another product.'})
+                {'code': _('The replaced code conflicts with an existing barcode '
+                           'of another product.')})
         return product
 
     def to_representation(self, instance):

@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.utils.translation import gettext as _
 from api.serializers import OrderLineSerializer, OrderLineDetailSerializer
 from orderpiqrApp.models import OrderLine
 from rest_framework import filters
@@ -120,19 +121,20 @@ class OrderLineViewSet(viewsets.ModelViewSet):
             )
             if order.status not in ['draft', 'queued']:
                 return Response(
-                    {'detail': f'Cannot add lines to order with status "{order.status}"'},
+                    {'detail': _('Cannot add lines to order with status "%(status)s"')
+                               % {'status': order.status}},
                     status=status.HTTP_400_BAD_REQUEST
                 )
         except Order.DoesNotExist:
             return Response(
-                {'detail': 'Order not found'},
+                {'detail': _('Order not found')},
                 status=status.HTTP_404_NOT_FOUND
             )
 
         return super().create(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
-        return Response({'detail': 'Delete not allowed.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response({'detail': _('Delete not allowed.')}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @extend_schema(
         summary="Get order lines by order",

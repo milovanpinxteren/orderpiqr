@@ -165,6 +165,21 @@
             resumeScanner as resumeCamera
         } from "{% static 'orderpiqrApp/js/qrScanner.js' %}";
 
+        {# Strings used inside JS literals below. They go through escapejs at #}
+        {# the point of use, so a quote in a translation (French has many) #}
+        {# cannot terminate the literal and take the whole script down with it. #}
+        {% trans "Product found" as msg_product_found %}
+        {% trans "Product not found" as msg_product_not_found %}
+        {% trans "No products found" as msg_no_products_found %}
+        {% trans "Stock" as msg_stock %}
+        {% trans "No location" as msg_no_location %}
+        {% trans "no change" as msg_no_change %}
+        {% trans "Please select a product first" as msg_select_product_first %}
+        {% trans "Please enter a valid quantity" as msg_invalid_quantity %}
+        {% trans "Updating..." as msg_updating %}
+        {% trans "Update Inventory" as msg_update_inventory %}
+        {% trans "Error updating inventory" as msg_error_updating %}
+
         const csrfToken = "{{ csrf_token }}";
         const productData = {{ products_json|safe }};
         let selectedProduct = null;
@@ -222,9 +237,9 @@
 
             if (product) {
                 selectProduct(product);
-                showNotification('{% trans "Product found" %}: ' + product.code, false);
+                showNotification('{{ msg_product_found|escapejs }}: ' + product.code, false);
             } else {
-                showNotification('{% trans "Product not found" %}: ' + scannedCode, true);
+                showNotification('{{ msg_product_not_found|escapejs }}: ' + scannedCode, true);
                 // Resume scanner after a short delay if no product found
                 setTimeout(() => resumeScanner(), 1500);
             }
@@ -264,7 +279,7 @@
                 ).slice(0, 10);
 
                 if (matches.length === 0) {
-                    resultsContainer.innerHTML = '<div class="no-results">{% trans "No products found" %}</div>';
+                    resultsContainer.innerHTML = '<div class="no-results">{{ msg_no_products_found|escapejs }}</div>';
                     resultsContainer.classList.add('show');
                     return;
                 }
@@ -292,7 +307,7 @@
                     <div class="search-result-item" onclick="selectProductById(${p.product_id})">
                         <div class="result-code">${escapeHtml(p.code)}</div>
                         <div class="result-desc">${escapeHtml(p.description)}</div>
-                        <div class="result-stock">{% trans "Stock" %}: ${p.inventory_quantity}</div>
+                        <div class="result-stock">{{ msg_stock|escapejs }}: ${p.inventory_quantity}</div>
                     </div>
                 `).join('');
                 resultsContainer.classList.add('show');
@@ -329,7 +344,7 @@
 
             document.getElementById('selected-code').textContent = product.code;
             document.getElementById('selected-desc').textContent = product.description;
-            document.getElementById('selected-location').textContent = product.location || '{% trans "No location" %}';
+            document.getElementById('selected-location').textContent = product.location || '{{ msg_no_location|escapejs }}';
             document.getElementById('current-quantity').textContent = product.inventory_quantity;
 
             // Hide scanner/search sections and show product card
@@ -432,20 +447,20 @@
             } else if (diff < 0) {
                 diffEl.innerHTML = `<span class="diff-negative">(${diff})</span>`;
             } else {
-                diffEl.innerHTML = `<span class="diff-neutral">({% trans "no change" %})</span>`;
+                diffEl.innerHTML = `<span class="diff-neutral">({{ msg_no_change|escapejs }})</span>`;
             }
         }
 
         function setupSubmit() {
             document.getElementById('submit-btn').addEventListener('click', function() {
                 if (!selectedProduct) {
-                    showNotification('{% trans "Please select a product first" %}', true);
+                    showNotification('{{ msg_select_product_first|escapejs }}', true);
                     return;
                 }
 
                 const value = parseInt(document.getElementById('quantity-value').value);
                 if (isNaN(value)) {
-                    showNotification('{% trans "Please enter a valid quantity" %}', true);
+                    showNotification('{{ msg_invalid_quantity|escapejs }}', true);
                     return;
                 }
 
@@ -453,7 +468,7 @@
                 const notes = document.getElementById('notes-input').value.trim();
 
                 this.disabled = true;
-                this.textContent = '{% trans "Updating..." %}';
+                this.textContent = '{{ msg_updating|escapejs }}';
 
                 fetch('{% url "inventory_modify" %}', {
                     method: 'POST',
@@ -489,13 +504,13 @@
                     }
 
                     this.disabled = false;
-                    this.textContent = '{% trans "Update Inventory" %}';
+                    this.textContent = '{{ msg_update_inventory|escapejs }}';
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showNotification('{% trans "Error updating inventory" %}', true);
+                    showNotification('{{ msg_error_updating|escapejs }}', true);
                     this.disabled = false;
-                    this.textContent = '{% trans "Update Inventory" %}';
+                    this.textContent = '{{ msg_update_inventory|escapejs }}';
                 });
             });
         }

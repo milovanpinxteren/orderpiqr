@@ -1,6 +1,7 @@
 from functools import wraps
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from django.utils.translation import gettext as _
 
 
 def company_admin_required(view_func):
@@ -20,5 +21,5 @@ def company_admin_required(view_func):
             return view_func(request, *args, **kwargs)
         if user.groups.filter(name='companyadmin').exists():
             return view_func(request, *args, **kwargs)
-        return HttpResponseForbidden("You don't have permission to access this page.")
+        return HttpResponseForbidden(_("You don't have permission to access this page."))
     return _wrapped_view

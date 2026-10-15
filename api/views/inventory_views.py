@@ -2,6 +2,7 @@ from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiExample, OpenApiParameter
 
@@ -152,13 +153,13 @@ class InventoryLogViewSet(viewsets.ReadOnlyModelViewSet):
             customer = request.user.userprofile.customer
         except AttributeError:
             return Response(
-                {'detail': 'No customer found'},
+                {'detail': _('No customer found')},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         if not is_inventory_enabled(customer):
             return Response(
-                {'detail': 'Inventory management is not enabled'},
+                {'detail': _('Inventory management is not enabled')},
                 status=status.HTTP_403_FORBIDDEN
             )
 
@@ -172,7 +173,7 @@ class InventoryLogViewSet(viewsets.ReadOnlyModelViewSet):
             )
         except Product.DoesNotExist:
             return Response(
-                {'detail': 'Product not found'},
+                {'detail': _('Product not found')},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -217,13 +218,13 @@ class InventoryLogViewSet(viewsets.ReadOnlyModelViewSet):
             customer = request.user.userprofile.customer
         except AttributeError:
             return Response(
-                {'detail': 'No customer found'},
+                {'detail': _('No customer found')},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         if not is_inventory_enabled(customer):
             return Response(
-                {'detail': 'Inventory management is not enabled'},
+                {'detail': _('Inventory management is not enabled')},
                 status=status.HTTP_403_FORBIDDEN
             )
 
@@ -247,6 +248,6 @@ class InventoryLogViewSet(viewsets.ReadOnlyModelViewSet):
             })
         except Product.DoesNotExist:
             return Response(
-                {'detail': 'Product not found'},
+                {'detail': _('Product not found')},
                 status=status.HTTP_404_NOT_FOUND
             )

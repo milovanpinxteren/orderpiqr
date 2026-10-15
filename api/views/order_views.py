@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.utils.translation import gettext as _
 from api.serializers import OrderSerializer, OrderDetailSerializer, OrderCreateSerializer
 from orderpiqrApp.models import Order, OrderLine, Product
 from orderpiqrApp.utils.products import add_alias_codes, resolve_product
@@ -259,7 +260,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         serializer.save(customer=self.request.user.userprofile.customer)
 
     def destroy(self, request, *args, **kwargs):
-        return Response({'detail': 'Delete not allowed. Use the cancel action instead.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response({'detail': _('Delete not allowed. Use the cancel action instead.')}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @extend_schema(
         summary="Cancel an order",
@@ -287,7 +288,8 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         if order.status not in ['draft', 'queued']:
             return Response(
-                {'detail': f'Cannot cancel order with status "{order.status}". Only draft or queued orders can be cancelled.'},
+                {'detail': _('Cannot cancel order with status "%(status)s". Only draft '
+                              'or queued orders can be cancelled.') % {'status': order.status}},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -297,7 +299,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         return Response({
             'status': 'ok',
-            'message': 'Order cancelled',
+            'message': _('Order cancelled'),
             'order_id': order.order_id
         })
 
@@ -406,7 +408,7 @@ class OrderViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         except Order.DoesNotExist:
             return Response(
-                {'detail': 'Order not found'},
+                {'detail': _('Order not found')},
                 status=status.HTTP_404_NOT_FOUND
             )
 

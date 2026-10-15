@@ -96,7 +96,7 @@
                         <td class="text-right">{{ device.overrides_today }}</td>
                         <td class="text-muted">
                             {% if device.last_login %}
-                            <span title="{{ device.last_login|date:'j M Y H:i' }}">{{ device.last_login|timesince }} {% trans "ago" %}</span>
+                            <span title="{{ device.last_login|date:'j M Y H:i' }}">{% blocktrans with since=device.last_login|timesince trimmed %}{{ since }} ago{% endblocktrans %}</span>
                             {% else %}
                             <span class="text-muted">{% trans "Never" %}</span>
                             {% endif %}

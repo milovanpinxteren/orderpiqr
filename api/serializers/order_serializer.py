@@ -1,3 +1,4 @@
+from django.utils.translation import gettext as _
 from rest_framework import serializers
 from django.db.models import Sum
 
@@ -51,7 +52,7 @@ class OrderSerializer(serializers.ModelSerializer):
             if self.instance is not None:
                 qs = qs.exclude(pk=self.instance.pk)
             if qs.exists():
-                raise serializers.ValidationError("An order with this code already exists.")
+                raise serializers.ValidationError(_("An order with this code already exists."))
         return value
 
     def create(self, validated_data):

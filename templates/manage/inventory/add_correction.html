@@ -159,6 +159,8 @@
 }
 </style>
 
+{% trans "Select a product first" as msg_select_product_first %}
+{% trans "no change" as msg_no_change %}
 <script>
 let currentStock = 0;
 
@@ -192,7 +194,7 @@ function updatePreview() {
     const value = parseInt(valueInput.value) || 0;
 
     if (!document.getElementById('product_id').value) {
-        previewEl.innerHTML = '<span class="preview-neutral">{% trans "Select a product first" %}</span>';
+        previewEl.innerHTML = '<span class="preview-neutral">{{ msg_select_product_first|escapejs }}</span>';
         return;
     }
 
@@ -211,7 +213,7 @@ function updatePreview() {
     } else if (diff < 0) {
         html += ` <span class="preview-negative">(${diff})</span>`;
     } else {
-        html += ` <span class="preview-neutral">({% trans "no change" %})</span>`;
+        html += ` <span class="preview-neutral">({{ msg_no_change|escapejs }})</span>`;
     }
 
     previewEl.innerHTML = html;

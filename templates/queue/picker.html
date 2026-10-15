@@ -42,6 +42,17 @@
     {% endif %}
 
     <script>
+        {# Strings used inside JS literals below. escapejs at the point of use #}
+        {# keeps a quote in a translation from terminating the literal. #}
+        {% trans "Claiming..." as msg_claiming %}
+        {% trans "Order claimed! Redirecting..." as msg_order_claimed %}
+        {% trans "Start Picking" as msg_start_picking %}
+        {% trans "Error claiming order" as msg_error_claiming %}
+        {% trans "Take Over" as msg_take_over %}
+        {% trans "%(name)s has been picking this order for %(duration)s. Take it over? Picks they already recorded are kept." as msg_takeover_named_duration %}
+        {% trans "%(name)s is picking this order right now. Take it over? Picks they already recorded are kept." as msg_takeover_named %}
+        {% trans "This order is being picked by someone else. Take it over? Picks they already recorded are kept." as msg_takeover_anon %}
+
         const csrfToken = "{{ csrf_token }}";
 
         // Get device fingerprint
@@ -66,7 +77,7 @@
 
             try {
                 button.disabled = true;
-                button.textContent = '{% trans "Claiming..." %}';
+                button.textContent = '{{ msg_claiming|escapejs }}';
 
                 const deviceFingerprint = getDeviceFingerprint();
                 console.log('[Queue Picker] Device fingerprint:', deviceFingerprint);
@@ -91,7 +102,7 @@
                 .then(data => {
                     console.log('[Queue Picker] Response data:', data);
                     if (data.status === 'ok') {
-                        showNotification('{% trans "Order claimed! Redirecting..." %}', false);
+                        showNotification('{{ msg_order_claimed|escapejs }}', false);
 
                         // Store the order data for the picking interface
                         const orderData = {
@@ -117,18 +128,18 @@
                             return;
                         }
                         button.disabled = false;
-                        button.textContent = '{% trans "Start Picking" %}';
+                        button.textContent = '{{ msg_start_picking|escapejs }}';
                     }
                 })
                 .catch(error => {
                     console.error('[Queue Picker] Fetch error:', error);
-                    showNotification('{% trans "Error claiming order" %}', true);
+                    showNotification('{{ msg_error_claiming|escapejs }}', true);
                     button.disabled = false;
-                    button.textContent = '{% trans "Start Picking" %}';
+                    button.textContent = '{{ msg_start_picking|escapejs }}';
                 });
             } catch (e) {
                 console.error('[Queue Picker] Exception in claimOrder:', e);
-                showNotification('{% trans "Error claiming order" %}', true);
+                showNotification('{{ msg_error_claiming|escapejs }}', true);
             }
         }
 
@@ -137,20 +148,20 @@
             // clicked through, "take this over from Mariana" is not.
             let message;
             if (pickedBy && pickedFor) {
-                message = '{% trans "%(name)s has been picking this order for %(duration)s. Take it over? Picks they already recorded are kept." %}'
+                message = '{{ msg_takeover_named_duration|escapejs }}'
                     .replace('%(name)s', pickedBy)
                     .replace('%(duration)s', pickedFor);
             } else if (pickedBy) {
-                message = '{% trans "%(name)s is picking this order right now. Take it over? Picks they already recorded are kept." %}'
+                message = '{{ msg_takeover_named|escapejs }}'
                     .replace('%(name)s', pickedBy);
             } else {
-                message = '{% trans "This order is being picked by someone else. Take it over? Picks they already recorded are kept." %}';
+                message = '{{ msg_takeover_anon|escapejs }}';
             }
             if (!confirm(message)) {
                 return;
             }
             button.disabled = true;
-            button.textContent = '{% trans "Claiming..." %}';
+            button.textContent = '{{ msg_claiming|escapejs }}';
 
             const deviceFingerprint = getDeviceFingerprint();
             const url = '{% url "queue_claim_order" order_id=0 %}'.replace('0', orderId);
@@ -176,13 +187,13 @@
                 } else {
                     showNotification(data.message, true);
                     button.disabled = false;
-                    button.textContent = '{% trans "Take Over" %}';
+                    button.textContent = '{{ msg_take_over|escapejs }}';
                 }
             })
             .catch(error => {
-                showNotification('{% trans "Error claiming order" %}', true);
+                showNotification('{{ msg_error_claiming|escapejs }}', true);
                 button.disabled = false;
-                button.textContent = '{% trans "Take Over" %}';
+                button.textContent = '{{ msg_take_over|escapejs }}';
             });
         }
 

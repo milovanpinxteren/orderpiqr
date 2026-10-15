@@ -20,10 +20,10 @@
                 <div class="setting-item">
                     <div class="setting-info">
                         <label class="setting-label" for="setting_{{ setting.definition.key }}">
-                            {{ setting.definition.label }}
+                            {{ setting.definition.translated_label }}
                         </label>
                         {% if setting.definition.help_text %}
-                        <p class="setting-help">{{ setting.definition.help_text }}</p>
+                        <p class="setting-help">{{ setting.definition.translated_help_text }}</p>
                         {% endif %}
                     </div>
                     <div class="setting-input">
@@ -31,7 +31,7 @@
                         {# Settings with predefined options - show as dropdown #}
                         <select class="form-control" name="setting_{{ setting.definition.key }}"
                                 id="setting_{{ setting.definition.key }}">
-                            {% for option in setting.definition.options %}
+                            {% for option in setting.definition.translated_options %}
                             <option value="{{ option.value }}"
                                     {% if setting.value == option.value or not setting.value and setting.definition.default_value == option.value %}selected{% endif %}>
                                 {{ option.label }}

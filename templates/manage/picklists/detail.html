@@ -1,8 +1,8 @@
 {% extends "manage/base.html" %}
 {% load static i18n %}
 
-{% block title %}{% trans "Picklist" %} {{ picklist.picklist_code|default:picklist.picklist_id }}{% endblock %}
-{% block page_title %}{% trans "Picklist" %} {{ picklist.picklist_code|default:picklist.picklist_id }}{% endblock %}
+{% block title %}{% blocktrans with code=picklist.picklist_code|default:picklist.picklist_id trimmed %}Picklist {{ code }}{% endblocktrans %}{% endblock %}
+{% block page_title %}{% blocktrans with code=picklist.picklist_code|default:picklist.picklist_id trimmed %}Picklist {{ code }}{% endblocktrans %}{% endblock %}
 {% block page_subtitle %}
 <p class="page-subtitle">
     {% if picklist.order %}
@@ -110,7 +110,7 @@
     <div class="card">
         <div class="card-header">
             <h3>{% trans "Product Picks" %}</h3>
-            <span class="badge badge-secondary">{{ product_picks|length }} {% trans "items" %}</span>
+            <span class="badge badge-secondary">{% blocktrans count counter=product_picks|length trimmed %}{{ counter }} item{% plural %}{{ counter }} items{% endblocktrans %}</span>
         </div>
         <div class="card-body p-0">
             {% if product_picks %}

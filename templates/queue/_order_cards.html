@@ -15,7 +15,9 @@
         {% if order.status == 'queued' %}
         <div class="qr-container">
             {% qr_code_base64 order as qr_src %}
-            <img src="{{ qr_src }}" alt="QR Code for {{ order.order_code }}" class="qr-code">
+            <img src="{{ qr_src }}"
+                 alt="{% blocktrans with code=order.order_code %}QR code for {{ code }}{% endblocktrans %}"
+                 class="qr-code">
         </div>
         {% endif %}
 

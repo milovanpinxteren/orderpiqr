@@ -7,12 +7,204 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 14:30+0200\n"
+"POT-Creation-Date: 2026-10-15 13:46+0200\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\api\serializers\device_serializer.py:26
+msgid "A device with this fingerprint is already registered for your company."
+msgstr ""
+
+#: .\api\serializers\order_serializer.py:55
+#: .\orderpiqrApp\views\manage_views.py:843
+#: .\orderpiqrApp\views\manage_views.py:917
+msgid "An order with this code already exists."
+msgstr ""
+
+#: .\api\serializers\product_serializer.py:74
+msgid "Barcodes cannot be empty."
+msgstr ""
+
+#: .\api\serializers\product_serializer.py:77
+#, python-format
+msgid "Duplicate code \"%(code)s\" in request."
+msgstr ""
+
+#: .\api\serializers\product_serializer.py:82
+#, python-format
+msgid "Code \"%(code)s\" is already in use by another product."
+msgstr ""
+
+#: .\api\serializers\product_serializer.py:96
+msgid "A code in this request was just taken by another product."
+msgstr ""
+
+#: .\api\serializers\product_serializer.py:116
+msgid ""
+"The replaced code conflicts with an existing barcode of another product."
+msgstr ""
+
+#: .\api\views\device_views.py:126
+msgid "Cannot delete device with pick list history. Unassign the user instead."
+msgstr ""
+
+#: .\api\views\device_views.py:166
+#: .\orderpiqrApp\views\scan_picklist_view.py:462
+msgid "Device not found"
+msgstr ""
+
+#: .\api\views\device_views.py:242
+msgid "Device registered"
+msgstr ""
+
+#: .\api\views\device_views.py:242
+msgid "Device updated"
+msgstr ""
+
+#: .\api\views\device_views.py:382
+msgid "User unassigned from device"
+msgstr ""
+
+#: .\api\views\inventory_views.py:156 .\api\views\inventory_views.py:221
+#: .\orderpiqrApp\views\inventory_views.py:76
+#: .\orderpiqrApp\views\inventory_views.py:114
+#: .\orderpiqrApp\views\inventory_views.py:155
+msgid "No customer found"
+msgstr ""
+
+#: .\api\views\inventory_views.py:162 .\api\views\inventory_views.py:227
+#: .\orderpiqrApp\views\inventory_views.py:32
+msgid "Inventory management is not enabled"
+msgstr ""
+
+#: .\api\views\inventory_views.py:176 .\api\views\inventory_views.py:251
+#: .\api\views\product_views.py:195 .\orderpiqrApp\views\inventory_views.py:133
+#: .\orderpiqrApp\views\inventory_views.py:194
+#: .\orderpiqrApp\views\scan_picklist_view.py:406
+#: .\orderpiqrApp\views\scan_picklist_view.py:489
+#: .\templates\inventory\picker.html:172
+msgid "Product not found"
+msgstr ""
+
+#: .\api\views\order_views.py:263
+msgid "Delete not allowed. Use the cancel action instead."
+msgstr ""
+
+#: .\api\views\order_views.py:291
+#, python-format
+msgid ""
+"Cannot cancel order with status \"%(status)s\". Only draft or queued orders "
+"can be cancelled."
+msgstr ""
+
+#: .\api\views\order_views.py:302
+msgid "Order cancelled"
+msgstr ""
+
+#: .\api\views\order_views.py:411 .\api\views\orderline_views.py:130
+#: .\api\views\queue_views.py:272 .\api\views\queue_views.py:346
+#: .\api\views\queue_views.py:510 .\orderpiqrApp\views\queue_views.py:332
+#: .\orderpiqrApp\views\queue_views.py:438
+#: .\orderpiqrApp\views\queue_views.py:472
+#: .\orderpiqrApp\views\queue_views.py:562
+#: .\orderpiqrApp\views\queue_views.py:605
+msgid "Order not found"
+msgstr ""
+
+#: .\api\views\orderline_views.py:124
+#, python-format
+msgid "Cannot add lines to order with status \"%(status)s\""
+msgstr ""
+
+#: .\api\views\orderline_views.py:137 .\api\views\picklist_views.py:128
+#: .\api\views\productpick_views.py:111
+msgid "Delete not allowed."
+msgstr ""
+
+#: .\api\views\picklist_views.py:197
+msgid "Pick list completed"
+msgstr ""
+
+#: .\api\views\product_views.py:250
+msgid "Products updated successfully"
+msgstr ""
+
+#: .\api\views\productpick_views.py:146
+msgid "Pick marked as successful"
+msgstr ""
+
+#: .\api\views\productpick_views.py:182
+msgid "Pick marked as failed"
+msgstr ""
+
+#: .\api\views\queue_views.py:83 .\api\views\queue_views.py:163
+#: .\api\views\queue_views.py:236 .\api\views\queue_views.py:317
+#: .\api\views\queue_views.py:414 .\api\views\queue_views.py:569
+#: .\api\views\queue_views.py:651 .\orderpiqrApp\views\inventory_views.py:29
+#: .\orderpiqrApp\views\queue_views.py:82
+#: .\orderpiqrApp\views\queue_views.py:125
+#: .\orderpiqrApp\views\queue_views.py:362
+msgid "No customer profile found"
+msgstr ""
+
+#: .\api\views\queue_views.py:249 .\orderpiqrApp\views\queue_views.py:419
+msgid "Only draft orders can be added to queue"
+msgstr ""
+
+#: .\api\views\queue_views.py:265 .\orderpiqrApp\views\queue_views.py:434
+#: .\templates\manage\orders\list.html:229
+#: .\templates\manage\queue\list.html:385 .\templates\queue\manage.html:116
+msgid "Order added to queue"
+msgstr ""
+
+#: .\api\views\queue_views.py:330 .\orderpiqrApp\views\queue_views.py:459
+msgid "Order is not in queue"
+msgstr ""
+
+#: .\api\views\queue_views.py:340 .\orderpiqrApp\views\queue_views.py:468
+#: .\templates\manage\queue\list.html:386 .\templates\queue\manage.html:117
+msgid "Order removed from queue"
+msgstr ""
+
+#: .\api\views\queue_views.py:432
+msgid "Device not found. Please register your device first."
+msgstr ""
+
+#: .\api\views\queue_views.py:445 .\orderpiqrApp\views\queue_views.py:221
+msgid "This order is already being picked"
+msgstr ""
+
+#: .\api\views\queue_views.py:451 .\orderpiqrApp\views\queue_views.py:260
+#: .\orderpiqrApp\views\scan_picklist_view.py:265
+msgid "This order has already been completed"
+msgstr ""
+
+#: .\api\views\queue_views.py:457 .\orderpiqrApp\views\queue_views.py:266
+msgid "This order is not available for picking"
+msgstr ""
+
+#: .\api\views\queue_views.py:502 .\orderpiqrApp\views\queue_views.py:323
+msgid "Order claimed successfully"
+msgstr ""
+
+#: .\api\views\queue_views.py:592 .\orderpiqrApp\views\queue_views.py:505
+msgid "Queue reordered"
+msgstr ""
+
+#: .\api\views\queue_views.py:693 .\orderpiqrApp\views\queue_views.py:558
+msgid "Order moved up"
+msgstr ""
+
+#: .\api\views\queue_views.py:694 .\orderpiqrApp\views\queue_views.py:558
+msgid "Order moved down"
+msgstr ""
+
+#: .\api\views\queue_views.py:700
+msgid "Order not found or not in queue"
+msgstr ""
 
 #: .\drf_hashed_token\admin.py:10
 msgid "Hashed auth tokens"
@@ -35,6 +227,12 @@ msgstr ""
 msgid "User inactive or deleted."
 msgstr ""
 
+#: .\integrations\apps.py:8 .\templates\manage\base.html:134
+#: .\templates\manage\integrations\list.html:4
+#: .\templates\manage\integrations\list.html:5
+msgid "Integrations"
+msgstr ""
+
 #: .\integrations\models.py:23 .\templates\manage\picklists\detail.html:58
 #: .\templates\manage\picklists\detail.html:151
 #: .\templates\manage\picklists\list.html:14
@@ -46,7 +244,7 @@ msgstr ""
 #: .\templates\manage\products\form.html:60
 #: .\templates\manage\products\list.html:49
 #: .\templates\manage\products\list.html:142
-#: .\templates\manage\products\list.html:469
+#: .\templates\manage\products\list.html:255
 msgid "Active"
 msgstr ""
 
@@ -106,6 +304,108 @@ msgstr ""
 msgid "External order links"
 msgstr ""
 
+#: .\integrations_shopify\apps.py:8
+msgid "Shopify integration"
+msgstr ""
+
+#: .\integrations_shopify\models.py:35
+msgid "Shopify shop"
+msgstr ""
+
+#: .\integrations_shopify\models.py:36
+msgid "Shopify shops"
+msgstr ""
+
+#: .\integrations_shopify\views.py:265 .\integrations_shopify\views.py:312
+msgid "Could not load orders from Shopify"
+msgstr ""
+
+#: .\integrations_shopify\views.py:304
+msgid "no orders selected"
+msgstr ""
+
+#: .\integrations_shopify\views.py:390
+msgid "link not found"
+msgstr ""
+
+#: .\integrations_shopify\views.py:393
+msgid "no product with that code"
+msgstr ""
+
+#: .\integrations_shopify\views.py:422
+msgid "Invalid username or password"
+msgstr ""
+
+#: .\integrations_shopify\views.py:425
+msgid "This account is not a company admin"
+msgstr ""
+
+#: .\integrations_shopify\views.py:428
+msgid "Account has no company"
+msgstr ""
+
+#: .\integrations_shopify\views.py:457
+msgid "password too short (min 8 characters)"
+msgstr ""
+
+#: .\integrations_woocommerce\apps.py:8
+msgid "WooCommerce integration"
+msgstr ""
+
+#: .\integrations_woocommerce\client.py:30
+msgid "Plain http store URLs are only allowed in DEBUG"
+msgstr ""
+
+#: .\integrations_woocommerce\client.py:32
+msgid "Store URL must start with https://"
+msgstr ""
+
+#: .\integrations_woocommerce\models.py:42
+msgid "WooCommerce store"
+msgstr ""
+
+#: .\integrations_woocommerce\models.py:43
+msgid "WooCommerce stores"
+msgstr ""
+
+#: .\integrations_woocommerce\models.py:91
+msgid "Pairing token"
+msgstr ""
+
+#: .\integrations_woocommerce\models.py:92
+msgid "Pairing tokens"
+msgstr ""
+
+#: .\integrations_woocommerce\views.py:59
+msgid ""
+"This pairing key is not valid. Generate a new one in the OrderPiqr portal."
+msgstr ""
+
+#: .\integrations_woocommerce\views.py:63
+msgid ""
+"This pairing key has expired. Generate a new one in the OrderPiqr portal."
+msgstr ""
+
+#: .\integrations_woocommerce\views.py:79
+msgid ""
+"Could not reach the store with these API credentials. Check the store URL "
+"and REST API key."
+msgstr ""
+
+#: .\integrations_woocommerce\views.py:127
+msgid ""
+"The store accepted the credentials but webhook registration failed. Check "
+"that the REST API key has Read/Write permissions."
+msgstr ""
+
+#: .\integrations_woocommerce\views.py:240
+msgid "Invalid plugin token."
+msgstr ""
+
+#: .\integrations_woocommerce\views.py:261
+msgid "Invalid connection or plugin token."
+msgstr ""
+
 #: .\orderpiqrApp\admin\email_admin.py:33 .\orderpiqrApp\models\orders.py:23
 #: .\templates\manage\dashboard.html:222
 #: .\templates\manage\integrations\list.html:26
@@ -127,7 +427,7 @@ msgstr ""
 
 #: .\orderpiqrApp\admin\email_admin.py:49
 #: .\orderpiqrApp\models\scan_events.py:67
-#: .\templates\manage\health\list.html:422
+#: .\templates\manage\health\list.html:427
 msgid "Message"
 msgstr ""
 
@@ -135,7 +435,7 @@ msgstr ""
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:51 .\orderpiqrApp\models\products.py:22
-#: .\orderpiqrApp\models\products.py:57 .\templates\index.html:181
+#: .\orderpiqrApp\models\products.py:57 .\templates\index.html:186
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -145,6 +445,7 @@ msgid "Product"
 msgstr ""
 
 #: .\orderpiqrApp\admin\inventory_admin.py:51
+#: .\orderpiqrApp\views\manage_views.py:1991
 #: .\templates\manage\inventory\logs.html:78
 #: .\templates\manage\products\form.html:129
 #: .\templates\manage\products\form.html:169
@@ -153,7 +454,8 @@ msgstr ""
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
 #: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
-#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:138
+#: .\orderpiqrApp\models\inventory.py:38
+#: .\orderpiqrApp\views\manage_views.py:1992 .\templates\index.html:143
 #: .\templates\manage\inventory\logs.html:80
 #: .\templates\manage\products\form.html:131
 #: .\templates\manage\products\form.html:171
@@ -166,11 +468,12 @@ msgstr ""
 #: .\orderpiqrApp\models\devices.py:36 .\orderpiqrApp\models\devices.py:50
 #: .\orderpiqrApp\models\inventory.py:45 .\orderpiqrApp\models\picklists.py:14
 #: .\orderpiqrApp\models\scan_events.py:57
+#: .\orderpiqrApp\views\manage_views.py:1992
 #: .\templates\manage\dashboard.html:277
 #: .\templates\manage\devices\list.html:47
 #: .\templates\manage\health\list.html:161
-#: .\templates\manage\health\list.html:269
-#: .\templates\manage\health\list.html:421
+#: .\templates\manage\health\list.html:274
+#: .\templates\manage\health\list.html:426
 #: .\templates\manage\picklists\detail.html:64
 #: .\templates\manage\picklists\list.html:33
 msgid "Device"
@@ -182,6 +485,15 @@ msgstr ""
 
 #: .\orderpiqrApp\admin\inventory_admin.py:75
 msgid "Metadata"
+msgstr ""
+
+#: .\orderpiqrApp\admin\login_token_admin.py:33
+msgid "Revoke selected login QRs"
+msgstr ""
+
+#: .\orderpiqrApp\admin\login_token_admin.py:40
+#, python-format
+msgid "%(count)s login QR(s) revoked."
 msgstr ""
 
 #: .\orderpiqrApp\admin\order_admin.py:35
@@ -223,7 +535,7 @@ msgid "%(count)s order(s) removed from queue."
 msgstr "%(count)s order(s) removed from queue."
 
 #: .\orderpiqrApp\admin\order_admin.py:124
-#: .\orderpiqrApp\admin\order_admin.py:328 .\orderpiqr\views.py:219
+#: .\orderpiqrApp\admin\order_admin.py:329 .\orderpiqr\views.py:219
 msgid "Your account is not linked to a customer."
 msgstr ""
 
@@ -247,19 +559,39 @@ msgstr ""
 msgid "Unknown product code \"%(code)s\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:255
+#: .\orderpiqrApp\admin\order_admin.py:254
+#: .\orderpiqrApp\admin\product_admin.py:167
+msgid "Unsupported file format, only .csv and .xlsx are supported"
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:256
 #, python-format
 msgid "%(orders)s orders and %(lines)s lines added."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:262
+#: .\orderpiqrApp\admin\order_admin.py:263
 #, python-format
 msgid "Overwritten orders: %(codes)s."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:270
+#: .\orderpiqrApp\admin\order_admin.py:271
 #, python-format
 msgid "Error processing file: %(msg)s"
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:273
+#: .\orderpiqrApp\admin\product_admin.py:178
+msgid "No file uploaded."
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:275
+#: .\orderpiqrApp\admin\product_admin.py:180
+msgid "Upload CSV or XLSX File"
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:285
+#: .\orderpiqrApp\admin\product_admin.py:192
+msgid "Invalid form submission."
 msgstr ""
 
 #: .\orderpiqrApp\admin\preferences_admin.py:14
@@ -284,10 +616,6 @@ msgstr ""
 msgid "Missing value for \"%(field)s\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:167
-msgid "Unsupported file format, only .csv and .xlsx are supported"
-msgstr ""
-
 #: .\orderpiqrApp\admin\product_admin.py:169
 #, python-format
 msgid "%(added)d products added, %(overwritten)d products overwritten."
@@ -296,18 +624,6 @@ msgstr ""
 #: .\orderpiqrApp\admin\product_admin.py:175
 #, python-format
 msgid "Error processing file: %(error)s"
-msgstr ""
-
-#: .\orderpiqrApp\admin\product_admin.py:178
-msgid "No file uploaded."
-msgstr ""
-
-#: .\orderpiqrApp\admin\product_admin.py:180
-msgid "Upload CSV or XLSX File"
-msgstr ""
-
-#: .\orderpiqrApp\admin\product_admin.py:192
-msgid "Invalid form submission."
 msgstr ""
 
 #: .\orderpiqrApp\admin\product_admin.py:213
@@ -330,6 +646,76 @@ msgstr ""
 msgid "User is not allowed to save products."
 msgstr ""
 
+#: .\orderpiqrApp\admin\userprofile_admin.py:13
+#: .\templates\manage\profile.html:22 .\templates\manage\profile.html:178
+#: .\templates\registration\login.html:35
+#: .\templates\registration\signup.html:95
+#: .\templates\registration\signup.html:171
+msgid "Username"
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:18
+msgid "Company name"
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:20
+msgid "Admin email"
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:21
+msgid "Admin profile username"
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:22
+msgid "Admin password"
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:23
+msgid "Confirm admin password"
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:26
+msgid "Orderpicker email"
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:27
+msgid "Orderpicker profile username"
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:28
+msgid "Orderpicker password"
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:29
+msgid "Confirm orderpicker password"
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:38
+#: .\orderpiqrApp\forms\accounts\signup_form.py:40
+msgid "Passwords do not match."
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:57
+msgid "A company with this name already exists."
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:65
+msgid "Profile usernames must be different."
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:77
+#: .\orderpiqrApp\views\manage_views.py:1687
+msgid "Username is required."
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:80
+msgid "This username is already taken for this company."
+msgstr ""
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:81
+msgid "Duplicate profile username in company."
+msgstr ""
+
 #: .\orderpiqrApp\models\customers.py:8 .\orderpiqrApp\models\devices.py:20
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 msgid "Name"
@@ -347,7 +733,7 @@ msgstr ""
 #: .\orderpiqrApp\models\customers.py:12 .\orderpiqrApp\models\customers.py:21
 #: .\orderpiqrApp\models\devices.py:22 .\orderpiqrApp\models\login_tokens.py:33
 #: .\orderpiqrApp\models\orders.py:18 .\orderpiqrApp\models\picklists.py:11
-#: .\orderpiqrApp\models\preferences.py:68 .\orderpiqrApp\models\products.py:13
+#: .\orderpiqrApp\models\preferences.py:87 .\orderpiqrApp\models\products.py:13
 #: .\orderpiqrApp\models\products.py:58 .\orderpiqrApp\models\scan_events.py:55
 msgid "Customer"
 msgstr ""
@@ -496,9 +882,10 @@ msgstr ""
 
 #: .\orderpiqrApp\models\inventory.py:55
 #: .\orderpiqrApp\models\scan_events.py:64
+#: .\orderpiqrApp\views\manage_views.py:1991
 #: .\templates\inventory\picker.html:128
 #: .\templates\manage\health\list.html:228
-#: .\templates\manage\health\list.html:418
+#: .\templates\manage\health\list.html:423
 #: .\templates\manage\inventory\add_correction.html:55
 #: .\templates\manage\inventory\logs.html:79
 #: .\templates\manage\products\form.html:130
@@ -508,11 +895,12 @@ msgstr ""
 
 #: .\orderpiqrApp\models\inventory.py:59 .\orderpiqrApp\models\orders.py:21
 #: .\orderpiqrApp\models\picklists.py:27 .\orderpiqrApp\models\picklists.py:57
+#: .\orderpiqrApp\views\manage_views.py:1992
 #: .\templates\manage\inventory\logs.html:81
 #: .\templates\manage\orders\form.html:41
 #: .\templates\manage\orders\import.html:107
 #: .\templates\manage\picklists\detail.html:102
-#: .\templates\queue\_order_cards.html:44
+#: .\templates\queue\_order_cards.html:46
 msgid "Notes"
 msgstr ""
 
@@ -613,6 +1001,11 @@ msgstr ""
 msgid "Picker Login QRs"
 msgstr ""
 
+#: .\orderpiqrApp\models\login_tokens.py:56
+#, python-format
+msgid "Login QR for %(picker)s"
+msgstr ""
+
 #: .\orderpiqrApp\models\orders.py:10 .\templates\manage\orders\list.html:43
 msgid "Draft"
 msgstr "Draft"
@@ -620,7 +1013,7 @@ msgstr "Draft"
 #: .\orderpiqrApp\models\orders.py:11 .\templates\manage\orders\list.html:44
 #: .\templates\manage\queue\_queue_list.html:29
 #: .\templates\queue\_manage_queue_list.html:21
-#: .\templates\queue\_order_cards.html:53
+#: .\templates\queue\_order_cards.html:55
 msgid "Queued"
 msgstr "Queued"
 
@@ -630,7 +1023,7 @@ msgstr "Queued"
 #: .\templates\manage\picklists\list.html:75
 #: .\templates\manage\queue\_queue_list.html:24
 #: .\templates\queue\_manage_queue_list.html:19
-#: .\templates\queue\_order_cards.html:56
+#: .\templates\queue\_order_cards.html:58
 #: .\templates\queue\_picker_orders.html:42
 msgid "In Progress"
 msgstr "In Progress"
@@ -639,7 +1032,7 @@ msgstr "In Progress"
 #: .\templates\manage\picklists\detail.html:52
 #: .\templates\manage\picklists\list.html:16
 #: .\templates\manage\picklists\list.html:71
-#: .\templates\queue\_order_cards.html:59
+#: .\templates\queue\_order_cards.html:61
 #: .\templates\queue\_picker_orders.html:50
 msgid "Completed"
 msgstr "Completed"
@@ -677,9 +1070,9 @@ msgstr ""
 
 #: .\orderpiqrApp\models\orders.py:48 .\orderpiqrApp\models\orders.py:63
 #: .\templates\manage\dashboard.html:221
-#: .\templates\manage\health\list.html:268
+#: .\templates\manage\health\list.html:273
 #: .\templates\manage\picklists\detail.html:9
-#: .\templates\manage\picklists\list.html:32 .\templates\shopify\app.html:208
+#: .\templates\manage\picklists\list.html:32 .\templates\shopify\app.html:210
 msgid "Order"
 msgstr ""
 
@@ -794,7 +1187,7 @@ msgstr ""
 
 #: .\orderpiqrApp\models\preferences.py:13
 #: .\templates\manage\products\form.html:128
-#: .\templates\manage\products\form.html:168 .\templates\shopify\app.html:209
+#: .\templates\manage\products\form.html:168 .\templates\shopify\app.html:211
 msgid "Date"
 msgstr ""
 
@@ -843,9 +1236,10 @@ msgid "Additional description or guidance for this setting."
 msgstr ""
 
 #: .\orderpiqrApp\models\preferences.py:27
+#: .\orderpiqrApp\views\manage_views.py:1991
 #: .\templates\manage\dashboard.html:275
 #: .\templates\manage\health\list.html:227
-#: .\templates\manage\health\list.html:417
+#: .\templates\manage\health\list.html:422
 #: .\templates\manage\settings\api_tokens.html:52
 msgid "Type"
 msgstr ""
@@ -872,34 +1266,35 @@ msgid ""
 "[{\"value\": \"original\", \"label\": \"Original order\"}]"
 msgstr ""
 
-#: .\orderpiqrApp\models\preferences.py:70
+#: .\orderpiqrApp\models\preferences.py:89
 msgid "Setting"
 msgstr ""
 
-#: .\orderpiqrApp\models\preferences.py:71
+#: .\orderpiqrApp\models\preferences.py:90
 msgid "Value"
 msgstr ""
 
-#: .\orderpiqrApp\models\preferences.py:71
+#: .\orderpiqrApp\models\preferences.py:90
 msgid "The value set for this customer."
 msgstr ""
 
-#: .\orderpiqrApp\models\preferences.py:75
+#: .\orderpiqrApp\models\preferences.py:94
 msgid "Customer setting value"
 msgstr ""
 
-#: .\orderpiqrApp\models\preferences.py:76
+#: .\orderpiqrApp\models\preferences.py:95
 msgid "Customer setting values"
 msgstr ""
 
-#: .\orderpiqrApp\models\products.py:10 .\templates\index.html:174
+#: .\orderpiqrApp\models\products.py:10
+#: .\orderpiqrApp\views\manage_views.py:1990 .\templates\index.html:179
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr ""
 
 #: .\orderpiqrApp\models\products.py:12
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:105
-#: .\templates\index.html:176 .\templates\index.html:180
+#: .\templates\index.html:181 .\templates\index.html:185
 #: .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:122
 #: .\templates\manage\products\form.html:45
@@ -999,7 +1394,8 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: .\orderpiqrApp\models\scan_events.py:37
+#: .\orderpiqrApp\models\scan_events.py:37 .\templates\errors\base_error.html:8
+#: .\templates\errors\base_error.html:264
 msgid "Error"
 msgstr ""
 
@@ -1012,7 +1408,7 @@ msgid "Severity"
 msgstr ""
 
 #: .\orderpiqrApp\models\scan_events.py:65
-#: .\templates\manage\health\list.html:419
+#: .\templates\manage\health\list.html:424
 msgid "Scanned Code"
 msgstr ""
 
@@ -1051,28 +1447,150 @@ msgstr ""
 msgid "The file contains no data rows below the header."
 msgstr ""
 
+#: .\orderpiqrApp\utils\decorators.py:24
+msgid "You don't have permission to access this page."
+msgstr ""
+
 #: .\orderpiqrApp\utils\inventory.py:180
 #, python-format
 msgid "Auto-decremented from order %(order_code)s"
 msgstr ""
 
+#: .\orderpiqrApp\utils\qr_pdf_generator.py:69
+#, python-format
+msgid "Order: %(code)s"
+msgstr ""
+
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 #: .\templates\manage\dashboard.html:276
-#: .\templates\manage\health\list.html:345
+#: .\templates\manage\health\list.html:350
 #: .\templates\manage\products\list.html:96
 msgid "Code"
 msgstr ""
 
-#: .\orderpiqrApp\utils\start_page.py:31
-msgid "Company default"
+#: .\orderpiqrApp\utils\setting_strings.py:26
+msgid "Enable Inventory Management"
 msgstr ""
 
+#: .\orderpiqrApp\utils\setting_strings.py:28
+msgid ""
+"When enabled, shows inventory quantities on products and allows inventory "
+"tracking."
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:33
+msgid "Enable Order Picking"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:35
+msgid "When enabled, shows the order picking queue for pickers."
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:40
+msgid "Enable Bulk Picking"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:42
+msgid ""
+"When enabled, pickers can confirm multiple items of the same product at once "
+"instead of scanning each individually."
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:47
+msgid "Picker start page"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:49
+msgid ""
+"Where pickers land after logging in. Choose 'Scan an order' if pickers start "
+"work by scanning a printed order, or 'Order queue' if they pick the next job "
+"from the shared list. 'Automatic' keeps the previous behaviour."
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:52
+msgid "Automatic"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:53
 #: .\orderpiqrApp\utils\start_page.py:32
 msgid "Scan an order"
 msgstr ""
 
+#: .\orderpiqrApp\utils\setting_strings.py:54
 #: .\orderpiqrApp\utils\start_page.py:33
 msgid "Order queue"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:58
+msgid "Grouped Picklist View"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:60
+msgid ""
+"When enabled, the picker list shows one row per product with a quantity, "
+"instead of a separate row for each individual item. Pickers can still switch "
+"views themselves on the scan page."
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:65
+msgid "Pick Popup: Prominent Number"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:67
+msgid ""
+"Which number the pick confirmation popup emphasizes: the amount still to "
+"take (remaining) or the full line quantity (total). Warehouses that count "
+"out the whole quantity at the shelf should pick total. Pickers can still "
+"switch per session on the scan page."
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:70 .\templates\index.html:119
+msgid "Remaining to take"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:71
+msgid "Total line quantity"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:75
+msgid "Picklist QR Format"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:77
+msgid ""
+"Column order of the rows inside your picklist QR codes. \"Detect "
+"automatically\" guesses using your product codes; set it explicitly if "
+"pickers see the \"ambiguous picklist\" error because a quantity also looks "
+"like a product code."
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:80
+msgid "Detect automatically"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:81
+msgid "Quantity, then product code"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:82
+msgid "Product code, then quantity"
+msgstr ""
+
+#: .\orderpiqrApp\utils\setting_strings.py:86 .\templates\index.html:86
+#: .\templates\queue\display.html:15 .\templates\queue\display.html:19
+#: .\templates\queue\picker.html:23
+msgid "Order Queue"
+msgstr "Order Queue"
+
+#: .\orderpiqrApp\utils\setting_strings.py:88
+msgid ""
+"When enabled, pickers can claim orders from the shared queue. Disable for "
+"warehouses where pickers only scan printed picklist QRs: the queue pages are "
+"hidden and queue claims are blocked."
+msgstr ""
+
+#: .\orderpiqrApp\utils\start_page.py:31
+msgid "Company default"
 msgstr ""
 
 #: .\orderpiqrApp\views\auth\signup_view.py:59
@@ -1137,30 +1655,10 @@ msgstr ""
 msgid "API token revoked."
 msgstr ""
 
-#: .\orderpiqrApp\views\inventory_views.py:29
-msgid "No customer profile found"
-msgstr ""
-
-#: .\orderpiqrApp\views\inventory_views.py:32
-msgid "Inventory management is not enabled"
-msgstr ""
-
-#: .\orderpiqrApp\views\inventory_views.py:76
-#: .\orderpiqrApp\views\inventory_views.py:114
-#: .\orderpiqrApp\views\inventory_views.py:155
-msgid "No customer found"
-msgstr ""
-
 #: .\orderpiqrApp\views\inventory_views.py:79
 #: .\orderpiqrApp\views\inventory_views.py:117
 #: .\orderpiqrApp\views\inventory_views.py:158
 msgid "Inventory management not enabled"
-msgstr ""
-
-#: .\orderpiqrApp\views\inventory_views.py:133
-#: .\orderpiqrApp\views\inventory_views.py:194
-#: .\templates\inventory\picker.html:227
-msgid "Product not found"
 msgstr ""
 
 #: .\orderpiqrApp\views\inventory_views.py:163
@@ -1428,11 +1926,6 @@ msgstr ""
 msgid "Order code is required."
 msgstr ""
 
-#: .\orderpiqrApp\views\manage_views.py:843
-#: .\orderpiqrApp\views\manage_views.py:917
-msgid "An order with this code already exists."
-msgstr ""
-
 #: .\orderpiqrApp\views\manage_views.py:846
 #: .\orderpiqrApp\views\manage_views.py:920
 msgid "At least one product is required."
@@ -1567,10 +2060,6 @@ msgstr ""
 msgid "Password for picker account '{username}' updated."
 msgstr ""
 
-#: .\orderpiqrApp\views\manage_views.py:1687
-msgid "Username is required."
-msgstr ""
-
 #: .\orderpiqrApp\views\manage_views.py:1689
 msgid "This username is already taken."
 msgstr ""
@@ -1612,6 +2101,23 @@ msgstr ""
 msgid "%(count)d log(s) deleted and inventory reverted."
 msgstr ""
 
+#: .\orderpiqrApp\views\manage_views.py:1990
+#: .\templates\manage\inventory\logs.html:76
+msgid "Date/Time"
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:1990
+msgid "Product Description"
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:1991
+msgid "Old Qty"
+msgstr ""
+
+#: .\orderpiqrApp\views\manage_views.py:1991
+msgid "New Qty"
+msgstr ""
+
 #: .\orderpiqrApp\views\manage_views.py:2050
 msgid "Inventory correction added successfully."
 msgstr ""
@@ -1636,55 +2142,12 @@ msgstr "The order queue is disabled for your company."
 msgid "Device not found. Please log in again."
 msgstr ""
 
-#: .\orderpiqrApp\views\queue_views.py:221
-msgid "This order is already being picked"
-msgstr ""
-
-#: .\orderpiqrApp\views\queue_views.py:260
-msgid "This order has already been completed"
-msgstr ""
-
-#: .\orderpiqrApp\views\queue_views.py:266
-msgid "This order is not available for picking"
-msgstr ""
-
-#: .\orderpiqrApp\views\queue_views.py:323
-msgid "Order claimed successfully"
-msgstr ""
-
-#: .\orderpiqrApp\views\queue_views.py:332
-#: .\orderpiqrApp\views\queue_views.py:438
-#: .\orderpiqrApp\views\queue_views.py:472
-#: .\orderpiqrApp\views\queue_views.py:562
-#: .\orderpiqrApp\views\queue_views.py:605
-msgid "Order not found"
-msgstr ""
-
 #: .\orderpiqrApp\views\queue_views.py:407
 #: .\orderpiqrApp\views\queue_views.py:447
 #: .\orderpiqrApp\views\queue_views.py:483
 #: .\orderpiqrApp\views\queue_views.py:521
 #: .\orderpiqrApp\views\queue_views.py:571
 msgid "No customer"
-msgstr ""
-
-#: .\orderpiqrApp\views\queue_views.py:419
-msgid "Only draft orders can be added to queue"
-msgstr ""
-
-#: .\orderpiqrApp\views\queue_views.py:434
-#: .\templates\manage\orders\list.html:270
-#: .\templates\manage\queue\list.html:441 .\templates\queue\manage.html:174
-msgid "Order added to queue"
-msgstr ""
-
-#: .\orderpiqrApp\views\queue_views.py:459
-msgid "Order is not in queue"
-msgstr ""
-
-#: .\orderpiqrApp\views\queue_views.py:468
-#: .\templates\manage\queue\list.html:459 .\templates\queue\manage.html:192
-msgid "Order removed from queue"
 msgstr ""
 
 #: .\orderpiqrApp\views\queue_views.py:489
@@ -1695,10 +2158,6 @@ msgstr ""
 msgid "No order IDs provided"
 msgstr ""
 
-#: .\orderpiqrApp\views\queue_views.py:505
-msgid "Queue reordered"
-msgstr ""
-
 #: .\orderpiqrApp\views\queue_views.py:511
 msgid "Error reordering: {}"
 msgstr ""
@@ -1707,21 +2166,71 @@ msgstr ""
 msgid "Invalid direction"
 msgstr ""
 
-#: .\orderpiqrApp\views\queue_views.py:558
-msgid "Order moved up"
-msgstr ""
-
-#: .\orderpiqrApp\views\queue_views.py:558
-msgid "Order moved down"
-msgstr ""
-
 #: .\orderpiqrApp\views\queue_views.py:583
 msgid "Order is not in progress"
 msgstr ""
 
 #: .\orderpiqrApp\views\queue_views.py:601
-#: .\templates\manage\queue\list.html:483
+#: .\templates\manage\queue\list.html:389
 msgid "Order unlocked"
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:49
+msgid "This device is registered for multiple companies. Please log in."
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:189
+msgid "Device not found and user not authenticated"
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:202
+msgid "User has no customer profile"
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:249
+msgid "This order is already being picked by another device"
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:334
+#, python-format
+msgid ""
+"Unknown product code '%(code)s'. Add it to your products and scan the list "
+"again."
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:350
+#: .\orderpiqrApp\views\scan_picklist_view.py:575
+msgid "Picklist processed successfully"
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:373
+#: .\orderpiqrApp\views\scan_picklist_view.py:578
+msgid "Device not found with given fingerprint"
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:396
+msgid "PickList not found for device/customer"
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:413
+msgid "No pending ProductPick rows for this product."
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:485
+msgid "PickList not found"
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:499
+#, python-format
+msgid "Requested %(wanted)s but only %(available)s unpicked rows available"
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:572
+msgid "No picklist found for this device and order"
+msgstr ""
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:580
+msgid "Product not found for one of the product codes"
 msgstr ""
 
 #: .\orderpiqr\views.py:51
@@ -1798,6 +2307,10 @@ msgid ""
 "href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
 msgstr ""
 
+#: .\templates\admin\base_site.html:27 .\templates\admin\base_site.html:31
+msgid "Orderpiqr admin"
+msgstr ""
+
 #: .\templates\admin\base_site.html:36 .\templates\admin\base_site.html:37
 #: .\templates\admin\base_site.html:42
 msgid "Start tour"
@@ -1855,6 +2368,14 @@ msgstr ""
 msgid "Upload Product CSV/XLSX"
 msgstr ""
 
+#: .\templates\errors\base_error.html:265
+msgid "Something went wrong"
+msgstr ""
+
+#: .\templates\errors\base_error.html:271
+msgid "An unexpected error occurred. Please try again later."
+msgstr ""
+
 #: .\templates\errors\base_error.html:289 .\templates\offline.html:69
 msgid "Go Back"
 msgstr ""
@@ -1866,11 +2387,6 @@ msgstr ""
 #: .\templates\index.html:79 .\templates\manage\dashboard.html:84
 msgid "Quick Actions"
 msgstr ""
-
-#: .\templates\index.html:86 .\templates\queue\display.html:15
-#: .\templates\queue\display.html:19 .\templates\queue\picker.html:23
-msgid "Order Queue"
-msgstr "Order Queue"
 
 #: .\templates\index.html:93 .\templates\inventory\picker.html:18
 #: .\templates\inventory\picker.html:25 .\templates\manage\base.html:65
@@ -1906,60 +2422,50 @@ msgstr "Grouped by product"
 msgid "Popup Number"
 msgstr ""
 
-#: .\templates\index.html:119
-msgid "Remaining to take"
-msgstr ""
-
 #: .\templates\index.html:120
 msgid "Total quantity"
 msgstr ""
 
-#: .\templates\index.html:124
-msgid "Order Importance"
+#: .\templates\index.html:129
+msgid "Order Importance: Enabled"
 msgstr ""
 
-#: .\templates\index.html:124
-msgid "Enabled"
-msgstr ""
-
-#: .\templates\index.html:132 .\templates\manage\base.html:220
+#: .\templates\index.html:137 .\templates\manage\base.html:220
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
 msgstr ""
 
-#: .\templates\index.html:143
+#: .\templates\index.html:148
 msgid "This app is best viewed on your phone"
 msgstr ""
 
-#: .\templates\index.html:149 .\templates\inventory\picker.html:63
+#: .\templates\index.html:154 .\templates\inventory\picker.html:63
 msgid "Camera options"
 msgstr "Camera options"
 
-#: .\templates\index.html:157 .\templates\inventory\picker.html:71
+#: .\templates\index.html:162 .\templates\inventory\picker.html:71
 msgid "Select Camera"
 msgstr "Select Camera"
 
-#: .\templates\index.html:159 .\templates\inventory\picker.html:73
+#: .\templates\index.html:164 .\templates\inventory\picker.html:73
 msgid "Stop camera"
 msgstr "Stop camera"
 
-#: .\templates\index.html:163 .\templates\inventory\picker.html:77
+#: .\templates\index.html:168 .\templates\inventory\picker.html:77
 msgid "Enable camera"
 msgstr "Enable camera"
 
-#: .\templates\index.html:168 .\templates\manage\health\list.html:267
-#: .\templates\manage\health\list.html:420
-#: .\templates\manage\picklists\detail.html:4
-#: .\templates\manage\picklists\detail.html:5
+#: .\templates\index.html:173 .\templates\manage\health\list.html:272
+#: .\templates\manage\health\list.html:425
 #: .\templates\manage\picklists\list.html:31
 msgid "Picklist"
 msgstr ""
 
-#: .\templates\index.html:175
+#: .\templates\index.html:180
 msgid "Product Name"
 msgstr ""
 
-#: .\templates\index.html:179 .\templates\manage\orders\form.html:61
+#: .\templates\index.html:184 .\templates\manage\orders\form.html:61
 msgid "Qty"
 msgstr ""
 
@@ -1991,7 +2497,7 @@ msgstr ""
 msgid "Adjust By"
 msgstr ""
 
-#: .\templates\inventory\picker.html:120 .\templates\inventory\picker.html:295
+#: .\templates\inventory\picker.html:120 .\templates\inventory\picker.html:174
 #: .\templates\manage\inventory\add_correction.html:20
 #: .\templates\manage\products\list.html:100
 msgid "Stock"
@@ -2007,8 +2513,7 @@ msgstr ""
 msgid "Add notes..."
 msgstr ""
 
-#: .\templates\inventory\picker.html:143 .\templates\inventory\picker.html:492
-#: .\templates\inventory\picker.html:498
+#: .\templates\inventory\picker.html:143 .\templates\inventory\picker.html:180
 msgid "Update Inventory"
 msgstr ""
 
@@ -2016,44 +2521,47 @@ msgstr ""
 msgid "Tap to continue"
 msgstr ""
 
-#: .\templates\inventory\picker.html:225
+#: .\templates\inventory\picker.html:171
 msgid "Product found"
 msgstr ""
 
-#: .\templates\inventory\picker.html:267
-#: .\templates\manage\orders\form.html:463
+#: .\templates\inventory\picker.html:173
+#: .\templates\manage\orders\form.html:382
 #: .\templates\manage\products\list.html:197
 msgid "No products found"
 msgstr ""
 
-#: .\templates\inventory\picker.html:332
+#: .\templates\inventory\picker.html:175
 msgid "No location"
 msgstr ""
 
-#: .\templates\inventory\picker.html:435
-#: .\templates\manage\inventory\add_correction.html:214
-#: .\templates\manage\products\form.html:505
+#: .\templates\inventory\picker.html:176
+#: .\templates\manage\inventory\add_correction.html:163
+#: .\templates\manage\products\form.html:442
 msgid "no change"
 msgstr ""
 
-#: .\templates\inventory\picker.html:442
+#: .\templates\inventory\picker.html:177
 msgid "Please select a product first"
 msgstr ""
 
-#: .\templates\inventory\picker.html:448
-#: .\templates\manage\products\form.html:518
+#: .\templates\inventory\picker.html:178
+#: .\templates\manage\products\form.html:443
 msgid "Please enter a valid quantity"
 msgstr ""
 
-#: .\templates\inventory\picker.html:456
-#: .\templates\manage\products\form.html:523
+#: .\templates\inventory\picker.html:179
+#: .\templates\manage\products\form.html:444
 msgid "Updating..."
 msgstr ""
 
-#: .\templates\inventory\picker.html:496
-#: .\templates\manage\products\form.html:564
-#: .\templates\manage\products\form.html:572
+#: .\templates\inventory\picker.html:181
+#: .\templates\manage\products\form.html:445
 msgid "Error updating inventory"
+msgstr ""
+
+#: .\templates\manage\base.html:7
+msgid "OrderPiqR Management Dashboard"
 msgstr ""
 
 #: .\templates\manage\base.html:8 .\templates\manage\base.html:60
@@ -2089,11 +2597,6 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: .\templates\manage\base.html:134 .\templates\manage\integrations\list.html:4
-#: .\templates\manage\integrations\list.html:5
-msgid "Integrations"
-msgstr ""
-
 #: .\templates\manage\base.html:148 .\templates\manage\base.html:217
 #: .\templates\manage\profile.html:4 .\templates\manage\profile.html:5
 msgid "Profile"
@@ -2103,12 +2606,14 @@ msgstr ""
 msgid "Open menu"
 msgstr ""
 
-#: .\templates\manage\dashboard.html:6 .\templates\registration\login.html:10
-msgid "Welcome back"
+#: .\templates\manage\dashboard.html:6
+#, python-format
+msgid "Welcome back, %(name)s!"
 msgstr ""
 
 #: .\templates\manage\dashboard.html:22
-msgid "active"
+#, python-format
+msgid "%(num)s active"
 msgstr ""
 
 #: .\templates\manage\dashboard.html:27
@@ -2116,7 +2621,8 @@ msgid "Orders Today"
 msgstr ""
 
 #: .\templates\manage\dashboard.html:36
-msgid "this week"
+#, python-format
+msgid "%(num)s this week"
 msgstr ""
 
 #: .\templates\manage\dashboard.html:41
@@ -2124,7 +2630,8 @@ msgid "In Queue"
 msgstr ""
 
 #: .\templates\manage\dashboard.html:49
-msgid "draft"
+#, python-format
+msgid "%(num)s draft"
 msgstr ""
 
 #: .\templates\manage\dashboard.html:54
@@ -2132,8 +2639,11 @@ msgid "Completed Today"
 msgstr ""
 
 #: .\templates\manage\dashboard.html:63
-msgid "active picklists"
-msgstr ""
+#, python-format
+msgid "%(counter)s active picklist"
+msgid_plural "%(counter)s active picklists"
+msgstr[0] ""
+msgstr[1] ""
 
 #: .\templates\manage\dashboard.html:68
 msgid "Scan Health"
@@ -2144,12 +2654,16 @@ msgid "issues this week"
 msgstr ""
 
 #: .\templates\manage\dashboard.html:77
-msgid "last 24h"
+#, python-format
+msgid "%(num)s last 24h"
 msgstr ""
 
 #: .\templates\manage\dashboard.html:77
-msgid "overrides"
-msgstr ""
+#, python-format
+msgid "%(counter)s override"
+msgid_plural "%(counter)s overrides"
+msgstr[0] ""
+msgstr[1] ""
 
 #: .\templates\manage\dashboard.html:95 .\templates\manage\products\form.html:4
 #: .\templates\manage\products\form.html:5
@@ -2232,13 +2746,14 @@ msgstr ""
 #: .\templates\manage\dashboard.html:237 .\templates\manage\dashboard.html:283
 #: .\templates\manage\devices\list.html:99
 #: .\templates\manage\health\list.html:203
-#: .\templates\manage\health\list.html:300
-#: .\templates\manage\health\list.html:429
+#: .\templates\manage\health\list.html:305
+#: .\templates\manage\health\list.html:434
 #: .\templates\manage\orders\list.html:123
 #: .\templates\manage\picklists\list.html:80
 #: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:96
-msgid "ago"
-msgstr "ago"
+#, python-format
+msgid "%(since)s ago"
+msgstr ""
 
 #: .\templates\manage\dashboard.html:245
 msgid "No orders yet. Create your first order!"
@@ -2249,12 +2764,15 @@ msgid "Recent Scan Issues"
 msgstr ""
 
 #: .\templates\manage\dashboard.html:266
+#: .\templates\manage\health\list.html:264
 #, python-format
-msgid "%(count)s picklist(s) in progress for over 4 hours"
-msgstr ""
+msgid "%(counter)s picklist in progress for over 4 hours."
+msgid_plural "%(counter)s picklists in progress for over 4 hours."
+msgstr[0] ""
+msgstr[1] ""
 
 #: .\templates\manage\dashboard.html:274
-#: .\templates\manage\health\list.html:416
+#: .\templates\manage\health\list.html:421
 msgid "When"
 msgstr ""
 
@@ -2349,7 +2867,7 @@ msgstr ""
 
 #: .\templates\manage\devices\list.html:54
 #: .\templates\manage\health\list.html:167
-#: .\templates\manage\health\list.html:271
+#: .\templates\manage\health\list.html:276
 msgid "Restarts"
 msgstr ""
 
@@ -2577,7 +3095,8 @@ msgid ""
 msgstr ""
 
 #: .\templates\manage\health\list.html:201
-msgid "list"
+#, python-format
+msgid "%(rate)s/list"
 msgstr ""
 
 #: .\templates\manage\health\list.html:206
@@ -2596,26 +3115,26 @@ msgstr ""
 msgid "Stale Picklists"
 msgstr ""
 
-#: .\templates\manage\health\list.html:260
+#: .\templates\manage\health\list.html:265
 #, python-format
-msgid ""
-"%(count)s picklist(s) in progress for over 4 hours, holding %(lines)s "
-"unpicked line(s)"
-msgstr ""
+msgid "%(counter)s line still unpicked."
+msgid_plural "%(counter)s lines still unpicked."
+msgstr[0] ""
+msgstr[1] ""
 
-#: .\templates\manage\health\list.html:261
+#: .\templates\manage\health\list.html:266
 msgid "shown live, not filtered by the date range above"
 msgstr ""
 
-#: .\templates\manage\health\list.html:270
+#: .\templates\manage\health\list.html:275
 msgid "Unpicked"
 msgstr ""
 
-#: .\templates\manage\health\list.html:272
+#: .\templates\manage\health\list.html:277
 msgid "Started"
 msgstr ""
 
-#: .\templates\manage\health\list.html:273
+#: .\templates\manage\health\list.html:278
 #: .\templates\manage\integrations\list.html:30
 #: .\templates\manage\orders\list.html:98
 #: .\templates\manage\picklists\list.html:37
@@ -2624,145 +3143,141 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: .\templates\manage\health\list.html:303
+#: .\templates\manage\health\list.html:308
 #: .\templates\manage\picklists\detail.html:16
 msgid "Mark this picklist as completed? This also completes the linked order."
 msgstr ""
 
-#: .\templates\manage\health\list.html:309
+#: .\templates\manage\health\list.html:314
 #: .\templates\manage\picklists\detail.html:22
 msgid "Mark completed"
 msgstr ""
 
-#: .\templates\manage\health\list.html:311
+#: .\templates\manage\health\list.html:316
 #: .\templates\manage\picklists\detail.html:25
 msgid ""
 "Archive this picklist? It stays in your history but no longer counts as "
 "stale."
 msgstr ""
 
-#: .\templates\manage\health\list.html:317
+#: .\templates\manage\health\list.html:322
 #: .\templates\manage\picklists\detail.html:31
 msgid "Archive"
 msgstr ""
 
-#: .\templates\manage\health\list.html:337
+#: .\templates\manage\health\list.html:342
 msgid "Codes that need attention"
 msgstr ""
 
-#: .\templates\manage\health\list.html:346
+#: .\templates\manage\health\list.html:351
 msgid "What is wrong"
 msgstr ""
 
-#: .\templates\manage\health\list.html:347
+#: .\templates\manage\health\list.html:352
 msgid "Details"
 msgstr ""
 
-#: .\templates\manage\health\list.html:348
+#: .\templates\manage\health\list.html:353
 msgid "Fix"
 msgstr ""
 
-#: .\templates\manage\health\list.html:360
+#: .\templates\manage\health\list.html:365
 msgid "extra barcode"
 msgstr ""
 
-#: .\templates\manage\health\list.html:365
+#: .\templates\manage\health\list.html:370
 msgid "Not in the catalogue"
 msgstr ""
 
-#: .\templates\manage\health\list.html:366
+#: .\templates\manage\health\list.html:371
 msgid "scanned, but no product has this code"
 msgstr ""
 
-#: .\templates\manage\health\list.html:368
+#: .\templates\manage\health\list.html:373
 msgid "Barcode does not scan"
 msgstr ""
 
-#: .\templates\manage\health\list.html:369
+#: .\templates\manage\health\list.html:374
 msgid "pickers keep confirming it by hand"
 msgstr ""
 
-#: .\templates\manage\health\list.html:371
+#: .\templates\manage\health\list.html:376
 msgid "Scanned outside its order"
 msgstr ""
 
-#: .\templates\manage\health\list.html:372
+#: .\templates\manage\health\list.html:377
 msgid "the product exists, but was not on that list"
 msgstr ""
 
-#: .\templates\manage\health\list.html:374
+#: .\templates\manage\health\list.html:379
 msgid "Picks not recorded"
 msgstr ""
 
-#: .\templates\manage\health\list.html:375
+#: .\templates\manage\health\list.html:380
 msgid "the server refused the pick"
 msgstr ""
 
-#: .\templates\manage\health\list.html:377
+#: .\templates\manage\health\list.html:382
 msgid "Unreadable or wrong product"
 msgstr ""
 
-#: .\templates\manage\health\list.html:381
-msgid "confirmed by hand"
+#: .\templates\manage\health\list.html:386
+#, python-format
+msgid "%(num)s&times; confirmed by hand"
 msgstr ""
 
-#: .\templates\manage\health\list.html:382
-msgid "not found on the list"
+#: .\templates\manage\health\list.html:387
+#, python-format
+msgid "%(num)s&times; not found on the list"
 msgstr ""
 
-#: .\templates\manage\health\list.html:383
-msgid "not recorded"
-msgstr ""
-
-#: .\templates\manage\health\list.html:384
-msgid "unreadable"
+#: .\templates\manage\health\list.html:388
+#, python-format
+msgid "%(num)s&times; not recorded"
 msgstr ""
 
 #: .\templates\manage\health\list.html:389
+#, python-format
+msgid "%(num)s&times; unreadable"
+msgstr ""
+
+#: .\templates\manage\health\list.html:394
 msgid "Add as product"
 msgstr ""
 
-#: .\templates\manage\health\list.html:393
+#: .\templates\manage\health\list.html:398
 msgid ""
 "Add the code that is physically on the label as an extra barcode, so pickers "
 "can scan it instead of confirming by hand."
 msgstr ""
 
-#: .\templates\manage\health\list.html:393
+#: .\templates\manage\health\list.html:398
 msgid "Add extra barcode"
 msgstr ""
 
-#: .\templates\manage\health\list.html:396
-#, fuzzy
-#| msgid "Grouped by product"
+#: .\templates\manage\health\list.html:401
 msgid "Open product"
-msgstr "Grouped by product"
-
-#: .\templates\manage\health\list.html:465
-msgid "build"
 msgstr ""
 
-#: .\templates\manage\health\list.html:486
+#: .\templates\manage\health\list.html:470
+#, python-format
+msgid "build %(build)s"
+msgstr ""
+
+#: .\templates\manage\health\list.html:491
 #: .\templates\manage\inventory\logs.html:136
 #: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:107
 #: .\templates\manage\products\list.html:181
-msgid "Page"
+#, python-format
+msgid "Page %(num)s of %(total)s"
 msgstr ""
 
-#: .\templates\manage\health\list.html:486
-#: .\templates\manage\inventory\logs.html:136
-#: .\templates\manage\orders\list.html:168
-#: .\templates\manage\picklists\list.html:107
-#: .\templates\manage\products\list.html:181
-msgid "of"
-msgstr ""
-
-#: .\templates\manage\health\list.html:501
+#: .\templates\manage\health\list.html:506
 msgid "No scan issues found"
 msgstr ""
 
-#: .\templates\manage\health\list.html:502
+#: .\templates\manage\health\list.html:507
 msgid "Failed scans, rejected picklists and manual overrides will appear here."
 msgstr ""
 
@@ -2775,7 +3290,7 @@ msgid "Sync settings for this connection"
 msgstr ""
 
 #: .\templates\manage\integrations\config.html:13
-#: .\templates\shopify\app.html:129
+#: .\templates\shopify\app.html:131
 msgid "Sync settings"
 msgstr ""
 
@@ -2970,7 +3485,7 @@ msgstr ""
 msgid "Back to integrations"
 msgstr ""
 
-#: .\templates\manage\integrations\pairing_key.html:80
+#: .\templates\manage\integrations\pairing_key.html:76
 msgid "Pairing key copied to clipboard"
 msgstr ""
 
@@ -3018,7 +3533,7 @@ msgstr ""
 msgid "Add Correction"
 msgstr ""
 
-#: .\templates\manage\inventory\add_correction.html:195
+#: .\templates\manage\inventory\add_correction.html:162
 msgid "Select a product first"
 msgstr ""
 
@@ -3040,17 +3555,11 @@ msgid "All Reasons"
 msgstr ""
 
 #: .\templates\manage\inventory\logs.html:55
-#: .\templates\manage\orders\list.html:73
-#: .\templates\manage\products\list.html:74
-msgid "selected"
+msgid "<span id=\"selected-count\">0</span> selected"
 msgstr ""
 
 #: .\templates\manage\inventory\logs.html:60
 msgid "Delete Selected"
-msgstr ""
-
-#: .\templates\manage\inventory\logs.html:76
-msgid "Date/Time"
 msgstr ""
 
 #: .\templates\manage\inventory\logs.html:151
@@ -3061,20 +3570,18 @@ msgstr ""
 msgid "Inventory changes will appear here once products are updated."
 msgstr ""
 
-#: .\templates\manage\inventory\logs.html:313
+#: .\templates\manage\inventory\logs.html:287
 msgid "All Products"
 msgstr ""
 
-#: .\templates\manage\inventory\logs.html:406
-msgid "Are you sure you want to delete"
+#: .\templates\manage\inventory\logs.html:288
+#, python-format
+msgid ""
+"Are you sure you want to delete %%(count)s log entries? The inventory "
+"changes will be reverted."
 msgstr ""
 
-#: .\templates\manage\inventory\logs.html:406
-msgid "log entries? The inventory changes will be reverted."
-msgstr ""
-
-#: .\templates\manage\inventory\logs.html:430
-#: .\templates\manage\inventory\logs.html:435
+#: .\templates\manage\inventory\logs.html:289
 msgid "Error deleting logs"
 msgstr ""
 
@@ -3107,7 +3614,7 @@ msgid "Search product..."
 msgstr ""
 
 #: .\templates\manage\orders\form.html:102
-#: .\templates\manage\orders\form.html:409
+#: .\templates\manage\orders\form.html:380
 msgid "Search product by code or description..."
 msgstr ""
 
@@ -3116,11 +3623,11 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: .\templates\manage\orders\form.html:439
+#: .\templates\manage\orders\form.html:381
 msgid "An order must have at least one product"
 msgstr ""
 
-#: .\templates\manage\orders\form.html:619
+#: .\templates\manage\orders\form.html:383
 msgid "Please select a product for all order lines"
 msgstr ""
 
@@ -3150,9 +3657,9 @@ msgid "Drag and drop your CSV file here, or click to select"
 msgstr ""
 
 #: .\templates\manage\orders\import.html:28
-#: .\templates\manage\orders\import.html:242
+#: .\templates\manage\orders\import.html:228
 #: .\templates\manage\products\import.html:28
-#: .\templates\manage\products\import.html:223
+#: .\templates\manage\products\import.html:209
 msgid "Maximum file size: 5MB"
 msgstr ""
 
@@ -3289,6 +3796,11 @@ msgstr ""
 msgid "Code Z-A"
 msgstr ""
 
+#: .\templates\manage\orders\list.html:73
+#: .\templates\manage\products\list.html:74
+msgid "<span id=\"bulk-count\">0</span> selected"
+msgstr ""
+
 #: .\templates\manage\orders\list.html:75
 #: .\templates\manage\orders\list.html:128 .\templates\queue\manage.html:68
 msgid "Add to Queue"
@@ -3312,7 +3824,7 @@ msgid "Delete"
 msgstr ""
 
 #: .\templates\manage\orders\list.html:95
-#: .\templates\queue\_order_cards.html:24 .\templates\shopify\app.html:212
+#: .\templates\queue\_order_cards.html:26 .\templates\shopify\app.html:214
 msgid "Items"
 msgstr "Items"
 
@@ -3353,7 +3865,9 @@ msgid "Delete Order"
 msgstr ""
 
 #: .\templates\manage\orders\list.html:209
-msgid "Are you sure you want to delete order"
+msgid ""
+"Are you sure you want to delete order <strong id=\"delete-order-code\"></"
+"strong>?"
 msgstr ""
 
 #: .\templates\manage\orders\list.html:210
@@ -3361,38 +3875,43 @@ msgstr ""
 msgid "This action cannot be undone."
 msgstr ""
 
-#: .\templates\manage\orders\list.html:273
+#: .\templates\manage\orders\list.html:230
 msgid "Error adding to queue"
 msgstr ""
 
-#: .\templates\manage\orders\list.html:277
-#: .\templates\manage\orders\list.html:341
-#: .\templates\manage\products\list.html:345
+#: .\templates\manage\orders\list.html:231
+#: .\templates\manage\products\list.html:254
 msgid "An error occurred"
 msgstr ""
 
-#: .\templates\manage\orders\list.html:282
+#: .\templates\manage\orders\list.html:286
 #, python-format
 msgid ""
 "Delete %%s order(s)? Orders currently being picked are skipped. This cannot "
 "be undone."
 msgstr ""
 
-#: .\templates\manage\orders\list.html:283
+#: .\templates\manage\orders\list.html:287
 #, python-format
 msgid "Add %%s order(s) to the queue? Only draft orders are added."
 msgstr ""
 
-#: .\templates\manage\orders\list.html:284
+#: .\templates\manage\orders\list.html:288
 #, python-format
 msgid "Remove %%s order(s) from the queue? Only queued orders are affected."
 msgstr ""
 
-#: .\templates\manage\orders\list.html:285
+#: .\templates\manage\orders\list.html:289
 #, python-format
 msgid ""
 "Reset %%s order(s) to draft? In-progress orders are unclaimed and their "
 "picking progress is discarded. Completed and cancelled orders are skipped."
+msgstr ""
+
+#: .\templates\manage\picklists\detail.html:4
+#: .\templates\manage\picklists\detail.html:5
+#, python-format
+msgid "Picklist %(code)s"
 msgstr ""
 
 #: .\templates\manage\picklists\detail.html:39
@@ -3419,8 +3938,11 @@ msgstr ""
 #: .\templates\queue\_manage_queue_list.html:12
 #: .\templates\queue\_picker_orders.html:16 .\templates\queue\manage.html:65
 #: .\templates\queue\manage.html:93
-msgid "items"
-msgstr "items"
+#, python-format
+msgid "%(counter)s item"
+msgid_plural "%(counter)s items"
+msgstr[0] ""
+msgstr[1] ""
 
 #: .\templates\manage\picklists\detail.html:147
 msgid "Picked"
@@ -3509,8 +4031,7 @@ msgid "Create Product"
 msgstr ""
 
 #: .\templates\manage\products\form.html:116
-#: .\templates\manage\products\form.html:568
-#: .\templates\manage\products\form.html:574
+#: .\templates\manage\products\form.html:446
 msgid "Update Stock"
 msgstr ""
 
@@ -3527,7 +4048,7 @@ msgstr ""
 msgid "No inventory changes recorded yet."
 msgstr ""
 
-#: .\templates\manage\products\form.html:613
+#: .\templates\manage\products\form.html:447
 msgid "You"
 msgstr ""
 
@@ -3583,7 +4104,7 @@ msgstr ""
 
 #: .\templates\manage\products\list.html:50
 #: .\templates\manage\products\list.html:144
-#: .\templates\manage\products\list.html:469
+#: .\templates\manage\products\list.html:256
 msgid "Inactive"
 msgstr ""
 
@@ -3616,12 +4137,12 @@ msgid "Merge"
 msgstr ""
 
 #: .\templates\manage\products\list.html:142
-#: .\templates\manage\products\list.html:471
+#: .\templates\manage\products\list.html:257
 msgid "Click to deactivate"
 msgstr ""
 
 #: .\templates\manage\products\list.html:144
-#: .\templates\manage\products\list.html:471
+#: .\templates\manage\products\list.html:258
 msgid "Click to activate"
 msgstr ""
 
@@ -3638,24 +4159,26 @@ msgid "Delete Product"
 msgstr ""
 
 #: .\templates\manage\products\list.html:221
-msgid "Are you sure you want to delete product"
+msgid ""
+"Are you sure you want to delete product <strong id=\"delete-product-code\"></"
+"strong>?"
 msgstr ""
 
-#: .\templates\manage\products\list.html:282
+#: .\templates\manage\products\list.html:253
+msgid "Enter new location for selected products:"
+msgstr ""
+
+#: .\templates\manage\products\list.html:289
 #, python-format
 msgid ""
 "Delete %%s product(s)? Products used in orders are skipped. This cannot be "
 "undone."
 msgstr ""
 
-#: .\templates\manage\products\list.html:283
+#: .\templates\manage\products\list.html:290
 msgid ""
 "Merge the selected products into which product? Enter its product code. The "
 "codes of the merged products stay scannable as extra barcodes."
-msgstr ""
-
-#: .\templates\manage\products\list.html:295
-msgid "Enter new location for selected products:"
 msgstr ""
 
 #: .\templates\manage\profile.html:6
@@ -3664,13 +4187,6 @@ msgstr ""
 
 #: .\templates\manage\profile.html:14
 msgid "Account Information"
-msgstr ""
-
-#: .\templates\manage\profile.html:22 .\templates\manage\profile.html:178
-#: .\templates\registration\login.html:35
-#: .\templates\registration\signup.html:95
-#: .\templates\registration\signup.html:168
-msgid "Username"
 msgstr ""
 
 #: .\templates\manage\profile.html:24
@@ -3685,8 +4201,8 @@ msgstr ""
 msgid "Last Name"
 msgstr ""
 
-#: .\templates\manage\profile.html:41 .\templates\registration\signup.html:108
-#: .\templates\registration\signup.html:181
+#: .\templates\manage\profile.html:41 .\templates\registration\signup.html:111
+#: .\templates\registration\signup.html:185
 msgid "Email"
 msgstr ""
 
@@ -3770,11 +4286,11 @@ msgstr ""
 msgid "No login QR"
 msgstr ""
 
-#: .\templates\manage\profile.html:142 .\templates\shopify\app.html:250
+#: .\templates\manage\profile.html:142 .\templates\shopify\app.html:252
 msgid "New password (min 8 characters)"
 msgstr ""
 
-#: .\templates\manage\profile.html:144 .\templates\shopify\app.html:251
+#: .\templates\manage\profile.html:144 .\templates\shopify\app.html:253
 msgid "Set password"
 msgstr ""
 
@@ -3891,8 +4407,11 @@ msgstr "Current Queue"
 
 #: .\templates\manage\queue\list.html:39 .\templates\manage\queue\list.html:54
 #: .\templates\queue\manage.html:42 .\templates\queue\manage.html:56
-msgid "orders"
-msgstr "orders"
+#, python-format
+msgid "%(counter)s order"
+msgid_plural "%(counter)s orders"
+msgstr[0] ""
+msgstr[1] ""
 
 #: .\templates\manage\queue\list.html:53 .\templates\queue\manage.html:55
 msgid "Available Orders"
@@ -3914,18 +4433,18 @@ msgstr "Recently Completed"
 msgid "No completed orders yet"
 msgstr ""
 
-#: .\templates\manage\queue\list.html:424 .\templates\queue\manage.html:157
+#: .\templates\manage\queue\list.html:384 .\templates\queue\manage.html:115
 msgid "Queue order saved"
 msgstr ""
 
-#: .\templates\manage\queue\list.html:471
+#: .\templates\manage\queue\list.html:387
 #, python-format
 msgid ""
 "%%(name)s is picking this order right now. Unlock it anyway? Picks they "
 "already recorded are kept."
 msgstr ""
 
-#: .\templates\manage\queue\list.html:472
+#: .\templates\manage\queue\list.html:388
 msgid "Unlock this order? The picker will lose their progress."
 msgstr ""
 
@@ -3993,8 +4512,12 @@ msgid ""
 "orders with your token."
 msgstr ""
 
-#: .\templates\manage\settings\api_tokens.html:129
+#: .\templates\manage\settings\api_tokens.html:125
 msgid "Token copied to clipboard"
+msgstr ""
+
+#: .\templates\offline.html:64
+msgid "Orderpiqr logo"
 msgstr ""
 
 #: .\templates\offline.html:65
@@ -4049,18 +4572,21 @@ msgstr ""
 msgid "Continue scanning"
 msgstr ""
 
-#: .\templates\queue\_order_cards.html:67
+#: .\templates\queue\_order_cards.html:19
+#, python-format
+msgid "QR code for %(code)s"
+msgstr ""
+
+#: .\templates\queue\_order_cards.html:69
 #: .\templates\queue\_picker_orders.html:60
 msgid "No orders in queue"
 msgstr "No orders in queue"
 
-#: .\templates\queue\_picker_orders.html:35 .\templates\queue\picker.html:120
-#: .\templates\queue\picker.html:127
+#: .\templates\queue\_picker_orders.html:35 .\templates\queue\picker.html:49
 msgid "Start Picking"
 msgstr "Start Picking"
 
-#: .\templates\queue\_picker_orders.html:46 .\templates\queue\picker.html:179
-#: .\templates\queue\picker.html:185
+#: .\templates\queue\_picker_orders.html:46 .\templates\queue\picker.html:51
 msgid "Take Over"
 msgstr ""
 
@@ -4096,41 +4622,48 @@ msgstr "No completed orders"
 msgid "Pick Queue"
 msgstr "Pick Queue"
 
-#: .\templates\queue\picker.html:69 .\templates\queue\picker.html:153
+#: .\templates\queue\picker.html:47
 msgid "Claiming..."
 msgstr ""
 
-#: .\templates\queue\picker.html:94
+#: .\templates\queue\picker.html:48
 msgid "Order claimed! Redirecting..."
 msgstr ""
 
-#: .\templates\queue\picker.html:125 .\templates\queue\picker.html:131
-#: .\templates\queue\picker.html:183
+#: .\templates\queue\picker.html:50
 msgid "Error claiming order"
 msgstr ""
 
-#: .\templates\queue\picker.html:140
+#: .\templates\queue\picker.html:52
 #, python-format
 msgid ""
 "%%(name)s has been picking this order for %%(duration)s. Take it over? Picks "
 "they already recorded are kept."
 msgstr ""
 
-#: .\templates\queue\picker.html:144
+#: .\templates\queue\picker.html:53
 #, python-format
 msgid ""
 "%%(name)s is picking this order right now. Take it over? Picks they already "
 "recorded are kept."
 msgstr ""
 
-#: .\templates\queue\picker.html:147
+#: .\templates\queue\picker.html:54
 msgid ""
 "This order is being picked by someone else. Take it over? Picks they already "
 "recorded are kept."
 msgstr ""
 
+#: .\templates\registration\base_auth.html:7
+msgid "OrderPiqR - Warehouse Order Picking System"
+msgstr ""
+
 #: .\templates\registration\login.html:4
 msgid "Login"
+msgstr ""
+
+#: .\templates\registration\login.html:10
+msgid "Welcome back"
 msgstr ""
 
 #: .\templates\registration\login.html:11
@@ -4142,8 +4675,8 @@ msgid "Enter your username"
 msgstr ""
 
 #: .\templates\registration\login.html:50
-#: .\templates\registration\signup.html:124
-#: .\templates\registration\signup.html:197 .\templates\shopify\app.html:238
+#: .\templates\registration\signup.html:127
+#: .\templates\registration\signup.html:201 .\templates\shopify\app.html:240
 msgid "Password"
 msgstr ""
 
@@ -4161,7 +4694,7 @@ msgstr ""
 
 #: .\templates\registration\login.html:72
 #: .\templates\registration\qr_login.html:4
-#: .\templates\registration\signup.html:233
+#: .\templates\registration\signup.html:237
 msgid "Sign in"
 msgstr ""
 
@@ -4309,12 +4842,11 @@ msgid ""
 "password reset link shortly."
 msgstr ""
 
-#: .\templates\registration\password_reset_done.html:24
-msgid "Didn't receive the email? Check your spam folder or"
-msgstr ""
-
 #: .\templates\registration\password_reset_done.html:25
-msgid "try again"
+#, python-format
+msgid ""
+"Didn't receive the email? Check your spam folder or <a href=\"%(url)s\">try "
+"again</a>"
 msgstr ""
 
 #: .\templates\registration\password_reset_email.html:2
@@ -4476,276 +5008,277 @@ msgid ""
 "create orders, manage the queue, and configure settings."
 msgstr ""
 
-#: .\templates\registration\signup.html:101
-msgid "admin"
-msgstr ""
-
-#: .\templates\registration\signup.html:114
+#: .\templates\registration\signup.html:117
 msgid "admin@company.com"
 msgstr ""
 
-#: .\templates\registration\signup.html:129
-#: .\templates\registration\signup.html:202
+#: .\templates\registration\signup.html:132
+#: .\templates\registration\signup.html:206
 msgid "Create a password"
 msgstr ""
 
-#: .\templates\registration\signup.html:136
-#: .\templates\registration\signup.html:209
+#: .\templates\registration\signup.html:139
+#: .\templates\registration\signup.html:213
 msgid "Confirm Password"
 msgstr ""
 
-#: .\templates\registration\signup.html:141
-#: .\templates\registration\signup.html:214
+#: .\templates\registration\signup.html:144
+#: .\templates\registration\signup.html:218
 msgid "Confirm password"
 msgstr ""
 
-#: .\templates\registration\signup.html:154
+#: .\templates\registration\signup.html:157
 msgid "Shared Picker Account"
 msgstr ""
 
-#: .\templates\registration\signup.html:157
+#: .\templates\registration\signup.html:160
 msgid "This is a shared login for all your warehouse pickers."
 msgstr ""
 
-#: .\templates\registration\signup.html:159
+#: .\templates\registration\signup.html:162
 msgid "Share these credentials with your team"
 msgstr ""
 
-#: .\templates\registration\signup.html:160
+#: .\templates\registration\signup.html:163
 msgid "When a picker logs in for the first time, they enter their name"
 msgstr ""
 
-#: .\templates\registration\signup.html:161
+#: .\templates\registration\signup.html:164
 msgid "Their device is then remembered - no need to enter their name again"
 msgstr ""
 
-#: .\templates\registration\signup.html:162
+#: .\templates\registration\signup.html:165
 msgid "You can see which picker is using which device in the dashboard"
 msgstr ""
 
-#: .\templates\registration\signup.html:174
-msgid "picker"
-msgstr ""
-
-#: .\templates\registration\signup.html:187
+#: .\templates\registration\signup.html:191
 msgid "picker@company.com"
 msgstr ""
 
-#: .\templates\registration\signup.html:225
+#: .\templates\registration\signup.html:229
 msgid "Create Company & Accounts"
 msgstr ""
 
-#: .\templates\registration\signup.html:232
+#: .\templates\registration\signup.html:236
 msgid "Already have an account?"
 msgstr ""
 
-#: .\templates\shopify\app.html:100
+#: .\templates\shopify\app.html:102
 msgid "No active plan"
 msgstr ""
 
-#: .\templates\shopify\app.html:102
+#: .\templates\shopify\app.html:104
 msgid ""
 "This store has no active OrderPiqr subscription. Choose a plan to keep order "
 "sync running — billing is handled by Shopify."
 msgstr ""
 
-#: .\templates\shopify\app.html:105
+#: .\templates\shopify\app.html:107
 msgid "Choose a plan"
 msgstr ""
 
-#: .\templates\shopify\app.html:110
+#: .\templates\shopify\app.html:112
 msgid "Overview"
 msgstr ""
 
-#: .\templates\shopify\app.html:114
+#: .\templates\shopify\app.html:116
 msgid "Orders ready to pick"
 msgstr ""
 
-#: .\templates\shopify\app.html:118 .\templates\shopify\app.html:226
+#: .\templates\shopify\app.html:120 .\templates\shopify\app.html:228
 msgid "Products needing mapping"
 msgstr ""
 
-#: .\templates\shopify\app.html:123
+#: .\templates\shopify\app.html:125
 msgid "Open the picker app"
 msgstr ""
 
-#: .\templates\shopify\app.html:132
+#: .\templates\shopify\app.html:134
 msgid "Product matching"
 msgstr ""
 
-#: .\templates\shopify\app.html:133
+#: .\templates\shopify\app.html:135
 msgid "Which Shopify field matches your product codes"
 msgstr ""
 
-#: .\templates\shopify\app.html:136
+#: .\templates\shopify\app.html:138
 msgid "Barcode, then SKU"
 msgstr ""
 
-#: .\templates\shopify\app.html:137
+#: .\templates\shopify\app.html:139
 msgid "SKU, then barcode"
 msgstr ""
 
-#: .\templates\shopify\app.html:138
+#: .\templates\shopify\app.html:140
 msgid "Barcode only"
 msgstr ""
 
-#: .\templates\shopify\app.html:139
+#: .\templates\shopify\app.html:141
 msgid "SKU only"
 msgstr ""
 
-#: .\templates\shopify\app.html:140
+#: .\templates\shopify\app.html:142
 msgid "Metafield"
 msgstr ""
 
-#: .\templates\shopify\app.html:141
+#: .\templates\shopify\app.html:143
 msgid "Metafield, then barcode/SKU"
 msgstr ""
 
-#: .\templates\shopify\app.html:145
+#: .\templates\shopify\app.html:147
 msgid "Metafield (namespace.key)"
 msgstr ""
 
-#: .\templates\shopify\app.html:150
+#: .\templates\shopify\app.html:152
 msgid "Warehouse location metafield (optional)"
 msgstr ""
 
-#: .\templates\shopify\app.html:151
+#: .\templates\shopify\app.html:153
 msgid ""
 "If your products carry their warehouse location in a metafield, OrderPiqr "
 "keeps product locations in sync with it."
 msgstr ""
 
-#: .\templates\shopify\app.html:157
+#: .\templates\shopify\app.html:159
 msgid "Unknown products"
 msgstr ""
 
-#: .\templates\shopify\app.html:158
+#: .\templates\shopify\app.html:160
 msgid "When an order contains a product OrderPiqr doesn't know"
 msgstr ""
 
-#: .\templates\shopify\app.html:161
+#: .\templates\shopify\app.html:163
 msgid "Create it automatically"
 msgstr ""
 
-#: .\templates\shopify\app.html:162
+#: .\templates\shopify\app.html:164
 msgid "Hold order for review"
 msgstr ""
 
-#: .\templates\shopify\app.html:163
+#: .\templates\shopify\app.html:165
 msgid "Skip that line"
 msgstr ""
 
-#: .\templates\shopify\app.html:167
+#: .\templates\shopify\app.html:169
 msgid "New orders go straight to the picking queue"
 msgstr ""
 
-#: .\templates\shopify\app.html:171
+#: .\templates\shopify\app.html:173
 msgid "Mark order fulfilled in Shopify when picked"
 msgstr ""
 
-#: .\templates\shopify\app.html:175
+#: .\templates\shopify\app.html:177
 msgid "Send Shopify's shipping notification to the customer"
 msgstr ""
 
-#: .\templates\shopify\app.html:179
+#: .\templates\shopify\app.html:181
 msgid "Archive the Shopify order after fulfilling"
 msgstr ""
 
-#: .\templates\shopify\app.html:185
+#: .\templates\shopify\app.html:187
 msgid "Re-sync products"
 msgstr ""
 
-#: .\templates\shopify\app.html:186
+#: .\templates\shopify\app.html:188
 msgid "Save settings"
 msgstr ""
 
-#: .\templates\shopify\app.html:192
+#: .\templates\shopify\app.html:194
 msgid "Shopify orders"
 msgstr ""
 
-#: .\templates\shopify\app.html:194
+#: .\templates\shopify\app.html:196
 msgid ""
 "Browse the orders in your Shopify store and push the ones you want to pick "
 "to OrderPiqr. New paid orders are imported automatically."
 msgstr ""
 
-#: .\templates\shopify\app.html:198
+#: .\templates\shopify\app.html:200
 msgid "Open, unfulfilled"
 msgstr ""
 
-#: .\templates\shopify\app.html:199
+#: .\templates\shopify\app.html:201
 msgid "Open, unfulfilled & paid"
 msgstr ""
 
-#: .\templates\shopify\app.html:200
+#: .\templates\shopify\app.html:202
 msgid "All open"
 msgstr ""
 
-#: .\templates\shopify\app.html:201
+#: .\templates\shopify\app.html:203
 msgid "All orders"
 msgstr ""
 
-#: .\templates\shopify\app.html:203
+#: .\templates\shopify\app.html:205
 msgid "Search (e.g. #1001)"
 msgstr ""
 
-#: .\templates\shopify\app.html:204
+#: .\templates\shopify\app.html:206
 msgid "Refresh"
 msgstr ""
 
-#: .\templates\shopify\app.html:207
+#: .\templates\shopify\app.html:209
 msgid "Select all"
 msgstr ""
 
-#: .\templates\shopify\app.html:210
+#: .\templates\shopify\app.html:212
 msgid "Payment"
 msgstr ""
 
-#: .\templates\shopify\app.html:211
+#: .\templates\shopify\app.html:213
 msgid "Fulfillment"
 msgstr ""
 
-#: .\templates\shopify\app.html:213
+#: .\templates\shopify\app.html:215
 msgid "OrderPiqr"
 msgstr ""
 
-#: .\templates\shopify\app.html:219
+#: .\templates\shopify\app.html:221
 msgid "Load more"
 msgstr ""
 
-#: .\templates\shopify\app.html:220
+#: .\templates\shopify\app.html:222
 msgid "Push selected to OrderPiqr"
 msgstr ""
 
-#: .\templates\shopify\app.html:227
+#: .\templates\shopify\app.html:229
 msgid ""
 "These Shopify products couldn't be matched. Enter the OrderPiqr product code "
 "to link them."
 msgstr ""
 
-#: .\templates\shopify\app.html:232
+#: .\templates\shopify\app.html:234
 msgid "Already using OrderPiqr?"
 msgstr ""
 
-#: .\templates\shopify\app.html:234
+#: .\templates\shopify\app.html:236
 msgid ""
 "This store got a fresh OrderPiqr workspace when you installed the app. If "
 "your company already has an account on orderpiqr.nl, link this store to it — "
 "your existing products and settings will be used instead."
 msgstr ""
 
-#: .\templates\shopify\app.html:237
+#: .\templates\shopify\app.html:239
 msgid "Admin username"
 msgstr ""
 
-#: .\templates\shopify\app.html:239
+#: .\templates\shopify\app.html:241
 msgid "Link account"
 msgstr ""
 
-#: .\templates\shopify\app.html:244
+#: .\templates\shopify\app.html:246
 msgid "Picker access"
 msgstr ""
 
-#: .\templates\shopify\app.html:246
+#: .\templates\shopify\app.html:248
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr ""
+
+#~ msgid "ago"
+#~ msgstr "ago"
+
+#~ msgid "items"
+#~ msgstr "items"
+
+#~ msgid "orders"
+#~ msgstr "orders"

@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.utils.translation import gettext as _
 from api.serializers import ProductPickSerializer, ProductPickUpdateSerializer
 from orderpiqrApp.models import ProductPick
 from rest_framework import filters
@@ -107,7 +108,7 @@ class ProductPickViewSet(viewsets.ModelViewSet):
         return queryset
 
     def destroy(self, request, *args, **kwargs):
-        return Response({'detail': 'Delete not allowed.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response({'detail': _('Delete not allowed.')}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @extend_schema(
         summary="Mark pick as successful",
@@ -142,7 +143,7 @@ class ProductPickViewSet(viewsets.ModelViewSet):
 
         return Response({
             'status': 'ok',
-            'message': 'Pick marked as successful'
+            'message': _('Pick marked as successful')
         })
 
     @extend_schema(
@@ -178,7 +179,7 @@ class ProductPickViewSet(viewsets.ModelViewSet):
 
         return Response({
             'status': 'ok',
-            'message': 'Pick marked as failed'
+            'message': _('Pick marked as failed')
         })
 
     @extend_schema(

@@ -377,6 +377,10 @@
 }
 </style>
 
+{% trans "Search product by code or description..." as msg_search_product %}
+{% trans "An order must have at least one product" as msg_need_one_product %}
+{% trans "No products found" as msg_no_products_found %}
+{% trans "Please select a product for all order lines" as msg_select_product_all_lines %}
 <script>
 // Product data from server
 const products = [
@@ -406,7 +410,7 @@ function addOrderLine() {
             <input type="hidden" name="product_id[]" value="">
             <div class="product-search-wrapper">
                 <input type="text" class="form-control product-search"
-                       placeholder="{% trans 'Search product by code or description...' %}"
+                       placeholder="{{ msg_search_product|escapejs }}"
                        autocomplete="off">
                 <div class="product-dropdown"></div>
             </div>
@@ -436,7 +440,7 @@ function removeOrderLine(button) {
     if (lines.length > 1) {
         button.closest('.order-line').remove();
     } else {
-        showNotification('{% trans "An order must have at least one product" %}', 'warning');
+        showNotification('{{ msg_need_one_product|escapejs }}', 'warning');
     }
 }
 
@@ -460,7 +464,7 @@ function initProductSearch(input) {
 
     function renderDropdown(filteredProducts) {
         if (filteredProducts.length === 0) {
-            dropdown.innerHTML = '<div class="product-no-results">{% trans "No products found" %}</div>';
+            dropdown.innerHTML = '<div class="product-no-results">{{ msg_no_products_found|escapejs }}</div>';
         } else {
             dropdown.innerHTML = filteredProducts.map((p, index) => `
                 <div class="product-option${index === highlightedIndex ? ' highlighted' : ''}"
@@ -616,7 +620,7 @@ document.getElementById('order-form').addEventListener('submit', function(e) {
 
     if (!valid) {
         e.preventDefault();
-        showNotification('{% trans "Please select a product for all order lines" %}', 'error');
+        showNotification('{{ msg_select_product_all_lines|escapejs }}', 'error');
     }
 });
 </script>

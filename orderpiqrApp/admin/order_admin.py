@@ -250,7 +250,8 @@ class OrderAdmin(admin.ModelAdmin):
                 elif file.name.endswith('.xlsx'):
                     orders_created, lines_added, overwritten_orders = self.process_xlsx_file(file, customer)
                 else:
-                    raise ValidationError("Unsupported file format, only .csv and .xlsx are supported")
+                    raise ValidationError(
+                        _("Unsupported file format, only .csv and .xlsx are supported"))
 
                 msg = _("%(orders)s orders and %(lines)s lines added.") % {
                     "orders": orders_created,
@@ -269,9 +270,9 @@ class OrderAdmin(admin.ModelAdmin):
                     error_message = e.messages[0]
                 messages.error(request, _("Error processing file: %(msg)s") % {"msg": error_message})
         else:
-            messages.error(request, 'No file uploaded.')
+            messages.error(request, _("No file uploaded."))
 
-    upload_file.short_description = 'Upload CSV or XLSX File'
+    upload_file.short_description = _("Upload CSV or XLSX File")
 
     def changelist_view(self, request, extra_context=None):
         extra_context = extra_context or {}
@@ -281,7 +282,7 @@ class OrderAdmin(admin.ModelAdmin):
             if form.is_valid():
                 self.upload_file(request, None)
             else:
-                messages.error(request, 'Invalid form submission.')
+                messages.error(request, _("Invalid form submission."))
         return super().changelist_view(request, extra_context=extra_context)
 
     def get_queryset(self, request):

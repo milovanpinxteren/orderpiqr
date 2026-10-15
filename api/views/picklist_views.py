@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.utils.translation import gettext as _
 from api.serializers import PickListSerializer, PickListDetailSerializer
 from orderpiqrApp.models import PickList
 from rest_framework import filters
@@ -124,7 +125,7 @@ class PickListViewSet(viewsets.ModelViewSet):
         serializer.save(customer=self.request.user.userprofile.customer)
 
     def destroy(self, request, *args, **kwargs):
-        return Response({'detail': 'Delete not allowed.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response({'detail': _('Delete not allowed.')}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @extend_schema(
         summary="Complete a pick list",
@@ -193,7 +194,7 @@ class PickListViewSet(viewsets.ModelViewSet):
 
         return Response({
             'status': 'ok',
-            'message': 'Pick list completed',
+            'message': _('Pick list completed'),
             'picklist_id': picklist.picklist_id,
             'order_status': order_status,
             'time_taken': str(picklist.time_taken) if picklist.time_taken else None

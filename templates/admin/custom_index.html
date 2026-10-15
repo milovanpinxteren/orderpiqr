@@ -31,7 +31,7 @@
                 data: {
                     labels,
                     datasets: [{
-                        label: `{{ _('Cumulative picklists') }} (${month_label})`,
+                        label: `{{ _('Cumulative picklists')|escapejs }} (${month_label})`,
                         data: counts,
                         borderColor: '#2c7be5',
                         fill: false,

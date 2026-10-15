@@ -13,7 +13,7 @@
                 {% endif %}
             </div>
             <div class="order-meta">
-                <span class="item-count">{{ order.item_count }} {% trans "items" %}</span>
+                <span class="item-count">{% blocktrans count counter=order.item_count trimmed %}{{ counter }} item{% plural %}{{ counter }} items{% endblocktrans %}</span>
                 {% if order.notes %}
                 <span class="order-notes" title="{{ order.notes }}">📝</span>
                 {% endif %}

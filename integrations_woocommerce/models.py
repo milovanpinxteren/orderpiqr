@@ -3,6 +3,7 @@ import secrets
 
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from integrations.crypto import decrypt, encrypt
 from integrations.models import Connection
@@ -38,8 +39,8 @@ class WooCommerceStore(models.Model):
     connected_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = 'WooCommerce store'
-        verbose_name_plural = 'WooCommerce stores'
+        verbose_name = _('WooCommerce store')
+        verbose_name_plural = _('WooCommerce stores')
 
     def __str__(self):
         return self.store_url
@@ -87,8 +88,8 @@ class PairingToken(models.Model):
     used_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name = 'Pairing token'
-        verbose_name_plural = 'Pairing tokens'
+        verbose_name = _('Pairing token')
+        verbose_name_plural = _('Pairing tokens')
 
     def __str__(self):
         return f"Pairing token for {self.customer.name} ({'used' if self.used_at else 'open'})"

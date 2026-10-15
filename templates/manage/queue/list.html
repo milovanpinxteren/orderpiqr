@@ -36,7 +36,7 @@
     <div class="card queue-panel">
         <div class="card-header">
             <h3>{% trans "Current Queue" %}</h3>
-            <span class="badge badge-primary">{{ queue_orders.count }} {% trans "orders" %}</span>
+            <span class="badge badge-primary">{% blocktrans count counter=queue_orders.count trimmed %}{{ counter }} order{% plural %}{{ counter }} orders{% endblocktrans %}</span>
         </div>
         <div class="card-body p-0"
              id="queue-list"
@@ -51,7 +51,7 @@
     <div class="card available-panel">
         <div class="card-header">
             <h3>{% trans "Available Orders" %}</h3>
-            <span class="badge badge-secondary">{{ available_orders.count }} {% trans "orders" %}</span>
+            <span class="badge badge-secondary">{% blocktrans count counter=available_orders.count trimmed %}{{ counter }} order{% plural %}{{ counter }} orders{% endblocktrans %}</span>
         </div>
         <div class="card-body p-0" id="available-list">
             {% if available_orders %}
@@ -60,7 +60,7 @@
                 <div class="available-order-item" data-order-id="{{ order.order_id }}">
                     <div class="order-info">
                         <span class="order-code">{{ order.order_code }}</span>
-                        <span class="item-count">{{ order.item_count }} {% trans "items" %}</span>
+                        <span class="item-count">{% blocktrans count counter=order.item_count trimmed %}{{ counter }} item{% plural %}{{ counter }} items{% endblocktrans %}</span>
                         {% if order.notes %}
                         <span class="order-notes-icon" title="{{ order.notes }}">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -100,10 +100,10 @@
                 <div class="completed-order-item">
                     <div class="order-info">
                         <span class="order-code">{{ order.order_code }}</span>
-                        <span class="item-count">{{ order.item_count }} {% trans "items" %}</span>
+                        <span class="item-count">{% blocktrans count counter=order.item_count trimmed %}{{ counter }} item{% plural %}{{ counter }} items{% endblocktrans %}</span>
                     </div>
                     <span class="completed-time text-muted">
-                        {{ order.completed_at|timesince }} {% trans "ago" %}
+                        {% blocktrans with since=order.completed_at|timesince trimmed %}{{ since }} ago{% endblocktrans %}
                     </span>
                 </div>
                 {% endfor %}
@@ -381,6 +381,13 @@
 </style>
 
 <script>
+{% trans "Queue order saved" as msg_queue_saved %}
+{% trans "Order added to queue" as msg_order_queued %}
+{% trans "Order removed from queue" as msg_order_unqueued %}
+{% trans "%(name)s is picking this order right now. Unlock it anyway? Picks they already recorded are kept." as msg_unlock_named %}
+{% trans "Unlock this order? The picker will lose their progress." as msg_unlock_anon %}
+{% trans "Order unlocked" as msg_order_unlocked %}
+
 // Initialize Sortable for drag-and-drop reordering
 document.addEventListener('DOMContentLoaded', function() {
     initSortable();
@@ -421,7 +428,7 @@ function saveQueueOrder() {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'ok') {
-            showNotification('{% trans "Queue order saved" %}', 'success');
+            showNotification('{{ msg_queue_saved|escapejs }}', 'success');
         } else {
             showNotification(data.message, 'error');
         }
@@ -438,7 +445,7 @@ function addToQueue(orderId) {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'ok') {
-            showNotification('{% trans "Order added to queue" %}', 'success');
+            showNotification('{{ msg_order_queued|escapejs }}', 'success');
             location.reload();
         } else {
             showNotification(data.message, 'error');
@@ -456,7 +463,7 @@ function removeFromQueue(orderId) {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'ok') {
-            showNotification('{% trans "Order removed from queue" %}', 'success');
+            showNotification('{{ msg_order_unqueued|escapejs }}', 'success');
             location.reload();
         } else {
             showNotification(data.message, 'error');
@@ -468,8 +475,8 @@ function unlockOrder(orderId, pickedBy) {
     // Name the picker who gets interrupted — their in-progress picklist is
     // deleted by the unlock and their scanner will be stopped.
     const message = pickedBy
-        ? '{% trans "%(name)s is picking this order right now. Unlock it anyway? Picks they already recorded are kept." %}'.replace('%(name)s', pickedBy)
-        : '{% trans "Unlock this order? The picker will lose their progress." %}';
+        ? '{{ msg_unlock_named|escapejs }}'.replace('%(name)s', pickedBy)
+        : '{{ msg_unlock_anon|escapejs }}';
     if (!confirm(message)) return;
     fetch(`{% url 'queue_unlock_order' order_id=0 %}`.replace('0', orderId), {
         method: 'POST',
@@ -480,7 +487,7 @@ function unlockOrder(orderId, pickedBy) {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'ok') {
-            showNotification('{% trans "Order unlocked" %}', 'success');
+            showNotification('{{ msg_order_unlocked|escapejs }}', 'success');
             location.reload();
         } else {
             showNotification(data.message, 'error');

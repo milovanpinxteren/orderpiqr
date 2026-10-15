@@ -4,6 +4,7 @@ from datetime import timedelta, timezone as dt_timezone
 from django.db import IntegrityError, transaction
 from django.http import JsonResponse
 from django.utils import timezone
+from django.utils.translation import gettext as _
 import json
 from django.views.decorators.http import require_GET, require_POST
 from orderpiqrApp.models import Device, Order, PickList, Product, ProductPick, ScanEvent
@@ -45,7 +46,7 @@ def _resolve_device(request, device_fingerprint):
     if ambiguous:
         return None, JsonResponse({
             'status': 'error',
-            'message': 'This device is registered for multiple companies. Please log in.'
+            'message': _('This device is registered for multiple companies. Please log in.')
         }, status=409)
     return device, None
 
@@ -185,7 +186,7 @@ def scan_picklist(request):
                                message='Scanned a list with no session — sent back to login')
             return JsonResponse({
                 'status': 'error',
-                'message': 'Device not found and user not authenticated'
+                'message': _('Device not found and user not authenticated')
             }, status=401)
 
         # Register this device for the picker's own customer. An existing row
@@ -198,7 +199,7 @@ def scan_picklist(request):
         if device is None:
             return JsonResponse({
                 'status': 'error',
-                'message': 'User has no customer profile'
+                'message': _('User has no customer profile')
             }, status=400)
 
     # Process picklist in a transaction
@@ -237,10 +238,16 @@ def scan_picklist(request):
                         now = timezone.now()
                         last_seen = max(h.device.last_login for h in holders)
                         if last_seen > now - STALE_LOCK_AFTER:
-                            message = 'This order is already being picked by another device'
-                            log_scan_event(device.customer, device, 'picklist_rejected',
-                                           picklist_code=order_id, message=message)
-                            return JsonResponse({'status': 'error', 'message': message}, status=409)
+                            # The ScanEvent copy stays English: it is a stored
+                            # diagnostic the health page aggregates, so it must
+                            # not depend on the picker's language.
+                            log_scan_event(
+                                device.customer, device, 'picklist_rejected',
+                                picklist_code=order_id,
+                                message='This order is already being picked by another device')
+                            return JsonResponse({'status': 'error', 'message': _(
+                                'This order is already being picked by another device'
+                            )}, status=409)
 
                         held_by = ', '.join(sorted(
                             (h.device.name or f'device {h.device.pk}').strip() for h in holders))
@@ -251,10 +258,11 @@ def scan_picklist(request):
                             message=(f"Took over a stale lock held by {held_by} "
                                      f"(idle {idle_minutes}m); picks already recorded are preserved"))
                 elif order.status == 'completed':
-                    message = 'This order has already been completed'
                     log_scan_event(device.customer, device, 'picklist_rejected',
-                                   picklist_code=order_id, message=message)
-                    return JsonResponse({'status': 'error', 'message': message}, status=409)
+                                   picklist_code=order_id,
+                                   message='This order has already been completed')
+                    return JsonResponse({'status': 'error', 'message': _(
+                        'This order has already been completed')}, status=409)
                 elif order.status == 'queued':
                     # Lock the order by setting status to in_progress
                     order.status = 'in_progress'
@@ -318,11 +326,14 @@ def scan_picklist(request):
 
     except Product.DoesNotExist as exc:
         missing_code = exc.args[0] if exc.args else '?'
-        message = (f"Unknown product code '{missing_code}'. "
-                   "Add it to your products and scan the list again.")
         log_scan_event(device.customer, device, 'picklist_rejected',
-                       scanned_code=missing_code, picklist_code=order_id, message=message)
-        return JsonResponse({'status': 'error', 'message': message}, status=404)
+                       scanned_code=missing_code, picklist_code=order_id,
+                       message=f"Unknown product code '{missing_code}'. "
+                               "Add it to your products and scan the list again.")
+        return JsonResponse({'status': 'error', 'message': _(
+            "Unknown product code '%(code)s'. "
+            "Add it to your products and scan the list again."
+        ) % {'code': missing_code}}, status=404)
     except IntegrityError as e:
         return JsonResponse({
             'status': 'error',
@@ -336,7 +347,7 @@ def scan_picklist(request):
 
     return JsonResponse({
         'status': 'ok',
-        'message': 'Picklist processed successfully',
+        'message': _('Picklist processed successfully'),
         'created': created,
         'picklist_id': pick_list.picklist_id,
         'product_count': len(picklist),
@@ -359,7 +370,7 @@ def product_pick(request):
     if device_error:
         return device_error
     if not device:
-        return JsonResponse({"status": "error", "message": "Device not found with given fingerprint"}, status=404)
+        return JsonResponse({"status": "error", "message": _("Device not found with given fingerprint")}, status=404)
     # Update last_login on activity
     Device.objects.filter(pk=device.pk).update(last_login=timezone.now())
 
@@ -382,7 +393,7 @@ def product_pick(request):
         # error_code lets the client stop the line: without it every further
         # scan of this dead list is silently lost the same way.
         return JsonResponse({"status": "error", "error_code": "picklist_not_found",
-                             "message": "PickList not found for device/customer"}, status=404)
+                             "message": _("PickList not found for device/customer")}, status=404)
 
     try:
         product = resolve_product(device.customer, product_code)
@@ -392,14 +403,14 @@ def product_pick(request):
         log_scan_event(device.customer, device, 'sync_error',
                        scanned_code=product_code, picklist_code=order_id,
                        message=f"Pick registered but product '{product_code}' does not exist for this customer")
-        return JsonResponse({"status": "error", "message": "Product not found"}, status=404)
+        return JsonResponse({"status": "error", "message": _("Product not found")}, status=404)
 
     # Find the next unpicked row for this product in this picklist
     qs = ProductPick.objects.filter(picklist=picklist, product=product).order_by("id")
     pp = qs.filter(successful__isnull=True).first() or qs.filter(successful=False).first()
     if not pp:
         # Idempotent: nothing left to update for this product
-        return JsonResponse({"status": "noop", "message": "No pending ProductPick rows for this product."},
+        return JsonResponse({"status": "noop", "message": _("No pending ProductPick rows for this product.")},
                             status=200, )
 
     time_taken = timedelta(milliseconds=int(time_taken_ms))
@@ -448,7 +459,7 @@ def bulk_product_pick(request):
     if device_error:
         return device_error
     if not device:
-        return JsonResponse({"status": "error", "message": "Device not found"}, status=404)
+        return JsonResponse({"status": "error", "message": _("Device not found")}, status=404)
     Device.objects.filter(pk=device.pk).update(last_login=timezone.now())
 
     if manual_override:
@@ -471,11 +482,11 @@ def bulk_product_pick(request):
                        message=f"Bulk pick of {quantity} registered but no picklist "
                                f"'{order_id}' exists for this device")
         return JsonResponse({"status": "error", "error_code": "picklist_not_found",
-                             "message": "PickList not found"}, status=404)
+                             "message": _("PickList not found")}, status=404)
 
     product = resolve_product(device.customer, product_code)
     if not product:
-        return JsonResponse({"status": "error", "message": "Product not found"}, status=404)
+        return JsonResponse({"status": "error", "message": _("Product not found")}, status=404)
 
     qs = ProductPick.objects.filter(
         picklist=picklist, product=product, successful__isnull=True
@@ -485,7 +496,8 @@ def bulk_product_pick(request):
     if quantity > available:
         return JsonResponse({
             "status": "error",
-            "message": f"Requested {quantity} but only {available} unpicked rows available"
+            "message": _("Requested %(wanted)s but only %(available)s unpicked rows available")
+                       % {"wanted": quantity, "available": available}
         }, status=400)
 
     time_taken = timedelta(milliseconds=int(time_taken_ms)) if time_taken_ms else timedelta(0)
@@ -557,15 +569,15 @@ def complete_picklist(request):
                 return JsonResponse({
                     'status': 'error',
                     'error_code': 'picklist_not_found',
-                    'message': 'No picklist found for this device and order'
+                    'message': _('No picklist found for this device and order')
                 }, status=404)
 
-            return JsonResponse({'status': 'ok', 'message': 'Picklist processed successfully'})
+            return JsonResponse({'status': 'ok', 'message': _('Picklist processed successfully')})
 
         except Device.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Device not found with given fingerprint'}, status=404)
+            return JsonResponse({'status': 'error', 'message': _('Device not found with given fingerprint')}, status=404)
         except Product.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Product not found for one of the product codes'},
+            return JsonResponse({'status': 'error', 'message': _('Product not found for one of the product codes')},
                                 status=404)
         except Exception as e:
 

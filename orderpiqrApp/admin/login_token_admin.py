@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
 from orderpiqrApp.models import PickerLoginToken
 
@@ -29,13 +30,14 @@ class PickerLoginTokenAdmin(admin.ModelAdmin):
             return queryset.filter(customer=request.user.userprofile.customer)
         return queryset.none()
 
-    @admin.action(description="Revoke selected login QRs")
+    @admin.action(description=_("Revoke selected login QRs"))
     def revoke_selected(self, request, queryset):
         revoked = 0
         for token in queryset.filter(revoked_at__isnull=True):
             token.revoke()
             revoked += 1
-        self.message_user(request, f"{revoked} login QR(s) revoked.")
+        self.message_user(
+            request, _("%(count)s login QR(s) revoked.") % {"count": revoked})
 
 
 admin.site.register(PickerLoginToken, PickerLoginTokenAdmin)

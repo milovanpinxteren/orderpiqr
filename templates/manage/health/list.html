@@ -198,9 +198,9 @@
                         <td class="text-right">{{ row.restarts }}</td>
                         <td class="text-right">
                             {{ row.overrides }}
-                            {% if row.override_rate %}<br><span class="text-muted">{{ row.override_rate }}/{% trans "list" %}</span>{% endif %}
+                            {% if row.override_rate %}<br><span class="text-muted">{% blocktrans with rate=row.override_rate trimmed %}{{ rate }}/list{% endblocktrans %}</span>{% endif %}
                         </td>
-                        <td class="text-muted">{% if row.last_seen %}{{ row.last_seen|timesince }} {% trans "ago" %}{% else %}-{% endif %}</td>
+                        <td class="text-muted">{% if row.last_seen %}{% blocktrans with since=row.last_seen|timesince trimmed %}{{ since }} ago{% endblocktrans %}{% else %}-{% endif %}</td>
                     </tr>
                     {% empty %}
                     <tr><td colspan="9" class="text-muted">{% trans "No device activity in this period." %}</td></tr>
@@ -257,7 +257,12 @@
                 <line x1="12" y1="9" x2="12" y2="13"/>
                 <line x1="12" y1="17" x2="12.01" y2="17"/>
             </svg>
-            {% blocktrans with count=stale_picklists|length lines=stale_pending_lines %}{{ count }} picklist(s) in progress for over 4 hours, holding {{ lines }} unpicked line(s){% endblocktrans %}
+            {# Two sentences, not one: blocktrans takes a single counter, so a #}
+            {# combined sentence cannot inflect both nouns in NL/DE/PL/RO/UK. #}
+            {# Counter named "counter" and the sentence terminated, so this #}
+            {# shares one msgid with the identical line on the dashboard. #}
+            {% blocktrans count counter=stale_picklists|length trimmed %}{{ counter }} picklist in progress for over 4 hours.{% plural %}{{ counter }} picklists in progress for over 4 hours.{% endblocktrans %}
+            {% blocktrans count counter=stale_pending_lines trimmed %}{{ counter }} line still unpicked.{% plural %}{{ counter }} lines still unpicked.{% endblocktrans %}
             &mdash; {% trans "shown live, not filtered by the date range above" %}
         </div>
         <div class="table-container">
@@ -297,7 +302,7 @@
                         </td>
                         <td class="text-right">{% if picklist.pending_lines %}<strong>{{ picklist.pending_lines }}</strong>{% else %}0{% endif %}</td>
                         <td class="text-right">{{ picklist.restart_count }}</td>
-                        <td class="text-muted">{{ picklist.pick_time|timesince }} {% trans "ago" %}</td>
+                        <td class="text-muted">{% blocktrans with since=picklist.pick_time|timesince trimmed %}{{ since }} ago{% endblocktrans %}</td>
                         <td class="text-right">
                             <div class="stale-actions">
                                 {% trans "Mark this picklist as completed? This also completes the linked order." as confirm_complete %}
@@ -378,10 +383,10 @@
                             {% endif %}
                         </td>
                         <td class="text-muted">
-                            {% if row.overrides %}{{ row.overrides }}&times; {% trans "confirmed by hand" %}<br>{% endif %}
-                            {% if row.not_found %}{{ row.not_found }}&times; {% trans "not found on the list" %}<br>{% endif %}
-                            {% if row.not_recorded %}{{ row.not_recorded }}&times; {% trans "not recorded" %}<br>{% endif %}
-                            {% if row.unreadable %}{{ row.unreadable }}&times; {% trans "unreadable" %}{% endif %}
+                            {% if row.overrides %}{% blocktrans with num=row.overrides trimmed %}{{ num }}&times; confirmed by hand{% endblocktrans %}<br>{% endif %}
+                            {% if row.not_found %}{% blocktrans with num=row.not_found trimmed %}{{ num }}&times; not found on the list{% endblocktrans %}<br>{% endif %}
+                            {% if row.not_recorded %}{% blocktrans with num=row.not_recorded trimmed %}{{ num }}&times; not recorded{% endblocktrans %}<br>{% endif %}
+                            {% if row.unreadable %}{% blocktrans with num=row.unreadable trimmed %}{{ num }}&times; unreadable{% endblocktrans %}{% endif %}
                         </td>
                         <td class="text-right">
                             {% if row.diagnosis == 'unknown_code' %}
@@ -426,7 +431,7 @@
                     {% for event in events %}
                     <tr>
                         <td class="text-muted" title="{{ event.occurred_at|date:'M j, Y H:i:s' }}">
-                            {{ event.occurred_at|timesince }} {% trans "ago" %}
+                            {% blocktrans with since=event.occurred_at|timesince trimmed %}{{ since }} ago{% endblocktrans %}
                         </td>
                         <td>
                             <span class="badge badge-{% if event.severity == 'error' %}danger{% elif event.severity == 'warning' %}warning{% else %}info{% endif %}">
@@ -462,7 +467,7 @@
                             <details class="event-message">
                                 <summary>{{ event.message|truncatewords:8 }}</summary>
                                 <span>{{ event.message }}</span>
-                                {% if event.build_id %}<br><span class="text-muted">{% trans "build" %} {{ event.build_id }}</span>{% endif %}
+                                {% if event.build_id %}<br><span class="text-muted">{% blocktrans with build=event.build_id trimmed %}build {{ build }}{% endblocktrans %}</span>{% endif %}
                             </details>
                             {% else %}
                             <span class="text-muted">-</span>
@@ -483,7 +488,7 @@
             {% endif %}
 
             <span class="pagination-info">
-                {% trans "Page" %} {{ events.number }} {% trans "of" %} {{ paginator.num_pages }}
+                {% blocktrans with num=events.number total=paginator.num_pages trimmed %}Page {{ num }} of {{ total }}{% endblocktrans %}
             </span>
 
             {% if events.has_next %}

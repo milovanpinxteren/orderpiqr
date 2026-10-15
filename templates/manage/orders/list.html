@@ -70,7 +70,7 @@
 <!-- Bulk Actions Bar -->
 <div class="bulk-bar" id="bulk-bar">
     <div class="bulk-bar-inner">
-        <span class="bulk-count"><span id="bulk-count">0</span> {% trans "selected" %}</span>
+        <span class="bulk-count">{% blocktrans trimmed %}<span id="bulk-count">0</span> selected{% endblocktrans %}</span>
         <div class="bulk-actions">
             <button class="btn btn-sm btn-secondary" onclick="bulkAddToQueue()">{% trans "Add to Queue" %}</button>
             <button class="btn btn-sm btn-secondary" onclick="bulkRemoveFromQueue()">{% trans "Remove from Queue" %}</button>
@@ -120,7 +120,7 @@
                                 {{ order.get_status_display }}
                             </span>
                         </td>
-                        <td class="text-muted">{{ order.created_at|timesince }} {% trans "ago" %}</td>
+                        <td class="text-muted">{% blocktrans with since=order.created_at|timesince trimmed %}{{ since }} ago{% endblocktrans %}</td>
                         <td>
                             <div class="table-actions">
                                 {% if order.status == 'draft' %}
@@ -165,7 +165,7 @@
             {% endif %}
 
             <span class="pagination-info">
-                {% trans "Page" %} {{ orders.number }} {% trans "of" %} {{ paginator.num_pages }}
+                {% blocktrans with num=orders.number total=paginator.num_pages trimmed %}Page {{ num }} of {{ total }}{% endblocktrans %}
             </span>
 
             {% if orders.has_next %}
@@ -206,7 +206,7 @@
             <button class="modal-close" onclick="closeModal()">&times;</button>
         </div>
         <div class="modal-body">
-            <p>{% trans "Are you sure you want to delete order" %} <strong id="delete-order-code"></strong>?</p>
+            <p>{% blocktrans trimmed %}Are you sure you want to delete order <strong id="delete-order-code"></strong>?{% endblocktrans %}</p>
             <p class="text-danger">{% trans "This action cannot be undone." %}</p>
         </div>
         <div class="modal-footer">
@@ -226,6 +226,10 @@
 
 <script src="{% static 'orderpiqrApp/js/manage/listTools.js' %}"></script>
 <script>
+{% trans "Order added to queue" as msg_order_queued %}
+{% trans "Error adding to queue" as msg_error_queueing %}
+{% trans "An error occurred" as msg_error_generic %}
+
 let deleteOrderId = null;
 
 function handleSearch(event) {
@@ -267,14 +271,14 @@ function addToQueue(orderId) {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'ok') {
-            showNotification('{% trans "Order added to queue" %}', 'success');
+            showNotification('{{ msg_order_queued|escapejs }}', 'success');
             setTimeout(() => location.reload(), 500);
         } else {
-            showNotification(data.message || '{% trans "Error adding to queue" %}', 'error');
+            showNotification(data.message || '{{ msg_error_queueing|escapejs }}', 'error');
         }
     })
     .catch(error => {
-        showNotification('{% trans "An error occurred" %}', 'error');
+        showNotification('{{ msg_error_generic|escapejs }}', 'error');
     });
 }
 
@@ -338,7 +342,7 @@ document.getElementById('confirm-delete-btn').addEventListener('click', function
             closeModal();
         })
         .catch(error => {
-            showNotification('{% trans "An error occurred" %}', 'error');
+            showNotification('{{ msg_error_generic|escapejs }}', 'error');
             closeModal();
         });
     }

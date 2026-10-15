@@ -65,7 +65,7 @@
                                     {% endif %}
                                 </form>
                                 <form method="post" action="{% url 'manage_integration_disconnect' row.connection.pk %}" class="inline-form"
-                                      onsubmit="return confirm('{% trans "Disconnect this store? Orders will no longer be imported." %}');">
+                                      onsubmit="return confirm('{% trans "Disconnect this store? Orders will no longer be imported." as msg_disconnect %}{{ msg_disconnect|escapejs }}');">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-sm btn-danger">{% trans "Disconnect" %}</button>
                                 </form>

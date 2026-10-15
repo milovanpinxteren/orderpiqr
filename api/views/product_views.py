@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.utils.translation import gettext as _
 from api.serializers import ProductSerializer, ProductDetailSerializer
 from orderpiqrApp.models import Product, OrderLine
 from orderpiqrApp.utils.products import resolve_product
@@ -191,7 +192,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             serializer = ProductDetailSerializer(product)
             return Response(serializer.data)
         return Response(
-            {'detail': 'Product not found'},
+            {'detail': _('Product not found')},
             status=status.HTTP_404_NOT_FOUND
         )
 
@@ -246,5 +247,5 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         return Response({
             'updated_count': updated,
-            'message': 'Products updated successfully'
+            'message': _('Products updated successfully')
         })

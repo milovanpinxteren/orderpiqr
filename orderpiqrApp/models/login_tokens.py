@@ -53,7 +53,7 @@ class PickerLoginToken(models.Model):
         ordering = ['-created']
 
     def __str__(self):
-        return f"Login QR for {self.user}"
+        return _("Login QR for %(picker)s") % {"picker": self.user}
 
     @staticmethod
     def hash_token(raw_token):

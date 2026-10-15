@@ -34,6 +34,25 @@ class SettingDefinition(models.Model):
     def __str__(self):
         return f"{self.label} ({self.key})"
 
+    # label/help_text/options hold English text typed into the database, which
+    # makemessages never sees. These pass it through the catalog at render time
+    # so the settings page follows the active language; see
+    # orderpiqrApp.utils.setting_strings for the catalog entries.
+    @property
+    def translated_label(self):
+        from orderpiqrApp.utils.setting_strings import translate_setting_text
+        return translate_setting_text(self.label)
+
+    @property
+    def translated_help_text(self):
+        from orderpiqrApp.utils.setting_strings import translate_setting_text
+        return translate_setting_text(self.help_text)
+
+    @property
+    def translated_options(self):
+        from orderpiqrApp.utils.setting_strings import translate_setting_options
+        return translate_setting_options(self.options)
+
     def cast_value(self, raw_value):
         if raw_value is None:
             return None

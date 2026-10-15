@@ -225,6 +225,7 @@ h4 {
 }
 </style>
 
+{% trans "Maximum file size: 5MB" as msg_max_file_size %}
 <script>
 const fileInput = document.getElementById('csv-file');
 const uploadArea = document.getElementById('file-upload-area');
@@ -239,7 +240,7 @@ fileInput.addEventListener('change', function() {
         uploadArea.classList.add('has-file');
         importBtn.disabled = false;
     } else {
-        fileName.textContent = '{% trans "Maximum file size: 5MB" %}';
+        fileName.textContent = '{{ msg_max_file_size|escapejs }}';
         uploadArea.classList.remove('has-file');
         importBtn.disabled = true;
     }

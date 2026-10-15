@@ -3,15 +3,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 13:46+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: xx\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
+"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:31
 msgid "Devices show who scanned and picked. Use this page to track activity."
@@ -83,7 +85,7 @@ msgstr ""
 "<br>        • <b>Utwórz zamówienie</b> i <b>wygeneruj listę kompletacyjną "
 "PDF</b> dla swojego zespołu.<br>        • Na telefonie odwiedź <a "
 "href='https://app.orderpiqr.nl' target='_blank'>app.orderpiqr.nl</a>         "
-"i zaloguj się na konto kompletującego.<br>        • <b>Zeskanuj kod QR</b> z "
+"i zaloguj się na konto kompletatora.<br>        • <b>Zeskanuj kod QR</b> z "
 "nowo utworzonej listy kompletacyjnej.<br>        • Zacznij kompletować swoje "
 "pierwsze zamówienie!<br><br>                <h2>Ważne informacje</h2>        "
 "Zalecamy używanie przeglądarki <b>Google Chrome</b> dla pełnej "
@@ -197,6 +199,7 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:89
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:209
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:89
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:32
 msgid "Close"
 msgstr "Zamknij"
 
@@ -456,6 +459,7 @@ msgid "No product data found on page"
 msgstr "Nie znaleziono danych produktów na stronie"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:48
+#: .\templates\index.html:241
 msgid "Offline mode: using cached product data"
 msgstr "Tryb offline: używanie danych produktów z pamięci podręcznej"
 
@@ -464,6 +468,7 @@ msgid "Cached product data is not usable"
 msgstr "Dane produktów z pamięci podręcznej są nieużyteczne"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:54
+#: .\templates\index.html:243
 msgid "No product data available while offline"
 msgstr "Brak dostępnych danych produktów w trybie offline"
 
@@ -698,7 +703,8 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:302
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
-"Żadne pole w wierszu listy kompletacji nie odpowiada znanemu kodowi produktu."
+"Żadne pole w wierszu listy kompletacyjnej nie odpowiada znanemu kodowi "
+"produktu."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:49
 msgid "No camera found on this device."
@@ -727,3 +733,154 @@ msgstr "Zatrzymaj kamerę"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
 msgid "Start camera"
 msgstr "Uruchom kamerę"
+
+#: .\templates\shopify\app.html:324
+msgid "Could not load status"
+msgstr "Nie udało się wczytać statusu"
+
+#: .\templates\shopify\app.html:344
+msgid "Linking…"
+msgstr "Łączenie…"
+
+#: .\templates\shopify\app.html:356
+msgid "Linked to %(name)s"
+msgstr "Powiązano z %(name)s"
+
+#: .\templates\shopify\app.html:362
+msgid "Linking failed"
+msgstr "Nie udało się powiązać"
+
+#: .\templates\shopify\app.html:366
+msgid "Link account"
+msgstr "Powiąż konto"
+
+#: .\templates\shopify\app.html:385
+msgid "Variant %(id)s"
+msgstr "Wariant %(id)s"
+
+#: .\templates\shopify\app.html:388
+msgid "Product code"
+msgstr "Kod produktu"
+
+#: .\templates\shopify\app.html:390
+msgid "Link"
+msgstr "Powiąż"
+
+#: .\templates\shopify\app.html:398
+msgid "Linked"
+msgstr "Powiązano"
+
+#: .\templates\shopify\app.html:401
+msgid "Link failed"
+msgstr "Błąd powiązania"
+
+#: .\templates\shopify\app.html:422
+msgid "Password set"
+msgstr "Hasło ustawione"
+
+#: .\templates\shopify\app.html:425
+msgid "Failed"
+msgstr "Nieudane"
+
+#: .\templates\shopify\app.html:443
+msgid "Settings saved"
+msgstr "Ustawienia zapisane"
+
+#: .\templates\shopify\app.html:443
+msgid "Save failed"
+msgstr "Nie udało się zapisać"
+
+#: .\templates\shopify\app.html:459
+msgid "Sync queued…"
+msgstr "Synchronizacja w kolejce…"
+
+#: .\templates\shopify\app.html:463
+msgid "Syncing… %(processed)s / %(total)s product"
+msgid_plural "Syncing… %(processed)s / %(total)s products"
+msgstr[0] "Synchronizacja… %(processed)s / %(total)s produkt"
+msgstr[1] "Synchronizacja… %(processed)s / %(total)s produkty"
+msgstr[2] "Synchronizacja… %(processed)s / %(total)s produktów"
+msgstr[3] "Synchronizacja… %(processed)s / %(total)s produktów"
+
+#: .\templates\shopify\app.html:468
+msgid "Syncing… %(processed)s product"
+msgid_plural "Syncing… %(processed)s products"
+msgstr[0] "Synchronizacja… %(processed)s produkt"
+msgstr[1] "Synchronizacja… %(processed)s produkty"
+msgstr[2] "Synchronizacja… %(processed)s produktów"
+msgstr[3] "Synchronizacja… %(processed)s produktów"
+
+#: .\templates\shopify\app.html:473
+msgid "Last sync: %(linked)s linked, %(unresolved)s need mapping"
+msgstr ""
+"Ostatnia synchronizacja: powiązano %(linked)s, %(unresolved)s wymaga "
+"przypisania"
+
+#: .\templates\shopify\app.html:477
+msgid "Sync failed — try again or contact support"
+msgstr ""
+"Synchronizacja nie udała się — spróbuj ponownie lub skontaktuj się z pomocą"
+
+#: .\templates\shopify\app.html:504
+msgid "Product sync started"
+msgstr "Rozpoczęto synchronizację produktów"
+
+#: .\templates\shopify\app.html:507
+msgid "Could not start sync"
+msgstr "Nie udało się rozpocząć synchronizacji"
+
+#: .\templates\shopify\app.html:562
+msgid "cancelled"
+msgstr "anulowane"
+
+#: .\templates\shopify\app.html:572
+msgid "imported"
+msgstr "zaimportowane"
+
+#: .\templates\shopify\app.html:582
+msgid "%(count)s order loaded"
+msgid_plural "%(count)s orders loaded"
+msgstr[0] "Wczytano %(count)s zamówienie"
+msgstr[1] "Wczytano %(count)s zamówienia"
+msgstr[2] "Wczytano %(count)s zamówień"
+msgstr[3] "Wczytano %(count)s zamówień"
+
+#: .\templates\shopify\app.html:595
+msgid "Push %(count)s to OrderPiqr"
+msgstr "Prześlij %(count)s do OrderPiqr"
+
+#: .\templates\shopify\app.html:596
+msgid "Push selected to OrderPiqr"
+msgstr "Prześlij wybrane do OrderPiqr"
+
+#: .\templates\shopify\app.html:606
+msgid "Loading orders…"
+msgstr "Wczytywanie zamówień…"
+
+#: .\templates\shopify\app.html:611
+msgid "Could not load orders."
+msgstr "Nie udało się wczytać zamówień."
+
+#: .\templates\shopify\app.html:644
+msgid "Pushing… %(done)s/%(total)s"
+msgstr "Przesyłanie… %(done)s/%(total)s"
+
+#: .\templates\shopify\app.html:651
+msgid "Push failed"
+msgstr "Nie udało się przesłać"
+
+#: .\templates\shopify\app.html:655
+msgid "%(count)s imported"
+msgstr "Zaimportowano: %(count)s"
+
+#: .\templates\shopify\app.html:658
+msgid "%(count)s already in OrderPiqr"
+msgstr "już w OrderPiqr: %(count)s"
+
+#: .\templates\shopify\app.html:661
+msgid "%(count)s need product mapping"
+msgstr "wymaga przypisania produktu: %(count)s"
+
+#: .\templates\shopify\app.html:664
+msgid "%(count)s skipped"
+msgstr "pominięto: %(count)s"

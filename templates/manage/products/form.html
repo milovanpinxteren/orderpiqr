@@ -439,6 +439,12 @@
 </style>
 
 {% if not is_create and inventory_enabled %}
+{% trans "no change" as msg_no_change %}
+{% trans "Please enter a valid quantity" as msg_invalid_quantity %}
+{% trans "Updating..." as msg_updating %}
+{% trans "Error updating inventory" as msg_error_updating %}
+{% trans "Update Stock" as msg_update_stock %}
+{% trans "You" as msg_you %}
 <script>
 (function() {
     const productId = {{ product.product_id }};
@@ -502,7 +508,7 @@
         } else if (diff < 0) {
             previewHtml += ` <span class="diff-negative">(${diff})</span>`;
         } else {
-            previewHtml += ` <span class="diff-neutral">({% trans "no change" %})</span>`;
+            previewHtml += ` <span class="diff-neutral">({{ msg_no_change|escapejs }})</span>`;
         }
 
         document.getElementById('modify-preview').innerHTML = previewHtml;
@@ -515,12 +521,12 @@
         const notes = document.getElementById('inventory-notes').value.trim();
 
         if (isNaN(value)) {
-            alert('{% trans "Please enter a valid quantity" %}');
+            alert('{{ msg_invalid_quantity|escapejs }}');
             return;
         }
 
         this.disabled = true;
-        this.textContent = '{% trans "Updating..." %}';
+        this.textContent = '{{ msg_updating|escapejs }}';
 
         fetch('{% url "inventory_modify" %}', {
             method: 'POST',
@@ -561,17 +567,17 @@
                 stockEl.style.color = '#2e7d32';
                 setTimeout(() => { stockEl.style.color = ''; }, 1500);
             } else {
-                alert(data.message || '{% trans "Error updating inventory" %}');
+                alert(data.message || '{{ msg_error_updating|escapejs }}');
             }
 
             this.disabled = false;
-            this.textContent = '{% trans "Update Stock" %}';
+            this.textContent = '{{ msg_update_stock|escapejs }}';
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('{% trans "Error updating inventory" %}');
+            alert('{{ msg_error_updating|escapejs }}');
             this.disabled = false;
-            this.textContent = '{% trans "Update Stock" %}';
+            this.textContent = '{{ msg_update_stock|escapejs }}';
         });
     });
 
@@ -610,7 +616,7 @@
                 </span>
             </td>
             <td>${reasonLabel}</td>
-            <td>{% trans "You" %}</td>
+            <td>{{ msg_you|escapejs }}</td>
         `;
         newRow.style.backgroundColor = '#e8f5e9';
         tbody.insertBefore(newRow, tbody.firstChild);

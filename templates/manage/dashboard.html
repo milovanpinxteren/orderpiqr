@@ -3,7 +3,7 @@
 
 {% block title %}{% trans "Dashboard" %}{% endblock %}
 {% block page_title %}{% trans "Dashboard" %}{% endblock %}
-{% block page_subtitle %}<p class="page-subtitle">{% trans "Welcome back" %}, {{ user.first_name|default:user.username }}!</p>{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">{% blocktrans with name=user.first_name|default:user.username trimmed %}Welcome back, {{ name }}!{% endblocktrans %}</p>{% endblock %}
 
 
 {% block content %}
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="stat-card-value">{{ total_products }}</div>
-        <div class="stat-card-change">{{ active_products }} {% trans "active" %}</div>
+        <div class="stat-card-change">{% blocktrans with num=active_products trimmed %}{{ num }} active{% endblocktrans %}</div>
     </div>
 
     <div class="stat-card">
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="stat-card-value">{{ orders_today }}</div>
-        <div class="stat-card-change">{{ orders_this_week }} {% trans "this week" %}</div>
+        <div class="stat-card-change">{% blocktrans with num=orders_this_week trimmed %}{{ num }} this week{% endblocktrans %}</div>
     </div>
 
     <div class="stat-card">
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="stat-card-value">{{ orders_in_queue }}</div>
-        <div class="stat-card-change">{{ orders_draft }} {% trans "draft" %}</div>
+        <div class="stat-card-change">{% blocktrans with num=orders_draft trimmed %}{{ num }} draft{% endblocktrans %}</div>
     </div>
 
     <div class="stat-card">
@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="stat-card-value">{{ orders_completed_today }}</div>
-        <div class="stat-card-change">{{ active_picklists }} {% trans "active picklists" %}</div>
+        <div class="stat-card-change">{% blocktrans count counter=active_picklists trimmed %}{{ counter }} active picklist{% plural %}{{ counter }} active picklists{% endblocktrans %}</div>
     </div>
 
     <div class="stat-card">
@@ -74,7 +74,7 @@
         </div>
         <div class="stat-card-value">{{ scan_issues_7d }}</div>
         <div class="stat-card-change">{% trans "issues this week" %}</div>
-        <div class="stat-card-change">{{ scan_issues_24h }} {% trans "last 24h" %} &middot; {{ manual_overrides_7d }} {% trans "overrides" %}</div>
+        <div class="stat-card-change">{% blocktrans with num=scan_issues_24h trimmed %}{{ num }} last 24h{% endblocktrans %} &middot; {% blocktrans count counter=manual_overrides_7d trimmed %}{{ counter }} override{% plural %}{{ counter }} overrides{% endblocktrans %}</div>
     </div>
 </div>
 
@@ -234,7 +234,7 @@
                                     {{ order.get_status_display }}
                                 </span>
                             </td>
-                            <td class="text-muted">{{ order.created_at|timesince }} {% trans "ago" %}</td>
+                            <td class="text-muted">{% blocktrans with since=order.created_at|timesince trimmed %}{{ since }} ago{% endblocktrans %}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -263,7 +263,7 @@
                     <line x1="12" y1="9" x2="12" y2="13"/>
                     <line x1="12" y1="17" x2="12.01" y2="17"/>
                 </svg>
-                {% blocktrans with count=stale_picklists_count %}{{ count }} picklist(s) in progress for over 4 hours{% endblocktrans %}
+                {% blocktrans count counter=stale_picklists_count trimmed %}{{ counter }} picklist in progress for over 4 hours.{% plural %}{{ counter }} picklists in progress for over 4 hours.{% endblocktrans %}
             </div>
             {% endif %}
             {% if recent_scan_events %}
@@ -280,7 +280,7 @@
                     <tbody>
                         {% for event in recent_scan_events %}
                         <tr>
-                            <td class="text-muted">{{ event.created_at|timesince }} {% trans "ago" %}</td>
+                            <td class="text-muted">{% blocktrans with since=event.created_at|timesince trimmed %}{{ since }} ago{% endblocktrans %}</td>
                             <td>
                                 <span class="badge badge-{% if event.event_type == 'manual_override' %}info{% elif event.event_type == 'picklist_parse_error' or event.event_type == 'picklist_rejected' %}warning{% else %}danger{% endif %}">
                                     {{ event.get_event_type_display }}

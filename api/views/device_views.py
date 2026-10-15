@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.utils.translation import gettext as _
 from api.serializers import DeviceSerializer, DeviceCreateSerializer
 from orderpiqrApp.models import Device, PickList
 from rest_framework import filters
@@ -122,7 +123,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
         # Check if device has pick list history
         if device.picklist_set.exists():
             return Response(
-                {'detail': 'Cannot delete device with pick list history. Unassign the user instead.'},
+                {'detail': _('Cannot delete device with pick list history. Unassign the user instead.')},
                 status=status.HTTP_400_BAD_REQUEST
             )
         return super().destroy(request, *args, **kwargs)
@@ -162,7 +163,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         except Device.DoesNotExist:
             return Response(
-                {'detail': 'Device not found'},
+                {'detail': _('Device not found')},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -238,7 +239,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
             'status': 'ok',
             'device_id': device.device_id,
             'created': created,
-            'message': 'Device registered' if created else 'Device updated'
+            'message': _('Device registered') if created else _('Device updated')
         })
 
     @extend_schema(
@@ -378,5 +379,5 @@ class DeviceViewSet(viewsets.ModelViewSet):
 
         return Response({
             'status': 'ok',
-            'message': 'User unassigned from device'
+            'message': _('User unassigned from device')
         })

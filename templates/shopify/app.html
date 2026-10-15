@@ -7,6 +7,8 @@
     <link rel="icon" type="image/png" href="{% static 'icons/icon-192.png' %}">
     <meta name="shopify-api-key" content="{{ api_key }}">
     <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js"></script>
+    <!-- i18n JavaScript (same origin; loads before the console script below) -->
+    <script src="{% url 'javascript-catalog' %}"></script>
     <style>
         :root {
             /* OrderPiqr brand palette (matches custom_admin.css) */
@@ -258,6 +260,10 @@
 (function () {
     'use strict';
 
+    const gettext = window.gettext;
+    const ngettext = window.ngettext;
+    const interpolate = window.interpolate;
+
     async function authFetch(url, options) {
         const token = await window.shopify.idToken();
         options = options || {};
@@ -315,7 +321,7 @@
 
     async function load() {
         const res = await authFetch('/shopify/api/status/');
-        if (!res.ok) { toast('Could not load status'); return; }
+        if (!res.ok) { toast(gettext('Could not load status')); return; }
         const data = await res.json();
         const badge = document.getElementById('status-badge');
         badge.textContent = data.status;
@@ -335,7 +341,7 @@
 
     document.getElementById('btn-link').addEventListener('click', async function () {
         this.disabled = true;
-        this.textContent = 'Linking…';
+        this.textContent = gettext('Linking…');
         try {
             const res = await authFetch('/shopify/api/link-account/', {
                 method: 'POST',
@@ -347,16 +353,17 @@
             });
             const data = await res.json().catch(() => ({}));
             if (res.ok) {
-                toast('Linked to ' + data.customer_name);
+                toast(interpolate(gettext('Linked to %(name)s'),
+                                  {name: data.customer_name}, true));
                 load();
                 refreshSyncStatus();
                 loadOrders(false);
             } else {
-                toast(data.error || 'Linking failed');
+                toast(data.error || gettext('Linking failed'));
             }
         } finally {
             this.disabled = false;
-            this.textContent = 'Link account';
+            this.textContent = gettext('Link account');
         }
     });
 
@@ -374,12 +381,13 @@
             const label = document.createElement('div');
             label.innerHTML = '<label></label><div class="hint"></div>';
             label.querySelector('label').textContent = item.title || item.external_variant_id;
-            label.querySelector('.hint').textContent = 'Variant ' + item.external_variant_id;
+            label.querySelector('.hint').textContent = interpolate(
+                gettext('Variant %(id)s'), {id: item.external_variant_id}, true);
             const input = document.createElement('input');
             input.type = 'text';
-            input.placeholder = 'Product code';
+            input.placeholder = gettext('Product code');
             const btn = document.createElement('button');
-            btn.textContent = 'Link';
+            btn.textContent = gettext('Link');
             btn.addEventListener('click', async function () {
                 btn.disabled = true;
                 const res = await authFetch('/shopify/api/map-product/', {
@@ -387,10 +395,10 @@
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({link_id: item.id, product_code: input.value.trim()}),
                 });
-                if (res.ok) { row.remove(); toast('Linked'); }
+                if (res.ok) { row.remove(); toast(gettext('Linked')); }
                 else {
                     const err = await res.json().catch(() => ({}));
-                    toast(err.error || 'Link failed');
+                    toast(err.error || gettext('Link failed'));
                     btn.disabled = false;
                 }
             });
@@ -411,10 +419,10 @@
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({password: input.value}),
             });
-            if (res.ok) { toast('Password set'); input.value = ''; }
+            if (res.ok) { toast(gettext('Password set')); input.value = ''; }
             else {
                 const err = await res.json().catch(() => ({}));
-                toast(err.error || 'Failed');
+                toast(err.error || gettext('Failed'));
             }
         } finally { this.disabled = false; }
     });
@@ -432,7 +440,7 @@
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(readConfigUI()),
             });
-            toast(res.ok ? 'Settings saved' : 'Save failed');
+            toast(res.ok ? gettext('Settings saved') : gettext('Save failed'));
         } finally { this.disabled = false; }
     });
 
@@ -448,15 +456,25 @@
         const active = job.status === 'pending' || job.status === 'running';
         btn.disabled = active;
         if (job.status === 'pending') {
-            el.textContent = 'Sync queued…';
+            el.textContent = gettext('Sync queued…');
         } else if (job.status === 'running') {
-            el.textContent = 'Syncing… ' + job.processed.toLocaleString() +
-                (job.total ? ' / ' + job.total.toLocaleString() : '') + ' products';
+            el.textContent = job.total
+                ? interpolate(
+                    ngettext('Syncing… %(processed)s / %(total)s product',
+                             'Syncing… %(processed)s / %(total)s products', job.total),
+                    {processed: job.processed.toLocaleString(),
+                     total: job.total.toLocaleString()}, true)
+                : interpolate(
+                    ngettext('Syncing… %(processed)s product',
+                             'Syncing… %(processed)s products', job.processed),
+                    {processed: job.processed.toLocaleString()}, true);
         } else if (job.status === 'done') {
-            el.textContent = 'Last sync: ' + job.linked.toLocaleString() + ' linked, ' +
-                job.unresolved.toLocaleString() + ' need mapping';
+            el.textContent = interpolate(
+                gettext('Last sync: %(linked)s linked, %(unresolved)s need mapping'),
+                {linked: job.linked.toLocaleString(),
+                 unresolved: job.unresolved.toLocaleString()}, true);
         } else if (job.status === 'failed') {
-            el.textContent = 'Sync failed — try again or contact support';
+            el.textContent = gettext('Sync failed — try again or contact support');
         }
         if (active && !syncPollTimer) {
             syncPollTimer = setTimeout(() => { syncPollTimer = null; refreshSyncStatus(); }, 2500);
@@ -483,10 +501,10 @@
         if (res.ok) {
             const data = await res.json();
             renderSyncJob(data.job);
-            toast('Product sync started');
+            toast(gettext('Product sync started'));
         } else {
             this.disabled = false;
-            toast('Could not start sync');
+            toast(gettext('Could not start sync'));
         }
     });
 
@@ -541,7 +559,7 @@
 
             const ful = document.createElement('div');
             ful.className = 'muted';
-            ful.textContent = order.cancelled ? 'cancelled'
+            ful.textContent = order.cancelled ? gettext('cancelled')
                 : (order.fulfillment_status || '').toLowerCase().replace(/_/g, ' ');
 
             const items = document.createElement('div');
@@ -551,7 +569,7 @@
 
             const local = document.createElement('div');
             if (order.imported) {
-                local.appendChild(statusBadge(order.local_status || 'imported', true));
+                local.appendChild(statusBadge(order.local_status || gettext('imported'), true));
             } else {
                 local.className = 'muted';
                 local.textContent = '–';
@@ -560,8 +578,10 @@
             row.append(cb, name, date, fin, ful, items, local);
             list.appendChild(row);
         });
-        document.getElementById('orders-count').textContent =
-            ordersState.orders.length + ' orders loaded';
+        document.getElementById('orders-count').textContent = interpolate(
+            ngettext('%(count)s order loaded', '%(count)s orders loaded',
+                     ordersState.orders.length),
+            {count: ordersState.orders.length}, true);
         document.getElementById('btn-orders-more').style.display =
             ordersState.hasNext ? '' : 'none';
         updatePushButton();
@@ -571,7 +591,9 @@
         const btn = document.getElementById('btn-orders-push');
         const n = ordersState.selected.size;
         btn.disabled = n === 0;
-        btn.textContent = n ? 'Push ' + n + ' to OrderPiqr' : 'Push selected to OrderPiqr';
+        btn.textContent = n
+            ? interpolate(gettext('Push %(count)s to OrderPiqr'), {count: n}, true)
+            : gettext('Push selected to OrderPiqr');
     }
 
     async function loadOrders(append) {
@@ -581,12 +603,12 @@
             ordersState.cursor = null;
             ordersState.selected.clear();
             document.getElementById('orders-select-all').checked = false;
-            list.innerHTML = '<div class="row hint">Loading orders…</div>';
+            list.innerHTML = '<div class="row hint">' + gettext('Loading orders…') + '</div>';
         }
         const res = await authFetch('/shopify/api/orders/?' +
             ordersQueryString(append ? ordersState.cursor : null));
         if (!res.ok) {
-            list.innerHTML = '<div class="row hint">Could not load orders.</div>';
+            list.innerHTML = '<div class="row hint">' + gettext('Could not load orders.') + '</div>';
             return;
         }
         const data = await res.json();
@@ -619,20 +641,27 @@
         const totals = { imported: 0, already_imported: 0, needs_mapping: 0, skipped: 0 };
         try {
             for (let i = 0; i < ids.length; i += 50) {
-                this.textContent = 'Pushing… ' + Math.min(i + 50, ids.length) + '/' + ids.length;
+                this.textContent = interpolate(gettext('Pushing… %(done)s/%(total)s'),
+                    {done: Math.min(i + 50, ids.length), total: ids.length}, true);
                 const res = await authFetch('/shopify/api/push-orders/', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({order_ids: ids.slice(i, i + 50)}),
                 });
-                if (!res.ok) { toast('Push failed'); return; }
+                if (!res.ok) { toast(gettext('Push failed')); return; }
                 const data = await res.json();
                 for (const key in totals) totals[key] += data[key] || 0;
             }
-            let msg = totals.imported + ' imported';
-            if (totals.already_imported) msg += ', ' + totals.already_imported + ' already in OrderPiqr';
-            if (totals.needs_mapping) msg += ', ' + totals.needs_mapping + ' need product mapping';
-            if (totals.skipped) msg += ', ' + totals.skipped + ' skipped';
+            let msg = interpolate(gettext('%(count)s imported'),
+                                  {count: totals.imported}, true);
+            if (totals.already_imported) msg += ', ' + interpolate(
+                gettext('%(count)s already in OrderPiqr'),
+                {count: totals.already_imported}, true);
+            if (totals.needs_mapping) msg += ', ' + interpolate(
+                gettext('%(count)s need product mapping'),
+                {count: totals.needs_mapping}, true);
+            if (totals.skipped) msg += ', ' + interpolate(
+                gettext('%(count)s skipped'), {count: totals.skipped}, true);
             toast(msg);
             ordersState.selected.clear();
             await Promise.all([loadOrders(false), load()]);

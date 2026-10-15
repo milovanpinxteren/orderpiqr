@@ -9,7 +9,7 @@
         <div class="queue-position">{{ order.queue_position }}</div>
         <div class="order-info">
             <span class="order-code">{{ order.order_code }}</span>
-            <span class="item-count">{{ order.item_count }} {% trans "items" %}</span>
+            <span class="item-count">{% blocktrans count counter=order.item_count trimmed %}{{ counter }} item{% plural %}{{ counter }} items{% endblocktrans %}</span>
         </div>
         {% if order.notes %}
         <span class="order-notes-icon" title="{{ order.notes }}">

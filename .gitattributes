@@ -1,0 +1,13 @@
+# Compiled catalogs are binary. Git's heuristic already detects this, but
+# saying it explicitly matters: these files ship the translations (nothing
+# compiles on deploy — the Heroku release phase only runs `migrate`), and any
+# line-ending conversion would corrupt them and silently break every locale.
+*.mo binary
+
+# Source catalogs are text, but must not gain CRLF — gettext tooling and the
+# diffs are both cleaner with LF, and the files are shared across platforms.
+*.po text eol=lf
+
+# Hook scripts run through sh. A CRLF shebang is "bad interpreter" on
+# macOS/Linux, so pin them to LF regardless of the committer's core.autocrlf.
+.githooks/* text eol=lf

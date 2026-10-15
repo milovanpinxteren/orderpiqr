@@ -3,15 +3,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 13:46+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: xx\n"
+"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
+"2:1));\n"
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:31
 msgid "Devices show who scanned and picked. Use this page to track activity."
@@ -194,6 +195,7 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:89
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:209
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:89
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:32
 msgid "Close"
 msgstr "Închide"
 
@@ -453,6 +455,7 @@ msgid "No product data found on page"
 msgstr "Nu s-au găsit date despre produse pe pagină"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:48
+#: .\templates\index.html:241
 msgid "Offline mode: using cached product data"
 msgstr "Mod offline: se folosesc datele de produse din cache"
 
@@ -461,6 +464,7 @@ msgid "Cached product data is not usable"
 msgstr "Datele de produse din cache nu sunt utilizabile"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:54
+#: .\templates\index.html:243
 msgid "No product data available while offline"
 msgstr "Nu sunt disponibile date despre produse în modul offline"
 
@@ -509,7 +513,7 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:308
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:554
 msgid "No active picklist — scan the list QR first."
-msgstr "Nicio listă de picking activă — scanați mai întâi codul QR al listei."
+msgstr "Nicio listă de preluare activă — scanați mai întâi codul QR al listei."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:327
 msgid "Could not update product pick."
@@ -630,11 +634,11 @@ msgstr "Suprascriere manuală: %(code)s confirmat(ă)"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\orderImportance.js:17
 msgid "Order Importance: Enabled"
-msgstr "Importanța ordinii: Activată"
+msgstr "Ordine fixă de scanare: Activată"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\orderImportance.js:20
 msgid "Order Importance: Disabled"
-msgstr "Importanța ordinii: Dezactivată"
+msgstr "Ordine fixă de scanare: Dezactivată"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:91
 msgid "New list found, start this list?"
@@ -668,7 +672,8 @@ msgstr "Listă de preluare adăugată"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:222
 msgid "Kept %(count)s already-picked item(s) from the previous attempt."
-msgstr "S-au păstrat %(count)s articole deja culese din încercarea anterioară."
+msgstr ""
+"S-au păstrat %(count)s articole deja preluate din încercarea anterioară."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:235
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:247
@@ -694,7 +699,7 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:302
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
-"Niciun câmp din rândul listei de ridicare nu corespunde unui cod de produs "
+"Niciun câmp din rândul listei de preluare nu corespunde unui cod de produs "
 "cunoscut."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:49
@@ -724,3 +729,149 @@ msgstr "Opriți camera"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
 msgid "Start camera"
 msgstr "Porniți camera"
+
+#: .\templates\shopify\app.html:324
+msgid "Could not load status"
+msgstr "Nu s-a putut încărca starea"
+
+#: .\templates\shopify\app.html:344
+msgid "Linking…"
+msgstr "Se leagă contul…"
+
+#: .\templates\shopify\app.html:356
+msgid "Linked to %(name)s"
+msgstr "Legat la %(name)s"
+
+#: .\templates\shopify\app.html:362
+msgid "Linking failed"
+msgstr "Legarea contului a eșuat"
+
+#: .\templates\shopify\app.html:366
+msgid "Link account"
+msgstr "Leagă contul"
+
+#: .\templates\shopify\app.html:385
+msgid "Variant %(id)s"
+msgstr "Varianta %(id)s"
+
+#: .\templates\shopify\app.html:388
+msgid "Product code"
+msgstr "Cod produs"
+
+#: .\templates\shopify\app.html:390
+msgid "Link"
+msgstr "Asociază"
+
+#: .\templates\shopify\app.html:398
+msgid "Linked"
+msgstr "Asociat"
+
+#: .\templates\shopify\app.html:401
+msgid "Link failed"
+msgstr "Asocierea a eșuat"
+
+#: .\templates\shopify\app.html:422
+msgid "Password set"
+msgstr "Parolă setată"
+
+#: .\templates\shopify\app.html:425
+msgid "Failed"
+msgstr "Eșuat"
+
+#: .\templates\shopify\app.html:443
+msgid "Settings saved"
+msgstr "Setări salvate"
+
+#: .\templates\shopify\app.html:443
+msgid "Save failed"
+msgstr "Salvarea a eșuat"
+
+#: .\templates\shopify\app.html:459
+msgid "Sync queued…"
+msgstr "Sincronizare în coadă…"
+
+#: .\templates\shopify\app.html:463
+msgid "Syncing… %(processed)s / %(total)s product"
+msgid_plural "Syncing… %(processed)s / %(total)s products"
+msgstr[0] "Se sincronizează… %(processed)s / %(total)s produs"
+msgstr[1] "Se sincronizează… %(processed)s / %(total)s produse"
+msgstr[2] "Se sincronizează… %(processed)s / %(total)s de produse"
+
+#: .\templates\shopify\app.html:468
+msgid "Syncing… %(processed)s product"
+msgid_plural "Syncing… %(processed)s products"
+msgstr[0] "Se sincronizează… %(processed)s produs"
+msgstr[1] "Se sincronizează… %(processed)s produse"
+msgstr[2] "Se sincronizează… %(processed)s de produse"
+
+#: .\templates\shopify\app.html:473
+msgid "Last sync: %(linked)s linked, %(unresolved)s need mapping"
+msgstr ""
+"Ultima sincronizare: %(linked)s asociate, %(unresolved)s necesită asociere"
+
+#: .\templates\shopify\app.html:477
+msgid "Sync failed — try again or contact support"
+msgstr "Sincronizarea a eșuat — încercați din nou sau contactați suportul"
+
+#: .\templates\shopify\app.html:504
+msgid "Product sync started"
+msgstr "Sincronizarea produselor a început"
+
+#: .\templates\shopify\app.html:507
+msgid "Could not start sync"
+msgstr "Nu s-a putut porni sincronizarea"
+
+#: .\templates\shopify\app.html:562
+msgid "cancelled"
+msgstr "anulată"
+
+#: .\templates\shopify\app.html:572
+msgid "imported"
+msgstr "importată"
+
+#: .\templates\shopify\app.html:582
+msgid "%(count)s order loaded"
+msgid_plural "%(count)s orders loaded"
+msgstr[0] "%(count)s comandă încărcată"
+msgstr[1] "%(count)s comenzi încărcate"
+msgstr[2] "%(count)s de comenzi încărcate"
+
+#: .\templates\shopify\app.html:595
+msgid "Push %(count)s to OrderPiqr"
+msgstr "Trimite %(count)s în OrderPiqr"
+
+#: .\templates\shopify\app.html:596
+msgid "Push selected to OrderPiqr"
+msgstr "Trimite selecția în OrderPiqr"
+
+#: .\templates\shopify\app.html:606
+msgid "Loading orders…"
+msgstr "Se încarcă comenzile…"
+
+#: .\templates\shopify\app.html:611
+msgid "Could not load orders."
+msgstr "Nu s-au putut încărca comenzile."
+
+#: .\templates\shopify\app.html:644
+msgid "Pushing… %(done)s/%(total)s"
+msgstr "Se trimite… %(done)s/%(total)s"
+
+#: .\templates\shopify\app.html:651
+msgid "Push failed"
+msgstr "Trimiterea a eșuat"
+
+#: .\templates\shopify\app.html:655
+msgid "%(count)s imported"
+msgstr "%(count)s importate"
+
+#: .\templates\shopify\app.html:658
+msgid "%(count)s already in OrderPiqr"
+msgstr "%(count)s deja în OrderPiqr"
+
+#: .\templates\shopify\app.html:661
+msgid "%(count)s need product mapping"
+msgstr "%(count)s necesită asociere de produs"
+
+#: .\templates\shopify\app.html:664
+msgid "%(count)s skipped"
+msgstr "%(count)s omise"

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 from orderpiqrApp.models import UserProfile, Customer
 from django.contrib.auth.models import User
 
@@ -9,7 +10,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 
     def get_username(self, obj):
         return obj.user.username  # Display the username in the admin
-    get_username.short_description = 'Username'
+    get_username.short_description = _('Username')
 
     def get_queryset(self, request):
         """Override queryset to filter by company"""

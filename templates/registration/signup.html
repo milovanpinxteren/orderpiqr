@@ -98,7 +98,10 @@
                                id="id_admin_profile_username"
                                name="admin_profile_username"
                                value="{{ form.admin_profile_username.value|default:'' }}"
-                               placeholder="{% trans 'admin' %}"
+                               {# Not translatable: this is the username the #}
+                               {# signup actually creates, not prose. Romanian #}
+                               {# shipped "Administrare" here. #}
+                               placeholder="admin"
                                required>
                         {% if form.admin_profile_username.errors %}
                         <span class="form-error">{{ form.admin_profile_username.errors.0 }}</span>
@@ -171,7 +174,8 @@
                                id="id_picker_profile_username"
                                name="picker_profile_username"
                                value="{{ form.picker_profile_username.value|default:'' }}"
-                               placeholder="{% trans 'picker' %}"
+                               {# Not translatable, same reason as 'admin'. #}
+                               placeholder="picker"
                                required>
                         {% if form.picker_profile_username.errors %}
                         <span class="form-error">{{ form.picker_profile_username.errors.0 }}</span>

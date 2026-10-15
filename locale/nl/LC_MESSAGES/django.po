@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 14:30+0200\n"
+"POT-Creation-Date: 2026-10-15 13:46+0200\n"
 "PO-Revision-Date: 2025-08-08 14:00+0200\n"
 "Last-Translator: Milo van Pinxteren <milo@example.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -12,6 +12,208 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\api\serializers\device_serializer.py:26
+msgid "A device with this fingerprint is already registered for your company."
+msgstr ""
+"Een apparaat met deze vingerafdruk is al geregistreerd voor uw bedrijf."
+
+#: .\api\serializers\order_serializer.py:55
+#: .\orderpiqrApp\views\manage_views.py:843
+#: .\orderpiqrApp\views\manage_views.py:917
+msgid "An order with this code already exists."
+msgstr "Een order met deze code bestaat al."
+
+#: .\api\serializers\product_serializer.py:74
+msgid "Barcodes cannot be empty."
+msgstr "Barcodes mogen niet leeg zijn."
+
+#: .\api\serializers\product_serializer.py:77
+#, python-format
+msgid "Duplicate code \"%(code)s\" in request."
+msgstr "Dubbele code \"%(code)s\" in de aanvraag."
+
+#: .\api\serializers\product_serializer.py:82
+#, python-format
+msgid "Code \"%(code)s\" is already in use by another product."
+msgstr "Code \"%(code)s\" is al in gebruik bij een ander product."
+
+#: .\api\serializers\product_serializer.py:96
+msgid "A code in this request was just taken by another product."
+msgstr ""
+"Een code in deze aanvraag is net door een ander product in gebruik genomen."
+
+#: .\api\serializers\product_serializer.py:116
+msgid ""
+"The replaced code conflicts with an existing barcode of another product."
+msgstr ""
+"De vervangen code conflicteert met een bestaande barcode van een ander "
+"product."
+
+#: .\api\views\device_views.py:126
+msgid "Cannot delete device with pick list history. Unassign the user instead."
+msgstr ""
+"Een apparaat met picklijstgeschiedenis kan niet worden verwijderd. Koppel in "
+"plaats daarvan de gebruiker los."
+
+#: .\api\views\device_views.py:166
+#: .\orderpiqrApp\views\scan_picklist_view.py:462
+msgid "Device not found"
+msgstr "Apparaat niet gevonden"
+
+#: .\api\views\device_views.py:242
+msgid "Device registered"
+msgstr "Apparaat geregistreerd"
+
+#: .\api\views\device_views.py:242
+msgid "Device updated"
+msgstr "Apparaat bijgewerkt"
+
+#: .\api\views\device_views.py:382
+msgid "User unassigned from device"
+msgstr "Gebruiker losgekoppeld van apparaat"
+
+#: .\api\views\inventory_views.py:156 .\api\views\inventory_views.py:221
+#: .\orderpiqrApp\views\inventory_views.py:76
+#: .\orderpiqrApp\views\inventory_views.py:114
+#: .\orderpiqrApp\views\inventory_views.py:155
+msgid "No customer found"
+msgstr "Geen klant gevonden"
+
+#: .\api\views\inventory_views.py:162 .\api\views\inventory_views.py:227
+#: .\orderpiqrApp\views\inventory_views.py:32
+msgid "Inventory management is not enabled"
+msgstr "Voorraadbeheer is niet ingeschakeld"
+
+#: .\api\views\inventory_views.py:176 .\api\views\inventory_views.py:251
+#: .\api\views\product_views.py:195 .\orderpiqrApp\views\inventory_views.py:133
+#: .\orderpiqrApp\views\inventory_views.py:194
+#: .\orderpiqrApp\views\scan_picklist_view.py:406
+#: .\orderpiqrApp\views\scan_picklist_view.py:489
+#: .\templates\inventory\picker.html:172
+msgid "Product not found"
+msgstr "Product niet gevonden"
+
+#: .\api\views\order_views.py:263
+msgid "Delete not allowed. Use the cancel action instead."
+msgstr ""
+"Verwijderen is niet toegestaan. Gebruik in plaats daarvan de actie Annuleren."
+
+#: .\api\views\order_views.py:291
+#, python-format
+msgid ""
+"Cannot cancel order with status \"%(status)s\". Only draft or queued orders "
+"can be cancelled."
+msgstr ""
+"Een order met status \"%(status)s\" kan niet worden geannuleerd. Alleen "
+"orders met de status concept of in wachtrij kunnen worden geannuleerd."
+
+#: .\api\views\order_views.py:302
+msgid "Order cancelled"
+msgstr "Order geannuleerd"
+
+#: .\api\views\order_views.py:411 .\api\views\orderline_views.py:130
+#: .\api\views\queue_views.py:272 .\api\views\queue_views.py:346
+#: .\api\views\queue_views.py:510 .\orderpiqrApp\views\queue_views.py:332
+#: .\orderpiqrApp\views\queue_views.py:438
+#: .\orderpiqrApp\views\queue_views.py:472
+#: .\orderpiqrApp\views\queue_views.py:562
+#: .\orderpiqrApp\views\queue_views.py:605
+msgid "Order not found"
+msgstr "Order niet gevonden"
+
+#: .\api\views\orderline_views.py:124
+#, python-format
+msgid "Cannot add lines to order with status \"%(status)s\""
+msgstr ""
+"Aan een order met status \"%(status)s\" kunnen geen regels worden toegevoegd"
+
+#: .\api\views\orderline_views.py:137 .\api\views\picklist_views.py:128
+#: .\api\views\productpick_views.py:111
+msgid "Delete not allowed."
+msgstr "Verwijderen is niet toegestaan."
+
+#: .\api\views\picklist_views.py:197
+msgid "Pick list completed"
+msgstr "Picklijst voltooid"
+
+#: .\api\views\product_views.py:250
+msgid "Products updated successfully"
+msgstr "Producten succesvol bijgewerkt"
+
+#: .\api\views\productpick_views.py:146
+msgid "Pick marked as successful"
+msgstr "Pick gemarkeerd als succesvol"
+
+#: .\api\views\productpick_views.py:182
+msgid "Pick marked as failed"
+msgstr "Pick gemarkeerd als mislukt"
+
+#: .\api\views\queue_views.py:83 .\api\views\queue_views.py:163
+#: .\api\views\queue_views.py:236 .\api\views\queue_views.py:317
+#: .\api\views\queue_views.py:414 .\api\views\queue_views.py:569
+#: .\api\views\queue_views.py:651 .\orderpiqrApp\views\inventory_views.py:29
+#: .\orderpiqrApp\views\queue_views.py:82
+#: .\orderpiqrApp\views\queue_views.py:125
+#: .\orderpiqrApp\views\queue_views.py:362
+msgid "No customer profile found"
+msgstr "Geen klantprofiel gevonden"
+
+#: .\api\views\queue_views.py:249 .\orderpiqrApp\views\queue_views.py:419
+msgid "Only draft orders can be added to queue"
+msgstr "Alleen conceptorders kunnen aan de wachtrij worden toegevoegd"
+
+#: .\api\views\queue_views.py:265 .\orderpiqrApp\views\queue_views.py:434
+#: .\templates\manage\orders\list.html:229
+#: .\templates\manage\queue\list.html:385 .\templates\queue\manage.html:116
+msgid "Order added to queue"
+msgstr "Order toegevoegd aan wachtrij"
+
+#: .\api\views\queue_views.py:330 .\orderpiqrApp\views\queue_views.py:459
+msgid "Order is not in queue"
+msgstr "Order staat niet in de wachtrij"
+
+#: .\api\views\queue_views.py:340 .\orderpiqrApp\views\queue_views.py:468
+#: .\templates\manage\queue\list.html:386 .\templates\queue\manage.html:117
+msgid "Order removed from queue"
+msgstr "Order uit wachtrij verwijderd"
+
+#: .\api\views\queue_views.py:432
+msgid "Device not found. Please register your device first."
+msgstr "Apparaat niet gevonden. Registreer eerst dit apparaat."
+
+#: .\api\views\queue_views.py:445 .\orderpiqrApp\views\queue_views.py:221
+msgid "This order is already being picked"
+msgstr "Deze order wordt al gepickt"
+
+#: .\api\views\queue_views.py:451 .\orderpiqrApp\views\queue_views.py:260
+#: .\orderpiqrApp\views\scan_picklist_view.py:265
+msgid "This order has already been completed"
+msgstr "Deze order is al voltooid"
+
+#: .\api\views\queue_views.py:457 .\orderpiqrApp\views\queue_views.py:266
+msgid "This order is not available for picking"
+msgstr "Deze order is niet beschikbaar om te picken"
+
+#: .\api\views\queue_views.py:502 .\orderpiqrApp\views\queue_views.py:323
+msgid "Order claimed successfully"
+msgstr "Order succesvol geclaimd"
+
+#: .\api\views\queue_views.py:592 .\orderpiqrApp\views\queue_views.py:505
+msgid "Queue reordered"
+msgstr "Wachtrijvolgorde aangepast"
+
+#: .\api\views\queue_views.py:693 .\orderpiqrApp\views\queue_views.py:558
+msgid "Order moved up"
+msgstr "Order omhoog verplaatst"
+
+#: .\api\views\queue_views.py:694 .\orderpiqrApp\views\queue_views.py:558
+msgid "Order moved down"
+msgstr "Order omlaag verplaatst"
+
+#: .\api\views\queue_views.py:700
+msgid "Order not found or not in queue"
+msgstr "Order niet gevonden of niet in de wachtrij"
 
 #: .\drf_hashed_token\admin.py:10
 msgid "Hashed auth tokens"
@@ -36,6 +238,12 @@ msgstr "Ongeldig token."
 msgid "User inactive or deleted."
 msgstr "Gebruiker inactief of verwijderd."
 
+#: .\integrations\apps.py:8 .\templates\manage\base.html:134
+#: .\templates\manage\integrations\list.html:4
+#: .\templates\manage\integrations\list.html:5
+msgid "Integrations"
+msgstr "Integraties"
+
 #: .\integrations\models.py:23 .\templates\manage\picklists\detail.html:58
 #: .\templates\manage\picklists\detail.html:151
 #: .\templates\manage\picklists\list.html:14
@@ -47,7 +255,7 @@ msgstr "In afwachting"
 #: .\templates\manage\products\form.html:60
 #: .\templates\manage\products\list.html:49
 #: .\templates\manage\products\list.html:142
-#: .\templates\manage\products\list.html:469
+#: .\templates\manage\products\list.html:255
 msgid "Active"
 msgstr "Actief"
 
@@ -107,6 +315,115 @@ msgstr "Externe orderkoppeling"
 msgid "External order links"
 msgstr "Externe orderkoppelingen"
 
+#: .\integrations_shopify\apps.py:8
+msgid "Shopify integration"
+msgstr "Shopify-integratie"
+
+#: .\integrations_shopify\models.py:35
+msgid "Shopify shop"
+msgstr "Shopify-winkel"
+
+#: .\integrations_shopify\models.py:36
+msgid "Shopify shops"
+msgstr "Shopify-winkels"
+
+#: .\integrations_shopify\views.py:265 .\integrations_shopify\views.py:312
+msgid "Could not load orders from Shopify"
+msgstr "Kon de orders niet uit Shopify laden"
+
+#: .\integrations_shopify\views.py:304
+msgid "no orders selected"
+msgstr "geen orders geselecteerd"
+
+#: .\integrations_shopify\views.py:390
+msgid "link not found"
+msgstr "koppeling niet gevonden"
+
+#: .\integrations_shopify\views.py:393
+msgid "no product with that code"
+msgstr "geen product met die code"
+
+#: .\integrations_shopify\views.py:422
+msgid "Invalid username or password"
+msgstr "Ongeldige gebruikersnaam of wachtwoord"
+
+#: .\integrations_shopify\views.py:425
+msgid "This account is not a company admin"
+msgstr "Dit account is geen bedrijfsbeheerder"
+
+#: .\integrations_shopify\views.py:428
+msgid "Account has no company"
+msgstr "Account heeft geen bedrijf"
+
+#: .\integrations_shopify\views.py:457
+msgid "password too short (min 8 characters)"
+msgstr "wachtwoord te kort (min. 8 tekens)"
+
+#: .\integrations_woocommerce\apps.py:8
+msgid "WooCommerce integration"
+msgstr "WooCommerce-integratie"
+
+#: .\integrations_woocommerce\client.py:30
+msgid "Plain http store URLs are only allowed in DEBUG"
+msgstr "Winkel-URL's zonder https zijn alleen toegestaan in DEBUG"
+
+#: .\integrations_woocommerce\client.py:32
+msgid "Store URL must start with https://"
+msgstr "Winkel-URL moet beginnen met https://"
+
+#: .\integrations_woocommerce\models.py:42
+msgid "WooCommerce store"
+msgstr "WooCommerce-winkel"
+
+#: .\integrations_woocommerce\models.py:43
+msgid "WooCommerce stores"
+msgstr "WooCommerce-winkels"
+
+#: .\integrations_woocommerce\models.py:91
+msgid "Pairing token"
+msgstr "Koppeltoken"
+
+#: .\integrations_woocommerce\models.py:92
+msgid "Pairing tokens"
+msgstr "Koppeltokens"
+
+#: .\integrations_woocommerce\views.py:59
+msgid ""
+"This pairing key is not valid. Generate a new one in the OrderPiqr portal."
+msgstr ""
+"Deze koppelsleutel is niet geldig. Genereer een nieuwe in het OrderPiqr-"
+"portaal."
+
+#: .\integrations_woocommerce\views.py:63
+msgid ""
+"This pairing key has expired. Generate a new one in the OrderPiqr portal."
+msgstr ""
+"Deze koppelsleutel is verlopen. Genereer een nieuwe in het OrderPiqr-portaal."
+
+#: .\integrations_woocommerce\views.py:79
+msgid ""
+"Could not reach the store with these API credentials. Check the store URL "
+"and REST API key."
+msgstr ""
+"Kon de winkel niet bereiken met deze API-gegevens. Controleer de winkel-URL "
+"en de REST API-sleutel."
+
+#: .\integrations_woocommerce\views.py:127
+msgid ""
+"The store accepted the credentials but webhook registration failed. Check "
+"that the REST API key has Read/Write permissions."
+msgstr ""
+"De winkel accepteerde de inloggegevens, maar het registreren van de webhook "
+"is mislukt. Controleer of de REST API-sleutel lees- en schrijfrechten heeft."
+
+#: .\integrations_woocommerce\views.py:240
+msgid "Invalid plugin token."
+msgstr "Ongeldig plugintoken."
+
+#: .\integrations_woocommerce\views.py:261
+msgid "Invalid connection or plugin token."
+msgstr "Ongeldige koppeling of ongeldig plugintoken."
+
 #: .\orderpiqrApp\admin\email_admin.py:33 .\orderpiqrApp\models\orders.py:23
 #: .\templates\manage\dashboard.html:222
 #: .\templates\manage\integrations\list.html:26
@@ -128,7 +445,7 @@ msgstr "Aflevering"
 
 #: .\orderpiqrApp\admin\email_admin.py:49
 #: .\orderpiqrApp\models\scan_events.py:67
-#: .\templates\manage\health\list.html:422
+#: .\templates\manage\health\list.html:427
 msgid "Message"
 msgstr "Bericht"
 
@@ -136,7 +453,7 @@ msgstr "Bericht"
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:51 .\orderpiqrApp\models\products.py:22
-#: .\orderpiqrApp\models\products.py:57 .\templates\index.html:181
+#: .\orderpiqrApp\models\products.py:57 .\templates\index.html:186
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -146,6 +463,7 @@ msgid "Product"
 msgstr "Product"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:51
+#: .\orderpiqrApp\views\manage_views.py:1991
 #: .\templates\manage\inventory\logs.html:78
 #: .\templates\manage\products\form.html:129
 #: .\templates\manage\products\form.html:169
@@ -154,7 +472,8 @@ msgstr "Wijziging"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
 #: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
-#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:138
+#: .\orderpiqrApp\models\inventory.py:38
+#: .\orderpiqrApp\views\manage_views.py:1992 .\templates\index.html:143
 #: .\templates\manage\inventory\logs.html:80
 #: .\templates\manage\products\form.html:131
 #: .\templates\manage\products\form.html:171
@@ -167,11 +486,12 @@ msgstr "Gebruiker"
 #: .\orderpiqrApp\models\devices.py:36 .\orderpiqrApp\models\devices.py:50
 #: .\orderpiqrApp\models\inventory.py:45 .\orderpiqrApp\models\picklists.py:14
 #: .\orderpiqrApp\models\scan_events.py:57
+#: .\orderpiqrApp\views\manage_views.py:1992
 #: .\templates\manage\dashboard.html:277
 #: .\templates\manage\devices\list.html:47
 #: .\templates\manage\health\list.html:161
-#: .\templates\manage\health\list.html:269
-#: .\templates\manage\health\list.html:421
+#: .\templates\manage\health\list.html:274
+#: .\templates\manage\health\list.html:426
 #: .\templates\manage\picklists\detail.html:64
 #: .\templates\manage\picklists\list.html:33
 msgid "Device"
@@ -185,9 +505,18 @@ msgstr "Wijzigingsdetails"
 msgid "Metadata"
 msgstr "Metadata"
 
+#: .\orderpiqrApp\admin\login_token_admin.py:33
+msgid "Revoke selected login QRs"
+msgstr "Geselecteerde inlog-QR's intrekken"
+
+#: .\orderpiqrApp\admin\login_token_admin.py:40
+#, python-format
+msgid "%(count)s login QR(s) revoked."
+msgstr "%(count)s inlog-QR(s) ingetrokken."
+
 #: .\orderpiqrApp\admin\order_admin.py:35
 msgid "Generate QR PDF for selected Orders"
-msgstr "Genereer QR-PDF voor geselecteerde bestellingen"
+msgstr "Genereer QR-PDF voor geselecteerde orders"
 
 #: .\orderpiqrApp\admin\order_admin.py:38
 #: .\orderpiqrApp\views\manage_views.py:743
@@ -224,7 +553,7 @@ msgid "%(count)s order(s) removed from queue."
 msgstr "%(count)s order(s) verwijderd uit wachtrij."
 
 #: .\orderpiqrApp\admin\order_admin.py:124
-#: .\orderpiqrApp\admin\order_admin.py:328 .\orderpiqr\views.py:219
+#: .\orderpiqrApp\admin\order_admin.py:329 .\orderpiqr\views.py:219
 msgid "Your account is not linked to a customer."
 msgstr "Uw account is niet gekoppeld aan een klant."
 
@@ -248,20 +577,41 @@ msgstr "Ongeldige hoeveelheid voor productcode \"%(code)s\" in rij %(row)d"
 msgid "Unknown product code \"%(code)s\" in row %(row)d"
 msgstr "Onbekende productcode \"%(code)s\" in rij %(row)d"
 
-#: .\orderpiqrApp\admin\order_admin.py:255
+#: .\orderpiqrApp\admin\order_admin.py:254
+#: .\orderpiqrApp\admin\product_admin.py:167
+msgid "Unsupported file format, only .csv and .xlsx are supported"
+msgstr ""
+"Niet-ondersteund bestandsformaat; alleen .csv en .xlsx worden ondersteund"
+
+#: .\orderpiqrApp\admin\order_admin.py:256
 #, python-format
 msgid "%(orders)s orders and %(lines)s lines added."
-msgstr "%(orders)s bestellingen en %(lines)s regels toegevoegd."
+msgstr "%(orders)s orders en %(lines)s regels toegevoegd."
 
-#: .\orderpiqrApp\admin\order_admin.py:262
+#: .\orderpiqrApp\admin\order_admin.py:263
 #, python-format
 msgid "Overwritten orders: %(codes)s."
-msgstr "Overschreven bestellingen: %(codes)s."
+msgstr "Overschreven orders: %(codes)s."
 
-#: .\orderpiqrApp\admin\order_admin.py:270
+#: .\orderpiqrApp\admin\order_admin.py:271
 #, python-format
 msgid "Error processing file: %(msg)s"
 msgstr "Fout bij verwerken van bestand: %(msg)s"
+
+#: .\orderpiqrApp\admin\order_admin.py:273
+#: .\orderpiqrApp\admin\product_admin.py:178
+msgid "No file uploaded."
+msgstr "Geen bestand geüpload."
+
+#: .\orderpiqrApp\admin\order_admin.py:275
+#: .\orderpiqrApp\admin\product_admin.py:180
+msgid "Upload CSV or XLSX File"
+msgstr "Upload CSV- of XLSX-bestand"
+
+#: .\orderpiqrApp\admin\order_admin.py:285
+#: .\orderpiqrApp\admin\product_admin.py:192
+msgid "Invalid form submission."
+msgstr "Ongeldige formulierverzending."
 
 #: .\orderpiqrApp\admin\preferences_admin.py:14
 msgid "General Info"
@@ -285,11 +635,6 @@ msgstr "Vereiste kolom \"%(field)s\" ontbreekt"
 msgid "Missing value for \"%(field)s\" in row %(row)d"
 msgstr "Ontbrekende waarde voor \"%(field)s\" in rij %(row)d"
 
-#: .\orderpiqrApp\admin\product_admin.py:167
-msgid "Unsupported file format, only .csv and .xlsx are supported"
-msgstr ""
-"Niet-ondersteund bestandsformaat; alleen .csv en .xlsx worden ondersteund"
-
 #: .\orderpiqrApp\admin\product_admin.py:169
 #, python-format
 msgid "%(added)d products added, %(overwritten)d products overwritten."
@@ -300,18 +645,6 @@ msgstr ""
 #, python-format
 msgid "Error processing file: %(error)s"
 msgstr "Fout bij verwerken van bestand: %(error)s"
-
-#: .\orderpiqrApp\admin\product_admin.py:178
-msgid "No file uploaded."
-msgstr "Geen bestand geüpload."
-
-#: .\orderpiqrApp\admin\product_admin.py:180
-msgid "Upload CSV or XLSX File"
-msgstr "Upload CSV- of XLSX-bestand"
-
-#: .\orderpiqrApp\admin\product_admin.py:192
-msgid "Invalid form submission."
-msgstr "Ongeldige formulierverzending."
 
 #: .\orderpiqrApp\admin\product_admin.py:213
 #, python-format
@@ -335,6 +668,76 @@ msgstr "Het product \"%(description)s\" is succesvol toegevoegd."
 msgid "User is not allowed to save products."
 msgstr "Gebruiker mag geen producten opslaan."
 
+#: .\orderpiqrApp\admin\userprofile_admin.py:13
+#: .\templates\manage\profile.html:22 .\templates\manage\profile.html:178
+#: .\templates\registration\login.html:35
+#: .\templates\registration\signup.html:95
+#: .\templates\registration\signup.html:171
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:18
+msgid "Company name"
+msgstr "Bedrijfsnaam"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:20
+msgid "Admin email"
+msgstr "E-mail admin"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:21
+msgid "Admin profile username"
+msgstr "Gebruikersnaam adminprofiel"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:22
+msgid "Admin password"
+msgstr "Wachtwoord admin"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:23
+msgid "Confirm admin password"
+msgstr "Bevestig wachtwoord admin"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:26
+msgid "Orderpicker email"
+msgstr "E-mail orderpicker"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:27
+msgid "Orderpicker profile username"
+msgstr "Gebruikersnaam orderpickerprofiel"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:28
+msgid "Orderpicker password"
+msgstr "Wachtwoord orderpicker"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:29
+msgid "Confirm orderpicker password"
+msgstr "Bevestig wachtwoord orderpicker"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:38
+#: .\orderpiqrApp\forms\accounts\signup_form.py:40
+msgid "Passwords do not match."
+msgstr "Wachtwoorden komen niet overeen."
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:57
+msgid "A company with this name already exists."
+msgstr "Er bestaat al een bedrijf met deze naam."
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:65
+msgid "Profile usernames must be different."
+msgstr "De profielgebruikersnamen moeten verschillend zijn."
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:77
+#: .\orderpiqrApp\views\manage_views.py:1687
+msgid "Username is required."
+msgstr "Gebruikersnaam is verplicht."
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:80
+msgid "This username is already taken for this company."
+msgstr "Deze gebruikersnaam is al in gebruik binnen dit bedrijf."
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:81
+msgid "Duplicate profile username in company."
+msgstr "Dubbele profielgebruikersnaam binnen het bedrijf."
+
 #: .\orderpiqrApp\models\customers.py:8 .\orderpiqrApp\models\devices.py:20
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 msgid "Name"
@@ -352,7 +755,7 @@ msgstr "Omschrijving"
 #: .\orderpiqrApp\models\customers.py:12 .\orderpiqrApp\models\customers.py:21
 #: .\orderpiqrApp\models\devices.py:22 .\orderpiqrApp\models\login_tokens.py:33
 #: .\orderpiqrApp\models\orders.py:18 .\orderpiqrApp\models\picklists.py:11
-#: .\orderpiqrApp\models\preferences.py:68 .\orderpiqrApp\models\products.py:13
+#: .\orderpiqrApp\models\preferences.py:87 .\orderpiqrApp\models\products.py:13
 #: .\orderpiqrApp\models\products.py:58 .\orderpiqrApp\models\scan_events.py:55
 msgid "Customer"
 msgstr "Klant"
@@ -481,7 +884,7 @@ msgstr "Correctie"
 
 #: .\orderpiqrApp\models\inventory.py:24
 msgid "Order Picked"
-msgstr "Bestelling gepickt"
+msgstr "Order gepickt"
 
 #: .\orderpiqrApp\models\inventory.py:25
 msgid "Other"
@@ -501,9 +904,10 @@ msgstr "Type wijziging"
 
 #: .\orderpiqrApp\models\inventory.py:55
 #: .\orderpiqrApp\models\scan_events.py:64
+#: .\orderpiqrApp\views\manage_views.py:1991
 #: .\templates\inventory\picker.html:128
 #: .\templates\manage\health\list.html:228
-#: .\templates\manage\health\list.html:418
+#: .\templates\manage\health\list.html:423
 #: .\templates\manage\inventory\add_correction.html:55
 #: .\templates\manage\inventory\logs.html:79
 #: .\templates\manage\products\form.html:130
@@ -513,11 +917,12 @@ msgstr "Reden"
 
 #: .\orderpiqrApp\models\inventory.py:59 .\orderpiqrApp\models\orders.py:21
 #: .\orderpiqrApp\models\picklists.py:27 .\orderpiqrApp\models\picklists.py:57
+#: .\orderpiqrApp\views\manage_views.py:1992
 #: .\templates\manage\inventory\logs.html:81
 #: .\templates\manage\orders\form.html:41
 #: .\templates\manage\orders\import.html:107
 #: .\templates\manage\picklists\detail.html:102
-#: .\templates\queue\_order_cards.html:44
+#: .\templates\queue\_order_cards.html:46
 msgid "Notes"
 msgstr "Notities"
 
@@ -540,13 +945,13 @@ msgstr "Verwijderd door"
 
 #: .\orderpiqrApp\models\inventory.py:78
 msgid "Source Picklist"
-msgstr "Bron picklijst"
+msgstr "Bronpicklijst"
 
 #: .\orderpiqrApp\models\inventory.py:79
 msgid ""
 "If this change was caused by order completion, reference to the picklist."
 msgstr ""
-"Als deze wijziging is veroorzaakt door het afronden van een bestelling, "
+"Als deze wijziging is veroorzaakt door het afronden van een order, "
 "verwijzing naar de picklijst."
 
 #: .\orderpiqrApp\models\inventory.py:83 .\templates\manage\base.html:78
@@ -622,6 +1027,11 @@ msgstr "Inlog-QR voor picker"
 msgid "Picker Login QRs"
 msgstr "Inlog-QR's voor pickers"
 
+#: .\orderpiqrApp\models\login_tokens.py:56
+#, python-format
+msgid "Login QR for %(picker)s"
+msgstr "Inlog-QR voor %(picker)s"
+
 #: .\orderpiqrApp\models\orders.py:10 .\templates\manage\orders\list.html:43
 msgid "Draft"
 msgstr "Concept"
@@ -629,7 +1039,7 @@ msgstr "Concept"
 #: .\orderpiqrApp\models\orders.py:11 .\templates\manage\orders\list.html:44
 #: .\templates\manage\queue\_queue_list.html:29
 #: .\templates\queue\_manage_queue_list.html:21
-#: .\templates\queue\_order_cards.html:53
+#: .\templates\queue\_order_cards.html:55
 msgid "Queued"
 msgstr "In wachtrij"
 
@@ -639,7 +1049,7 @@ msgstr "In wachtrij"
 #: .\templates\manage\picklists\list.html:75
 #: .\templates\manage\queue\_queue_list.html:24
 #: .\templates\queue\_manage_queue_list.html:19
-#: .\templates\queue\_order_cards.html:56
+#: .\templates\queue\_order_cards.html:58
 #: .\templates\queue\_picker_orders.html:42
 msgid "In Progress"
 msgstr "Bezig"
@@ -648,7 +1058,7 @@ msgstr "Bezig"
 #: .\templates\manage\picklists\detail.html:52
 #: .\templates\manage\picklists\list.html:16
 #: .\templates\manage\picklists\list.html:71
-#: .\templates\queue\_order_cards.html:59
+#: .\templates\queue\_order_cards.html:61
 #: .\templates\queue\_picker_orders.html:50
 msgid "Completed"
 msgstr "Voltooid"
@@ -688,18 +1098,18 @@ msgstr ""
 
 #: .\orderpiqrApp\models\orders.py:48 .\orderpiqrApp\models\orders.py:63
 #: .\templates\manage\dashboard.html:221
-#: .\templates\manage\health\list.html:268
+#: .\templates\manage\health\list.html:273
 #: .\templates\manage\picklists\detail.html:9
-#: .\templates\manage\picklists\list.html:32 .\templates\shopify\app.html:208
+#: .\templates\manage\picklists\list.html:32 .\templates\shopify\app.html:210
 msgid "Order"
-msgstr "Bestelling"
+msgstr "Order"
 
 #: .\orderpiqrApp\models\orders.py:49 .\templates\manage\base.html:84
 #: .\templates\manage\base.html:91 .\templates\manage\orders\list.html:4
 #: .\templates\manage\orders\list.html:5
 #: .\templates\manage\products\list.html:102
 msgid "Orders"
-msgstr "Bestellingen"
+msgstr "Orders"
 
 #: .\orderpiqrApp\models\orders.py:65 .\orderpiqrApp\models\picklists.py:54
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
@@ -711,20 +1121,20 @@ msgstr "Aantal"
 
 #: .\orderpiqrApp\models\orders.py:68
 msgid "Order Line"
-msgstr "Bestelregel"
+msgstr "Orderregel"
 
 #: .\orderpiqrApp\models\orders.py:69 .\templates\manage\orders\form.html:50
 msgid "Order Lines"
-msgstr "Bestelregels"
+msgstr "Orderregels"
 
 #: .\orderpiqrApp\models\orders.py:72
 #, python-format
 msgid "Order %(order)s, Product: %(quantity)s x %(product)s"
-msgstr "Bestelling %(order)s, Product: %(quantity)s × %(product)s"
+msgstr "Order %(order)s, Product: %(quantity)s × %(product)s"
 
 #: .\orderpiqrApp\models\picklists.py:12
 msgid "Source Order"
-msgstr "Bronbestelling"
+msgstr "Bronorder"
 
 #: .\orderpiqrApp\models\picklists.py:13
 #: .\orderpiqrApp\models\scan_events.py:66
@@ -805,7 +1215,7 @@ msgstr "Kommagetal"
 
 #: .\orderpiqrApp\models\preferences.py:13
 #: .\templates\manage\products\form.html:128
-#: .\templates\manage\products\form.html:168 .\templates\shopify\app.html:209
+#: .\templates\manage\products\form.html:168 .\templates\shopify\app.html:211
 msgid "Date"
 msgstr "Datum"
 
@@ -857,9 +1267,10 @@ msgid "Additional description or guidance for this setting."
 msgstr "Extra beschrijving of toelichting voor deze instelling."
 
 #: .\orderpiqrApp\models\preferences.py:27
+#: .\orderpiqrApp\views\manage_views.py:1991
 #: .\templates\manage\dashboard.html:275
 #: .\templates\manage\health\list.html:227
-#: .\templates\manage\health\list.html:417
+#: .\templates\manage\health\list.html:422
 #: .\templates\manage\settings\api_tokens.html:52
 msgid "Type"
 msgstr "Type"
@@ -888,34 +1299,35 @@ msgstr ""
 "Voor 'keuze' type instellingen: lijst van {value, label} opties. Bijv. "
 "[{\"value\": \"original\", \"label\": \"Originele volgorde\"}]"
 
-#: .\orderpiqrApp\models\preferences.py:70
+#: .\orderpiqrApp\models\preferences.py:89
 msgid "Setting"
 msgstr "Instelling"
 
-#: .\orderpiqrApp\models\preferences.py:71
+#: .\orderpiqrApp\models\preferences.py:90
 msgid "Value"
 msgstr "Waarde"
 
-#: .\orderpiqrApp\models\preferences.py:71
+#: .\orderpiqrApp\models\preferences.py:90
 msgid "The value set for this customer."
 msgstr "De ingestelde waarde voor deze klant."
 
-#: .\orderpiqrApp\models\preferences.py:75
+#: .\orderpiqrApp\models\preferences.py:94
 msgid "Customer setting value"
 msgstr "Klantinstellingswaarde"
 
-#: .\orderpiqrApp\models\preferences.py:76
+#: .\orderpiqrApp\models\preferences.py:95
 msgid "Customer setting values"
 msgstr "Klantinstellingswaarden"
 
-#: .\orderpiqrApp\models\products.py:10 .\templates\index.html:174
+#: .\orderpiqrApp\models\products.py:10
+#: .\orderpiqrApp\views\manage_views.py:1990 .\templates\index.html:179
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Productcode"
 
 #: .\orderpiqrApp\models\products.py:12
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:105
-#: .\templates\index.html:176 .\templates\index.html:180
+#: .\templates\index.html:181 .\templates\index.html:185
 #: .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:122
 #: .\templates\manage\products\form.html:45
@@ -1015,7 +1427,8 @@ msgstr "Info"
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: .\orderpiqrApp\models\scan_events.py:37
+#: .\orderpiqrApp\models\scan_events.py:37 .\templates\errors\base_error.html:8
+#: .\templates\errors\base_error.html:264
 msgid "Error"
 msgstr "Fout"
 
@@ -1028,7 +1441,7 @@ msgid "Severity"
 msgstr "Ernst"
 
 #: .\orderpiqrApp\models\scan_events.py:65
-#: .\templates\manage\health\list.html:419
+#: .\templates\manage\health\list.html:424
 msgid "Scanned Code"
 msgstr "Gescande code"
 
@@ -1069,29 +1482,174 @@ msgstr ""
 msgid "The file contains no data rows below the header."
 msgstr "Het bestand bevat geen gegevensrijen onder de kopregel."
 
+#: .\orderpiqrApp\utils\decorators.py:24
+msgid "You don't have permission to access this page."
+msgstr "U heeft geen toegang tot deze pagina."
+
 #: .\orderpiqrApp\utils\inventory.py:180
 #, python-format
 msgid "Auto-decremented from order %(order_code)s"
 msgstr "Automatisch afgeboekt vanuit order %(order_code)s"
 
+#: .\orderpiqrApp\utils\qr_pdf_generator.py:69
+#, python-format
+msgid "Order: %(code)s"
+msgstr "Order: %(code)s"
+
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 #: .\templates\manage\dashboard.html:276
-#: .\templates\manage\health\list.html:345
+#: .\templates\manage\health\list.html:350
 #: .\templates\manage\products\list.html:96
 msgid "Code"
 msgstr "Code"
 
-#: .\orderpiqrApp\utils\start_page.py:31
-msgid "Company default"
-msgstr "Standaard van bedrijf"
+#: .\orderpiqrApp\utils\setting_strings.py:26
+msgid "Enable Inventory Management"
+msgstr "Voorraadbeheer inschakelen"
 
+#: .\orderpiqrApp\utils\setting_strings.py:28
+msgid ""
+"When enabled, shows inventory quantities on products and allows inventory "
+"tracking."
+msgstr ""
+"Indien ingeschakeld worden voorraadaantallen bij producten weergegeven en "
+"kan de voorraad worden bijgehouden."
+
+#: .\orderpiqrApp\utils\setting_strings.py:33
+msgid "Enable Order Picking"
+msgstr "Orderpicken inschakelen"
+
+#: .\orderpiqrApp\utils\setting_strings.py:35
+msgid "When enabled, shows the order picking queue for pickers."
+msgstr "Indien ingeschakeld wordt de orderwachtrij voor pickers weergegeven."
+
+#: .\orderpiqrApp\utils\setting_strings.py:40
+msgid "Enable Bulk Picking"
+msgstr "Bulkpicken inschakelen"
+
+#: .\orderpiqrApp\utils\setting_strings.py:42
+msgid ""
+"When enabled, pickers can confirm multiple items of the same product at once "
+"instead of scanning each individually."
+msgstr ""
+"Indien ingeschakeld kunnen pickers meerdere exemplaren van hetzelfde product "
+"in één keer bevestigen in plaats van elk exemplaar afzonderlijk te scannen."
+
+#: .\orderpiqrApp\utils\setting_strings.py:47
+msgid "Picker start page"
+msgstr "Startpagina picker"
+
+#: .\orderpiqrApp\utils\setting_strings.py:49
+msgid ""
+"Where pickers land after logging in. Choose 'Scan an order' if pickers start "
+"work by scanning a printed order, or 'Order queue' if they pick the next job "
+"from the shared list. 'Automatic' keeps the previous behaviour."
+msgstr ""
+"Waar pickers terechtkomen na het inloggen. Kies 'Order scannen' als pickers "
+"hun werk beginnen met het scannen van een afgedrukte order, of "
+"'Orderwachtrij' als ze de volgende klus uit de gedeelde lijst pakken. "
+"'Automatisch' houdt het vorige gedrag aan."
+
+#: .\orderpiqrApp\utils\setting_strings.py:52
+msgid "Automatic"
+msgstr "Automatisch"
+
+#: .\orderpiqrApp\utils\setting_strings.py:53
 #: .\orderpiqrApp\utils\start_page.py:32
 msgid "Scan an order"
 msgstr "Order scannen"
 
+#: .\orderpiqrApp\utils\setting_strings.py:54
 #: .\orderpiqrApp\utils\start_page.py:33
 msgid "Order queue"
 msgstr "Orderwachtrij"
+
+#: .\orderpiqrApp\utils\setting_strings.py:58
+msgid "Grouped Picklist View"
+msgstr "Gegroepeerde picklijstweergave"
+
+#: .\orderpiqrApp\utils\setting_strings.py:60
+msgid ""
+"When enabled, the picker list shows one row per product with a quantity, "
+"instead of a separate row for each individual item. Pickers can still switch "
+"views themselves on the scan page."
+msgstr ""
+"Indien ingeschakeld toont de pickerlijst één regel per product met een "
+"aantal, in plaats van een aparte regel per los artikel. Pickers kunnen de "
+"weergave zelf nog wisselen op de scanpagina."
+
+#: .\orderpiqrApp\utils\setting_strings.py:65
+msgid "Pick Popup: Prominent Number"
+msgstr "Pick-popup: prominent getal"
+
+#: .\orderpiqrApp\utils\setting_strings.py:67
+msgid ""
+"Which number the pick confirmation popup emphasizes: the amount still to "
+"take (remaining) or the full line quantity (total). Warehouses that count "
+"out the whole quantity at the shelf should pick total. Pickers can still "
+"switch per session on the scan page."
+msgstr ""
+"Welk getal de pickbevestiging benadrukt: het aantal dat nog gepakt moet "
+"worden (resterend) of het volledige regelaantal (totaal). Magazijnen die bij "
+"het schap het hele aantal uittellen, kiezen beter totaal. Pickers kunnen dit "
+"per sessie nog wisselen op de scanpagina."
+
+#: .\orderpiqrApp\utils\setting_strings.py:70 .\templates\index.html:119
+msgid "Remaining to take"
+msgstr "Nog te pakken"
+
+#: .\orderpiqrApp\utils\setting_strings.py:71
+msgid "Total line quantity"
+msgstr "Totaal regelaantal"
+
+#: .\orderpiqrApp\utils\setting_strings.py:75
+msgid "Picklist QR Format"
+msgstr "Formaat picklijst-QR"
+
+#: .\orderpiqrApp\utils\setting_strings.py:77
+msgid ""
+"Column order of the rows inside your picklist QR codes. \"Detect "
+"automatically\" guesses using your product codes; set it explicitly if "
+"pickers see the \"ambiguous picklist\" error because a quantity also looks "
+"like a product code."
+msgstr ""
+"De kolomvolgorde van de regels in uw picklijst-QR-codes. \"Automatisch "
+"detecteren\" raadt dit op basis van uw productcodes; stel het expliciet in "
+"als pickers de foutmelding \"onduidelijke picklijst\" zien omdat een aantal "
+"ook op een productcode lijkt."
+
+#: .\orderpiqrApp\utils\setting_strings.py:80
+msgid "Detect automatically"
+msgstr "Automatisch detecteren"
+
+#: .\orderpiqrApp\utils\setting_strings.py:81
+msgid "Quantity, then product code"
+msgstr "Aantal, dan productcode"
+
+#: .\orderpiqrApp\utils\setting_strings.py:82
+msgid "Product code, then quantity"
+msgstr "Productcode, dan aantal"
+
+#: .\orderpiqrApp\utils\setting_strings.py:86 .\templates\index.html:86
+#: .\templates\queue\display.html:15 .\templates\queue\display.html:19
+#: .\templates\queue\picker.html:23
+msgid "Order Queue"
+msgstr "Orderwachtrij"
+
+#: .\orderpiqrApp\utils\setting_strings.py:88
+msgid ""
+"When enabled, pickers can claim orders from the shared queue. Disable for "
+"warehouses where pickers only scan printed picklist QRs: the queue pages are "
+"hidden and queue claims are blocked."
+msgstr ""
+"Indien ingeschakeld kunnen pickers orders uit de gedeelde wachtrij claimen. "
+"Schakel dit uit voor magazijnen waar pickers alleen afgedrukte picklijst-"
+"QR's scannen: de wachtrijpagina's worden verborgen en claimen uit de "
+"wachtrij wordt geblokkeerd."
+
+#: .\orderpiqrApp\utils\start_page.py:31
+msgid "Company default"
+msgstr "Standaard van bedrijf"
 
 #: .\orderpiqrApp\views\auth\signup_view.py:59
 msgid ""
@@ -1164,31 +1722,11 @@ msgstr "API-token aangemaakt. Kopieer het nu – het wordt niet opnieuw getoond.
 msgid "API token revoked."
 msgstr "API-token ingetrokken."
 
-#: .\orderpiqrApp\views\inventory_views.py:29
-msgid "No customer profile found"
-msgstr "Geen klantprofiel gevonden"
-
-#: .\orderpiqrApp\views\inventory_views.py:32
-msgid "Inventory management is not enabled"
-msgstr "Voorraadbeheer is niet ingeschakeld"
-
-#: .\orderpiqrApp\views\inventory_views.py:76
-#: .\orderpiqrApp\views\inventory_views.py:114
-#: .\orderpiqrApp\views\inventory_views.py:155
-msgid "No customer found"
-msgstr "Geen klant gevonden"
-
 #: .\orderpiqrApp\views\inventory_views.py:79
 #: .\orderpiqrApp\views\inventory_views.py:117
 #: .\orderpiqrApp\views\inventory_views.py:158
 msgid "Inventory management not enabled"
 msgstr "Voorraadbeheer niet ingeschakeld"
-
-#: .\orderpiqrApp\views\inventory_views.py:133
-#: .\orderpiqrApp\views\inventory_views.py:194
-#: .\templates\inventory\picker.html:227
-msgid "Product not found"
-msgstr "Product niet gevonden"
 
 #: .\orderpiqrApp\views\inventory_views.py:163
 msgid "Invalid request"
@@ -1461,11 +1999,6 @@ msgstr "{count} order(s) overgeslagen (al concept, voltooid of geannuleerd)."
 msgid "Order code is required."
 msgstr "Ordercode is verplicht."
 
-#: .\orderpiqrApp\views\manage_views.py:843
-#: .\orderpiqrApp\views\manage_views.py:917
-msgid "An order with this code already exists."
-msgstr "Een order met deze code bestaat al."
-
 #: .\orderpiqrApp\views\manage_views.py:846
 #: .\orderpiqrApp\views\manage_views.py:920
 msgid "At least one product is required."
@@ -1588,7 +2121,7 @@ msgstr "Wachtwoord succesvol gewijzigd."
 #: .\orderpiqrApp\views\manage_views.py:1706
 #: .\orderpiqrApp\views\manage_views.py:1728
 msgid "Picker account not found."
-msgstr "Picker account niet gevonden."
+msgstr "Pickeraccount niet gevonden."
 
 #: .\orderpiqrApp\views\manage_views.py:1673
 #: .\orderpiqrApp\views\manage_views.py:1691
@@ -1598,11 +2131,7 @@ msgstr "Wachtwoord moet minimaal 8 tekens zijn."
 #: .\orderpiqrApp\views\manage_views.py:1678
 #, python-brace-format
 msgid "Password for picker account '{username}' updated."
-msgstr "Wachtwoord voor picker account '{username}' bijgewerkt."
-
-#: .\orderpiqrApp\views\manage_views.py:1687
-msgid "Username is required."
-msgstr "Gebruikersnaam is verplicht."
+msgstr "Wachtwoord voor pickeraccount '{username}' bijgewerkt."
 
 #: .\orderpiqrApp\views\manage_views.py:1689
 msgid "This username is already taken."
@@ -1611,7 +2140,7 @@ msgstr "Deze gebruikersnaam is al in gebruik."
 #: .\orderpiqrApp\views\manage_views.py:1698
 #, python-brace-format
 msgid "Picker account '{username}' created."
-msgstr "Picker account '{username}' aangemaakt."
+msgstr "Pickeraccount '{username}' aangemaakt."
 
 #: .\orderpiqrApp\views\manage_views.py:1721
 #, python-brace-format
@@ -1649,6 +2178,23 @@ msgstr "Geen geldige logs gevonden."
 msgid "%(count)d log(s) deleted and inventory reverted."
 msgstr "%(count)d logboekitem(s) verwijderd en voorraad hersteld."
 
+#: .\orderpiqrApp\views\manage_views.py:1990
+#: .\templates\manage\inventory\logs.html:76
+msgid "Date/Time"
+msgstr "Datum/Tijd"
+
+#: .\orderpiqrApp\views\manage_views.py:1990
+msgid "Product Description"
+msgstr "Productomschrijving"
+
+#: .\orderpiqrApp\views\manage_views.py:1991
+msgid "Old Qty"
+msgstr "Oud aantal"
+
+#: .\orderpiqrApp\views\manage_views.py:1991
+msgid "New Qty"
+msgstr "Nieuw aantal"
+
 #: .\orderpiqrApp\views\manage_views.py:2050
 msgid "Inventory correction added successfully."
 msgstr "Voorraadcorrectie succesvol toegevoegd."
@@ -1673,30 +2219,6 @@ msgstr "De orderwachtrij is uitgeschakeld voor jouw bedrijf."
 msgid "Device not found. Please log in again."
 msgstr "Apparaat niet gevonden. Log opnieuw in."
 
-#: .\orderpiqrApp\views\queue_views.py:221
-msgid "This order is already being picked"
-msgstr "Deze order wordt al gepickt"
-
-#: .\orderpiqrApp\views\queue_views.py:260
-msgid "This order has already been completed"
-msgstr "Deze order is al voltooid"
-
-#: .\orderpiqrApp\views\queue_views.py:266
-msgid "This order is not available for picking"
-msgstr "Deze order is niet beschikbaar om te picken"
-
-#: .\orderpiqrApp\views\queue_views.py:323
-msgid "Order claimed successfully"
-msgstr "Order succesvol geclaimd"
-
-#: .\orderpiqrApp\views\queue_views.py:332
-#: .\orderpiqrApp\views\queue_views.py:438
-#: .\orderpiqrApp\views\queue_views.py:472
-#: .\orderpiqrApp\views\queue_views.py:562
-#: .\orderpiqrApp\views\queue_views.py:605
-msgid "Order not found"
-msgstr "Order niet gevonden"
-
 #: .\orderpiqrApp\views\queue_views.py:407
 #: .\orderpiqrApp\views\queue_views.py:447
 #: .\orderpiqrApp\views\queue_views.py:483
@@ -1704,25 +2226,6 @@ msgstr "Order niet gevonden"
 #: .\orderpiqrApp\views\queue_views.py:571
 msgid "No customer"
 msgstr "Geen klant"
-
-#: .\orderpiqrApp\views\queue_views.py:419
-msgid "Only draft orders can be added to queue"
-msgstr "Alleen conceptorders kunnen aan de wachtrij worden toegevoegd"
-
-#: .\orderpiqrApp\views\queue_views.py:434
-#: .\templates\manage\orders\list.html:270
-#: .\templates\manage\queue\list.html:441 .\templates\queue\manage.html:174
-msgid "Order added to queue"
-msgstr "Order toegevoegd aan wachtrij"
-
-#: .\orderpiqrApp\views\queue_views.py:459
-msgid "Order is not in queue"
-msgstr "Order staat niet in de wachtrij"
-
-#: .\orderpiqrApp\views\queue_views.py:468
-#: .\templates\manage\queue\list.html:459 .\templates\queue\manage.html:192
-msgid "Order removed from queue"
-msgstr "Order uit wachtrij verwijderd"
 
 #: .\orderpiqrApp\views\queue_views.py:489
 msgid "Invalid JSON"
@@ -1732,10 +2235,6 @@ msgstr "Ongeldige JSON"
 msgid "No order IDs provided"
 msgstr "Geen order-ID's opgegeven"
 
-#: .\orderpiqrApp\views\queue_views.py:505
-msgid "Queue reordered"
-msgstr "Wachtrijvolgorde aangepast"
-
 #: .\orderpiqrApp\views\queue_views.py:511
 msgid "Error reordering: {}"
 msgstr "Fout bij het herordenen: {}"
@@ -1744,22 +2243,76 @@ msgstr "Fout bij het herordenen: {}"
 msgid "Invalid direction"
 msgstr "Ongeldige richting"
 
-#: .\orderpiqrApp\views\queue_views.py:558
-msgid "Order moved up"
-msgstr "Order omhoog verplaatst"
-
-#: .\orderpiqrApp\views\queue_views.py:558
-msgid "Order moved down"
-msgstr "Order omlaag verplaatst"
-
 #: .\orderpiqrApp\views\queue_views.py:583
 msgid "Order is not in progress"
 msgstr "Order is niet in behandeling"
 
 #: .\orderpiqrApp\views\queue_views.py:601
-#: .\templates\manage\queue\list.html:483
+#: .\templates\manage\queue\list.html:389
 msgid "Order unlocked"
 msgstr "Order ontgrendeld"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:49
+msgid "This device is registered for multiple companies. Please log in."
+msgstr "Dit apparaat is geregistreerd voor meerdere bedrijven. Log in."
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:189
+msgid "Device not found and user not authenticated"
+msgstr "Apparaat niet gevonden en gebruiker niet ingelogd"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:202
+msgid "User has no customer profile"
+msgstr "Gebruiker heeft geen klantprofiel"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:249
+msgid "This order is already being picked by another device"
+msgstr "Deze order wordt al gepickt door een ander apparaat"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:334
+#, python-format
+msgid ""
+"Unknown product code '%(code)s'. Add it to your products and scan the list "
+"again."
+msgstr ""
+"Onbekende productcode '%(code)s'. Voeg deze toe aan je producten en scan de "
+"lijst opnieuw."
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:350
+#: .\orderpiqrApp\views\scan_picklist_view.py:575
+msgid "Picklist processed successfully"
+msgstr "Picklijst succesvol verwerkt"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:373
+#: .\orderpiqrApp\views\scan_picklist_view.py:578
+msgid "Device not found with given fingerprint"
+msgstr "Geen apparaat gevonden met de opgegeven vingerafdruk"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:396
+msgid "PickList not found for device/customer"
+msgstr "Picklijst niet gevonden voor apparaat/klant"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:413
+msgid "No pending ProductPick rows for this product."
+msgstr "Geen openstaande ProductPick-regels voor dit product."
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:485
+msgid "PickList not found"
+msgstr "Picklijst niet gevonden"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:499
+#, python-format
+msgid "Requested %(wanted)s but only %(available)s unpicked rows available"
+msgstr ""
+"%(wanted)s gevraagd, maar er zijn maar %(available)s niet-gepickte regels "
+"beschikbaar"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:572
+msgid "No picklist found for this device and order"
+msgstr "Geen picklijst gevonden voor dit apparaat en deze order"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:580
+msgid "Product not found for one of the product codes"
+msgstr "Geen product gevonden voor een van de productcodes"
 
 #: .\orderpiqr\views.py:51
 msgid "No account found with this email address."
@@ -1848,6 +2401,10 @@ msgstr ""
 "Als dit probleem aanhoudt, neem dan contact op met <a "
 "href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
 
+#: .\templates\admin\base_site.html:27 .\templates\admin\base_site.html:31
+msgid "Orderpiqr admin"
+msgstr "Orderpiqr-beheer"
+
 #: .\templates\admin\base_site.html:36 .\templates\admin\base_site.html:37
 #: .\templates\admin\base_site.html:42
 msgid "Start tour"
@@ -1908,22 +2465,25 @@ msgstr "Upload bestand"
 msgid "Upload Product CSV/XLSX"
 msgstr "Product CSV/XLSX uploaden"
 
+#: .\templates\errors\base_error.html:265
+msgid "Something went wrong"
+msgstr "Er is iets misgegaan"
+
+#: .\templates\errors\base_error.html:271
+msgid "An unexpected error occurred. Please try again later."
+msgstr "Er is een onverwachte fout opgetreden. Probeer het later opnieuw."
+
 #: .\templates\errors\base_error.html:289 .\templates\offline.html:69
 msgid "Go Back"
 msgstr "Ga terug"
 
 #: .\templates\index.html:65
 msgid "Welcome to Orderpiqr!"
-msgstr "Welkom bij Orderpiqr"
+msgstr "Welkom bij Orderpiqr!"
 
 #: .\templates\index.html:79 .\templates\manage\dashboard.html:84
 msgid "Quick Actions"
 msgstr "Snelle acties"
-
-#: .\templates\index.html:86 .\templates\queue\display.html:15
-#: .\templates\queue\display.html:19 .\templates\queue\picker.html:23
-msgid "Order Queue"
-msgstr "Orderwachtrij"
 
 #: .\templates\index.html:93 .\templates\inventory\picker.html:18
 #: .\templates\inventory\picker.html:25 .\templates\manage\base.html:65
@@ -1959,60 +2519,51 @@ msgstr "Gegroepeerd per product"
 msgid "Popup Number"
 msgstr "Getal in popup"
 
-#: .\templates\index.html:119
-msgid "Remaining to take"
-msgstr "Nog te pakken"
-
 #: .\templates\index.html:120
 msgid "Total quantity"
 msgstr "Totaal aantal"
 
-#: .\templates\index.html:124
-msgid "Order Importance"
-msgstr "Vaste scanvolgorde"
+#: .\templates\index.html:129
+#| msgid "Order Importance"
+msgid "Order Importance: Enabled"
+msgstr "Vaste scanvolgorde: Ingeschakeld"
 
-#: .\templates\index.html:124
-msgid "Enabled"
-msgstr "Ingeschakeld"
-
-#: .\templates\index.html:132 .\templates\manage\base.html:220
+#: .\templates\index.html:137 .\templates\manage\base.html:220
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
 msgstr "Log uit"
 
-#: .\templates\index.html:143
+#: .\templates\index.html:148
 msgid "This app is best viewed on your phone"
 msgstr "Deze app is het beste te bekijken op uw telefoon"
 
-#: .\templates\index.html:149 .\templates\inventory\picker.html:63
+#: .\templates\index.html:154 .\templates\inventory\picker.html:63
 msgid "Camera options"
 msgstr "Camera-opties"
 
-#: .\templates\index.html:157 .\templates\inventory\picker.html:71
+#: .\templates\index.html:162 .\templates\inventory\picker.html:71
 msgid "Select Camera"
 msgstr "Selecteer camera"
 
-#: .\templates\index.html:159 .\templates\inventory\picker.html:73
+#: .\templates\index.html:164 .\templates\inventory\picker.html:73
 msgid "Stop camera"
 msgstr "Camera stoppen"
 
-#: .\templates\index.html:163 .\templates\inventory\picker.html:77
+#: .\templates\index.html:168 .\templates\inventory\picker.html:77
 msgid "Enable camera"
 msgstr "Camera inschakelen"
 
-#: .\templates\index.html:168 .\templates\manage\health\list.html:267
-#: .\templates\manage\health\list.html:420
-#: .\templates\manage\picklists\detail.html:4
-#: .\templates\manage\picklists\detail.html:5
+#: .\templates\index.html:173 .\templates\manage\health\list.html:272
+#: .\templates\manage\health\list.html:425
 #: .\templates\manage\picklists\list.html:31
 msgid "Picklist"
 msgstr "Picklijst"
 
-#: .\templates\index.html:175
+#: .\templates\index.html:180
 msgid "Product Name"
 msgstr "Productnaam"
 
-#: .\templates\index.html:179 .\templates\manage\orders\form.html:61
+#: .\templates\index.html:184 .\templates\manage\orders\form.html:61
 msgid "Qty"
 msgstr "Aantal"
 
@@ -2044,7 +2595,7 @@ msgstr "Instellen op"
 msgid "Adjust By"
 msgstr "Aanpassen met"
 
-#: .\templates\inventory\picker.html:120 .\templates\inventory\picker.html:295
+#: .\templates\inventory\picker.html:120 .\templates\inventory\picker.html:174
 #: .\templates\manage\inventory\add_correction.html:20
 #: .\templates\manage\products\list.html:100
 msgid "Stock"
@@ -2060,8 +2611,7 @@ msgstr "Notities (optioneel)"
 msgid "Add notes..."
 msgstr "Notities toevoegen..."
 
-#: .\templates\inventory\picker.html:143 .\templates\inventory\picker.html:492
-#: .\templates\inventory\picker.html:498
+#: .\templates\inventory\picker.html:143 .\templates\inventory\picker.html:180
 msgid "Update Inventory"
 msgstr "Voorraad bijwerken"
 
@@ -2069,45 +2619,48 @@ msgstr "Voorraad bijwerken"
 msgid "Tap to continue"
 msgstr "Tik om door te gaan"
 
-#: .\templates\inventory\picker.html:225
+#: .\templates\inventory\picker.html:171
 msgid "Product found"
 msgstr "Product gevonden"
 
-#: .\templates\inventory\picker.html:267
-#: .\templates\manage\orders\form.html:463
+#: .\templates\inventory\picker.html:173
+#: .\templates\manage\orders\form.html:382
 #: .\templates\manage\products\list.html:197
 msgid "No products found"
 msgstr "Geen producten gevonden"
 
-#: .\templates\inventory\picker.html:332
+#: .\templates\inventory\picker.html:175
 msgid "No location"
 msgstr "Geen locatie"
 
-#: .\templates\inventory\picker.html:435
-#: .\templates\manage\inventory\add_correction.html:214
-#: .\templates\manage\products\form.html:505
+#: .\templates\inventory\picker.html:176
+#: .\templates\manage\inventory\add_correction.html:163
+#: .\templates\manage\products\form.html:442
 msgid "no change"
 msgstr "geen wijziging"
 
-#: .\templates\inventory\picker.html:442
+#: .\templates\inventory\picker.html:177
 msgid "Please select a product first"
 msgstr "Selecteer eerst een product"
 
-#: .\templates\inventory\picker.html:448
-#: .\templates\manage\products\form.html:518
+#: .\templates\inventory\picker.html:178
+#: .\templates\manage\products\form.html:443
 msgid "Please enter a valid quantity"
 msgstr "Voer een geldig aantal in"
 
-#: .\templates\inventory\picker.html:456
-#: .\templates\manage\products\form.html:523
+#: .\templates\inventory\picker.html:179
+#: .\templates\manage\products\form.html:444
 msgid "Updating..."
 msgstr "Bijwerken..."
 
-#: .\templates\inventory\picker.html:496
-#: .\templates\manage\products\form.html:564
-#: .\templates\manage\products\form.html:572
+#: .\templates\inventory\picker.html:181
+#: .\templates\manage\products\form.html:445
 msgid "Error updating inventory"
 msgstr "Fout bij bijwerken voorraad"
+
+#: .\templates\manage\base.html:7
+msgid "OrderPiqR Management Dashboard"
+msgstr "OrderPiqR-beheerdashboard"
 
 #: .\templates\manage\base.html:8 .\templates\manage\base.html:60
 #: .\templates\manage\base.html:177 .\templates\manage\dashboard.html:4
@@ -2142,11 +2695,6 @@ msgstr "Gezondheid"
 msgid "Settings"
 msgstr "Instellingen"
 
-#: .\templates\manage\base.html:134 .\templates\manage\integrations\list.html:4
-#: .\templates\manage\integrations\list.html:5
-msgid "Integrations"
-msgstr "Integraties"
-
 #: .\templates\manage\base.html:148 .\templates\manage\base.html:217
 #: .\templates\manage\profile.html:4 .\templates\manage\profile.html:5
 msgid "Profile"
@@ -2156,37 +2704,44 @@ msgstr "Profiel"
 msgid "Open menu"
 msgstr "Menu openen"
 
-#: .\templates\manage\dashboard.html:6 .\templates\registration\login.html:10
-msgid "Welcome back"
-msgstr "Welkom terug"
+#: .\templates\manage\dashboard.html:6
+#, python-format
+msgid "Welcome back, %(name)s!"
+msgstr "Welkom terug, %(name)s!"
 
 #: .\templates\manage\dashboard.html:22
-msgid "active"
-msgstr "actief"
+#, python-format
+msgid "%(num)s active"
+msgstr "%(num)s actief"
 
 #: .\templates\manage\dashboard.html:27
 msgid "Orders Today"
 msgstr "Orders vandaag"
 
 #: .\templates\manage\dashboard.html:36
-msgid "this week"
-msgstr "deze week"
+#, python-format
+msgid "%(num)s this week"
+msgstr "%(num)s deze week"
 
 #: .\templates\manage\dashboard.html:41
 msgid "In Queue"
 msgstr "In wachtrij"
 
 #: .\templates\manage\dashboard.html:49
-msgid "draft"
-msgstr "concept"
+#, python-format
+msgid "%(num)s draft"
+msgstr "%(num)s concept"
 
 #: .\templates\manage\dashboard.html:54
 msgid "Completed Today"
 msgstr "Voltooid vandaag"
 
 #: .\templates\manage\dashboard.html:63
-msgid "active picklists"
-msgstr "actieve picklijsten"
+#, python-format
+msgid "%(counter)s active picklist"
+msgid_plural "%(counter)s active picklists"
+msgstr[0] "%(counter)s actieve picklijst"
+msgstr[1] "%(counter)s actieve picklijsten"
 
 #: .\templates\manage\dashboard.html:68
 msgid "Scan Health"
@@ -2197,12 +2752,16 @@ msgid "issues this week"
 msgstr "problemen deze week"
 
 #: .\templates\manage\dashboard.html:77
-msgid "last 24h"
-msgstr "afgelopen 24 uur"
+#, python-format
+msgid "%(num)s last 24h"
+msgstr "%(num)s afgelopen 24 uur"
 
 #: .\templates\manage\dashboard.html:77
-msgid "overrides"
-msgstr "handmatige overrides"
+#, python-format
+msgid "%(counter)s override"
+msgid_plural "%(counter)s overrides"
+msgstr[0] "%(counter)s override"
+msgstr[1] "%(counter)s overrides"
 
 #: .\templates\manage\dashboard.html:95 .\templates\manage\products\form.html:4
 #: .\templates\manage\products\form.html:5
@@ -2247,7 +2806,7 @@ msgstr "Open weergaves"
 
 #: .\templates\manage\dashboard.html:149
 msgid "Queue Display"
-msgstr "Wachtrij weergave"
+msgstr "Wachtrijweergave"
 
 #: .\templates\manage\dashboard.html:150
 msgid ""
@@ -2259,7 +2818,7 @@ msgstr ""
 #: .\templates\manage\dashboard.html:169 .\templates\manage\queue\list.html:25
 #: .\templates\queue\manage.html:28
 msgid "Picker View"
-msgstr "Picker weergave"
+msgstr "Pickerweergave"
 
 #: .\templates\manage\dashboard.html:170
 msgid ""
@@ -2289,13 +2848,14 @@ msgstr "Bekijk alles"
 #: .\templates\manage\dashboard.html:237 .\templates\manage\dashboard.html:283
 #: .\templates\manage\devices\list.html:99
 #: .\templates\manage\health\list.html:203
-#: .\templates\manage\health\list.html:300
-#: .\templates\manage\health\list.html:429
+#: .\templates\manage\health\list.html:305
+#: .\templates\manage\health\list.html:434
 #: .\templates\manage\orders\list.html:123
 #: .\templates\manage\picklists\list.html:80
 #: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:96
-msgid "ago"
-msgstr "geleden"
+#, python-format
+msgid "%(since)s ago"
+msgstr "%(since)s geleden"
 
 #: .\templates\manage\dashboard.html:245
 msgid "No orders yet. Create your first order!"
@@ -2306,12 +2866,17 @@ msgid "Recent Scan Issues"
 msgstr "Recente scanproblemen"
 
 #: .\templates\manage\dashboard.html:266
+#: .\templates\manage\health\list.html:264
 #, python-format
-msgid "%(count)s picklist(s) in progress for over 4 hours"
-msgstr "%(count)s picklijst(en) al langer dan 4 uur bezig"
+#| msgid "%(counter)s picklist in progress for over 4 hours"
+#| msgid_plural "%(counter)s picklists in progress for over 4 hours"
+msgid "%(counter)s picklist in progress for over 4 hours."
+msgid_plural "%(counter)s picklists in progress for over 4 hours."
+msgstr[0] "%(counter)s picklijst is al meer dan 4 uur bezig."
+msgstr[1] "%(counter)s picklijsten zijn al meer dan 4 uur bezig."
 
 #: .\templates\manage\dashboard.html:274
-#: .\templates\manage\health\list.html:416
+#: .\templates\manage\health\list.html:421
 msgid "When"
 msgstr "Wanneer"
 
@@ -2321,7 +2886,7 @@ msgstr "Geen scanproblemen geregistreerd. Veel pickplezier!"
 
 #: .\templates\manage\dashboard.html:319
 msgid "Device Status"
-msgstr "Apparaat status"
+msgstr "Apparaatstatus"
 
 #: .\templates\manage\dashboard.html:326
 msgid "Total Devices"
@@ -2408,7 +2973,7 @@ msgstr "Uitgelogd"
 
 #: .\templates\manage\devices\list.html:54
 #: .\templates\manage\health\list.html:167
-#: .\templates\manage\health\list.html:271
+#: .\templates\manage\health\list.html:276
 msgid "Restarts"
 msgstr "Herstarts"
 
@@ -2618,7 +3183,6 @@ msgid "lines picked"
 msgstr "regels gepickt"
 
 #: .\templates\manage\health\list.html:140
-#| msgid "devices active"
 msgid "devices used"
 msgstr "apparaten gebruikt"
 
@@ -2647,8 +3211,9 @@ msgstr ""
 "picker buiten zijn eigen lijst wordt gesloten."
 
 #: .\templates\manage\health\list.html:201
-msgid "list"
-msgstr "lijst"
+#, python-format
+msgid "%(rate)s/list"
+msgstr "%(rate)s/lijst"
 
 #: .\templates\manage\health\list.html:206
 msgid "No device activity in this period."
@@ -2666,28 +3231,28 @@ msgstr "Gebeurtenissen"
 msgid "Stale Picklists"
 msgstr "Vastgelopen picklijsten"
 
-#: .\templates\manage\health\list.html:260
+#: .\templates\manage\health\list.html:265
 #, python-format
-msgid ""
-"%(count)s picklist(s) in progress for over 4 hours, holding %(lines)s "
-"unpicked line(s)"
-msgstr ""
-"%(count)s picklijst(en) al meer dan 4 uur onderhanden, met %(lines)s niet-"
-"gepickte regel(s)"
+#| msgid "%(n)s line still unpicked."
+#| msgid_plural "%(n)s lines still unpicked."
+msgid "%(counter)s line still unpicked."
+msgid_plural "%(counter)s lines still unpicked."
+msgstr[0] "%(counter)s regel is nog niet gepickt."
+msgstr[1] "%(counter)s regels zijn nog niet gepickt."
 
-#: .\templates\manage\health\list.html:261
+#: .\templates\manage\health\list.html:266
 msgid "shown live, not filtered by the date range above"
 msgstr "live weergegeven, niet gefilterd op de periode hierboven"
 
-#: .\templates\manage\health\list.html:270
+#: .\templates\manage\health\list.html:275
 msgid "Unpicked"
 msgstr "Niet gepickt"
 
-#: .\templates\manage\health\list.html:272
+#: .\templates\manage\health\list.html:277
 msgid "Started"
 msgstr "Gestart"
 
-#: .\templates\manage\health\list.html:273
+#: .\templates\manage\health\list.html:278
 #: .\templates\manage\integrations\list.html:30
 #: .\templates\manage\orders\list.html:98
 #: .\templates\manage\picklists\list.html:37
@@ -2696,19 +3261,18 @@ msgstr "Gestart"
 msgid "Actions"
 msgstr "Acties"
 
-#: .\templates\manage\health\list.html:303
+#: .\templates\manage\health\list.html:308
 #: .\templates\manage\picklists\detail.html:16
 msgid "Mark this picklist as completed? This also completes the linked order."
 msgstr ""
-"Deze picklijst markeren als voltooid? Dit voltooit ook de gekoppelde "
-"bestelling."
+"Deze picklijst markeren als voltooid? Dit voltooit ook de gekoppelde order."
 
-#: .\templates\manage\health\list.html:309
+#: .\templates\manage\health\list.html:314
 #: .\templates\manage\picklists\detail.html:22
 msgid "Mark completed"
 msgstr "Markeren als voltooid"
 
-#: .\templates\manage\health\list.html:311
+#: .\templates\manage\health\list.html:316
 #: .\templates\manage\picklists\detail.html:25
 msgid ""
 "Archive this picklist? It stays in your history but no longer counts as "
@@ -2717,136 +3281,126 @@ msgstr ""
 "Deze picklijst archiveren? Deze blijft in uw geschiedenis maar telt niet "
 "meer als vastgelopen."
 
-#: .\templates\manage\health\list.html:317
+#: .\templates\manage\health\list.html:322
 #: .\templates\manage\picklists\detail.html:31
 msgid "Archive"
 msgstr "Archiveren"
 
-#: .\templates\manage\health\list.html:337
+#: .\templates\manage\health\list.html:342
 msgid "Codes that need attention"
 msgstr "Codes die aandacht nodig hebben"
 
-#: .\templates\manage\health\list.html:346
-#| msgid "What exactly went wrong"
+#: .\templates\manage\health\list.html:351
 msgid "What is wrong"
 msgstr "Wat er mis is"
 
-#: .\templates\manage\health\list.html:347
-#| msgid "View Details"
+#: .\templates\manage\health\list.html:352
 msgid "Details"
 msgstr "Details"
 
-#: .\templates\manage\health\list.html:348
+#: .\templates\manage\health\list.html:353
 msgid "Fix"
 msgstr "Oplossen"
 
-#: .\templates\manage\health\list.html:360
-#| msgid "Extra barcodes"
+#: .\templates\manage\health\list.html:365
 msgid "extra barcode"
 msgstr "extra barcode"
 
-#: .\templates\manage\health\list.html:365
+#: .\templates\manage\health\list.html:370
 msgid "Not in the catalogue"
 msgstr "Niet in de catalogus"
 
-#: .\templates\manage\health\list.html:366
+#: .\templates\manage\health\list.html:371
 msgid "scanned, but no product has this code"
 msgstr "gescand, maar geen enkel product heeft deze code"
 
-#: .\templates\manage\health\list.html:368
-#| msgid "Barcode only"
+#: .\templates\manage\health\list.html:373
 msgid "Barcode does not scan"
 msgstr "Barcode scant niet"
 
-#: .\templates\manage\health\list.html:369
+#: .\templates\manage\health\list.html:374
 msgid "pickers keep confirming it by hand"
 msgstr "pickers bevestigen dit steeds handmatig"
 
-#: .\templates\manage\health\list.html:371
+#: .\templates\manage\health\list.html:376
 msgid "Scanned outside its order"
-msgstr "Buiten de eigen bestelling gescand"
+msgstr "Buiten de eigen order gescand"
 
-#: .\templates\manage\health\list.html:372
+#: .\templates\manage\health\list.html:377
 msgid "the product exists, but was not on that list"
 msgstr "het product bestaat, maar stond niet op die lijst"
 
-#: .\templates\manage\health\list.html:374
-#| msgid "picks not recorded"
+#: .\templates\manage\health\list.html:379
 msgid "Picks not recorded"
 msgstr "Picks niet vastgelegd"
 
-#: .\templates\manage\health\list.html:375
+#: .\templates\manage\health\list.html:380
 msgid "the server refused the pick"
 msgstr "de server weigerde de pick"
 
-#: .\templates\manage\health\list.html:377
-#| msgid "Unknown product"
+#: .\templates\manage\health\list.html:382
 msgid "Unreadable or wrong product"
 msgstr "Onleesbaar of verkeerd product"
 
-#: .\templates\manage\health\list.html:381
-#| msgid "confirmed by hand, not scanned"
-msgid "confirmed by hand"
-msgstr "handmatig bevestigd"
+#: .\templates\manage\health\list.html:386
+#, python-format
+msgid "%(num)s&times; confirmed by hand"
+msgstr "%(num)s&times; handmatig bevestigd"
 
-#: .\templates\manage\health\list.html:382
-msgid "not found on the list"
-msgstr "niet op de lijst gevonden"
+#: .\templates\manage\health\list.html:387
+#, python-format
+msgid "%(num)s&times; not found on the list"
+msgstr "%(num)s&times; niet op de lijst gevonden"
 
-#: .\templates\manage\health\list.html:383
-#| msgid "picks not recorded"
-msgid "not recorded"
-msgstr "niet vastgelegd"
-
-#: .\templates\manage\health\list.html:384
-msgid "unreadable"
-msgstr "onleesbaar"
+#: .\templates\manage\health\list.html:388
+#, python-format
+msgid "%(num)s&times; not recorded"
+msgstr "%(num)s&times; niet vastgelegd"
 
 #: .\templates\manage\health\list.html:389
+#, python-format
+msgid "%(num)s&times; unreadable"
+msgstr "%(num)s&times; onleesbaar"
+
+#: .\templates\manage\health\list.html:394
 msgid "Add as product"
 msgstr "Toevoegen als product"
 
-#: .\templates\manage\health\list.html:393
+#: .\templates\manage\health\list.html:398
 msgid ""
 "Add the code that is physically on the label as an extra barcode, so pickers "
 "can scan it instead of confirming by hand."
-msgstr "Voeg de code die fysiek op het label staat toe als extra barcode, zodat pickers kunnen scannen in plaats van handmatig bevestigen."
+msgstr ""
+"Voeg de code die fysiek op het label staat toe als extra barcode, zodat "
+"pickers kunnen scannen in plaats van handmatig bevestigen."
 
-#: .\templates\manage\health\list.html:393
-#| msgid "Extra barcodes"
+#: .\templates\manage\health\list.html:398
 msgid "Add extra barcode"
 msgstr "Extra barcode toevoegen"
 
-#: .\templates\manage\health\list.html:396
-#| msgid "Known product"
+#: .\templates\manage\health\list.html:401
 msgid "Open product"
 msgstr "Product openen"
 
-#: .\templates\manage\health\list.html:465
-msgid "build"
-msgstr "build"
+#: .\templates\manage\health\list.html:470
+#, python-format
+msgid "build %(build)s"
+msgstr "build %(build)s"
 
-#: .\templates\manage\health\list.html:486
+#: .\templates\manage\health\list.html:491
 #: .\templates\manage\inventory\logs.html:136
 #: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:107
 #: .\templates\manage\products\list.html:181
-msgid "Page"
-msgstr "Pagina"
+#, python-format
+msgid "Page %(num)s of %(total)s"
+msgstr "Pagina %(num)s van %(total)s"
 
-#: .\templates\manage\health\list.html:486
-#: .\templates\manage\inventory\logs.html:136
-#: .\templates\manage\orders\list.html:168
-#: .\templates\manage\picklists\list.html:107
-#: .\templates\manage\products\list.html:181
-msgid "of"
-msgstr "van"
-
-#: .\templates\manage\health\list.html:501
+#: .\templates\manage\health\list.html:506
 msgid "No scan issues found"
 msgstr "Geen scanproblemen gevonden"
 
-#: .\templates\manage\health\list.html:502
+#: .\templates\manage\health\list.html:507
 msgid "Failed scans, rejected picklists and manual overrides will appear here."
 msgstr ""
 "Mislukte scans, geweigerde picklijsten en handmatige overrides verschijnen "
@@ -2861,7 +3415,7 @@ msgid "Sync settings for this connection"
 msgstr "Synchronisatie-instellingen voor deze koppeling"
 
 #: .\templates\manage\integrations\config.html:13
-#: .\templates\shopify\app.html:129
+#: .\templates\shopify\app.html:131
 msgid "Sync settings"
 msgstr "Synchronisatie-instellingen"
 
@@ -3071,7 +3625,7 @@ msgstr ""
 msgid "Back to integrations"
 msgstr "Terug naar integraties"
 
-#: .\templates\manage\integrations\pairing_key.html:80
+#: .\templates\manage\integrations\pairing_key.html:76
 msgid "Pairing key copied to clipboard"
 msgstr "Koppelsleutel gekopieerd naar klembord"
 
@@ -3119,7 +3673,7 @@ msgstr "Voeg extra notities toe..."
 msgid "Add Correction"
 msgstr "Correctie toevoegen"
 
-#: .\templates\manage\inventory\add_correction.html:195
+#: .\templates\manage\inventory\add_correction.html:162
 msgid "Select a product first"
 msgstr "Selecteer eerst een product"
 
@@ -3141,18 +3695,12 @@ msgid "All Reasons"
 msgstr "Alle redenen"
 
 #: .\templates\manage\inventory\logs.html:55
-#: .\templates\manage\orders\list.html:73
-#: .\templates\manage\products\list.html:74
-msgid "selected"
-msgstr "geselecteerd"
+msgid "<span id=\"selected-count\">0</span> selected"
+msgstr "<span id=\"selected-count\">0</span> geselecteerd"
 
 #: .\templates\manage\inventory\logs.html:60
 msgid "Delete Selected"
 msgstr "Geselecteerde verwijderen"
-
-#: .\templates\manage\inventory\logs.html:76
-msgid "Date/Time"
-msgstr "Datum/Tijd"
 
 #: .\templates\manage\inventory\logs.html:151
 msgid "No inventory changes yet"
@@ -3163,20 +3711,20 @@ msgid "Inventory changes will appear here once products are updated."
 msgstr ""
 "Voorraadwijzigingen verschijnen hier zodra producten worden bijgewerkt."
 
-#: .\templates\manage\inventory\logs.html:313
+#: .\templates\manage\inventory\logs.html:287
 msgid "All Products"
 msgstr "Alle producten"
 
-#: .\templates\manage\inventory\logs.html:406
-msgid "Are you sure you want to delete"
-msgstr "Weet u zeker dat u wilt verwijderen"
+#: .\templates\manage\inventory\logs.html:288
+#, python-format
+msgid ""
+"Are you sure you want to delete %%(count)s log entries? The inventory "
+"changes will be reverted."
+msgstr ""
+"Weet u zeker dat u %%(count)s logboekitems wilt verwijderen? De "
+"voorraadwijzigingen worden teruggedraaid."
 
-#: .\templates\manage\inventory\logs.html:406
-msgid "log entries? The inventory changes will be reverted."
-msgstr "logboekitems? De voorraadwijzigingen worden teruggedraaid."
-
-#: .\templates\manage\inventory\logs.html:430
-#: .\templates\manage\inventory\logs.html:435
+#: .\templates\manage\inventory\logs.html:289
 msgid "Error deleting logs"
 msgstr "Fout bij verwijderen logs"
 
@@ -3186,7 +3734,7 @@ msgstr "Order bewerken"
 
 #: .\templates\manage\orders\form.html:9
 msgid "Update order details"
-msgstr "Order details bijwerken"
+msgstr "Orderdetails bijwerken"
 
 #: .\templates\manage\orders\form.html:23
 msgid "e.g., ORD-2024-001"
@@ -3209,7 +3757,7 @@ msgid "Search product..."
 msgstr "Zoek product..."
 
 #: .\templates\manage\orders\form.html:102
-#: .\templates\manage\orders\form.html:409
+#: .\templates\manage\orders\form.html:380
 msgid "Search product by code or description..."
 msgstr "Zoek product op code of omschrijving..."
 
@@ -3218,11 +3766,11 @@ msgstr "Zoek product op code of omschrijving..."
 msgid "Save Changes"
 msgstr "Wijzigingen opslaan"
 
-#: .\templates\manage\orders\form.html:439
+#: .\templates\manage\orders\form.html:381
 msgid "An order must have at least one product"
 msgstr "Een order moet minimaal één product bevatten"
 
-#: .\templates\manage\orders\form.html:619
+#: .\templates\manage\orders\form.html:383
 msgid "Please select a product for all order lines"
 msgstr "Selecteer een product voor alle orderregels"
 
@@ -3252,9 +3800,9 @@ msgid "Drag and drop your CSV file here, or click to select"
 msgstr "Sleep uw CSV-bestand hierheen of klik om te selecteren"
 
 #: .\templates\manage\orders\import.html:28
-#: .\templates\manage\orders\import.html:242
+#: .\templates\manage\orders\import.html:228
 #: .\templates\manage\products\import.html:28
-#: .\templates\manage\products\import.html:223
+#: .\templates\manage\products\import.html:209
 msgid "Maximum file size: 5MB"
 msgstr "Maximale bestandsgrootte: 5MB"
 
@@ -3306,7 +3854,7 @@ msgstr "Aantal (standaard: 1)"
 
 #: .\templates\manage\orders\import.html:81
 msgid "Order notes (only from first line)"
-msgstr "Order notities (alleen van eerste regel)"
+msgstr "Ordernotities (alleen van de eerste regel)"
 
 #: .\templates\manage\orders\import.html:87
 #: .\templates\manage\products\import.html:87
@@ -3394,6 +3942,11 @@ msgstr "Code A-Z"
 msgid "Code Z-A"
 msgstr "Code Z-A"
 
+#: .\templates\manage\orders\list.html:73
+#: .\templates\manage\products\list.html:74
+msgid "<span id=\"bulk-count\">0</span> selected"
+msgstr "<span id=\"bulk-count\">0</span> geselecteerd"
+
 #: .\templates\manage\orders\list.html:75
 #: .\templates\manage\orders\list.html:128 .\templates\queue\manage.html:68
 msgid "Add to Queue"
@@ -3417,7 +3970,7 @@ msgid "Delete"
 msgstr "Verwijderen"
 
 #: .\templates\manage\orders\list.html:95
-#: .\templates\queue\_order_cards.html:24 .\templates\shopify\app.html:212
+#: .\templates\queue\_order_cards.html:26 .\templates\shopify\app.html:214
 msgid "Items"
 msgstr "Items"
 
@@ -3460,25 +4013,28 @@ msgid "Delete Order"
 msgstr "Order verwijderen"
 
 #: .\templates\manage\orders\list.html:209
-msgid "Are you sure you want to delete order"
-msgstr "Weet u zeker dat u order wilt verwijderen"
+msgid ""
+"Are you sure you want to delete order <strong id=\"delete-order-code\"></"
+"strong>?"
+msgstr ""
+"Weet u zeker dat u order <strong id=\"delete-order-code\"></strong> wilt "
+"verwijderen?"
 
 #: .\templates\manage\orders\list.html:210
 #: .\templates\manage\products\list.html:222
 msgid "This action cannot be undone."
 msgstr "Deze actie kan niet ongedaan worden gemaakt."
 
-#: .\templates\manage\orders\list.html:273
+#: .\templates\manage\orders\list.html:230
 msgid "Error adding to queue"
 msgstr "Fout bij toevoegen aan wachtrij"
 
-#: .\templates\manage\orders\list.html:277
-#: .\templates\manage\orders\list.html:341
-#: .\templates\manage\products\list.html:345
+#: .\templates\manage\orders\list.html:231
+#: .\templates\manage\products\list.html:254
 msgid "An error occurred"
 msgstr "Er is een fout opgetreden"
 
-#: .\templates\manage\orders\list.html:282
+#: .\templates\manage\orders\list.html:286
 #, python-format
 msgid ""
 "Delete %%s order(s)? Orders currently being picked are skipped. This cannot "
@@ -3487,21 +4043,21 @@ msgstr ""
 "%%s order(s) verwijderen? Orders die momenteel gepickt worden, worden "
 "overgeslagen. Dit kan niet ongedaan worden gemaakt."
 
-#: .\templates\manage\orders\list.html:283
+#: .\templates\manage\orders\list.html:287
 #, python-format
 msgid "Add %%s order(s) to the queue? Only draft orders are added."
 msgstr ""
 "%%s order(s) aan de wachtrij toevoegen? Alleen conceptorders worden "
 "toegevoegd."
 
-#: .\templates\manage\orders\list.html:284
+#: .\templates\manage\orders\list.html:288
 #, python-format
 msgid "Remove %%s order(s) from the queue? Only queued orders are affected."
 msgstr ""
 "%%s order(s) uit de wachtrij verwijderen? Alleen orders in de wachtrij "
 "worden aangepast."
 
-#: .\templates\manage\orders\list.html:285
+#: .\templates\manage\orders\list.html:289
 #, python-format
 msgid ""
 "Reset %%s order(s) to draft? In-progress orders are unclaimed and their "
@@ -3511,13 +4067,19 @@ msgstr ""
 "vrijgegeven en hun pickvoortgang wordt gewist. Voltooide en geannuleerde "
 "orders worden overgeslagen."
 
+#: .\templates\manage\picklists\detail.html:4
+#: .\templates\manage\picklists\detail.html:5
+#, python-format
+msgid "Picklist %(code)s"
+msgstr "Picklijst %(code)s"
+
 #: .\templates\manage\picklists\detail.html:39
 msgid "Back to List"
 msgstr "Terug naar lijst"
 
 #: .\templates\manage\picklists\detail.html:48
 msgid "Picklist Information"
-msgstr "Picklijst informatie"
+msgstr "Picklijstinformatie"
 
 #: .\templates\manage\picklists\detail.html:79
 #: .\templates\manage\picklists\list.html:66
@@ -3535,8 +4097,11 @@ msgstr "Duur"
 #: .\templates\queue\_manage_queue_list.html:12
 #: .\templates\queue\_picker_orders.html:16 .\templates\queue\manage.html:65
 #: .\templates\queue\manage.html:93
-msgid "items"
-msgstr "items"
+#, python-format
+msgid "%(counter)s item"
+msgid_plural "%(counter)s items"
+msgstr[0] "%(counter)s artikel"
+msgstr[1] "%(counter)s artikelen"
 
 #: .\templates\manage\picklists\detail.html:147
 msgid "Picked"
@@ -3577,7 +4142,7 @@ msgstr "Product bewerken"
 
 #: .\templates\manage\products\form.html:9
 msgid "Update product details"
-msgstr "Product details bijwerken"
+msgstr "Productdetails bijwerken"
 
 #: .\templates\manage\products\form.html:22
 msgid "e.g., SKU-001"
@@ -3631,8 +4196,7 @@ msgid "Create Product"
 msgstr "Product aanmaken"
 
 #: .\templates\manage\products\form.html:116
-#: .\templates\manage\products\form.html:568
-#: .\templates\manage\products\form.html:574
+#: .\templates\manage\products\form.html:446
 msgid "Update Stock"
 msgstr "Voorraad bijwerken"
 
@@ -3649,7 +4213,7 @@ msgstr "Alle voorraadwijzigingen bekijken"
 msgid "No inventory changes recorded yet."
 msgstr "Nog geen voorraadwijzigingen vastgelegd."
 
-#: .\templates\manage\products\form.html:613
+#: .\templates\manage\products\form.html:447
 msgid "You"
 msgstr "U"
 
@@ -3709,7 +4273,7 @@ msgstr "Exporteren"
 
 #: .\templates\manage\products\list.html:50
 #: .\templates\manage\products\list.html:144
-#: .\templates\manage\products\list.html:469
+#: .\templates\manage\products\list.html:256
 msgid "Inactive"
 msgstr "Inactief"
 
@@ -3742,12 +4306,12 @@ msgid "Merge"
 msgstr "Samenvoegen"
 
 #: .\templates\manage\products\list.html:142
-#: .\templates\manage\products\list.html:471
+#: .\templates\manage\products\list.html:257
 msgid "Click to deactivate"
 msgstr "Klik om te deactiveren"
 
 #: .\templates\manage\products\list.html:144
-#: .\templates\manage\products\list.html:471
+#: .\templates\manage\products\list.html:258
 msgid "Click to activate"
 msgstr "Klik om te activeren"
 
@@ -3766,10 +4330,18 @@ msgid "Delete Product"
 msgstr "Product verwijderen"
 
 #: .\templates\manage\products\list.html:221
-msgid "Are you sure you want to delete product"
-msgstr "Weet u zeker dat u product wilt verwijderen"
+msgid ""
+"Are you sure you want to delete product <strong id=\"delete-product-code\"></"
+"strong>?"
+msgstr ""
+"Weet u zeker dat u product <strong id=\"delete-product-code\"></strong> wilt "
+"verwijderen?"
 
-#: .\templates\manage\products\list.html:282
+#: .\templates\manage\products\list.html:253
+msgid "Enter new location for selected products:"
+msgstr "Voer een nieuwe locatie in voor de geselecteerde producten:"
+
+#: .\templates\manage\products\list.html:289
 #, python-format
 msgid ""
 "Delete %%s product(s)? Products used in orders are skipped. This cannot be "
@@ -3778,7 +4350,7 @@ msgstr ""
 "%%s product(en) verwijderen? Producten die in orders gebruikt worden, worden "
 "overgeslagen. Dit kan niet ongedaan worden gemaakt."
 
-#: .\templates\manage\products\list.html:283
+#: .\templates\manage\products\list.html:290
 msgid ""
 "Merge the selected products into which product? Enter its product code. The "
 "codes of the merged products stay scannable as extra barcodes."
@@ -3787,10 +4359,6 @@ msgstr ""
 "productcode in. De codes van de samengevoegde producten blijven scanbaar als "
 "extra barcodes."
 
-#: .\templates\manage\products\list.html:295
-msgid "Enter new location for selected products:"
-msgstr "Voer een nieuwe locatie in voor de geselecteerde producten:"
-
 #: .\templates\manage\profile.html:6
 msgid "Manage your account settings"
 msgstr "Beheer uw accountinstellingen"
@@ -3798,13 +4366,6 @@ msgstr "Beheer uw accountinstellingen"
 #: .\templates\manage\profile.html:14
 msgid "Account Information"
 msgstr "Accountinformatie"
-
-#: .\templates\manage\profile.html:22 .\templates\manage\profile.html:178
-#: .\templates\registration\login.html:35
-#: .\templates\registration\signup.html:95
-#: .\templates\registration\signup.html:168
-msgid "Username"
-msgstr "Gebruikersnaam"
 
 #: .\templates\manage\profile.html:24
 msgid "Username cannot be changed."
@@ -3818,8 +4379,8 @@ msgstr "Voornaam"
 msgid "Last Name"
 msgstr "Achternaam"
 
-#: .\templates\manage\profile.html:41 .\templates\registration\signup.html:108
-#: .\templates\registration\signup.html:181
+#: .\templates\manage\profile.html:41 .\templates\registration\signup.html:111
+#: .\templates\registration\signup.html:185
 msgid "Email"
 msgstr "E-mail"
 
@@ -3847,7 +4408,7 @@ msgstr "Bevestig nieuw wachtwoord"
 
 #: .\templates\manage\profile.html:91
 msgid "Picker Accounts"
-msgstr "Picker accounts"
+msgstr "Pickeraccounts"
 
 #: .\templates\manage\profile.html:95
 msgid ""
@@ -3910,11 +4471,11 @@ msgstr "Inlog-QR actief · nog %(days)s dagen"
 msgid "No login QR"
 msgstr "Geen inlog-QR"
 
-#: .\templates\manage\profile.html:142 .\templates\shopify\app.html:250
+#: .\templates\manage\profile.html:142 .\templates\shopify\app.html:252
 msgid "New password (min 8 characters)"
 msgstr "Nieuw wachtwoord (min. 8 tekens)"
 
-#: .\templates\manage\profile.html:144 .\templates\shopify\app.html:251
+#: .\templates\manage\profile.html:144 .\templates\shopify\app.html:253
 msgid "Set password"
 msgstr "Wachtwoord instellen"
 
@@ -3937,11 +4498,11 @@ msgstr "Intrekken"
 
 #: .\templates\manage\profile.html:169
 msgid "No picker accounts yet — create one below."
-msgstr "Nog geen picker accounts — maak er hieronder een aan."
+msgstr "Nog geen pickeraccounts — maak er hieronder een aan."
 
 #: .\templates\manage\profile.html:173
 msgid "Add a picker account"
-msgstr "Picker account toevoegen"
+msgstr "Pickeraccount toevoegen"
 
 #: .\templates\manage\profile.html:180
 msgid "Password (min 8 characters)"
@@ -4031,8 +4592,11 @@ msgstr "Huidige wachtrij"
 
 #: .\templates\manage\queue\list.html:39 .\templates\manage\queue\list.html:54
 #: .\templates\queue\manage.html:42 .\templates\queue\manage.html:56
-msgid "orders"
-msgstr "orders"
+#, python-format
+msgid "%(counter)s order"
+msgid_plural "%(counter)s orders"
+msgstr[0] "%(counter)s order"
+msgstr[1] "%(counter)s orders"
 
 #: .\templates\manage\queue\list.html:53 .\templates\queue\manage.html:55
 msgid "Available Orders"
@@ -4054,20 +4618,20 @@ msgstr "Recent voltooid"
 msgid "No completed orders yet"
 msgstr "Nog geen voltooide orders"
 
-#: .\templates\manage\queue\list.html:424 .\templates\queue\manage.html:157
+#: .\templates\manage\queue\list.html:384 .\templates\queue\manage.html:115
 msgid "Queue order saved"
 msgstr "Wachtrijvolgorde opgeslagen"
 
-#: .\templates\manage\queue\list.html:471
+#: .\templates\manage\queue\list.html:387
 #, python-format
 msgid ""
 "%%(name)s is picking this order right now. Unlock it anyway? Picks they "
 "already recorded are kept."
 msgstr ""
-"%%(name)s is deze bestelling nu aan het picken. Toch ontgrendelen? Al "
-"vastgelegde picks blijven bewaard."
+"%%(name)s is deze order nu aan het picken. Toch ontgrendelen? Al vastgelegde "
+"picks blijven bewaard."
 
-#: .\templates\manage\queue\list.html:472
+#: .\templates\manage\queue\list.html:388
 msgid "Unlock this order? The picker will lose their progress."
 msgstr "Deze order ontgrendelen? De picker verliest zijn voortgang."
 
@@ -4142,17 +4706,21 @@ msgstr ""
 "Zie de <a href=\"%(docs_url)s\">API-documentatie</a> voor het aanleveren van "
 "orders met uw token."
 
-#: .\templates\manage\settings\api_tokens.html:129
+#: .\templates\manage\settings\api_tokens.html:125
 msgid "Token copied to clipboard"
 msgstr "Token gekopieerd naar klembord"
 
+#: .\templates\offline.html:64
+msgid "Orderpiqr logo"
+msgstr "Orderpiqr-logo"
+
 #: .\templates\offline.html:65
 msgid "You're offline"
-msgstr "Je ben offline"
+msgstr "Je bent offline"
 
 #: .\templates\offline.html:66
 msgid "Sorry, content is unavailable right now."
-msgstr "Deze app is niet beschikbaar zonder internetverbinding"
+msgstr "Sorry, deze inhoud is nu niet beschikbaar."
 
 #: .\templates\offline.html:68
 msgid "Retry"
@@ -4199,18 +4767,21 @@ msgstr "+1 extra"
 msgid "Continue scanning"
 msgstr "Doorgaan met scannen"
 
-#: .\templates\queue\_order_cards.html:67
+#: .\templates\queue\_order_cards.html:19
+#, python-format
+msgid "QR code for %(code)s"
+msgstr "QR-code voor %(code)s"
+
+#: .\templates\queue\_order_cards.html:69
 #: .\templates\queue\_picker_orders.html:60
 msgid "No orders in queue"
 msgstr "Geen orders in de wachtrij"
 
-#: .\templates\queue\_picker_orders.html:35 .\templates\queue\picker.html:120
-#: .\templates\queue\picker.html:127
+#: .\templates\queue\_picker_orders.html:35 .\templates\queue\picker.html:49
 msgid "Start Picking"
 msgstr "Start met picken"
 
-#: .\templates\queue\_picker_orders.html:46 .\templates\queue\picker.html:179
-#: .\templates\queue\picker.html:185
+#: .\templates\queue\_picker_orders.html:46 .\templates\queue\picker.html:51
 msgid "Take Over"
 msgstr "Overnemen"
 
@@ -4224,11 +4795,11 @@ msgstr "Beheer"
 
 #: .\templates\queue\manage.html:24
 msgid "Open tablet display view"
-msgstr "Open tablet weergave"
+msgstr "Tabletweergave openen"
 
 #: .\templates\queue\manage.html:27
 msgid "Open mobile picker view"
-msgstr "Open mobiele picker weergave"
+msgstr "Mobiele pickerweergave openen"
 
 #: .\templates\queue\manage.html:75
 msgid "No available orders"
@@ -4246,48 +4817,55 @@ msgstr "Geen voltooide orders"
 msgid "Pick Queue"
 msgstr "Pickwachtrij"
 
-#: .\templates\queue\picker.html:69 .\templates\queue\picker.html:153
+#: .\templates\queue\picker.html:47
 msgid "Claiming..."
 msgstr "Claimen..."
 
-#: .\templates\queue\picker.html:94
+#: .\templates\queue\picker.html:48
 msgid "Order claimed! Redirecting..."
 msgstr "Order geclaimd! Doorverwijzen..."
 
-#: .\templates\queue\picker.html:125 .\templates\queue\picker.html:131
-#: .\templates\queue\picker.html:183
+#: .\templates\queue\picker.html:50
 msgid "Error claiming order"
 msgstr "Fout bij claimen order"
 
-#: .\templates\queue\picker.html:140
+#: .\templates\queue\picker.html:52
 #, python-format
 msgid ""
 "%%(name)s has been picking this order for %%(duration)s. Take it over? Picks "
 "they already recorded are kept."
 msgstr ""
-"%%(name)s is al %%(duration)s met deze bestelling bezig. Overnemen? Al "
+"%%(name)s is al %%(duration)s met deze order bezig. Overnemen? Al "
 "vastgelegde picks blijven bewaard."
 
-#: .\templates\queue\picker.html:144
+#: .\templates\queue\picker.html:53
 #, python-format
 msgid ""
 "%%(name)s is picking this order right now. Take it over? Picks they already "
 "recorded are kept."
 msgstr ""
-"%%(name)s is deze bestelling nu aan het picken. Overnemen? Al vastgelegde "
-"picks blijven bewaard."
+"%%(name)s is deze order nu aan het picken. Overnemen? Al vastgelegde picks "
+"blijven bewaard."
 
-#: .\templates\queue\picker.html:147
+#: .\templates\queue\picker.html:54
 msgid ""
 "This order is being picked by someone else. Take it over? Picks they already "
 "recorded are kept."
 msgstr ""
-"Deze bestelling wordt door iemand anders gepickt. Overnemen? Al vastgelegde "
-"picks blijven bewaard."
+"Deze order wordt door iemand anders gepickt. Overnemen? Al vastgelegde picks "
+"blijven bewaard."
+
+#: .\templates\registration\base_auth.html:7
+msgid "OrderPiqR - Warehouse Order Picking System"
+msgstr "OrderPiqR - Orderpicksysteem voor magazijnen"
 
 #: .\templates\registration\login.html:4
 msgid "Login"
 msgstr "Login"
+
+#: .\templates\registration\login.html:10
+msgid "Welcome back"
+msgstr "Welkom terug"
 
 #: .\templates\registration\login.html:11
 msgid "Sign in to your OrderPiqR account"
@@ -4298,8 +4876,8 @@ msgid "Enter your username"
 msgstr "Voer uw gebruikersnaam in"
 
 #: .\templates\registration\login.html:50
-#: .\templates\registration\signup.html:124
-#: .\templates\registration\signup.html:197 .\templates\shopify\app.html:238
+#: .\templates\registration\signup.html:127
+#: .\templates\registration\signup.html:201 .\templates\shopify\app.html:240
 msgid "Password"
 msgstr "Wachtwoord"
 
@@ -4317,7 +4895,7 @@ msgstr "Wachtwoord vergeten?"
 
 #: .\templates\registration\login.html:72
 #: .\templates\registration\qr_login.html:4
-#: .\templates\registration\signup.html:233
+#: .\templates\registration\signup.html:237
 msgid "Sign in"
 msgstr "Inloggen"
 
@@ -4397,11 +4975,11 @@ msgstr "Terug naar login"
 
 #: .\templates\registration\password_reset_complete.html:4
 msgid "Password Reset Complete"
-msgstr "Wachtwoord reset voltooid"
+msgstr "Wachtwoordreset voltooid"
 
 #: .\templates\registration\password_reset_complete.html:15
 msgid "Password reset complete!"
-msgstr "Wachtwoord reset voltooid!"
+msgstr "Wachtwoordreset voltooid!"
 
 #: .\templates\registration\password_reset_complete.html:16
 msgid "Your password has been successfully changed"
@@ -4443,7 +5021,8 @@ msgstr "Bevestig nieuw wachtwoord"
 msgid ""
 "This password reset link is invalid or has expired. Please request a new one."
 msgstr ""
-"Deze wachtwoord reset link is ongeldig of verlopen. Vraag een nieuwe aan."
+"Deze link om uw wachtwoord te resetten is ongeldig of verlopen. Vraag een "
+"nieuwe aan."
 
 #: .\templates\registration\password_reset_confirm.html:66
 msgid "Request New Link"
@@ -4451,7 +5030,7 @@ msgstr "Vraag nieuwe link aan"
 
 #: .\templates\registration\password_reset_done.html:4
 msgid "Password Reset Sent"
-msgstr "Wachtwoord reset verzonden"
+msgstr "Wachtwoordreset verzonden"
 
 #: .\templates\registration\password_reset_done.html:15
 msgid "Check your email"
@@ -4467,15 +5046,16 @@ msgid ""
 "password reset link shortly."
 msgstr ""
 "Als er een account bestaat met het ingevoerde e-mailadres, ontvangt u "
-"binnenkort een wachtwoord reset link."
-
-#: .\templates\registration\password_reset_done.html:24
-msgid "Didn't receive the email? Check your spam folder or"
-msgstr "Geen e-mail ontvangen? Controleer uw spam map of"
+"binnenkort een link om uw wachtwoord te resetten."
 
 #: .\templates\registration\password_reset_done.html:25
-msgid "try again"
-msgstr "probeer opnieuw"
+#, python-format
+msgid ""
+"Didn't receive the email? Check your spam folder or <a href=\"%(url)s\">try "
+"again</a>"
+msgstr ""
+"E-mail niet ontvangen? Controleer uw spammap of <a href=\"%(url)s\">probeer "
+"het opnieuw</a>"
 
 #: .\templates\registration\password_reset_email.html:2
 msgid "Hello,"
@@ -4503,8 +5083,8 @@ msgid ""
 "If you didn't request this password reset, you can safely ignore this email. "
 "Your password will not be changed."
 msgstr ""
-"Als u deze wachtwoord reset niet heeft aangevraagd, kunt u deze e-mail "
-"veilig negeren. Uw wachtwoord wordt niet gewijzigd."
+"Als u deze wachtwoordreset niet heeft aangevraagd, kunt u deze e-mail veilig "
+"negeren. Uw wachtwoord wordt niet gewijzigd."
 
 #: .\templates\registration\password_reset_email.html:14
 msgid "Best regards,"
@@ -4516,7 +5096,7 @@ msgstr "Het OrderPiqR Team"
 
 #: .\templates\registration\password_reset_subject.txt:1
 msgid "Reset your OrderPiqR password"
-msgstr "Reset uw OrderPiqR wachtwoord"
+msgstr "Reset uw OrderPiqR-wachtwoord"
 
 #: .\templates\registration\picker_choice.html:12
 msgid "Choose Mode"
@@ -4602,7 +5182,7 @@ msgstr "Hoe OrderPiqR werkt"
 
 #: .\templates\registration\signup.html:27
 msgid "Admin Account"
-msgstr "Admin account"
+msgstr "Adminaccount"
 
 #: .\templates\registration\signup.html:28
 msgid ""
@@ -4614,7 +5194,7 @@ msgstr ""
 
 #: .\templates\registration\signup.html:41
 msgid "Picker Account"
-msgstr "Picker account"
+msgstr "Pickeraccount"
 
 #: .\templates\registration\signup.html:42
 msgid ""
@@ -4643,7 +5223,7 @@ msgstr "Voer uw bedrijfsnaam in"
 
 #: .\templates\registration\signup.html:89
 msgid "Administrator Account"
-msgstr "Beheerder account"
+msgstr "Beheerdersaccount"
 
 #: .\templates\registration\signup.html:91
 msgid ""
@@ -4654,76 +5234,68 @@ msgstr ""
 "te voegen, orders te maken, de wachtrij te beheren en instellingen te "
 "configureren."
 
-#: .\templates\registration\signup.html:101
-msgid "admin"
-msgstr "admin"
-
-#: .\templates\registration\signup.html:114
+#: .\templates\registration\signup.html:117
 msgid "admin@company.com"
 msgstr "admin@bedrijf.nl"
 
-#: .\templates\registration\signup.html:129
-#: .\templates\registration\signup.html:202
+#: .\templates\registration\signup.html:132
+#: .\templates\registration\signup.html:206
 msgid "Create a password"
 msgstr "Maak een wachtwoord"
 
-#: .\templates\registration\signup.html:136
-#: .\templates\registration\signup.html:209
+#: .\templates\registration\signup.html:139
+#: .\templates\registration\signup.html:213
 msgid "Confirm Password"
 msgstr "Bevestig wachtwoord"
 
-#: .\templates\registration\signup.html:141
-#: .\templates\registration\signup.html:214
+#: .\templates\registration\signup.html:144
+#: .\templates\registration\signup.html:218
 msgid "Confirm password"
 msgstr "Bevestig wachtwoord"
 
-#: .\templates\registration\signup.html:154
-msgid "Shared Picker Account"
-msgstr "Gedeeld picker account"
-
 #: .\templates\registration\signup.html:157
+msgid "Shared Picker Account"
+msgstr "Gedeeld pickeraccount"
+
+#: .\templates\registration\signup.html:160
 msgid "This is a shared login for all your warehouse pickers."
 msgstr "Dit is een gedeelde login voor al uw magazijnpickers."
 
-#: .\templates\registration\signup.html:159
+#: .\templates\registration\signup.html:162
 msgid "Share these credentials with your team"
 msgstr "Deel deze inloggegevens met uw team"
 
-#: .\templates\registration\signup.html:160
+#: .\templates\registration\signup.html:163
 msgid "When a picker logs in for the first time, they enter their name"
 msgstr "Wanneer een picker voor het eerst inlogt, voert hij zijn naam in"
 
-#: .\templates\registration\signup.html:161
+#: .\templates\registration\signup.html:164
 msgid "Their device is then remembered - no need to enter their name again"
 msgstr ""
 "Hun apparaat wordt dan onthouden - geen noodzaak om hun naam opnieuw in te "
 "voeren"
 
-#: .\templates\registration\signup.html:162
+#: .\templates\registration\signup.html:165
 msgid "You can see which picker is using which device in the dashboard"
 msgstr "U kunt zien welke picker welk apparaat gebruikt in het dashboard"
 
-#: .\templates\registration\signup.html:174
-msgid "picker"
-msgstr "picker"
-
-#: .\templates\registration\signup.html:187
+#: .\templates\registration\signup.html:191
 msgid "picker@company.com"
 msgstr "picker@bedrijf.nl"
 
-#: .\templates\registration\signup.html:225
+#: .\templates\registration\signup.html:229
 msgid "Create Company & Accounts"
 msgstr "Bedrijf en accounts aanmaken"
 
-#: .\templates\registration\signup.html:232
+#: .\templates\registration\signup.html:236
 msgid "Already have an account?"
 msgstr "Heeft u al een account?"
 
-#: .\templates\shopify\app.html:100
+#: .\templates\shopify\app.html:102
 msgid "No active plan"
 msgstr "Geen actief abonnement"
 
-#: .\templates\shopify\app.html:102
+#: .\templates\shopify\app.html:104
 msgid ""
 "This store has no active OrderPiqr subscription. Choose a plan to keep order "
 "sync running — billing is handled by Shopify."
@@ -4731,67 +5303,67 @@ msgstr ""
 "Deze winkel heeft geen actief OrderPiqr-abonnement. Kies een abonnement om "
 "de ordersynchronisatie actief te houden — facturering verloopt via Shopify."
 
-#: .\templates\shopify\app.html:105
+#: .\templates\shopify\app.html:107
 msgid "Choose a plan"
 msgstr "Kies een abonnement"
 
-#: .\templates\shopify\app.html:110
+#: .\templates\shopify\app.html:112
 msgid "Overview"
 msgstr "Overzicht"
 
-#: .\templates\shopify\app.html:114
+#: .\templates\shopify\app.html:116
 msgid "Orders ready to pick"
 msgstr "Orders klaar om te picken"
 
-#: .\templates\shopify\app.html:118 .\templates\shopify\app.html:226
+#: .\templates\shopify\app.html:120 .\templates\shopify\app.html:228
 msgid "Products needing mapping"
 msgstr "Producten die gekoppeld moeten worden"
 
-#: .\templates\shopify\app.html:123
+#: .\templates\shopify\app.html:125
 msgid "Open the picker app"
 msgstr "Open de picker-app"
 
-#: .\templates\shopify\app.html:132
+#: .\templates\shopify\app.html:134
 msgid "Product matching"
 msgstr "Productmatching"
 
-#: .\templates\shopify\app.html:133
+#: .\templates\shopify\app.html:135
 msgid "Which Shopify field matches your product codes"
 msgstr "Welk Shopify-veld komt overeen met uw productcodes"
 
-#: .\templates\shopify\app.html:136
+#: .\templates\shopify\app.html:138
 msgid "Barcode, then SKU"
 msgstr "Barcode, daarna SKU"
 
-#: .\templates\shopify\app.html:137
+#: .\templates\shopify\app.html:139
 msgid "SKU, then barcode"
 msgstr "SKU, daarna barcode"
 
-#: .\templates\shopify\app.html:138
+#: .\templates\shopify\app.html:140
 msgid "Barcode only"
 msgstr "Alleen barcode"
 
-#: .\templates\shopify\app.html:139
+#: .\templates\shopify\app.html:141
 msgid "SKU only"
 msgstr "Alleen SKU"
 
-#: .\templates\shopify\app.html:140
+#: .\templates\shopify\app.html:142
 msgid "Metafield"
 msgstr "Metaveld"
 
-#: .\templates\shopify\app.html:141
+#: .\templates\shopify\app.html:143
 msgid "Metafield, then barcode/SKU"
 msgstr "Metaveld, daarna barcode/SKU"
 
-#: .\templates\shopify\app.html:145
+#: .\templates\shopify\app.html:147
 msgid "Metafield (namespace.key)"
 msgstr "Metaveld (namespace.key)"
 
-#: .\templates\shopify\app.html:150
+#: .\templates\shopify\app.html:152
 msgid "Warehouse location metafield (optional)"
 msgstr "Metaveld magazijnlocatie (optioneel)"
 
-#: .\templates\shopify\app.html:151
+#: .\templates\shopify\app.html:153
 msgid ""
 "If your products carry their warehouse location in a metafield, OrderPiqr "
 "keeps product locations in sync with it."
@@ -4799,55 +5371,55 @@ msgstr ""
 "Als uw producten hun magazijnlocatie in een metaveld hebben, houdt OrderPiqr "
 "de productlocaties daarmee synchroon."
 
-#: .\templates\shopify\app.html:157
+#: .\templates\shopify\app.html:159
 msgid "Unknown products"
 msgstr "Onbekende producten"
 
-#: .\templates\shopify\app.html:158
+#: .\templates\shopify\app.html:160
 msgid "When an order contains a product OrderPiqr doesn't know"
 msgstr "Wanneer een order een product bevat dat OrderPiqr niet kent"
 
-#: .\templates\shopify\app.html:161
+#: .\templates\shopify\app.html:163
 msgid "Create it automatically"
 msgstr "Automatisch aanmaken"
 
-#: .\templates\shopify\app.html:162
+#: .\templates\shopify\app.html:164
 msgid "Hold order for review"
 msgstr "Order vasthouden voor controle"
 
-#: .\templates\shopify\app.html:163
+#: .\templates\shopify\app.html:165
 msgid "Skip that line"
 msgstr "Die regel overslaan"
 
-#: .\templates\shopify\app.html:167
+#: .\templates\shopify\app.html:169
 msgid "New orders go straight to the picking queue"
 msgstr "Nieuwe orders gaan direct naar de pickwachtrij"
 
-#: .\templates\shopify\app.html:171
+#: .\templates\shopify\app.html:173
 msgid "Mark order fulfilled in Shopify when picked"
 msgstr "Order in Shopify als afgehandeld markeren wanneer gepickt"
 
-#: .\templates\shopify\app.html:175
+#: .\templates\shopify\app.html:177
 msgid "Send Shopify's shipping notification to the customer"
 msgstr "Verzendmelding van Shopify naar de klant sturen"
 
-#: .\templates\shopify\app.html:179
+#: .\templates\shopify\app.html:181
 msgid "Archive the Shopify order after fulfilling"
 msgstr "De Shopify-order archiveren na het afhandelen"
 
-#: .\templates\shopify\app.html:185
+#: .\templates\shopify\app.html:187
 msgid "Re-sync products"
 msgstr "Producten opnieuw synchroniseren"
 
-#: .\templates\shopify\app.html:186
+#: .\templates\shopify\app.html:188
 msgid "Save settings"
 msgstr "Instellingen opslaan"
 
-#: .\templates\shopify\app.html:192
+#: .\templates\shopify\app.html:194
 msgid "Shopify orders"
 msgstr "Shopify-orders"
 
-#: .\templates\shopify\app.html:194
+#: .\templates\shopify\app.html:196
 msgid ""
 "Browse the orders in your Shopify store and push the ones you want to pick "
 "to OrderPiqr. New paid orders are imported automatically."
@@ -4856,55 +5428,55 @@ msgstr ""
 "picken naar OrderPiqr. Nieuwe betaalde orders worden automatisch "
 "geïmporteerd."
 
-#: .\templates\shopify\app.html:198
+#: .\templates\shopify\app.html:200
 msgid "Open, unfulfilled"
 msgstr "Open, niet afgehandeld"
 
-#: .\templates\shopify\app.html:199
+#: .\templates\shopify\app.html:201
 msgid "Open, unfulfilled & paid"
 msgstr "Open, niet afgehandeld & betaald"
 
-#: .\templates\shopify\app.html:200
+#: .\templates\shopify\app.html:202
 msgid "All open"
 msgstr "Alle open orders"
 
-#: .\templates\shopify\app.html:201
+#: .\templates\shopify\app.html:203
 msgid "All orders"
 msgstr "Alle orders"
 
-#: .\templates\shopify\app.html:203
+#: .\templates\shopify\app.html:205
 msgid "Search (e.g. #1001)"
 msgstr "Zoeken (bijv. #1001)"
 
-#: .\templates\shopify\app.html:204
+#: .\templates\shopify\app.html:206
 msgid "Refresh"
 msgstr "Vernieuwen"
 
-#: .\templates\shopify\app.html:207
+#: .\templates\shopify\app.html:209
 msgid "Select all"
 msgstr "Alles selecteren"
 
-#: .\templates\shopify\app.html:210
+#: .\templates\shopify\app.html:212
 msgid "Payment"
 msgstr "Betaling"
 
-#: .\templates\shopify\app.html:211
+#: .\templates\shopify\app.html:213
 msgid "Fulfillment"
 msgstr "Afhandeling"
 
-#: .\templates\shopify\app.html:213
+#: .\templates\shopify\app.html:215
 msgid "OrderPiqr"
 msgstr "OrderPiqr"
 
-#: .\templates\shopify\app.html:219
+#: .\templates\shopify\app.html:221
 msgid "Load more"
 msgstr "Meer laden"
 
-#: .\templates\shopify\app.html:220
+#: .\templates\shopify\app.html:222
 msgid "Push selected to OrderPiqr"
 msgstr "Geselecteerde naar OrderPiqr sturen"
 
-#: .\templates\shopify\app.html:227
+#: .\templates\shopify\app.html:229
 msgid ""
 "These Shopify products couldn't be matched. Enter the OrderPiqr product code "
 "to link them."
@@ -4912,11 +5484,11 @@ msgstr ""
 "Deze Shopify-producten konden niet worden gematcht. Voer de OrderPiqr-"
 "productcode in om ze te koppelen."
 
-#: .\templates\shopify\app.html:232
+#: .\templates\shopify\app.html:234
 msgid "Already using OrderPiqr?"
 msgstr "Gebruikt u OrderPiqr al?"
 
-#: .\templates\shopify\app.html:234
+#: .\templates\shopify\app.html:236
 msgid ""
 "This store got a fresh OrderPiqr workspace when you installed the app. If "
 "your company already has an account on orderpiqr.nl, link this store to it — "
@@ -4927,18 +5499,89 @@ msgstr ""
 "deze winkel daaraan — uw bestaande producten en instellingen worden dan "
 "gebruikt."
 
-#: .\templates\shopify\app.html:237
+#: .\templates\shopify\app.html:239
 msgid "Admin username"
 msgstr "Admin-gebruikersnaam"
 
-#: .\templates\shopify\app.html:239
+#: .\templates\shopify\app.html:241
 msgid "Link account"
 msgstr "Account koppelen"
 
-#: .\templates\shopify\app.html:244
+#: .\templates\shopify\app.html:246
 msgid "Picker access"
 msgstr "Toegang voor pickers"
 
-#: .\templates\shopify\app.html:246
+#: .\templates\shopify\app.html:248
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr "Uw magazijnmedewerkers loggen met dit account in op de picker-app:"
+
+#~ msgid "Enabled"
+#~ msgstr "Ingeschakeld"
+
+#, python-format
+#~ msgid "%(n)s picklist in progress for over 4 hours."
+#~ msgid_plural "%(n)s picklists in progress for over 4 hours."
+#~ msgstr[0] "%(n)s picklijst is al meer dan 4 uur bezig."
+#~ msgstr[1] "%(n)s picklijsten zijn al meer dan 4 uur bezig."
+
+#~ msgid "admin"
+#~ msgstr "admin"
+
+#~ msgid "picker"
+#~ msgstr "picker"
+
+#~ msgid "active"
+#~ msgstr "actief"
+
+#~ msgid "this week"
+#~ msgstr "deze week"
+
+#~ msgid "draft"
+#~ msgstr "concept"
+
+#~ msgid "overrides"
+#~ msgstr "handmatige overrides"
+
+#~ msgid "ago"
+#~ msgstr "geleden"
+
+#~ msgid "list"
+#~ msgstr "lijst"
+
+#, python-format
+#~ msgid ""
+#~ "%(count)s picklist(s) in progress for over 4 hours, holding %(lines)s "
+#~ "unpicked line(s)"
+#~ msgstr ""
+#~ "%(count)s picklijst(en) al meer dan 4 uur onderhanden, met %(lines)s niet-"
+#~ "gepickte regel(s)"
+
+#~ msgid "not recorded"
+#~ msgstr "niet vastgelegd"
+
+#~ msgid "unreadable"
+#~ msgstr "onleesbaar"
+
+#~ msgid "build"
+#~ msgstr "build"
+
+#~ msgid "Page"
+#~ msgstr "Pagina"
+
+#~ msgid "of"
+#~ msgstr "van"
+
+#~ msgid "selected"
+#~ msgstr "geselecteerd"
+
+#~ msgid "Are you sure you want to delete"
+#~ msgstr "Weet u zeker dat u wilt verwijderen"
+
+#~ msgid "items"
+#~ msgstr "items"
+
+#~ msgid "orders"
+#~ msgstr "orders"
+
+#~ msgid "try again"
+#~ msgstr "probeer opnieuw"

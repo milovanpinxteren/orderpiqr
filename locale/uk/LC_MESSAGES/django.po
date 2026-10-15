@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 14:30+0200\n"
+"POT-Creation-Date: 2026-10-15 13:46+0200\n"
 "PO-Revision-Date: 2026-09-23 11:00+0200\n"
 "Last-Translator: Milo van Pinxteren <milo@example.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -12,8 +12,206 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
+"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
+"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
+"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#: .\api\serializers\device_serializer.py:26
+msgid "A device with this fingerprint is already registered for your company."
+msgstr "Пристрій із таким відбитком уже зареєстровано для вашої компанії."
+
+#: .\api\serializers\order_serializer.py:55
+#: .\orderpiqrApp\views\manage_views.py:843
+#: .\orderpiqrApp\views\manage_views.py:917
+msgid "An order with this code already exists."
+msgstr "Замовлення з таким кодом уже існує."
+
+#: .\api\serializers\product_serializer.py:74
+msgid "Barcodes cannot be empty."
+msgstr "Штрих-коди не можуть бути порожніми."
+
+#: .\api\serializers\product_serializer.py:77
+#, python-format
+msgid "Duplicate code \"%(code)s\" in request."
+msgstr "Повторюваний код «%(code)s» у запиті."
+
+#: .\api\serializers\product_serializer.py:82
+#, python-format
+msgid "Code \"%(code)s\" is already in use by another product."
+msgstr "Код «%(code)s» уже використовує інший товар."
+
+#: .\api\serializers\product_serializer.py:96
+msgid "A code in this request was just taken by another product."
+msgstr "Один із кодів у цьому запиті щойно зайняв інший товар."
+
+#: .\api\serializers\product_serializer.py:116
+msgid ""
+"The replaced code conflicts with an existing barcode of another product."
+msgstr "Замінений код конфліктує з наявним штрих-кодом іншого товару."
+
+#: .\api\views\device_views.py:126
+msgid "Cannot delete device with pick list history. Unassign the user instead."
+msgstr ""
+"Неможливо видалити пристрій з історією листів комплектації. Замість цього "
+"відв’яжіть користувача."
+
+#: .\api\views\device_views.py:166
+#: .\orderpiqrApp\views\scan_picklist_view.py:462
+msgid "Device not found"
+msgstr "Пристрій не знайдено"
+
+#: .\api\views\device_views.py:242
+msgid "Device registered"
+msgstr "Пристрій зареєстровано"
+
+#: .\api\views\device_views.py:242
+msgid "Device updated"
+msgstr "Пристрій оновлено"
+
+#: .\api\views\device_views.py:382
+msgid "User unassigned from device"
+msgstr "Користувача відв’язано від пристрою"
+
+#: .\api\views\inventory_views.py:156 .\api\views\inventory_views.py:221
+#: .\orderpiqrApp\views\inventory_views.py:76
+#: .\orderpiqrApp\views\inventory_views.py:114
+#: .\orderpiqrApp\views\inventory_views.py:155
+msgid "No customer found"
+msgstr "Клієнта не знайдено"
+
+#: .\api\views\inventory_views.py:162 .\api\views\inventory_views.py:227
+#: .\orderpiqrApp\views\inventory_views.py:32
+msgid "Inventory management is not enabled"
+msgstr "Керування запасами не увімкнено"
+
+#: .\api\views\inventory_views.py:176 .\api\views\inventory_views.py:251
+#: .\api\views\product_views.py:195 .\orderpiqrApp\views\inventory_views.py:133
+#: .\orderpiqrApp\views\inventory_views.py:194
+#: .\orderpiqrApp\views\scan_picklist_view.py:406
+#: .\orderpiqrApp\views\scan_picklist_view.py:489
+#: .\templates\inventory\picker.html:172
+msgid "Product not found"
+msgstr "Товар не знайдено"
+
+#: .\api\views\order_views.py:263
+msgid "Delete not allowed. Use the cancel action instead."
+msgstr "Видалення не дозволено. Скористайтеся дією скасування."
+
+#: .\api\views\order_views.py:291
+#, python-format
+msgid ""
+"Cannot cancel order with status \"%(status)s\". Only draft or queued orders "
+"can be cancelled."
+msgstr ""
+"Неможливо скасувати замовлення зі статусом «%(status)s». Скасувати можна "
+"лише чернетки або замовлення в черзі."
+
+#: .\api\views\order_views.py:302
+msgid "Order cancelled"
+msgstr "Замовлення скасовано"
+
+#: .\api\views\order_views.py:411 .\api\views\orderline_views.py:130
+#: .\api\views\queue_views.py:272 .\api\views\queue_views.py:346
+#: .\api\views\queue_views.py:510 .\orderpiqrApp\views\queue_views.py:332
+#: .\orderpiqrApp\views\queue_views.py:438
+#: .\orderpiqrApp\views\queue_views.py:472
+#: .\orderpiqrApp\views\queue_views.py:562
+#: .\orderpiqrApp\views\queue_views.py:605
+msgid "Order not found"
+msgstr "Замовлення не знайдено"
+
+#: .\api\views\orderline_views.py:124
+#, python-format
+msgid "Cannot add lines to order with status \"%(status)s\""
+msgstr "Неможливо додати рядки до замовлення зі статусом «%(status)s»"
+
+#: .\api\views\orderline_views.py:137 .\api\views\picklist_views.py:128
+#: .\api\views\productpick_views.py:111
+msgid "Delete not allowed."
+msgstr "Видалення не дозволено."
+
+#: .\api\views\picklist_views.py:197
+msgid "Pick list completed"
+msgstr "Лист комплектації завершено"
+
+#: .\api\views\product_views.py:250
+msgid "Products updated successfully"
+msgstr "Товари успішно оновлено"
+
+#: .\api\views\productpick_views.py:146
+msgid "Pick marked as successful"
+msgstr "Відбір позначено як успішний"
+
+#: .\api\views\productpick_views.py:182
+msgid "Pick marked as failed"
+msgstr "Відбір позначено як невдалий"
+
+#: .\api\views\queue_views.py:83 .\api\views\queue_views.py:163
+#: .\api\views\queue_views.py:236 .\api\views\queue_views.py:317
+#: .\api\views\queue_views.py:414 .\api\views\queue_views.py:569
+#: .\api\views\queue_views.py:651 .\orderpiqrApp\views\inventory_views.py:29
+#: .\orderpiqrApp\views\queue_views.py:82
+#: .\orderpiqrApp\views\queue_views.py:125
+#: .\orderpiqrApp\views\queue_views.py:362
+msgid "No customer profile found"
+msgstr "Профіль клієнта не знайдено"
+
+#: .\api\views\queue_views.py:249 .\orderpiqrApp\views\queue_views.py:419
+msgid "Only draft orders can be added to queue"
+msgstr "До черги можна додавати лише чернетки замовлень"
+
+#: .\api\views\queue_views.py:265 .\orderpiqrApp\views\queue_views.py:434
+#: .\templates\manage\orders\list.html:229
+#: .\templates\manage\queue\list.html:385 .\templates\queue\manage.html:116
+msgid "Order added to queue"
+msgstr "Замовлення додано до черги"
+
+#: .\api\views\queue_views.py:330 .\orderpiqrApp\views\queue_views.py:459
+msgid "Order is not in queue"
+msgstr "Замовлення не в черзі"
+
+#: .\api\views\queue_views.py:340 .\orderpiqrApp\views\queue_views.py:468
+#: .\templates\manage\queue\list.html:386 .\templates\queue\manage.html:117
+msgid "Order removed from queue"
+msgstr "Замовлення вилучено з черги"
+
+#: .\api\views\queue_views.py:432
+msgid "Device not found. Please register your device first."
+msgstr "Пристрій не знайдено. Спершу зареєструйте свій пристрій."
+
+#: .\api\views\queue_views.py:445 .\orderpiqrApp\views\queue_views.py:221
+msgid "This order is already being picked"
+msgstr "Це замовлення вже комплектується"
+
+#: .\api\views\queue_views.py:451 .\orderpiqrApp\views\queue_views.py:260
+#: .\orderpiqrApp\views\scan_picklist_view.py:265
+msgid "This order has already been completed"
+msgstr "Це замовлення вже завершено"
+
+#: .\api\views\queue_views.py:457 .\orderpiqrApp\views\queue_views.py:266
+msgid "This order is not available for picking"
+msgstr "Це замовлення недоступне для комплектації"
+
+#: .\api\views\queue_views.py:502 .\orderpiqrApp\views\queue_views.py:323
+msgid "Order claimed successfully"
+msgstr "Замовлення успішно взято в роботу"
+
+#: .\api\views\queue_views.py:592 .\orderpiqrApp\views\queue_views.py:505
+msgid "Queue reordered"
+msgstr "Порядок черги змінено"
+
+#: .\api\views\queue_views.py:693 .\orderpiqrApp\views\queue_views.py:558
+msgid "Order moved up"
+msgstr "Замовлення переміщено вгору"
+
+#: .\api\views\queue_views.py:694 .\orderpiqrApp\views\queue_views.py:558
+msgid "Order moved down"
+msgstr "Замовлення переміщено вниз"
+
+#: .\api\views\queue_views.py:700
+msgid "Order not found or not in queue"
+msgstr "Замовлення не знайдено або його немає в черзі"
 
 #: .\drf_hashed_token\admin.py:10
 msgid "Hashed auth tokens"
@@ -36,6 +234,12 @@ msgstr "Недійсний токен."
 msgid "User inactive or deleted."
 msgstr "Користувача деактивовано або видалено."
 
+#: .\integrations\apps.py:8 .\templates\manage\base.html:134
+#: .\templates\manage\integrations\list.html:4
+#: .\templates\manage\integrations\list.html:5
+msgid "Integrations"
+msgstr "Інтеграції"
+
 #: .\integrations\models.py:23 .\templates\manage\picklists\detail.html:58
 #: .\templates\manage\picklists\detail.html:151
 #: .\templates\manage\picklists\list.html:14
@@ -47,7 +251,7 @@ msgstr "Очікує"
 #: .\templates\manage\products\form.html:60
 #: .\templates\manage\products\list.html:49
 #: .\templates\manage\products\list.html:142
-#: .\templates\manage\products\list.html:469
+#: .\templates\manage\products\list.html:255
 msgid "Active"
 msgstr "Активно"
 
@@ -107,6 +311,113 @@ msgstr "Зовнішній зв’язок замовлення"
 msgid "External order links"
 msgstr "Зовнішні зв’язки замовлень"
 
+#: .\integrations_shopify\apps.py:8
+msgid "Shopify integration"
+msgstr "Інтеграція Shopify"
+
+#: .\integrations_shopify\models.py:35
+msgid "Shopify shop"
+msgstr "Магазин Shopify"
+
+#: .\integrations_shopify\models.py:36
+msgid "Shopify shops"
+msgstr "Магазини Shopify"
+
+#: .\integrations_shopify\views.py:265 .\integrations_shopify\views.py:312
+msgid "Could not load orders from Shopify"
+msgstr "Не вдалося завантажити замовлення з Shopify"
+
+#: .\integrations_shopify\views.py:304
+msgid "no orders selected"
+msgstr "не вибрано жодного замовлення"
+
+#: .\integrations_shopify\views.py:390
+msgid "link not found"
+msgstr "зв’язок не знайдено"
+
+#: .\integrations_shopify\views.py:393
+msgid "no product with that code"
+msgstr "немає товару з таким кодом"
+
+#: .\integrations_shopify\views.py:422
+msgid "Invalid username or password"
+msgstr "Неправильне ім’я користувача або пароль"
+
+#: .\integrations_shopify\views.py:425
+msgid "This account is not a company admin"
+msgstr "Цей обліковий запис не є адміністратором компанії"
+
+#: .\integrations_shopify\views.py:428
+msgid "Account has no company"
+msgstr "Обліковий запис не належить жодній компанії"
+
+#: .\integrations_shopify\views.py:457
+msgid "password too short (min 8 characters)"
+msgstr "пароль надто короткий (мін. 8 символів)"
+
+#: .\integrations_woocommerce\apps.py:8
+msgid "WooCommerce integration"
+msgstr "Інтеграція WooCommerce"
+
+#: .\integrations_woocommerce\client.py:30
+msgid "Plain http store URLs are only allowed in DEBUG"
+msgstr "Звичайні http-адреси магазину дозволені лише в режимі DEBUG"
+
+#: .\integrations_woocommerce\client.py:32
+msgid "Store URL must start with https://"
+msgstr "Адреса магазину має починатися з https://"
+
+#: .\integrations_woocommerce\models.py:42
+msgid "WooCommerce store"
+msgstr "Магазин WooCommerce"
+
+#: .\integrations_woocommerce\models.py:43
+msgid "WooCommerce stores"
+msgstr "Магазини WooCommerce"
+
+#: .\integrations_woocommerce\models.py:91
+msgid "Pairing token"
+msgstr "Токен підключення"
+
+#: .\integrations_woocommerce\models.py:92
+msgid "Pairing tokens"
+msgstr "Токени підключення"
+
+#: .\integrations_woocommerce\views.py:59
+msgid ""
+"This pairing key is not valid. Generate a new one in the OrderPiqr portal."
+msgstr "Цей ключ підключення недійсний. Створіть новий у порталі OrderPiqr."
+
+#: .\integrations_woocommerce\views.py:63
+msgid ""
+"This pairing key has expired. Generate a new one in the OrderPiqr portal."
+msgstr ""
+"Термін дії цього ключа підключення минув. Створіть новий у порталі OrderPiqr."
+
+#: .\integrations_woocommerce\views.py:79
+msgid ""
+"Could not reach the store with these API credentials. Check the store URL "
+"and REST API key."
+msgstr ""
+"Не вдалося підключитися до магазину з цими даними API. Перевірте адресу "
+"магазину та ключ REST API."
+
+#: .\integrations_woocommerce\views.py:127
+msgid ""
+"The store accepted the credentials but webhook registration failed. Check "
+"that the REST API key has Read/Write permissions."
+msgstr ""
+"Магазин прийняв дані для входу, але зареєструвати вебхуки не вдалося. "
+"Переконайтеся, що ключ REST API має права на читання та запис (Read/Write)."
+
+#: .\integrations_woocommerce\views.py:240
+msgid "Invalid plugin token."
+msgstr "Недійсний токен плагіна."
+
+#: .\integrations_woocommerce\views.py:261
+msgid "Invalid connection or plugin token."
+msgstr "Недійсне підключення або токен плагіна."
+
 #: .\orderpiqrApp\admin\email_admin.py:33 .\orderpiqrApp\models\orders.py:23
 #: .\templates\manage\dashboard.html:222
 #: .\templates\manage\integrations\list.html:26
@@ -128,7 +439,7 @@ msgstr "Доставка"
 
 #: .\orderpiqrApp\admin\email_admin.py:49
 #: .\orderpiqrApp\models\scan_events.py:67
-#: .\templates\manage\health\list.html:422
+#: .\templates\manage\health\list.html:427
 msgid "Message"
 msgstr "Повідомлення"
 
@@ -136,7 +447,7 @@ msgstr "Повідомлення"
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:51 .\orderpiqrApp\models\products.py:22
-#: .\orderpiqrApp\models\products.py:57 .\templates\index.html:181
+#: .\orderpiqrApp\models\products.py:57 .\templates\index.html:186
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -146,6 +457,7 @@ msgid "Product"
 msgstr "Товар"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:51
+#: .\orderpiqrApp\views\manage_views.py:1991
 #: .\templates\manage\inventory\logs.html:78
 #: .\templates\manage\products\form.html:129
 #: .\templates\manage\products\form.html:169
@@ -154,7 +466,8 @@ msgstr "Зміна"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:58
 #: .\orderpiqrApp\models\customers.py:20 .\orderpiqrApp\models\devices.py:17
-#: .\orderpiqrApp\models\inventory.py:38 .\templates\index.html:138
+#: .\orderpiqrApp\models\inventory.py:38
+#: .\orderpiqrApp\views\manage_views.py:1992 .\templates\index.html:143
 #: .\templates\manage\inventory\logs.html:80
 #: .\templates\manage\products\form.html:131
 #: .\templates\manage\products\form.html:171
@@ -167,11 +480,12 @@ msgstr "Користувач"
 #: .\orderpiqrApp\models\devices.py:36 .\orderpiqrApp\models\devices.py:50
 #: .\orderpiqrApp\models\inventory.py:45 .\orderpiqrApp\models\picklists.py:14
 #: .\orderpiqrApp\models\scan_events.py:57
+#: .\orderpiqrApp\views\manage_views.py:1992
 #: .\templates\manage\dashboard.html:277
 #: .\templates\manage\devices\list.html:47
 #: .\templates\manage\health\list.html:161
-#: .\templates\manage\health\list.html:269
-#: .\templates\manage\health\list.html:421
+#: .\templates\manage\health\list.html:274
+#: .\templates\manage\health\list.html:426
 #: .\templates\manage\picklists\detail.html:64
 #: .\templates\manage\picklists\list.html:33
 msgid "Device"
@@ -184,6 +498,15 @@ msgstr "Деталі зміни"
 #: .\orderpiqrApp\admin\inventory_admin.py:75
 msgid "Metadata"
 msgstr "Метадані"
+
+#: .\orderpiqrApp\admin\login_token_admin.py:33
+msgid "Revoke selected login QRs"
+msgstr "Відкликати вибрані QR-коди входу"
+
+#: .\orderpiqrApp\admin\login_token_admin.py:40
+#, python-format
+msgid "%(count)s login QR(s) revoked."
+msgstr "Відкликано QR-кодів входу: %(count)s."
 
 #: .\orderpiqrApp\admin\order_admin.py:35
 msgid "Generate QR PDF for selected Orders"
@@ -224,7 +547,7 @@ msgid "%(count)s order(s) removed from queue."
 msgstr "Замовлень вилучено з черги: %(count)s."
 
 #: .\orderpiqrApp\admin\order_admin.py:124
-#: .\orderpiqrApp\admin\order_admin.py:328 .\orderpiqr\views.py:219
+#: .\orderpiqrApp\admin\order_admin.py:329 .\orderpiqr\views.py:219
 msgid "Your account is not linked to a customer."
 msgstr "Ваш обліковий запис не пов’язано з клієнтом."
 
@@ -248,20 +571,40 @@ msgstr "Недійсна кількість для коду товару «%(cod
 msgid "Unknown product code \"%(code)s\" in row %(row)d"
 msgstr "Невідомий код товару «%(code)s» у рядку %(row)d"
 
-#: .\orderpiqrApp\admin\order_admin.py:255
+#: .\orderpiqrApp\admin\order_admin.py:254
+#: .\orderpiqrApp\admin\product_admin.py:167
+msgid "Unsupported file format, only .csv and .xlsx are supported"
+msgstr "Непідтримуваний формат файлу, підтримуються лише .csv та .xlsx"
+
+#: .\orderpiqrApp\admin\order_admin.py:256
 #, python-format
 msgid "%(orders)s orders and %(lines)s lines added."
 msgstr "Додано замовлень: %(orders)s, рядків: %(lines)s."
 
-#: .\orderpiqrApp\admin\order_admin.py:262
+#: .\orderpiqrApp\admin\order_admin.py:263
 #, python-format
 msgid "Overwritten orders: %(codes)s."
 msgstr "Перезаписані замовлення: %(codes)s."
 
-#: .\orderpiqrApp\admin\order_admin.py:270
+#: .\orderpiqrApp\admin\order_admin.py:271
 #, python-format
 msgid "Error processing file: %(msg)s"
 msgstr "Помилка обробки файлу: %(msg)s"
+
+#: .\orderpiqrApp\admin\order_admin.py:273
+#: .\orderpiqrApp\admin\product_admin.py:178
+msgid "No file uploaded."
+msgstr "Файл не завантажено."
+
+#: .\orderpiqrApp\admin\order_admin.py:275
+#: .\orderpiqrApp\admin\product_admin.py:180
+msgid "Upload CSV or XLSX File"
+msgstr "Завантажити файл CSV або XLSX"
+
+#: .\orderpiqrApp\admin\order_admin.py:285
+#: .\orderpiqrApp\admin\product_admin.py:192
+msgid "Invalid form submission."
+msgstr "Недійсні дані форми."
 
 #: .\orderpiqrApp\admin\preferences_admin.py:14
 msgid "General Info"
@@ -273,7 +616,7 @@ msgstr "Додатково"
 
 #: .\orderpiqrApp\admin\product_admin.py:30
 msgid "Duplicate barcode in this list."
-msgstr "Повторюваний штрихкод у цьому списку."
+msgstr "Повторюваний штрих-код у цьому списку."
 
 #: .\orderpiqrApp\admin\product_admin.py:62
 #, python-format
@@ -285,10 +628,6 @@ msgstr "Відсутній обов’язковий стовпець «%(field)
 msgid "Missing value for \"%(field)s\" in row %(row)d"
 msgstr "Відсутнє значення «%(field)s» у рядку %(row)d"
 
-#: .\orderpiqrApp\admin\product_admin.py:167
-msgid "Unsupported file format, only .csv and .xlsx are supported"
-msgstr "Непідтримуваний формат файлу, підтримуються лише .csv та .xlsx"
-
 #: .\orderpiqrApp\admin\product_admin.py:169
 #, python-format
 msgid "%(added)d products added, %(overwritten)d products overwritten."
@@ -298,18 +637,6 @@ msgstr "Додано товарів: %(added)d, перезаписано: %(over
 #, python-format
 msgid "Error processing file: %(error)s"
 msgstr "Помилка обробки файлу: %(error)s"
-
-#: .\orderpiqrApp\admin\product_admin.py:178
-msgid "No file uploaded."
-msgstr "Файл не завантажено."
-
-#: .\orderpiqrApp\admin\product_admin.py:180
-msgid "Upload CSV or XLSX File"
-msgstr "Завантажити файл CSV або XLSX"
-
-#: .\orderpiqrApp\admin\product_admin.py:192
-msgid "Invalid form submission."
-msgstr "Недійсні дані форми."
 
 #: .\orderpiqrApp\admin\product_admin.py:213
 #, python-format
@@ -331,6 +658,76 @@ msgstr "Товар «%(description)s» успішно додано."
 msgid "User is not allowed to save products."
 msgstr "Користувачу не дозволено зберігати товари."
 
+#: .\orderpiqrApp\admin\userprofile_admin.py:13
+#: .\templates\manage\profile.html:22 .\templates\manage\profile.html:178
+#: .\templates\registration\login.html:35
+#: .\templates\registration\signup.html:95
+#: .\templates\registration\signup.html:171
+msgid "Username"
+msgstr "Ім’я користувача"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:18
+msgid "Company name"
+msgstr "Назва компанії"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:20
+msgid "Admin email"
+msgstr "Email адміністратора"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:21
+msgid "Admin profile username"
+msgstr "Ім’я користувача профілю адміністратора"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:22
+msgid "Admin password"
+msgstr "Пароль адміністратора"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:23
+msgid "Confirm admin password"
+msgstr "Підтвердження пароля адміністратора"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:26
+msgid "Orderpicker email"
+msgstr "Email комплектувальника"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:27
+msgid "Orderpicker profile username"
+msgstr "Ім’я користувача профілю комплектувальника"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:28
+msgid "Orderpicker password"
+msgstr "Пароль комплектувальника"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:29
+msgid "Confirm orderpicker password"
+msgstr "Підтвердження пароля комплектувальника"
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:38
+#: .\orderpiqrApp\forms\accounts\signup_form.py:40
+msgid "Passwords do not match."
+msgstr "Паролі не збігаються."
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:57
+msgid "A company with this name already exists."
+msgstr "Компанія з такою назвою вже існує."
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:65
+msgid "Profile usernames must be different."
+msgstr "Імена користувачів профілів мають бути різними."
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:77
+#: .\orderpiqrApp\views\manage_views.py:1687
+msgid "Username is required."
+msgstr "Ім’я користувача обов’язкове."
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:80
+msgid "This username is already taken for this company."
+msgstr "Це ім’я користувача вже зайняте в цій компанії."
+
+#: .\orderpiqrApp\forms\accounts\signup_form.py:81
+msgid "Duplicate profile username in company."
+msgstr "Повторюване ім’я користувача профілю в компанії."
+
 #: .\orderpiqrApp\models\customers.py:8 .\orderpiqrApp\models\devices.py:20
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 msgid "Name"
@@ -348,7 +745,7 @@ msgstr "Опис"
 #: .\orderpiqrApp\models\customers.py:12 .\orderpiqrApp\models\customers.py:21
 #: .\orderpiqrApp\models\devices.py:22 .\orderpiqrApp\models\login_tokens.py:33
 #: .\orderpiqrApp\models\orders.py:18 .\orderpiqrApp\models\picklists.py:11
-#: .\orderpiqrApp\models\preferences.py:68 .\orderpiqrApp\models\products.py:13
+#: .\orderpiqrApp\models\preferences.py:87 .\orderpiqrApp\models\products.py:13
 #: .\orderpiqrApp\models\products.py:58 .\orderpiqrApp\models\scan_events.py:55
 msgid "Customer"
 msgstr "Клієнт"
@@ -497,9 +894,10 @@ msgstr "Тип зміни"
 
 #: .\orderpiqrApp\models\inventory.py:55
 #: .\orderpiqrApp\models\scan_events.py:64
+#: .\orderpiqrApp\views\manage_views.py:1991
 #: .\templates\inventory\picker.html:128
 #: .\templates\manage\health\list.html:228
-#: .\templates\manage\health\list.html:418
+#: .\templates\manage\health\list.html:423
 #: .\templates\manage\inventory\add_correction.html:55
 #: .\templates\manage\inventory\logs.html:79
 #: .\templates\manage\products\form.html:130
@@ -509,11 +907,12 @@ msgstr "Причина"
 
 #: .\orderpiqrApp\models\inventory.py:59 .\orderpiqrApp\models\orders.py:21
 #: .\orderpiqrApp\models\picklists.py:27 .\orderpiqrApp\models\picklists.py:57
+#: .\orderpiqrApp\views\manage_views.py:1992
 #: .\templates\manage\inventory\logs.html:81
 #: .\templates\manage\orders\form.html:41
 #: .\templates\manage\orders\import.html:107
 #: .\templates\manage\picklists\detail.html:102
-#: .\templates\queue\_order_cards.html:44
+#: .\templates\queue\_order_cards.html:46
 msgid "Notes"
 msgstr "Примітки"
 
@@ -618,6 +1017,11 @@ msgstr "QR-код входу комплектувальника"
 msgid "Picker Login QRs"
 msgstr "QR-коди входу комплектувальників"
 
+#: .\orderpiqrApp\models\login_tokens.py:56
+#, python-format
+msgid "Login QR for %(picker)s"
+msgstr "QR-код входу для %(picker)s"
+
 #: .\orderpiqrApp\models\orders.py:10 .\templates\manage\orders\list.html:43
 msgid "Draft"
 msgstr "Чернетка"
@@ -625,7 +1029,7 @@ msgstr "Чернетка"
 #: .\orderpiqrApp\models\orders.py:11 .\templates\manage\orders\list.html:44
 #: .\templates\manage\queue\_queue_list.html:29
 #: .\templates\queue\_manage_queue_list.html:21
-#: .\templates\queue\_order_cards.html:53
+#: .\templates\queue\_order_cards.html:55
 msgid "Queued"
 msgstr "У черзі"
 
@@ -635,7 +1039,7 @@ msgstr "У черзі"
 #: .\templates\manage\picklists\list.html:75
 #: .\templates\manage\queue\_queue_list.html:24
 #: .\templates\queue\_manage_queue_list.html:19
-#: .\templates\queue\_order_cards.html:56
+#: .\templates\queue\_order_cards.html:58
 #: .\templates\queue\_picker_orders.html:42
 msgid "In Progress"
 msgstr "Виконується"
@@ -644,7 +1048,7 @@ msgstr "Виконується"
 #: .\templates\manage\picklists\detail.html:52
 #: .\templates\manage\picklists\list.html:16
 #: .\templates\manage\picklists\list.html:71
-#: .\templates\queue\_order_cards.html:59
+#: .\templates\queue\_order_cards.html:61
 #: .\templates\queue\_picker_orders.html:50
 msgid "Completed"
 msgstr "Завершено"
@@ -684,9 +1088,9 @@ msgstr ""
 
 #: .\orderpiqrApp\models\orders.py:48 .\orderpiqrApp\models\orders.py:63
 #: .\templates\manage\dashboard.html:221
-#: .\templates\manage\health\list.html:268
+#: .\templates\manage\health\list.html:273
 #: .\templates\manage\picklists\detail.html:9
-#: .\templates\manage\picklists\list.html:32 .\templates\shopify\app.html:208
+#: .\templates\manage\picklists\list.html:32 .\templates\shopify\app.html:210
 msgid "Order"
 msgstr "Замовлення"
 
@@ -801,7 +1205,7 @@ msgstr "Дробове число"
 
 #: .\orderpiqrApp\models\preferences.py:13
 #: .\templates\manage\products\form.html:128
-#: .\templates\manage\products\form.html:168 .\templates\shopify\app.html:209
+#: .\templates\manage\products\form.html:168 .\templates\shopify\app.html:211
 msgid "Date"
 msgstr "Дата"
 
@@ -852,9 +1256,10 @@ msgid "Additional description or guidance for this setting."
 msgstr "Додатковий опис або вказівки щодо цього параметра."
 
 #: .\orderpiqrApp\models\preferences.py:27
+#: .\orderpiqrApp\views\manage_views.py:1991
 #: .\templates\manage\dashboard.html:275
 #: .\templates\manage\health\list.html:227
-#: .\templates\manage\health\list.html:417
+#: .\templates\manage\health\list.html:422
 #: .\templates\manage\settings\api_tokens.html:52
 msgid "Type"
 msgstr "Тип"
@@ -883,34 +1288,35 @@ msgstr ""
 "Для параметрів типу 'choice': список варіантів {value, label}. Напр. "
 "[{\"value\": \"original\", \"label\": \"Original order\"}]"
 
-#: .\orderpiqrApp\models\preferences.py:70
+#: .\orderpiqrApp\models\preferences.py:89
 msgid "Setting"
 msgstr "Параметр"
 
-#: .\orderpiqrApp\models\preferences.py:71
+#: .\orderpiqrApp\models\preferences.py:90
 msgid "Value"
 msgstr "Значення"
 
-#: .\orderpiqrApp\models\preferences.py:71
+#: .\orderpiqrApp\models\preferences.py:90
 msgid "The value set for this customer."
 msgstr "Значення, задане для цього клієнта."
 
-#: .\orderpiqrApp\models\preferences.py:75
+#: .\orderpiqrApp\models\preferences.py:94
 msgid "Customer setting value"
 msgstr "Значення параметра клієнта"
 
-#: .\orderpiqrApp\models\preferences.py:76
+#: .\orderpiqrApp\models\preferences.py:95
 msgid "Customer setting values"
 msgstr "Значення параметрів клієнта"
 
-#: .\orderpiqrApp\models\products.py:10 .\templates\index.html:174
+#: .\orderpiqrApp\models\products.py:10
+#: .\orderpiqrApp\views\manage_views.py:1990 .\templates\index.html:179
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Код товару"
 
 #: .\orderpiqrApp\models\products.py:12
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81 .\templates\index.html:105
-#: .\templates\index.html:176 .\templates\index.html:180
+#: .\templates\index.html:181 .\templates\index.html:185
 #: .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:122
 #: .\templates\manage\products\form.html:45
@@ -934,19 +1340,19 @@ msgstr "Товари"
 
 #: .\orderpiqrApp\models\products.py:60
 msgid "Barcode"
-msgstr "Штрихкод"
+msgstr "Штрих-код"
 
 #: .\orderpiqrApp\models\products.py:63
 msgid "Product Barcode"
-msgstr "Штрихкод товару"
+msgstr "Штрих-код товару"
 
 #: .\orderpiqrApp\models\products.py:64
 msgid "Product Barcodes"
-msgstr "Штрихкоди товару"
+msgstr "Штрих-коди товару"
 
 #: .\orderpiqrApp\models\products.py:91
 msgid "This barcode is the same as the product's own code."
-msgstr "Цей штрихкод збігається з власним кодом товару."
+msgstr "Цей штрих-код збігається з власним кодом товару."
 
 #: .\orderpiqrApp\models\products.py:93
 #, python-format
@@ -956,7 +1362,7 @@ msgstr "'%(code)s' вже є основним кодом іншого товар
 #: .\orderpiqrApp\models\products.py:95
 #, python-format
 msgid "Barcode '%(code)s' is already in use."
-msgstr "Штрихкод '%(code)s' вже використовується."
+msgstr "Штрих-код '%(code)s' вже використовується."
 
 #: .\orderpiqrApp\models\scan_events.py:15
 msgid "Unknown product"
@@ -1010,7 +1416,8 @@ msgstr "Інформація"
 msgid "Warning"
 msgstr "Попередження"
 
-#: .\orderpiqrApp\models\scan_events.py:37
+#: .\orderpiqrApp\models\scan_events.py:37 .\templates\errors\base_error.html:8
+#: .\templates\errors\base_error.html:264
 msgid "Error"
 msgstr "Помилка"
 
@@ -1023,7 +1430,7 @@ msgid "Severity"
 msgstr "Рівень"
 
 #: .\orderpiqrApp\models\scan_events.py:65
-#: .\templates\manage\health\list.html:419
+#: .\templates\manage\health\list.html:424
 msgid "Scanned Code"
 msgstr "Відсканований код"
 
@@ -1064,29 +1471,175 @@ msgstr ""
 msgid "The file contains no data rows below the header."
 msgstr "Файл не містить рядків з даними під заголовком."
 
+#: .\orderpiqrApp\utils\decorators.py:24
+msgid "You don't have permission to access this page."
+msgstr "У вас немає дозволу на доступ до цієї сторінки."
+
 #: .\orderpiqrApp\utils\inventory.py:180
 #, python-format
 msgid "Auto-decremented from order %(order_code)s"
 msgstr "Автоматично списано за замовленням %(order_code)s"
 
+#: .\orderpiqrApp\utils\qr_pdf_generator.py:69
+#, python-format
+msgid "Order: %(code)s"
+msgstr "Замовлення: %(code)s"
+
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:81
 #: .\templates\manage\dashboard.html:276
-#: .\templates\manage\health\list.html:345
+#: .\templates\manage\health\list.html:350
 #: .\templates\manage\products\list.html:96
 msgid "Code"
 msgstr "Код"
 
-#: .\orderpiqrApp\utils\start_page.py:31
-msgid "Company default"
-msgstr "За умовчанням для компанії"
+#: .\orderpiqrApp\utils\setting_strings.py:26
+msgid "Enable Inventory Management"
+msgstr "Увімкнути керування запасами"
 
+#: .\orderpiqrApp\utils\setting_strings.py:28
+msgid ""
+"When enabled, shows inventory quantities on products and allows inventory "
+"tracking."
+msgstr ""
+"Якщо увімкнено, показує кількість запасів у товарах і дозволяє відстежувати "
+"запаси."
+
+#: .\orderpiqrApp\utils\setting_strings.py:33
+msgid "Enable Order Picking"
+msgstr "Увімкнути комплектацію замовлень"
+
+#: .\orderpiqrApp\utils\setting_strings.py:35
+msgid "When enabled, shows the order picking queue for pickers."
+msgstr ""
+"Якщо увімкнено, показує комплектувальникам чергу комплектації замовлень."
+
+#: .\orderpiqrApp\utils\setting_strings.py:40
+msgid "Enable Bulk Picking"
+msgstr "Увімкнути масову комплектацію"
+
+#: .\orderpiqrApp\utils\setting_strings.py:42
+msgid ""
+"When enabled, pickers can confirm multiple items of the same product at once "
+"instead of scanning each individually."
+msgstr ""
+"Якщо увімкнено, комплектувальники можуть підтверджувати кілька одиниць того "
+"самого товару одразу, замість сканувати кожну окремо."
+
+#: .\orderpiqrApp\utils\setting_strings.py:47
+msgid "Picker start page"
+msgstr "Початкова сторінка комплектувальника"
+
+#: .\orderpiqrApp\utils\setting_strings.py:49
+msgid ""
+"Where pickers land after logging in. Choose 'Scan an order' if pickers start "
+"work by scanning a printed order, or 'Order queue' if they pick the next job "
+"from the shared list. 'Automatic' keeps the previous behaviour."
+msgstr ""
+"Сторінка, на яку комплектувальники потрапляють після входу. Виберіть "
+"«Сканувати замовлення», якщо вони починають роботу зі сканування "
+"надрукованого замовлення, або «Черга замовлень», якщо вони беруть наступне "
+"завдання зі спільного списку. «Автоматично» зберігає попередню поведінку."
+
+#: .\orderpiqrApp\utils\setting_strings.py:52
+msgid "Automatic"
+msgstr "Автоматично"
+
+#: .\orderpiqrApp\utils\setting_strings.py:53
 #: .\orderpiqrApp\utils\start_page.py:32
 msgid "Scan an order"
 msgstr "Сканувати замовлення"
 
+#: .\orderpiqrApp\utils\setting_strings.py:54
 #: .\orderpiqrApp\utils\start_page.py:33
 msgid "Order queue"
 msgstr "Черга замовлень"
+
+#: .\orderpiqrApp\utils\setting_strings.py:58
+msgid "Grouped Picklist View"
+msgstr "Згрупований вигляд листа комплектації"
+
+#: .\orderpiqrApp\utils\setting_strings.py:60
+msgid ""
+"When enabled, the picker list shows one row per product with a quantity, "
+"instead of a separate row for each individual item. Pickers can still switch "
+"views themselves on the scan page."
+msgstr ""
+"Якщо увімкнено, список комплектувальника показує один рядок на товар із "
+"кількістю, а не окремий рядок для кожної одиниці. Комплектувальники все одно "
+"можуть самостійно змінювати вигляд на сторінці сканування."
+
+#: .\orderpiqrApp\utils\setting_strings.py:65
+msgid "Pick Popup: Prominent Number"
+msgstr "Вікно відбору: головне число"
+
+#: .\orderpiqrApp\utils\setting_strings.py:67
+msgid ""
+"Which number the pick confirmation popup emphasizes: the amount still to "
+"take (remaining) or the full line quantity (total). Warehouses that count "
+"out the whole quantity at the shelf should pick total. Pickers can still "
+"switch per session on the scan page."
+msgstr ""
+"Яке число виділяється у вікні підтвердження відбору: кількість, яку ще треба "
+"взяти (залишок), або повну кількість рядка (загальну). Склади, де всю "
+"кількість відраховують біля полиці, мають вибрати загальну. "
+"Комплектувальники все одно можуть змінювати це для свого сеансу на сторінці "
+"сканування."
+
+#: .\orderpiqrApp\utils\setting_strings.py:70 .\templates\index.html:119
+msgid "Remaining to take"
+msgstr "Залишилося взяти"
+
+#: .\orderpiqrApp\utils\setting_strings.py:71
+msgid "Total line quantity"
+msgstr "Загальна кількість у рядку"
+
+#: .\orderpiqrApp\utils\setting_strings.py:75
+msgid "Picklist QR Format"
+msgstr "Формат QR-коду листа комплектації"
+
+#: .\orderpiqrApp\utils\setting_strings.py:77
+msgid ""
+"Column order of the rows inside your picklist QR codes. \"Detect "
+"automatically\" guesses using your product codes; set it explicitly if "
+"pickers see the \"ambiguous picklist\" error because a quantity also looks "
+"like a product code."
+msgstr ""
+"Порядок стовпців у рядках ваших QR-кодів листів комплектації. «Визначати "
+"автоматично» вгадує за вашими кодами товарів; задайте його явно, якщо "
+"комплектувальники бачать помилку «неоднозначний лист комплектації», бо "
+"кількість також схожа на код товару."
+
+#: .\orderpiqrApp\utils\setting_strings.py:80
+msgid "Detect automatically"
+msgstr "Визначати автоматично"
+
+#: .\orderpiqrApp\utils\setting_strings.py:81
+msgid "Quantity, then product code"
+msgstr "Кількість, потім код товару"
+
+#: .\orderpiqrApp\utils\setting_strings.py:82
+msgid "Product code, then quantity"
+msgstr "Код товару, потім кількість"
+
+#: .\orderpiqrApp\utils\setting_strings.py:86 .\templates\index.html:86
+#: .\templates\queue\display.html:15 .\templates\queue\display.html:19
+#: .\templates\queue\picker.html:23
+msgid "Order Queue"
+msgstr "Черга замовлень"
+
+#: .\orderpiqrApp\utils\setting_strings.py:88
+msgid ""
+"When enabled, pickers can claim orders from the shared queue. Disable for "
+"warehouses where pickers only scan printed picklist QRs: the queue pages are "
+"hidden and queue claims are blocked."
+msgstr ""
+"Якщо увімкнено, комплектувальники можуть брати замовлення зі спільної черги. "
+"Вимкніть для складів, де комплектувальники лише сканують надруковані QR-коди "
+"листів: сторінки черги приховуються, а взяття замовлень із черги блокується."
+
+#: .\orderpiqrApp\utils\start_page.py:31
+msgid "Company default"
+msgstr "За замовчуванням для компанії"
 
 #: .\orderpiqrApp\views\auth\signup_view.py:59
 msgid ""
@@ -1157,31 +1710,11 @@ msgstr ""
 msgid "API token revoked."
 msgstr "Токен API відкликано."
 
-#: .\orderpiqrApp\views\inventory_views.py:29
-msgid "No customer profile found"
-msgstr "Профіль клієнта не знайдено"
-
-#: .\orderpiqrApp\views\inventory_views.py:32
-msgid "Inventory management is not enabled"
-msgstr "Керування запасами не увімкнено"
-
-#: .\orderpiqrApp\views\inventory_views.py:76
-#: .\orderpiqrApp\views\inventory_views.py:114
-#: .\orderpiqrApp\views\inventory_views.py:155
-msgid "No customer found"
-msgstr "Клієнта не знайдено"
-
 #: .\orderpiqrApp\views\inventory_views.py:79
 #: .\orderpiqrApp\views\inventory_views.py:117
 #: .\orderpiqrApp\views\inventory_views.py:158
 msgid "Inventory management not enabled"
 msgstr "Керування запасами не увімкнено"
-
-#: .\orderpiqrApp\views\inventory_views.py:133
-#: .\orderpiqrApp\views\inventory_views.py:194
-#: .\templates\inventory\picker.html:227
-msgid "Product not found"
-msgstr "Товар не знайдено"
 
 #: .\orderpiqrApp\views\inventory_views.py:163
 msgid "Invalid request"
@@ -1210,12 +1743,12 @@ msgstr "Запаси оновлено"
 #: .\orderpiqrApp\views\manage_views.py:183
 #, python-brace-format
 msgid "Barcode '{code}' is the same as the product code."
-msgstr "Штрихкод '{code}' збігається з кодом товару."
+msgstr "Штрих-код '{code}' збігається з кодом товару."
 
 #: .\orderpiqrApp\views\manage_views.py:185
 #, python-brace-format
 msgid "Barcode '{code}' is already in use by another product."
-msgstr "Штрихкод '{code}' вже використовує інший товар."
+msgstr "Штрих-код '{code}' вже використовує інший товар."
 
 #: .\orderpiqrApp\views\manage_views.py:269
 #: .\orderpiqrApp\views\manage_views.py:334
@@ -1306,7 +1839,7 @@ msgstr "Оновлено товарів: {count}."
 
 #: .\orderpiqrApp\views\manage_views.py:437
 msgid "Enter the product code to merge into."
-msgstr "Введіть код товару, у який об'єднати."
+msgstr "Введіть код товару, у який об’єднати."
 
 #: .\orderpiqrApp\views\manage_views.py:441
 #, python-brace-format
@@ -1315,7 +1848,7 @@ msgstr "Товар з кодом '{code}' не знайдено."
 
 #: .\orderpiqrApp\views\manage_views.py:444
 msgid "Select at least one other product to merge."
-msgstr "Виберіть щонайменше один інший товар для об'єднання."
+msgstr "Виберіть щонайменше один інший товар для об’єднання."
 
 #: .\orderpiqrApp\views\manage_views.py:451
 #, python-brace-format
@@ -1323,8 +1856,8 @@ msgid ""
 "{count} product(s) merged into '{code}'. Their codes remain scannable as "
 "barcodes."
 msgstr ""
-"{count} товар(ів) об'єднано в '{code}'. Їхні коди залишаються скануваними як "
-"штрихкоди."
+"{count} товар(ів) об’єднано в '{code}'. Їхні коди залишаються скануваними як "
+"штрих-коди."
 
 #: .\orderpiqrApp\views\manage_views.py:454
 #: .\orderpiqrApp\views\manage_views.py:815
@@ -1366,7 +1899,7 @@ msgstr "Це поле не може бути порожнім."
 #: .\orderpiqrApp\views\manage_views.py:518
 msgid "Updated. The previous code remains scannable as an extra barcode."
 msgstr ""
-"Оновлено. Попередній код залишається скануваним як додатковий штрихкод."
+"Оновлено. Попередній код залишається скануваним як додатковий штрих-код."
 
 #: .\orderpiqrApp\views\manage_views.py:519
 #: .\orderpiqrApp\views\manage_views.py:525
@@ -1454,11 +1987,6 @@ msgstr "Пропущено замовлень: {count} (вже чернетка,
 #: .\orderpiqrApp\views\manage_views.py:915
 msgid "Order code is required."
 msgstr "Код замовлення обов’язковий."
-
-#: .\orderpiqrApp\views\manage_views.py:843
-#: .\orderpiqrApp\views\manage_views.py:917
-msgid "An order with this code already exists."
-msgstr "Замовлення з таким кодом уже існує."
 
 #: .\orderpiqrApp\views\manage_views.py:846
 #: .\orderpiqrApp\views\manage_views.py:920
@@ -1594,10 +2122,6 @@ msgstr "Пароль має містити щонайменше 8 символі
 msgid "Password for picker account '{username}' updated."
 msgstr "Пароль для облікового запису комплектувальника '{username}' оновлено."
 
-#: .\orderpiqrApp\views\manage_views.py:1687
-msgid "Username is required."
-msgstr "Ім’я користувача обов’язкове."
-
 #: .\orderpiqrApp\views\manage_views.py:1689
 msgid "This username is already taken."
 msgstr "Це ім’я користувача вже зайняте."
@@ -1642,6 +2166,23 @@ msgstr "Дійсних записів журналу не знайдено."
 msgid "%(count)d log(s) deleted and inventory reverted."
 msgstr "Видалено записів журналу: %(count)d, запаси відновлено."
 
+#: .\orderpiqrApp\views\manage_views.py:1990
+#: .\templates\manage\inventory\logs.html:76
+msgid "Date/Time"
+msgstr "Дата/час"
+
+#: .\orderpiqrApp\views\manage_views.py:1990
+msgid "Product Description"
+msgstr "Опис товару"
+
+#: .\orderpiqrApp\views\manage_views.py:1991
+msgid "Old Qty"
+msgstr "Стара к-сть"
+
+#: .\orderpiqrApp\views\manage_views.py:1991
+msgid "New Qty"
+msgstr "Нова к-сть"
+
 #: .\orderpiqrApp\views\manage_views.py:2050
 msgid "Inventory correction added successfully."
 msgstr "Коригування запасів успішно додано."
@@ -1666,30 +2207,6 @@ msgstr "Чергу замовлень вимкнено для вашої ком�
 msgid "Device not found. Please log in again."
 msgstr "Пристрій не знайдено. Увійдіть ще раз."
 
-#: .\orderpiqrApp\views\queue_views.py:221
-msgid "This order is already being picked"
-msgstr "Це замовлення вже комплектується"
-
-#: .\orderpiqrApp\views\queue_views.py:260
-msgid "This order has already been completed"
-msgstr "Це замовлення вже завершено"
-
-#: .\orderpiqrApp\views\queue_views.py:266
-msgid "This order is not available for picking"
-msgstr "Це замовлення недоступне для комплектації"
-
-#: .\orderpiqrApp\views\queue_views.py:323
-msgid "Order claimed successfully"
-msgstr "Замовлення успішно взято в роботу"
-
-#: .\orderpiqrApp\views\queue_views.py:332
-#: .\orderpiqrApp\views\queue_views.py:438
-#: .\orderpiqrApp\views\queue_views.py:472
-#: .\orderpiqrApp\views\queue_views.py:562
-#: .\orderpiqrApp\views\queue_views.py:605
-msgid "Order not found"
-msgstr "Замовлення не знайдено"
-
 #: .\orderpiqrApp\views\queue_views.py:407
 #: .\orderpiqrApp\views\queue_views.py:447
 #: .\orderpiqrApp\views\queue_views.py:483
@@ -1697,25 +2214,6 @@ msgstr "Замовлення не знайдено"
 #: .\orderpiqrApp\views\queue_views.py:571
 msgid "No customer"
 msgstr "Немає клієнта"
-
-#: .\orderpiqrApp\views\queue_views.py:419
-msgid "Only draft orders can be added to queue"
-msgstr "До черги можна додавати лише чернетки замовлень"
-
-#: .\orderpiqrApp\views\queue_views.py:434
-#: .\templates\manage\orders\list.html:270
-#: .\templates\manage\queue\list.html:441 .\templates\queue\manage.html:174
-msgid "Order added to queue"
-msgstr "Замовлення додано до черги"
-
-#: .\orderpiqrApp\views\queue_views.py:459
-msgid "Order is not in queue"
-msgstr "Замовлення не в черзі"
-
-#: .\orderpiqrApp\views\queue_views.py:468
-#: .\templates\manage\queue\list.html:459 .\templates\queue\manage.html:192
-msgid "Order removed from queue"
-msgstr "Замовлення вилучено з черги"
 
 #: .\orderpiqrApp\views\queue_views.py:489
 msgid "Invalid JSON"
@@ -1725,10 +2223,6 @@ msgstr "Недійсний JSON"
 msgid "No order IDs provided"
 msgstr "Не вказано ідентифікаторів замовлень"
 
-#: .\orderpiqrApp\views\queue_views.py:505
-msgid "Queue reordered"
-msgstr "Порядок черги змінено"
-
 #: .\orderpiqrApp\views\queue_views.py:511
 msgid "Error reordering: {}"
 msgstr "Помилка зміни порядку: {}"
@@ -1737,22 +2231,75 @@ msgstr "Помилка зміни порядку: {}"
 msgid "Invalid direction"
 msgstr "Недійсний напрямок"
 
-#: .\orderpiqrApp\views\queue_views.py:558
-msgid "Order moved up"
-msgstr "Замовлення переміщено вгору"
-
-#: .\orderpiqrApp\views\queue_views.py:558
-msgid "Order moved down"
-msgstr "Замовлення переміщено вниз"
-
 #: .\orderpiqrApp\views\queue_views.py:583
 msgid "Order is not in progress"
 msgstr "Замовлення не виконується"
 
 #: .\orderpiqrApp\views\queue_views.py:601
-#: .\templates\manage\queue\list.html:483
+#: .\templates\manage\queue\list.html:389
 msgid "Order unlocked"
 msgstr "Замовлення розблоковано"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:49
+msgid "This device is registered for multiple companies. Please log in."
+msgstr "Цей пристрій зареєстровано для кількох компаній. Будь ласка, увійдіть."
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:189
+msgid "Device not found and user not authenticated"
+msgstr "Пристрій не знайдено, а користувача не автентифіковано"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:202
+msgid "User has no customer profile"
+msgstr "Користувач не має профілю клієнта"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:249
+msgid "This order is already being picked by another device"
+msgstr "Це замовлення вже комплектує інший пристрій"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:334
+#, python-format
+msgid ""
+"Unknown product code '%(code)s'. Add it to your products and scan the list "
+"again."
+msgstr ""
+"Невідомий код товару «%(code)s». Додайте його до своїх товарів і відскануйте "
+"лист знову."
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:350
+#: .\orderpiqrApp\views\scan_picklist_view.py:575
+msgid "Picklist processed successfully"
+msgstr "Лист комплектації успішно оброблено"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:373
+#: .\orderpiqrApp\views\scan_picklist_view.py:578
+msgid "Device not found with given fingerprint"
+msgstr "Пристрій із вказаним відбитком не знайдено"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:396
+msgid "PickList not found for device/customer"
+msgstr "Лист комплектації не знайдено для цього пристрою/клієнта"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:413
+msgid "No pending ProductPick rows for this product."
+msgstr "Немає незавершених рядків ProductPick для цього товару."
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:485
+msgid "PickList not found"
+msgstr "Лист комплектації не знайдено"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:499
+#, python-format
+msgid "Requested %(wanted)s but only %(available)s unpicked rows available"
+msgstr ""
+"Запитано %(wanted)s, але доступно лише %(available)s нескомплектованих рядків"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:572
+msgid "No picklist found for this device and order"
+msgstr "Для цього пристрою та замовлення не знайдено листа комплектації"
+
+#: .\orderpiqrApp\views\scan_picklist_view.py:580
+msgid "Product not found for one of the product codes"
+msgstr "Для одного з кодів товарів товар не знайдено"
 
 #: .\orderpiqr\views.py:51
 msgid "No account found with this email address."
@@ -1841,6 +2388,10 @@ msgstr ""
 "Якщо проблема не зникає, зверніться на <a "
 "href=\"mailto:support@orderpiqr.nl\">support@orderpiqr.nl</a>"
 
+#: .\templates\admin\base_site.html:27 .\templates\admin\base_site.html:31
+msgid "Orderpiqr admin"
+msgstr "Адміністрування Orderpiqr"
+
 #: .\templates\admin\base_site.html:36 .\templates\admin\base_site.html:37
 #: .\templates\admin\base_site.html:42
 msgid "Start tour"
@@ -1904,6 +2455,14 @@ msgstr "Завантажити файл"
 msgid "Upload Product CSV/XLSX"
 msgstr "Завантажити CSV/XLSX товарів"
 
+#: .\templates\errors\base_error.html:265
+msgid "Something went wrong"
+msgstr "Щось пішло не так"
+
+#: .\templates\errors\base_error.html:271
+msgid "An unexpected error occurred. Please try again later."
+msgstr "Сталася неочікувана помилка. Спробуйте ще раз пізніше."
+
 #: .\templates\errors\base_error.html:289 .\templates\offline.html:69
 msgid "Go Back"
 msgstr "Назад"
@@ -1915,11 +2474,6 @@ msgstr "Ласкаво просимо до Orderpiqr!"
 #: .\templates\index.html:79 .\templates\manage\dashboard.html:84
 msgid "Quick Actions"
 msgstr "Швидкі дії"
-
-#: .\templates\index.html:86 .\templates\queue\display.html:15
-#: .\templates\queue\display.html:19 .\templates\queue\picker.html:23
-msgid "Order Queue"
-msgstr "Черга замовлень"
 
 #: .\templates\index.html:93 .\templates\inventory\picker.html:18
 #: .\templates\inventory\picker.html:25 .\templates\manage\base.html:65
@@ -1955,60 +2509,51 @@ msgstr "Згруповано за товаром"
 msgid "Popup Number"
 msgstr "Число у вікні"
 
-#: .\templates\index.html:119
-msgid "Remaining to take"
-msgstr "Залишилося взяти"
-
 #: .\templates\index.html:120
 msgid "Total quantity"
 msgstr "Загальна кількість"
 
-#: .\templates\index.html:124
-msgid "Order Importance"
-msgstr "Пріоритет замовлення"
+#: .\templates\index.html:129
+#| msgid "Order Importance"
+msgid "Order Importance: Enabled"
+msgstr "Порядок сканування: увімкнено"
 
-#: .\templates\index.html:124
-msgid "Enabled"
-msgstr "Увімкнено"
-
-#: .\templates\index.html:132 .\templates\manage\base.html:220
+#: .\templates\index.html:137 .\templates\manage\base.html:220
 #: .\templates\registration\picker_choice.html:149
 msgid "Log out"
 msgstr "Вийти"
 
-#: .\templates\index.html:143
+#: .\templates\index.html:148
 msgid "This app is best viewed on your phone"
 msgstr "Цей застосунок найкраще переглядати на телефоні"
 
-#: .\templates\index.html:149 .\templates\inventory\picker.html:63
+#: .\templates\index.html:154 .\templates\inventory\picker.html:63
 msgid "Camera options"
 msgstr "Параметри камери"
 
-#: .\templates\index.html:157 .\templates\inventory\picker.html:71
+#: .\templates\index.html:162 .\templates\inventory\picker.html:71
 msgid "Select Camera"
 msgstr "Виберіть камеру"
 
-#: .\templates\index.html:159 .\templates\inventory\picker.html:73
+#: .\templates\index.html:164 .\templates\inventory\picker.html:73
 msgid "Stop camera"
 msgstr "Зупинити камеру"
 
-#: .\templates\index.html:163 .\templates\inventory\picker.html:77
+#: .\templates\index.html:168 .\templates\inventory\picker.html:77
 msgid "Enable camera"
 msgstr "Увімкнути камеру"
 
-#: .\templates\index.html:168 .\templates\manage\health\list.html:267
-#: .\templates\manage\health\list.html:420
-#: .\templates\manage\picklists\detail.html:4
-#: .\templates\manage\picklists\detail.html:5
+#: .\templates\index.html:173 .\templates\manage\health\list.html:272
+#: .\templates\manage\health\list.html:425
 #: .\templates\manage\picklists\list.html:31
 msgid "Picklist"
 msgstr "Лист комплектації"
 
-#: .\templates\index.html:175
+#: .\templates\index.html:180
 msgid "Product Name"
 msgstr "Назва товару"
 
-#: .\templates\index.html:179 .\templates\manage\orders\form.html:61
+#: .\templates\index.html:184 .\templates\manage\orders\form.html:61
 msgid "Qty"
 msgstr "К-сть"
 
@@ -2040,7 +2585,7 @@ msgstr "Встановити на"
 msgid "Adjust By"
 msgstr "Змінити на"
 
-#: .\templates\inventory\picker.html:120 .\templates\inventory\picker.html:295
+#: .\templates\inventory\picker.html:120 .\templates\inventory\picker.html:174
 #: .\templates\manage\inventory\add_correction.html:20
 #: .\templates\manage\products\list.html:100
 msgid "Stock"
@@ -2056,8 +2601,7 @@ msgstr "Примітки (необов’язково)"
 msgid "Add notes..."
 msgstr "Додайте примітки..."
 
-#: .\templates\inventory\picker.html:143 .\templates\inventory\picker.html:492
-#: .\templates\inventory\picker.html:498
+#: .\templates\inventory\picker.html:143 .\templates\inventory\picker.html:180
 msgid "Update Inventory"
 msgstr "Оновити запаси"
 
@@ -2065,45 +2609,48 @@ msgstr "Оновити запаси"
 msgid "Tap to continue"
 msgstr "Торкніться, щоб продовжити"
 
-#: .\templates\inventory\picker.html:225
+#: .\templates\inventory\picker.html:171
 msgid "Product found"
 msgstr "Товар знайдено"
 
-#: .\templates\inventory\picker.html:267
-#: .\templates\manage\orders\form.html:463
+#: .\templates\inventory\picker.html:173
+#: .\templates\manage\orders\form.html:382
 #: .\templates\manage\products\list.html:197
 msgid "No products found"
 msgstr "Товарів не знайдено"
 
-#: .\templates\inventory\picker.html:332
+#: .\templates\inventory\picker.html:175
 msgid "No location"
 msgstr "Без розташування"
 
-#: .\templates\inventory\picker.html:435
-#: .\templates\manage\inventory\add_correction.html:214
-#: .\templates\manage\products\form.html:505
+#: .\templates\inventory\picker.html:176
+#: .\templates\manage\inventory\add_correction.html:163
+#: .\templates\manage\products\form.html:442
 msgid "no change"
 msgstr "без змін"
 
-#: .\templates\inventory\picker.html:442
+#: .\templates\inventory\picker.html:177
 msgid "Please select a product first"
 msgstr "Спочатку виберіть товар"
 
-#: .\templates\inventory\picker.html:448
-#: .\templates\manage\products\form.html:518
+#: .\templates\inventory\picker.html:178
+#: .\templates\manage\products\form.html:443
 msgid "Please enter a valid quantity"
 msgstr "Введіть коректну кількість"
 
-#: .\templates\inventory\picker.html:456
-#: .\templates\manage\products\form.html:523
+#: .\templates\inventory\picker.html:179
+#: .\templates\manage\products\form.html:444
 msgid "Updating..."
 msgstr "Оновлення..."
 
-#: .\templates\inventory\picker.html:496
-#: .\templates\manage\products\form.html:564
-#: .\templates\manage\products\form.html:572
+#: .\templates\inventory\picker.html:181
+#: .\templates\manage\products\form.html:445
 msgid "Error updating inventory"
 msgstr "Помилка оновлення запасів"
+
+#: .\templates\manage\base.html:7
+msgid "OrderPiqR Management Dashboard"
+msgstr "Панель керування OrderPiqR"
 
 #: .\templates\manage\base.html:8 .\templates\manage\base.html:60
 #: .\templates\manage\base.html:177 .\templates\manage\dashboard.html:4
@@ -2138,11 +2685,6 @@ msgstr "Стан"
 msgid "Settings"
 msgstr "Налаштування"
 
-#: .\templates\manage\base.html:134 .\templates\manage\integrations\list.html:4
-#: .\templates\manage\integrations\list.html:5
-msgid "Integrations"
-msgstr "Інтеграції"
-
 #: .\templates\manage\base.html:148 .\templates\manage\base.html:217
 #: .\templates\manage\profile.html:4 .\templates\manage\profile.html:5
 msgid "Profile"
@@ -2152,37 +2694,46 @@ msgstr "Профіль"
 msgid "Open menu"
 msgstr "Відкрити меню"
 
-#: .\templates\manage\dashboard.html:6 .\templates\registration\login.html:10
-msgid "Welcome back"
-msgstr "З поверненням"
+#: .\templates\manage\dashboard.html:6
+#, python-format
+msgid "Welcome back, %(name)s!"
+msgstr "З поверненням, %(name)s!"
 
 #: .\templates\manage\dashboard.html:22
-msgid "active"
-msgstr "активні"
+#, python-format
+msgid "%(num)s active"
+msgstr "активних: %(num)s"
 
 #: .\templates\manage\dashboard.html:27
 msgid "Orders Today"
 msgstr "Замовлень сьогодні"
 
 #: .\templates\manage\dashboard.html:36
-msgid "this week"
-msgstr "цього тижня"
+#, python-format
+msgid "%(num)s this week"
+msgstr "цього тижня: %(num)s"
 
 #: .\templates\manage\dashboard.html:41
 msgid "In Queue"
 msgstr "У черзі"
 
 #: .\templates\manage\dashboard.html:49
-msgid "draft"
-msgstr "чернетки"
+#, python-format
+msgid "%(num)s draft"
+msgstr "чернеток: %(num)s"
 
 #: .\templates\manage\dashboard.html:54
 msgid "Completed Today"
 msgstr "Завершено сьогодні"
 
 #: .\templates\manage\dashboard.html:63
-msgid "active picklists"
-msgstr "активних листів комплектації"
+#, python-format
+msgid "%(counter)s active picklist"
+msgid_plural "%(counter)s active picklists"
+msgstr[0] "%(counter)s активний лист комплектації"
+msgstr[1] "%(counter)s активні листи комплектації"
+msgstr[2] "%(counter)s активних листів комплектації"
+msgstr[3] "%(counter)s активних листів комплектації"
 
 #: .\templates\manage\dashboard.html:68
 msgid "Scan Health"
@@ -2193,12 +2744,18 @@ msgid "issues this week"
 msgstr "проблем цього тижня"
 
 #: .\templates\manage\dashboard.html:77
-msgid "last 24h"
-msgstr "останні 24 год"
+#, python-format
+msgid "%(num)s last 24h"
+msgstr "за 24 год: %(num)s"
 
 #: .\templates\manage\dashboard.html:77
-msgid "overrides"
-msgstr "ручних підтверджень"
+#, python-format
+msgid "%(counter)s override"
+msgid_plural "%(counter)s overrides"
+msgstr[0] "%(counter)s ручне підтвердження"
+msgstr[1] "%(counter)s ручні підтвердження"
+msgstr[2] "%(counter)s ручних підтверджень"
+msgstr[3] "%(counter)s ручних підтверджень"
 
 #: .\templates\manage\dashboard.html:95 .\templates\manage\products\form.html:4
 #: .\templates\manage\products\form.html:5
@@ -2285,13 +2842,14 @@ msgstr "Переглянути всі"
 #: .\templates\manage\dashboard.html:237 .\templates\manage\dashboard.html:283
 #: .\templates\manage\devices\list.html:99
 #: .\templates\manage\health\list.html:203
-#: .\templates\manage\health\list.html:300
-#: .\templates\manage\health\list.html:429
+#: .\templates\manage\health\list.html:305
+#: .\templates\manage\health\list.html:434
 #: .\templates\manage\orders\list.html:123
 #: .\templates\manage\picklists\list.html:80
 #: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:96
-msgid "ago"
-msgstr "тому"
+#, python-format
+msgid "%(since)s ago"
+msgstr "%(since)s тому"
 
 #: .\templates\manage\dashboard.html:245
 msgid "No orders yet. Create your first order!"
@@ -2302,12 +2860,19 @@ msgid "Recent Scan Issues"
 msgstr "Нещодавні проблеми зі скануванням"
 
 #: .\templates\manage\dashboard.html:266
+#: .\templates\manage\health\list.html:264
 #, python-format
-msgid "%(count)s picklist(s) in progress for over 4 hours"
-msgstr "%(count)s лист(ів) комплектації в роботі понад 4 години"
+#| msgid "%(counter)s picklist in progress for over 4 hours"
+#| msgid_plural "%(counter)s picklists in progress for over 4 hours"
+msgid "%(counter)s picklist in progress for over 4 hours."
+msgid_plural "%(counter)s picklists in progress for over 4 hours."
+msgstr[0] "%(counter)s лист комплектації виконується понад 4 години."
+msgstr[1] "%(counter)s листи комплектації виконуються понад 4 години."
+msgstr[2] "%(counter)s листів комплектації виконуються понад 4 години."
+msgstr[3] "%(counter)s листів комплектації виконуються понад 4 години."
 
 #: .\templates\manage\dashboard.html:274
-#: .\templates\manage\health\list.html:416
+#: .\templates\manage\health\list.html:421
 msgid "When"
 msgstr "Коли"
 
@@ -2360,7 +2925,7 @@ msgstr "Можливі дублікати"
 
 #: .\templates\manage\devices\list.html:27
 msgid "same name, several devices"
-msgstr "однакове ім'я, кілька пристроїв"
+msgstr "однакове ім’я, кілька пристроїв"
 
 #: .\templates\manage\devices\list.html:30
 msgid "Unknown setup"
@@ -2404,7 +2969,7 @@ msgstr "Виходи"
 
 #: .\templates\manage\devices\list.html:54
 #: .\templates\manage\health\list.html:167
-#: .\templates\manage\health\list.html:271
+#: .\templates\manage\health\list.html:276
 msgid "Restarts"
 msgstr "Перезапуски"
 
@@ -2614,7 +3179,6 @@ msgid "lines picked"
 msgstr "зібрано позицій"
 
 #: .\templates\manage\health\list.html:140
-#| msgid "devices active"
 msgid "devices used"
 msgstr "використано пристроїв"
 
@@ -2643,8 +3207,9 @@ msgstr ""
 "втрачає доступ до власного листа."
 
 #: .\templates\manage\health\list.html:201
-msgid "list"
-msgstr "лист"
+#, python-format
+msgid "%(rate)s/list"
+msgstr "%(rate)s/лист"
 
 #: .\templates\manage\health\list.html:206
 msgid "No device activity in this period."
@@ -2662,28 +3227,30 @@ msgstr "Події"
 msgid "Stale Picklists"
 msgstr "Застряглі листи комплектації"
 
-#: .\templates\manage\health\list.html:260
+#: .\templates\manage\health\list.html:265
 #, python-format
-msgid ""
-"%(count)s picklist(s) in progress for over 4 hours, holding %(lines)s "
-"unpicked line(s)"
-msgstr ""
-"%(count)s лист(ів) комплектації в роботі понад 4 години, з %(lines)s "
-"незібраними позиціями"
+#| msgid "%(n)s line still unpicked."
+#| msgid_plural "%(n)s lines still unpicked."
+msgid "%(counter)s line still unpicked."
+msgid_plural "%(counter)s lines still unpicked."
+msgstr[0] "%(counter)s рядок досі не скомплектовано."
+msgstr[1] "%(counter)s рядки досі не скомплектовано."
+msgstr[2] "%(counter)s рядків досі не скомплектовано."
+msgstr[3] "%(counter)s рядків досі не скомплектовано."
 
-#: .\templates\manage\health\list.html:261
+#: .\templates\manage\health\list.html:266
 msgid "shown live, not filtered by the date range above"
 msgstr "показано в реальному часі, без фільтра дат вище"
 
-#: .\templates\manage\health\list.html:270
+#: .\templates\manage\health\list.html:275
 msgid "Unpicked"
 msgstr "Не зібрано"
 
-#: .\templates\manage\health\list.html:272
+#: .\templates\manage\health\list.html:277
 msgid "Started"
 msgstr "Розпочато"
 
-#: .\templates\manage\health\list.html:273
+#: .\templates\manage\health\list.html:278
 #: .\templates\manage\integrations\list.html:30
 #: .\templates\manage\orders\list.html:98
 #: .\templates\manage\picklists\list.html:37
@@ -2692,19 +3259,19 @@ msgstr "Розпочато"
 msgid "Actions"
 msgstr "Дії"
 
-#: .\templates\manage\health\list.html:303
+#: .\templates\manage\health\list.html:308
 #: .\templates\manage\picklists\detail.html:16
 msgid "Mark this picklist as completed? This also completes the linked order."
 msgstr ""
-"Позначити цей лист комплектації як завершений? Це також завершить пов'язане "
+"Позначити цей лист комплектації як завершений? Це також завершить пов’язане "
 "замовлення."
 
-#: .\templates\manage\health\list.html:309
+#: .\templates\manage\health\list.html:314
 #: .\templates\manage\picklists\detail.html:22
 msgid "Mark completed"
 msgstr "Позначити як завершений"
 
-#: .\templates\manage\health\list.html:311
+#: .\templates\manage\health\list.html:316
 #: .\templates\manage\picklists\detail.html:25
 msgid ""
 "Archive this picklist? It stays in your history but no longer counts as "
@@ -2713,140 +3280,130 @@ msgstr ""
 "Заархівувати цей лист комплектації? Він залишиться в історії, але більше не "
 "вважатиметься застряглим."
 
-#: .\templates\manage\health\list.html:317
+#: .\templates\manage\health\list.html:322
 #: .\templates\manage\picklists\detail.html:31
 msgid "Archive"
 msgstr "Архівувати"
 
-#: .\templates\manage\health\list.html:337
+#: .\templates\manage\health\list.html:342
 msgid "Codes that need attention"
 msgstr "Коди, що потребують уваги"
 
-#: .\templates\manage\health\list.html:346
-#| msgid "What exactly went wrong"
+#: .\templates\manage\health\list.html:351
 msgid "What is wrong"
 msgstr "Що не так"
 
-#: .\templates\manage\health\list.html:347
-#| msgid "View Details"
+#: .\templates\manage\health\list.html:352
 msgid "Details"
 msgstr "Деталі"
 
-#: .\templates\manage\health\list.html:348
+#: .\templates\manage\health\list.html:353
 msgid "Fix"
 msgstr "Виправити"
 
-#: .\templates\manage\health\list.html:360
-#| msgid "Extra barcodes"
-msgid "extra barcode"
-msgstr "додатковий штрихкод"
-
 #: .\templates\manage\health\list.html:365
+msgid "extra barcode"
+msgstr "додатковий штрих-код"
+
+#: .\templates\manage\health\list.html:370
 msgid "Not in the catalogue"
 msgstr "Немає в каталозі"
 
-#: .\templates\manage\health\list.html:366
+#: .\templates\manage\health\list.html:371
 msgid "scanned, but no product has this code"
 msgstr "відскановано, але жоден товар не має цього коду"
 
-#: .\templates\manage\health\list.html:368
-#| msgid "Barcode only"
+#: .\templates\manage\health\list.html:373
 msgid "Barcode does not scan"
-msgstr "Штрихкод не сканується"
+msgstr "Штрих-код не сканується"
 
-#: .\templates\manage\health\list.html:369
+#: .\templates\manage\health\list.html:374
 msgid "pickers keep confirming it by hand"
 msgstr "комплектувальники постійно підтверджують його вручну"
 
-#: .\templates\manage\health\list.html:371
+#: .\templates\manage\health\list.html:376
 msgid "Scanned outside its order"
 msgstr "Відскановано поза своїм замовленням"
 
-#: .\templates\manage\health\list.html:372
+#: .\templates\manage\health\list.html:377
 msgid "the product exists, but was not on that list"
 msgstr "товар існує, але його не було в цьому листі"
 
-#: .\templates\manage\health\list.html:374
-#| msgid "picks not recorded"
+#: .\templates\manage\health\list.html:379
 msgid "Picks not recorded"
 msgstr "Відбори не записані"
 
-#: .\templates\manage\health\list.html:375
+#: .\templates\manage\health\list.html:380
 msgid "the server refused the pick"
 msgstr "сервер відхилив відбір"
 
-#: .\templates\manage\health\list.html:377
-#| msgid "Unknown product"
+#: .\templates\manage\health\list.html:382
 msgid "Unreadable or wrong product"
 msgstr "Нечитаний або неправильний товар"
 
-#: .\templates\manage\health\list.html:381
-#| msgid "confirmed by hand, not scanned"
-msgid "confirmed by hand"
-msgstr "підтверджено вручну"
+#: .\templates\manage\health\list.html:386
+#, python-format
+msgid "%(num)s&times; confirmed by hand"
+msgstr "%(num)s&times; підтверджено вручну"
 
-#: .\templates\manage\health\list.html:382
-msgid "not found on the list"
-msgstr "не знайдено в листі"
+#: .\templates\manage\health\list.html:387
+#, python-format
+msgid "%(num)s&times; not found on the list"
+msgstr "%(num)s&times; не знайдено в листі"
 
-#: .\templates\manage\health\list.html:383
-#| msgid "picks not recorded"
-msgid "not recorded"
-msgstr "не записано"
-
-#: .\templates\manage\health\list.html:384
-msgid "unreadable"
-msgstr "нечитаний"
+#: .\templates\manage\health\list.html:388
+#, python-format
+msgid "%(num)s&times; not recorded"
+msgstr "%(num)s&times; не записано"
 
 #: .\templates\manage\health\list.html:389
+#, python-format
+msgid "%(num)s&times; unreadable"
+msgstr "%(num)s&times; не прочитано"
+
+#: .\templates\manage\health\list.html:394
 msgid "Add as product"
 msgstr "Додати як товар"
 
-#: .\templates\manage\health\list.html:393
+#: .\templates\manage\health\list.html:398
 msgid ""
 "Add the code that is physically on the label as an extra barcode, so pickers "
 "can scan it instead of confirming by hand."
-msgstr "Додайте код, який фізично є на етикетці, як додатковий штрихкод, щоб комплектувальники могли сканувати, а не підтверджувати вручну."
+msgstr ""
+"Додайте код, який фізично є на етикетці, як додатковий штрих-код, щоб "
+"комплектувальники могли сканувати, а не підтверджувати вручну."
 
-#: .\templates\manage\health\list.html:393
-#| msgid "Extra barcodes"
+#: .\templates\manage\health\list.html:398
 msgid "Add extra barcode"
-msgstr "Додати штрихкод"
+msgstr "Додати штрих-код"
 
-#: .\templates\manage\health\list.html:396
-#| msgid "Known product"
+#: .\templates\manage\health\list.html:401
 msgid "Open product"
 msgstr "Відкрити товар"
 
-#: .\templates\manage\health\list.html:465
-msgid "build"
-msgstr "збірка"
+#: .\templates\manage\health\list.html:470
+#, python-format
+msgid "build %(build)s"
+msgstr "збірка %(build)s"
 
-#: .\templates\manage\health\list.html:486
+#: .\templates\manage\health\list.html:491
 #: .\templates\manage\inventory\logs.html:136
 #: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:107
 #: .\templates\manage\products\list.html:181
-msgid "Page"
-msgstr "Сторінка"
+#, python-format
+msgid "Page %(num)s of %(total)s"
+msgstr "Сторінка %(num)s з %(total)s"
 
-#: .\templates\manage\health\list.html:486
-#: .\templates\manage\inventory\logs.html:136
-#: .\templates\manage\orders\list.html:168
-#: .\templates\manage\picklists\list.html:107
-#: .\templates\manage\products\list.html:181
-msgid "of"
-msgstr "з"
-
-#: .\templates\manage\health\list.html:501
+#: .\templates\manage\health\list.html:506
 msgid "No scan issues found"
 msgstr "Проблем зі скануванням не знайдено"
 
-#: .\templates\manage\health\list.html:502
+#: .\templates\manage\health\list.html:507
 msgid "Failed scans, rejected picklists and manual overrides will appear here."
 msgstr ""
 "Невдалі сканування, відхилені листи комплектації та ручні підтвердження "
-"з'являтимуться тут."
+"з’являтимуться тут."
 
 #: .\templates\manage\integrations\config.html:4
 msgid "Integration settings"
@@ -2857,7 +3414,7 @@ msgid "Sync settings for this connection"
 msgstr "Налаштування синхронізації для цього підключення"
 
 #: .\templates\manage\integrations\config.html:13
-#: .\templates\shopify\app.html:129
+#: .\templates\shopify\app.html:131
 msgid "Sync settings"
 msgstr "Налаштування синхронізації"
 
@@ -3070,7 +3627,7 @@ msgstr ""
 msgid "Back to integrations"
 msgstr "Назад до інтеграцій"
 
-#: .\templates\manage\integrations\pairing_key.html:80
+#: .\templates\manage\integrations\pairing_key.html:76
 msgid "Pairing key copied to clipboard"
 msgstr "Ключ підключення скопійовано в буфер обміну"
 
@@ -3118,7 +3675,7 @@ msgstr "Додайте додаткові примітки..."
 msgid "Add Correction"
 msgstr "Додати коригування"
 
-#: .\templates\manage\inventory\add_correction.html:195
+#: .\templates\manage\inventory\add_correction.html:162
 msgid "Select a product first"
 msgstr "Спочатку виберіть товар"
 
@@ -3140,18 +3697,12 @@ msgid "All Reasons"
 msgstr "Усі причини"
 
 #: .\templates\manage\inventory\logs.html:55
-#: .\templates\manage\orders\list.html:73
-#: .\templates\manage\products\list.html:74
-msgid "selected"
-msgstr "вибрано"
+msgid "<span id=\"selected-count\">0</span> selected"
+msgstr "Вибрано: <span id=\"selected-count\">0</span>"
 
 #: .\templates\manage\inventory\logs.html:60
 msgid "Delete Selected"
 msgstr "Видалити вибрані"
-
-#: .\templates\manage\inventory\logs.html:76
-msgid "Date/Time"
-msgstr "Дата/час"
 
 #: .\templates\manage\inventory\logs.html:151
 msgid "No inventory changes yet"
@@ -3161,20 +3712,20 @@ msgstr "Змін запасів ще немає"
 msgid "Inventory changes will appear here once products are updated."
 msgstr "Зміни запасів з’являться тут після оновлення товарів."
 
-#: .\templates\manage\inventory\logs.html:313
+#: .\templates\manage\inventory\logs.html:287
 msgid "All Products"
 msgstr "Усі товари"
 
-#: .\templates\manage\inventory\logs.html:406
-msgid "Are you sure you want to delete"
-msgstr "Ви впевнені, що хочете видалити"
+#: .\templates\manage\inventory\logs.html:288
+#, python-format
+msgid ""
+"Are you sure you want to delete %%(count)s log entries? The inventory "
+"changes will be reverted."
+msgstr ""
+"Ви впевнені, що хочете видалити %%(count)s записів журналу? Зміни запасів "
+"буде скасовано."
 
-#: .\templates\manage\inventory\logs.html:406
-msgid "log entries? The inventory changes will be reverted."
-msgstr "записів журналу? Зміни запасів буде скасовано."
-
-#: .\templates\manage\inventory\logs.html:430
-#: .\templates\manage\inventory\logs.html:435
+#: .\templates\manage\inventory\logs.html:289
 msgid "Error deleting logs"
 msgstr "Помилка видалення записів журналу"
 
@@ -3207,7 +3758,7 @@ msgid "Search product..."
 msgstr "Пошук товару..."
 
 #: .\templates\manage\orders\form.html:102
-#: .\templates\manage\orders\form.html:409
+#: .\templates\manage\orders\form.html:380
 msgid "Search product by code or description..."
 msgstr "Пошук товару за кодом або описом..."
 
@@ -3216,11 +3767,11 @@ msgstr "Пошук товару за кодом або описом..."
 msgid "Save Changes"
 msgstr "Зберегти зміни"
 
-#: .\templates\manage\orders\form.html:439
+#: .\templates\manage\orders\form.html:381
 msgid "An order must have at least one product"
 msgstr "Замовлення має містити щонайменше один товар"
 
-#: .\templates\manage\orders\form.html:619
+#: .\templates\manage\orders\form.html:383
 msgid "Please select a product for all order lines"
 msgstr "Виберіть товар для всіх рядків замовлення"
 
@@ -3250,9 +3801,9 @@ msgid "Drag and drop your CSV file here, or click to select"
 msgstr "Перетягніть файл CSV сюди або натисніть, щоб вибрати"
 
 #: .\templates\manage\orders\import.html:28
-#: .\templates\manage\orders\import.html:242
+#: .\templates\manage\orders\import.html:228
 #: .\templates\manage\products\import.html:28
-#: .\templates\manage\products\import.html:223
+#: .\templates\manage\products\import.html:209
 msgid "Maximum file size: 5MB"
 msgstr "Максимальний розмір файлу: 5 МБ"
 
@@ -3392,6 +3943,11 @@ msgstr "Код A-Z"
 msgid "Code Z-A"
 msgstr "Код Z-A"
 
+#: .\templates\manage\orders\list.html:73
+#: .\templates\manage\products\list.html:74
+msgid "<span id=\"bulk-count\">0</span> selected"
+msgstr "Вибрано: <span id=\"bulk-count\">0</span>"
+
 #: .\templates\manage\orders\list.html:75
 #: .\templates\manage\orders\list.html:128 .\templates\queue\manage.html:68
 msgid "Add to Queue"
@@ -3415,7 +3971,7 @@ msgid "Delete"
 msgstr "Видалити"
 
 #: .\templates\manage\orders\list.html:95
-#: .\templates\queue\_order_cards.html:24 .\templates\shopify\app.html:212
+#: .\templates\queue\_order_cards.html:26 .\templates\shopify\app.html:214
 msgid "Items"
 msgstr "Позицій"
 
@@ -3456,25 +4012,28 @@ msgid "Delete Order"
 msgstr "Видалити замовлення"
 
 #: .\templates\manage\orders\list.html:209
-msgid "Are you sure you want to delete order"
-msgstr "Ви впевнені, що хочете видалити замовлення"
+msgid ""
+"Are you sure you want to delete order <strong id=\"delete-order-code\"></"
+"strong>?"
+msgstr ""
+"Ви впевнені, що хочете видалити замовлення <strong id=\"delete-order-"
+"code\"></strong>?"
 
 #: .\templates\manage\orders\list.html:210
 #: .\templates\manage\products\list.html:222
 msgid "This action cannot be undone."
 msgstr "Цю дію неможливо скасувати."
 
-#: .\templates\manage\orders\list.html:273
+#: .\templates\manage\orders\list.html:230
 msgid "Error adding to queue"
 msgstr "Помилка додавання до черги"
 
-#: .\templates\manage\orders\list.html:277
-#: .\templates\manage\orders\list.html:341
-#: .\templates\manage\products\list.html:345
+#: .\templates\manage\orders\list.html:231
+#: .\templates\manage\products\list.html:254
 msgid "An error occurred"
 msgstr "Сталася помилка"
 
-#: .\templates\manage\orders\list.html:282
+#: .\templates\manage\orders\list.html:286
 #, python-format
 msgid ""
 "Delete %%s order(s)? Orders currently being picked are skipped. This cannot "
@@ -3483,18 +4042,18 @@ msgstr ""
 "Видалити замовлень: %%s? Замовлення, які зараз комплектуються, буде "
 "пропущено. Цю дію неможливо скасувати."
 
-#: .\templates\manage\orders\list.html:283
+#: .\templates\manage\orders\list.html:287
 #, python-format
 msgid "Add %%s order(s) to the queue? Only draft orders are added."
 msgstr "Додати замовлень до черги: %%s? Додаються лише чернетки."
 
-#: .\templates\manage\orders\list.html:284
+#: .\templates\manage\orders\list.html:288
 #, python-format
 msgid "Remove %%s order(s) from the queue? Only queued orders are affected."
 msgstr ""
 "Вилучити замовлень з черги: %%s? Дія стосується лише замовлень у черзі."
 
-#: .\templates\manage\orders\list.html:285
+#: .\templates\manage\orders\list.html:289
 #, python-format
 msgid ""
 "Reset %%s order(s) to draft? In-progress orders are unclaimed and their "
@@ -3503,6 +4062,12 @@ msgstr ""
 "Повернути замовлень до чернетки: %%s? Замовлення в роботі буде розблоковано, "
 "а їхній прогрес комплектації втрачено. Завершені та скасовані замовлення "
 "буде пропущено."
+
+#: .\templates\manage\picklists\detail.html:4
+#: .\templates\manage\picklists\detail.html:5
+#, python-format
+msgid "Picklist %(code)s"
+msgstr "Лист комплектації %(code)s"
 
 #: .\templates\manage\picklists\detail.html:39
 msgid "Back to List"
@@ -3528,8 +4093,13 @@ msgstr "Тривалість"
 #: .\templates\queue\_manage_queue_list.html:12
 #: .\templates\queue\_picker_orders.html:16 .\templates\queue\manage.html:65
 #: .\templates\queue\manage.html:93
-msgid "items"
-msgstr "позицій"
+#, python-format
+msgid "%(counter)s item"
+msgid_plural "%(counter)s items"
+msgstr[0] "%(counter)s позиція"
+msgstr[1] "%(counter)s позиції"
+msgstr[2] "%(counter)s позицій"
+msgstr[3] "%(counter)s позицій"
 
 #: .\templates\manage\picklists\detail.html:147
 msgid "Picked"
@@ -3590,11 +4160,11 @@ msgstr "Короткий опис товару"
 
 #: .\templates\manage\products\form.html:37
 msgid "Extra barcodes"
-msgstr "Додаткові штрихкоди"
+msgstr "Додаткові штрих-коди"
 
 #: .\templates\manage\products\form.html:39
 msgid "One barcode per line"
-msgstr "Один штрихкод на рядок"
+msgstr "Один штрих-код на рядок"
 
 #: .\templates\manage\products\form.html:41
 msgid ""
@@ -3623,8 +4193,7 @@ msgid "Create Product"
 msgstr "Створити товар"
 
 #: .\templates\manage\products\form.html:116
-#: .\templates\manage\products\form.html:568
-#: .\templates\manage\products\form.html:574
+#: .\templates\manage\products\form.html:446
 msgid "Update Stock"
 msgstr "Оновити запас"
 
@@ -3641,7 +4210,7 @@ msgstr "Переглянути всі зміни запасів"
 msgid "No inventory changes recorded yet."
 msgstr "Змін запасів ще не зафіксовано."
 
-#: .\templates\manage\products\form.html:613
+#: .\templates\manage\products\form.html:447
 msgid "You"
 msgstr "Ви"
 
@@ -3701,7 +4270,7 @@ msgstr "Експорт"
 
 #: .\templates\manage\products\list.html:50
 #: .\templates\manage\products\list.html:144
-#: .\templates\manage\products\list.html:469
+#: .\templates\manage\products\list.html:256
 msgid "Inactive"
 msgstr "Неактивні"
 
@@ -3731,15 +4300,15 @@ msgstr "Задати розташування"
 
 #: .\templates\manage\products\list.html:79
 msgid "Merge"
-msgstr "Об'єднати"
+msgstr "Об’єднати"
 
 #: .\templates\manage\products\list.html:142
-#: .\templates\manage\products\list.html:471
+#: .\templates\manage\products\list.html:257
 msgid "Click to deactivate"
 msgstr "Натисніть, щоб деактивувати"
 
 #: .\templates\manage\products\list.html:144
-#: .\templates\manage\products\list.html:471
+#: .\templates\manage\products\list.html:258
 msgid "Click to activate"
 msgstr "Натисніть, щоб активувати"
 
@@ -3756,10 +4325,18 @@ msgid "Delete Product"
 msgstr "Видалити товар"
 
 #: .\templates\manage\products\list.html:221
-msgid "Are you sure you want to delete product"
-msgstr "Ви впевнені, що хочете видалити товар"
+msgid ""
+"Are you sure you want to delete product <strong id=\"delete-product-code\"></"
+"strong>?"
+msgstr ""
+"Ви впевнені, що хочете видалити товар <strong id=\"delete-product-code\"></"
+"strong>?"
 
-#: .\templates\manage\products\list.html:282
+#: .\templates\manage\products\list.html:253
+msgid "Enter new location for selected products:"
+msgstr "Введіть нове розташування для вибраних товарів:"
+
+#: .\templates\manage\products\list.html:289
 #, python-format
 msgid ""
 "Delete %%s product(s)? Products used in orders are skipped. This cannot be "
@@ -3768,17 +4345,13 @@ msgstr ""
 "Видалити товарів: %%s? Товари, використані в замовленнях, буде пропущено. Цю "
 "дію неможливо скасувати."
 
-#: .\templates\manage\products\list.html:283
+#: .\templates\manage\products\list.html:290
 msgid ""
 "Merge the selected products into which product? Enter its product code. The "
 "codes of the merged products stay scannable as extra barcodes."
 msgstr ""
-"У який товар об'єднати вибрані товари? Введіть його код товару. Коди "
-"об'єднаних товарів залишаються скануваними як додаткові штрихкоди."
-
-#: .\templates\manage\products\list.html:295
-msgid "Enter new location for selected products:"
-msgstr "Введіть нове розташування для вибраних товарів:"
+"У який товар об’єднати вибрані товари? Введіть його код товару. Коди "
+"об’єднаних товарів залишаються скануваними як додаткові штрих-коди."
 
 #: .\templates\manage\profile.html:6
 msgid "Manage your account settings"
@@ -3787,13 +4360,6 @@ msgstr "Керуйте налаштуваннями свого обліково�
 #: .\templates\manage\profile.html:14
 msgid "Account Information"
 msgstr "Інформація про обліковий запис"
-
-#: .\templates\manage\profile.html:22 .\templates\manage\profile.html:178
-#: .\templates\registration\login.html:35
-#: .\templates\registration\signup.html:95
-#: .\templates\registration\signup.html:168
-msgid "Username"
-msgstr "Ім’я користувача"
 
 #: .\templates\manage\profile.html:24
 msgid "Username cannot be changed."
@@ -3807,8 +4373,8 @@ msgstr "Ім’я"
 msgid "Last Name"
 msgstr "Прізвище"
 
-#: .\templates\manage\profile.html:41 .\templates\registration\signup.html:108
-#: .\templates\registration\signup.html:181
+#: .\templates\manage\profile.html:41 .\templates\registration\signup.html:111
+#: .\templates\registration\signup.html:185
 msgid "Email"
 msgstr "Email"
 
@@ -3900,11 +4466,11 @@ msgstr "QR-код входу активний · залишилося днів: 
 msgid "No login QR"
 msgstr "Немає QR-коду входу"
 
-#: .\templates\manage\profile.html:142 .\templates\shopify\app.html:250
+#: .\templates\manage\profile.html:142 .\templates\shopify\app.html:252
 msgid "New password (min 8 characters)"
 msgstr "Новий пароль (мін. 8 символів)"
 
-#: .\templates\manage\profile.html:144 .\templates\shopify\app.html:251
+#: .\templates\manage\profile.html:144 .\templates\shopify\app.html:253
 msgid "Set password"
 msgstr "Задати пароль"
 
@@ -4021,8 +4587,13 @@ msgstr "Поточна черга"
 
 #: .\templates\manage\queue\list.html:39 .\templates\manage\queue\list.html:54
 #: .\templates\queue\manage.html:42 .\templates\queue\manage.html:56
-msgid "orders"
-msgstr "замовлень"
+#, python-format
+msgid "%(counter)s order"
+msgid_plural "%(counter)s orders"
+msgstr[0] "%(counter)s замовлення"
+msgstr[1] "%(counter)s замовлення"
+msgstr[2] "%(counter)s замовлень"
+msgstr[3] "%(counter)s замовлень"
 
 #: .\templates\manage\queue\list.html:53 .\templates\queue\manage.html:55
 msgid "Available Orders"
@@ -4044,11 +4615,11 @@ msgstr "Нещодавно завершені"
 msgid "No completed orders yet"
 msgstr "Завершених замовлень ще немає"
 
-#: .\templates\manage\queue\list.html:424 .\templates\queue\manage.html:157
+#: .\templates\manage\queue\list.html:384 .\templates\queue\manage.html:115
 msgid "Queue order saved"
 msgstr "Порядок черги збережено"
 
-#: .\templates\manage\queue\list.html:471
+#: .\templates\manage\queue\list.html:387
 #, python-format
 msgid ""
 "%%(name)s is picking this order right now. Unlock it anyway? Picks they "
@@ -4057,7 +4628,7 @@ msgstr ""
 "%%(name)s зараз комплектує це замовлення. Все одно розблокувати? Уже "
 "записані відбори збережуться."
 
-#: .\templates\manage\queue\list.html:472
+#: .\templates\manage\queue\list.html:388
 msgid "Unlock this order? The picker will lose their progress."
 msgstr "Розблокувати це замовлення? Комплектувальник втратить свій прогрес."
 
@@ -4131,9 +4702,13 @@ msgstr ""
 "Дивіться <a href=\"%(docs_url)s\">документацію API</a>, щоб дізнатися, як "
 "надсилати замовлення за допомогою свого токена."
 
-#: .\templates\manage\settings\api_tokens.html:129
+#: .\templates\manage\settings\api_tokens.html:125
 msgid "Token copied to clipboard"
 msgstr "Токен скопійовано в буфер обміну"
+
+#: .\templates\offline.html:64
+msgid "Orderpiqr logo"
+msgstr "Логотип Orderpiqr"
 
 #: .\templates\offline.html:65
 msgid "You're offline"
@@ -4149,7 +4724,7 @@ msgstr "Повторити"
 
 #: .\templates\partials\scan_confirmation_overlay.html:12
 msgid "Tap to scan next item"
-msgstr "Торкніться, щоб відсканувати наступну позицію"
+msgstr "Торкніться, щоб сканувати далі"
 
 #: .\templates\partials\scan_confirmation_overlay.html:21
 msgid "This list is no longer yours"
@@ -4178,28 +4753,31 @@ msgstr "Підтвердити"
 
 #: .\templates\partials\scan_confirmation_overlay.html:57
 msgid "Pick All"
-msgstr "Скомплектувати все"
+msgstr "Взяти все"
 
 #: .\templates\partials\scan_confirmation_overlay.html:60
 msgid "+1 more"
-msgstr "+1 ще"
+msgstr "Ще +1"
 
 #: .\templates\partials\scan_confirmation_overlay.html:65
 msgid "Continue scanning"
 msgstr "Продовжити сканування"
 
-#: .\templates\queue\_order_cards.html:67
+#: .\templates\queue\_order_cards.html:19
+#, python-format
+msgid "QR code for %(code)s"
+msgstr "QR-код для %(code)s"
+
+#: .\templates\queue\_order_cards.html:69
 #: .\templates\queue\_picker_orders.html:60
 msgid "No orders in queue"
 msgstr "У черзі немає замовлень"
 
-#: .\templates\queue\_picker_orders.html:35 .\templates\queue\picker.html:120
-#: .\templates\queue\picker.html:127
+#: .\templates\queue\_picker_orders.html:35 .\templates\queue\picker.html:49
 msgid "Start Picking"
 msgstr "Почати комплектацію"
 
-#: .\templates\queue\_picker_orders.html:46 .\templates\queue\picker.html:179
-#: .\templates\queue\picker.html:185
+#: .\templates\queue\_picker_orders.html:46 .\templates\queue\picker.html:51
 msgid "Take Over"
 msgstr "Перехопити"
 
@@ -4235,20 +4813,19 @@ msgstr "Немає завершених замовлень"
 msgid "Pick Queue"
 msgstr "Черга комплектації"
 
-#: .\templates\queue\picker.html:69 .\templates\queue\picker.html:153
+#: .\templates\queue\picker.html:47
 msgid "Claiming..."
 msgstr "Беремо в роботу..."
 
-#: .\templates\queue\picker.html:94
+#: .\templates\queue\picker.html:48
 msgid "Order claimed! Redirecting..."
 msgstr "Замовлення взято в роботу! Перенаправлення..."
 
-#: .\templates\queue\picker.html:125 .\templates\queue\picker.html:131
-#: .\templates\queue\picker.html:183
+#: .\templates\queue\picker.html:50
 msgid "Error claiming order"
 msgstr "Помилка взяття замовлення в роботу"
 
-#: .\templates\queue\picker.html:140
+#: .\templates\queue\picker.html:52
 #, python-format
 msgid ""
 "%%(name)s has been picking this order for %%(duration)s. Take it over? Picks "
@@ -4257,7 +4834,7 @@ msgstr ""
 "%%(name)s комплектує це замовлення вже %%(duration)s. Перехопити? Уже "
 "записані відбори збережуться."
 
-#: .\templates\queue\picker.html:144
+#: .\templates\queue\picker.html:53
 #, python-format
 msgid ""
 "%%(name)s is picking this order right now. Take it over? Picks they already "
@@ -4266,7 +4843,7 @@ msgstr ""
 "%%(name)s зараз комплектує це замовлення. Перехопити? Уже записані відбори "
 "збережуться."
 
-#: .\templates\queue\picker.html:147
+#: .\templates\queue\picker.html:54
 msgid ""
 "This order is being picked by someone else. Take it over? Picks they already "
 "recorded are kept."
@@ -4274,9 +4851,17 @@ msgstr ""
 "Це замовлення комплектує хтось інший. Перехопити? Уже записані відбори "
 "збережуться."
 
+#: .\templates\registration\base_auth.html:7
+msgid "OrderPiqR - Warehouse Order Picking System"
+msgstr "OrderPiqR — система комплектації складських замовлень"
+
 #: .\templates\registration\login.html:4
 msgid "Login"
 msgstr "Вхід"
+
+#: .\templates\registration\login.html:10
+msgid "Welcome back"
+msgstr "З поверненням"
 
 #: .\templates\registration\login.html:11
 msgid "Sign in to your OrderPiqR account"
@@ -4287,8 +4872,8 @@ msgid "Enter your username"
 msgstr "Введіть своє ім’я користувача"
 
 #: .\templates\registration\login.html:50
-#: .\templates\registration\signup.html:124
-#: .\templates\registration\signup.html:197 .\templates\shopify\app.html:238
+#: .\templates\registration\signup.html:127
+#: .\templates\registration\signup.html:201 .\templates\shopify\app.html:240
 msgid "Password"
 msgstr "Пароль"
 
@@ -4306,7 +4891,7 @@ msgstr "Забули пароль?"
 
 #: .\templates\registration\login.html:72
 #: .\templates\registration\qr_login.html:4
-#: .\templates\registration\signup.html:233
+#: .\templates\registration\signup.html:237
 msgid "Sign in"
 msgstr "Увійти"
 
@@ -4459,13 +5044,14 @@ msgstr ""
 "Якщо обліковий запис із вказаною адресою email існує, ви незабаром отримаєте "
 "посилання для скидання пароля."
 
-#: .\templates\registration\password_reset_done.html:24
-msgid "Didn't receive the email? Check your spam folder or"
-msgstr "Не отримали лист? Перевірте теку зі спамом або"
-
 #: .\templates\registration\password_reset_done.html:25
-msgid "try again"
-msgstr "спробуйте ще раз"
+#, python-format
+msgid ""
+"Didn't receive the email? Check your spam folder or <a href=\"%(url)s\">try "
+"again</a>"
+msgstr ""
+"Не отримали листа? Перевірте папку зі спамом або <a "
+"href=\"%(url)s\">спробуйте ще раз</a>"
 
 #: .\templates\registration\password_reset_email.html:2
 msgid "Hello,"
@@ -4644,78 +5230,70 @@ msgstr ""
 "Ваш особистий вхід до панелі керування. Використовуйте його, щоб додавати "
 "товари, створювати замовлення, керувати чергою та налаштовувати систему."
 
-#: .\templates\registration\signup.html:101
-msgid "admin"
-msgstr "admin"
-
-#: .\templates\registration\signup.html:114
+#: .\templates\registration\signup.html:117
 msgid "admin@company.com"
 msgstr "admin@company.com"
 
-#: .\templates\registration\signup.html:129
-#: .\templates\registration\signup.html:202
+#: .\templates\registration\signup.html:132
+#: .\templates\registration\signup.html:206
 msgid "Create a password"
 msgstr "Створіть пароль"
 
-#: .\templates\registration\signup.html:136
-#: .\templates\registration\signup.html:209
+#: .\templates\registration\signup.html:139
+#: .\templates\registration\signup.html:213
 msgid "Confirm Password"
 msgstr "Підтвердження пароля"
 
-#: .\templates\registration\signup.html:141
-#: .\templates\registration\signup.html:214
+#: .\templates\registration\signup.html:144
+#: .\templates\registration\signup.html:218
 msgid "Confirm password"
 msgstr "Підтвердьте пароль"
 
-#: .\templates\registration\signup.html:154
+#: .\templates\registration\signup.html:157
 msgid "Shared Picker Account"
 msgstr "Спільний обліковий запис комплектувальника"
 
-#: .\templates\registration\signup.html:157
+#: .\templates\registration\signup.html:160
 msgid "This is a shared login for all your warehouse pickers."
 msgstr "Це спільний вхід для всіх ваших складських комплектувальників."
 
-#: .\templates\registration\signup.html:159
+#: .\templates\registration\signup.html:162
 msgid "Share these credentials with your team"
 msgstr "Поділіться цими даними для входу зі своєю командою"
 
-#: .\templates\registration\signup.html:160
+#: .\templates\registration\signup.html:163
 msgid "When a picker logs in for the first time, they enter their name"
 msgstr "Коли комплектувальник входить уперше, він вводить своє ім’я"
 
-#: .\templates\registration\signup.html:161
+#: .\templates\registration\signup.html:164
 msgid "Their device is then remembered - no need to enter their name again"
 msgstr ""
 "Після цього його пристрій запам’ятовується — вводити ім’я повторно не "
 "потрібно"
 
-#: .\templates\registration\signup.html:162
+#: .\templates\registration\signup.html:165
 msgid "You can see which picker is using which device in the dashboard"
 msgstr ""
 "У панелі керування ви бачите, який комплектувальник користується яким "
 "пристроєм"
 
-#: .\templates\registration\signup.html:174
-msgid "picker"
-msgstr "picker"
-
-#: .\templates\registration\signup.html:187
+#: .\templates\registration\signup.html:191
 msgid "picker@company.com"
 msgstr "picker@company.com"
 
-#: .\templates\registration\signup.html:225
+#: .\templates\registration\signup.html:229
 msgid "Create Company & Accounts"
 msgstr "Створити компанію та облікові записи"
 
-#: .\templates\registration\signup.html:232
+#: .\templates\registration\signup.html:236
 msgid "Already have an account?"
 msgstr "Уже маєте обліковий запис?"
 
-#: .\templates\shopify\app.html:100
+#: .\templates\shopify\app.html:102
 msgid "No active plan"
 msgstr "Немає активного тарифу"
 
-#: .\templates\shopify\app.html:102
+#: .\templates\shopify\app.html:104
 msgid ""
 "This store has no active OrderPiqr subscription. Choose a plan to keep order "
 "sync running — billing is handled by Shopify."
@@ -4724,67 +5302,67 @@ msgstr ""
 "синхронізація замовлень продовжувала працювати — оплата здійснюється через "
 "Shopify."
 
-#: .\templates\shopify\app.html:105
+#: .\templates\shopify\app.html:107
 msgid "Choose a plan"
 msgstr "Вибрати тариф"
 
-#: .\templates\shopify\app.html:110
+#: .\templates\shopify\app.html:112
 msgid "Overview"
 msgstr "Огляд"
 
-#: .\templates\shopify\app.html:114
+#: .\templates\shopify\app.html:116
 msgid "Orders ready to pick"
 msgstr "Замовлення, готові до комплектації"
 
-#: .\templates\shopify\app.html:118 .\templates\shopify\app.html:226
+#: .\templates\shopify\app.html:120 .\templates\shopify\app.html:228
 msgid "Products needing mapping"
 msgstr "Товари, що потребують зіставлення"
 
-#: .\templates\shopify\app.html:123
+#: .\templates\shopify\app.html:125
 msgid "Open the picker app"
 msgstr "Відкрити застосунок комплектувальника"
 
-#: .\templates\shopify\app.html:132
+#: .\templates\shopify\app.html:134
 msgid "Product matching"
 msgstr "Зіставлення товарів"
 
-#: .\templates\shopify\app.html:133
+#: .\templates\shopify\app.html:135
 msgid "Which Shopify field matches your product codes"
 msgstr "Яке поле Shopify відповідає вашим кодам товарів"
 
-#: .\templates\shopify\app.html:136
-msgid "Barcode, then SKU"
-msgstr "Штрихкод, потім SKU"
-
-#: .\templates\shopify\app.html:137
-msgid "SKU, then barcode"
-msgstr "SKU, потім штрихкод"
-
 #: .\templates\shopify\app.html:138
-msgid "Barcode only"
-msgstr "Лише штрихкод"
+msgid "Barcode, then SKU"
+msgstr "Штрих-код, потім SKU"
 
 #: .\templates\shopify\app.html:139
+msgid "SKU, then barcode"
+msgstr "SKU, потім штрих-код"
+
+#: .\templates\shopify\app.html:140
+msgid "Barcode only"
+msgstr "Лише штрих-код"
+
+#: .\templates\shopify\app.html:141
 msgid "SKU only"
 msgstr "Лише SKU"
 
-#: .\templates\shopify\app.html:140
+#: .\templates\shopify\app.html:142
 msgid "Metafield"
 msgstr "Метаполе"
 
-#: .\templates\shopify\app.html:141
+#: .\templates\shopify\app.html:143
 msgid "Metafield, then barcode/SKU"
-msgstr "Метаполе, потім штрихкод/SKU"
+msgstr "Метаполе, потім штрих-код/SKU"
 
-#: .\templates\shopify\app.html:145
+#: .\templates\shopify\app.html:147
 msgid "Metafield (namespace.key)"
 msgstr "Метаполе (namespace.key)"
 
-#: .\templates\shopify\app.html:150
+#: .\templates\shopify\app.html:152
 msgid "Warehouse location metafield (optional)"
 msgstr "Метаполе складського розташування (необов’язково)"
 
-#: .\templates\shopify\app.html:151
+#: .\templates\shopify\app.html:153
 msgid ""
 "If your products carry their warehouse location in a metafield, OrderPiqr "
 "keeps product locations in sync with it."
@@ -4792,55 +5370,55 @@ msgstr ""
 "Якщо ваші товари зберігають своє складське розташування в метаполі, "
 "OrderPiqr синхронізує розташування товарів із ним."
 
-#: .\templates\shopify\app.html:157
+#: .\templates\shopify\app.html:159
 msgid "Unknown products"
 msgstr "Невідомі товари"
 
-#: .\templates\shopify\app.html:158
+#: .\templates\shopify\app.html:160
 msgid "When an order contains a product OrderPiqr doesn't know"
 msgstr "Коли замовлення містить товар, невідомий OrderPiqr"
 
-#: .\templates\shopify\app.html:161
+#: .\templates\shopify\app.html:163
 msgid "Create it automatically"
 msgstr "Створити його автоматично"
 
-#: .\templates\shopify\app.html:162
+#: .\templates\shopify\app.html:164
 msgid "Hold order for review"
 msgstr "Затримати замовлення для перевірки"
 
-#: .\templates\shopify\app.html:163
+#: .\templates\shopify\app.html:165
 msgid "Skip that line"
 msgstr "Пропустити цей рядок"
 
-#: .\templates\shopify\app.html:167
+#: .\templates\shopify\app.html:169
 msgid "New orders go straight to the picking queue"
 msgstr "Нові замовлення одразу потрапляють у чергу комплектації"
 
-#: .\templates\shopify\app.html:171
+#: .\templates\shopify\app.html:173
 msgid "Mark order fulfilled in Shopify when picked"
 msgstr "Позначати замовлення як виконане в Shopify після комплектації"
 
-#: .\templates\shopify\app.html:175
+#: .\templates\shopify\app.html:177
 msgid "Send Shopify's shipping notification to the customer"
 msgstr "Надсилати клієнту сповіщення Shopify про відправлення"
 
-#: .\templates\shopify\app.html:179
+#: .\templates\shopify\app.html:181
 msgid "Archive the Shopify order after fulfilling"
 msgstr "Архівувати замовлення Shopify після виконання"
 
-#: .\templates\shopify\app.html:185
+#: .\templates\shopify\app.html:187
 msgid "Re-sync products"
 msgstr "Повторно синхронізувати товари"
 
-#: .\templates\shopify\app.html:186
+#: .\templates\shopify\app.html:188
 msgid "Save settings"
 msgstr "Зберегти налаштування"
 
-#: .\templates\shopify\app.html:192
+#: .\templates\shopify\app.html:194
 msgid "Shopify orders"
 msgstr "Замовлення Shopify"
 
-#: .\templates\shopify\app.html:194
+#: .\templates\shopify\app.html:196
 msgid ""
 "Browse the orders in your Shopify store and push the ones you want to pick "
 "to OrderPiqr. New paid orders are imported automatically."
@@ -4849,55 +5427,55 @@ msgstr ""
 "ті, які хочете скомплектувати. Нові оплачені замовлення імпортуються "
 "автоматично."
 
-#: .\templates\shopify\app.html:198
+#: .\templates\shopify\app.html:200
 msgid "Open, unfulfilled"
 msgstr "Відкриті, невиконані"
 
-#: .\templates\shopify\app.html:199
+#: .\templates\shopify\app.html:201
 msgid "Open, unfulfilled & paid"
 msgstr "Відкриті, невиконані та оплачені"
 
-#: .\templates\shopify\app.html:200
+#: .\templates\shopify\app.html:202
 msgid "All open"
 msgstr "Усі відкриті"
 
-#: .\templates\shopify\app.html:201
+#: .\templates\shopify\app.html:203
 msgid "All orders"
 msgstr "Усі замовлення"
 
-#: .\templates\shopify\app.html:203
+#: .\templates\shopify\app.html:205
 msgid "Search (e.g. #1001)"
 msgstr "Пошук (напр. #1001)"
 
-#: .\templates\shopify\app.html:204
+#: .\templates\shopify\app.html:206
 msgid "Refresh"
 msgstr "Оновити"
 
-#: .\templates\shopify\app.html:207
+#: .\templates\shopify\app.html:209
 msgid "Select all"
 msgstr "Вибрати все"
 
-#: .\templates\shopify\app.html:210
+#: .\templates\shopify\app.html:212
 msgid "Payment"
 msgstr "Оплата"
 
-#: .\templates\shopify\app.html:211
+#: .\templates\shopify\app.html:213
 msgid "Fulfillment"
 msgstr "Виконання"
 
-#: .\templates\shopify\app.html:213
+#: .\templates\shopify\app.html:215
 msgid "OrderPiqr"
 msgstr "OrderPiqr"
 
-#: .\templates\shopify\app.html:219
+#: .\templates\shopify\app.html:221
 msgid "Load more"
 msgstr "Завантажити ще"
 
-#: .\templates\shopify\app.html:220
+#: .\templates\shopify\app.html:222
 msgid "Push selected to OrderPiqr"
 msgstr "Надіслати вибрані до OrderPiqr"
 
-#: .\templates\shopify\app.html:227
+#: .\templates\shopify\app.html:229
 msgid ""
 "These Shopify products couldn't be matched. Enter the OrderPiqr product code "
 "to link them."
@@ -4905,11 +5483,11 @@ msgstr ""
 "Ці товари Shopify не вдалося зіставити. Введіть код товару OrderPiqr, щоб "
 "пов’язати їх."
 
-#: .\templates\shopify\app.html:232
+#: .\templates\shopify\app.html:234
 msgid "Already using OrderPiqr?"
 msgstr "Уже користуєтесь OrderPiqr?"
 
-#: .\templates\shopify\app.html:234
+#: .\templates\shopify\app.html:236
 msgid ""
 "This store got a fresh OrderPiqr workspace when you installed the app. If "
 "your company already has an account on orderpiqr.nl, link this store to it — "
@@ -4920,20 +5498,93 @@ msgstr ""
 "orderpiqr.nl, прив’яжіть цей магазин до нього — тоді використовуватимуться "
 "ваші наявні товари та налаштування."
 
-#: .\templates\shopify\app.html:237
+#: .\templates\shopify\app.html:239
 msgid "Admin username"
 msgstr "Ім’я користувача адміністратора"
 
-#: .\templates\shopify\app.html:239
+#: .\templates\shopify\app.html:241
 msgid "Link account"
 msgstr "Прив’язати обліковий запис"
 
-#: .\templates\shopify\app.html:244
+#: .\templates\shopify\app.html:246
 msgid "Picker access"
 msgstr "Доступ комплектувальника"
 
-#: .\templates\shopify\app.html:246
+#: .\templates\shopify\app.html:248
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr ""
 "Ваші складські працівники входять у застосунок комплектувальника за "
 "допомогою цього облікового запису:"
+
+#~ msgid "Enabled"
+#~ msgstr "Увімкнено"
+
+#, python-format
+#~ msgid "%(n)s picklist in progress for over 4 hours."
+#~ msgid_plural "%(n)s picklists in progress for over 4 hours."
+#~ msgstr[0] "%(n)s лист комплектації виконується понад 4 години."
+#~ msgstr[1] "%(n)s листи комплектації виконуються понад 4 години."
+#~ msgstr[2] "%(n)s листів комплектації виконуються понад 4 години."
+#~ msgstr[3] "%(n)s листів комплектації виконуються понад 4 години."
+
+#~ msgid "admin"
+#~ msgstr "admin"
+
+#~ msgid "picker"
+#~ msgstr "picker"
+
+#~ msgid "active"
+#~ msgstr "активні"
+
+#~ msgid "this week"
+#~ msgstr "цього тижня"
+
+#~ msgid "draft"
+#~ msgstr "чернетки"
+
+#~ msgid "overrides"
+#~ msgstr "ручних підтверджень"
+
+#~ msgid "ago"
+#~ msgstr "тому"
+
+#~ msgid "list"
+#~ msgstr "лист"
+
+#, python-format
+#~ msgid ""
+#~ "%(count)s picklist(s) in progress for over 4 hours, holding %(lines)s "
+#~ "unpicked line(s)"
+#~ msgstr ""
+#~ "%(count)s лист(ів) комплектації в роботі понад 4 години, з %(lines)s "
+#~ "незібраними позиціями"
+
+#~ msgid "not recorded"
+#~ msgstr "не записано"
+
+#~ msgid "unreadable"
+#~ msgstr "нечитаний"
+
+#~ msgid "build"
+#~ msgstr "збірка"
+
+#~ msgid "Page"
+#~ msgstr "Сторінка"
+
+#~ msgid "of"
+#~ msgstr "з"
+
+#~ msgid "selected"
+#~ msgstr "вибрано"
+
+#~ msgid "Are you sure you want to delete"
+#~ msgstr "Ви впевнені, що хочете видалити"
+
+#~ msgid "items"
+#~ msgstr "позицій"
+
+#~ msgid "orders"
+#~ msgstr "замовлень"
+
+#~ msgid "try again"
+#~ msgstr "спробуйте ще раз"

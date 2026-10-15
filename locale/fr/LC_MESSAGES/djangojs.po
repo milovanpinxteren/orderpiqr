@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 13:46+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: xx\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\device.js:31
 msgid "Devices show who scanned and picked. Use this page to track activity."
@@ -202,6 +202,7 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:89
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:209
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:89
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:32
 msgid "Close"
 msgstr "Fermer"
 
@@ -463,6 +464,7 @@ msgid "No product data found on page"
 msgstr "Aucune donnée produit trouvée sur la page"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:48
+#: .\templates\index.html:241
 msgid "Offline mode: using cached product data"
 msgstr "Mode hors ligne : utilisation des données produit en cache"
 
@@ -471,6 +473,7 @@ msgid "Cached product data is not usable"
 msgstr "Les données produit en cache ne sont pas utilisables"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:54
+#: .\templates\index.html:243
 msgid "No product data available while offline"
 msgstr "Aucune donnée produit disponible hors ligne"
 
@@ -522,7 +525,7 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:554
 msgid "No active picklist — scan the list QR first."
 msgstr ""
-"Aucune liste de préparation active — scannez d'abord le QR de la liste."
+"Aucune liste de prélèvement active — scannez d'abord le QR de la liste."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:327
 msgid "Could not update product pick."
@@ -588,7 +591,7 @@ msgstr "Veuillez entrer une quantité valide"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:785
 msgid "Cannot load order: product data not available"
-msgstr "Impossible de charger la commande: données produit non disponibles"
+msgstr "Impossible de charger la commande : données produit non disponibles"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:823
 msgid "Order loaded from queue"
@@ -683,7 +686,7 @@ msgstr "Liste de prélèvement ajoutée"
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:222
 msgid "Kept %(count)s already-picked item(s) from the previous attempt."
 msgstr ""
-"%(count)s article(s) déjà préparé(s) conservé(s) de la tentative précédente."
+"%(count)s article(s) déjà prélevé(s) conservé(s) de la tentative précédente."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:235
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:247
@@ -710,7 +713,7 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\js\picklistHandler.js:302
 msgid "Neither field in the picklist row matches a known product code."
 msgstr ""
-"Aucun champ de la ligne de liste de préparation ne correspond à un code "
+"Aucun champ de la ligne de liste de prélèvement ne correspond à un code "
 "produit connu."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:49
@@ -741,3 +744,145 @@ msgstr "Arrêter la caméra"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
 msgid "Start camera"
 msgstr "Démarrer la caméra"
+
+#: .\templates\shopify\app.html:324
+msgid "Could not load status"
+msgstr "Impossible de charger le statut"
+
+#: .\templates\shopify\app.html:344
+msgid "Linking…"
+msgstr "Liaison en cours…"
+
+#: .\templates\shopify\app.html:356
+msgid "Linked to %(name)s"
+msgstr "Lié à %(name)s"
+
+#: .\templates\shopify\app.html:362
+msgid "Linking failed"
+msgstr "Échec de la liaison"
+
+#: .\templates\shopify\app.html:366
+msgid "Link account"
+msgstr "Lier le compte"
+
+#: .\templates\shopify\app.html:385
+msgid "Variant %(id)s"
+msgstr "Variante %(id)s"
+
+#: .\templates\shopify\app.html:388
+msgid "Product code"
+msgstr "Code produit"
+
+#: .\templates\shopify\app.html:390
+msgid "Link"
+msgstr "Lier"
+
+#: .\templates\shopify\app.html:398
+msgid "Linked"
+msgstr "Lié"
+
+#: .\templates\shopify\app.html:401
+msgid "Link failed"
+msgstr "Échec de la liaison"
+
+#: .\templates\shopify\app.html:422
+msgid "Password set"
+msgstr "Mot de passe défini"
+
+#: .\templates\shopify\app.html:425
+msgid "Failed"
+msgstr "Échoué"
+
+#: .\templates\shopify\app.html:443
+msgid "Settings saved"
+msgstr "Paramètres enregistrés"
+
+#: .\templates\shopify\app.html:443
+msgid "Save failed"
+msgstr "Échec de l'enregistrement"
+
+#: .\templates\shopify\app.html:459
+msgid "Sync queued…"
+msgstr "Synchronisation en file d'attente…"
+
+#: .\templates\shopify\app.html:463
+msgid "Syncing… %(processed)s / %(total)s product"
+msgid_plural "Syncing… %(processed)s / %(total)s products"
+msgstr[0] "Synchronisation… %(processed)s / %(total)s produit"
+msgstr[1] "Synchronisation… %(processed)s / %(total)s produits"
+
+#: .\templates\shopify\app.html:468
+msgid "Syncing… %(processed)s product"
+msgid_plural "Syncing… %(processed)s products"
+msgstr[0] "Synchronisation… %(processed)s produit"
+msgstr[1] "Synchronisation… %(processed)s produits"
+
+#: .\templates\shopify\app.html:473
+msgid "Last sync: %(linked)s linked, %(unresolved)s need mapping"
+msgstr "Dernière synchronisation : %(linked)s liés, %(unresolved)s à associer"
+
+#: .\templates\shopify\app.html:477
+msgid "Sync failed — try again or contact support"
+msgstr "Échec de la synchronisation — réessayez ou contactez le support"
+
+#: .\templates\shopify\app.html:504
+msgid "Product sync started"
+msgstr "Synchronisation des produits démarrée"
+
+#: .\templates\shopify\app.html:507
+msgid "Could not start sync"
+msgstr "Impossible de démarrer la synchronisation"
+
+#: .\templates\shopify\app.html:562
+msgid "cancelled"
+msgstr "annulée"
+
+#: .\templates\shopify\app.html:572
+msgid "imported"
+msgstr "importée"
+
+#: .\templates\shopify\app.html:582
+msgid "%(count)s order loaded"
+msgid_plural "%(count)s orders loaded"
+msgstr[0] "%(count)s commande chargée"
+msgstr[1] "%(count)s commandes chargées"
+
+#: .\templates\shopify\app.html:595
+msgid "Push %(count)s to OrderPiqr"
+msgstr "Envoyer %(count)s vers OrderPiqr"
+
+#: .\templates\shopify\app.html:596
+msgid "Push selected to OrderPiqr"
+msgstr "Envoyer la sélection vers OrderPiqr"
+
+#: .\templates\shopify\app.html:606
+msgid "Loading orders…"
+msgstr "Chargement des commandes…"
+
+#: .\templates\shopify\app.html:611
+msgid "Could not load orders."
+msgstr "Impossible de charger les commandes."
+
+#: .\templates\shopify\app.html:644
+msgid "Pushing… %(done)s/%(total)s"
+msgstr "Envoi… %(done)s/%(total)s"
+
+#: .\templates\shopify\app.html:651
+msgid "Push failed"
+msgstr "Échec de l'envoi"
+
+#: .\templates\shopify\app.html:655
+msgid "%(count)s imported"
+msgstr "%(count)s importée(s)"
+
+#: .\templates\shopify\app.html:658
+msgid "%(count)s already in OrderPiqr"
+msgstr "%(count)s déjà dans OrderPiqr"
+
+#: .\templates\shopify\app.html:661
+msgid "%(count)s need product mapping"
+msgstr "%(count)s à associer à un produit"
+
+#: .\templates\shopify\app.html:664
+msgid "%(count)s skipped"
+msgstr "%(count)s ignorée(s)"

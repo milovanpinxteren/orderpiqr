@@ -1,0 +1,75 @@
+#!/bin/sh
+# Verify the translation catalogs before anything leaves this machine.
+#
+# Enabled by `git config core.hooksPath .githooks` (see ReadMe.md). Tracked in
+# the repo rather than left in .git/hooks so it survives a fresh clone.
+#
+# Why a pre-push hook and not just discipline: nothing compiles on deploy — the
+# Heroku release phase only runs `migrate` — so the .mo files ship from git. A
+# translated .po whose .mo was never recompiled looks finished and serves
+# English in production. That, plus msgmerge quietly inventing translations,
+# is how six pages shipped with all their JavaScript dead in French.
+#
+# Deliberately fast (a couple of seconds): catalog and template checks only,
+# no test suite. Run `python manage.py test` yourself for that.
+#
+# To bypass in a genuine emergency: git push --no-verify
+
+set -e
+
+if command -v python >/dev/null 2>&1; then
+    PYTHON=python
+elif command -v py >/dev/null 2>&1; then
+    PYTHON=py
+else
+    echo "pre-push: no python on PATH — cannot verify translations." >&2
+    echo "pre-push: fix your PATH, or bypass with 'git push --no-verify'." >&2
+    exit 1
+fi
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd "$REPO_ROOT"
+
+# polib backs both checkers; without it they cannot run at all.
+if ! "$PYTHON" -c "import polib" >/dev/null 2>&1; then
+    echo "pre-push: polib is not installed, so translations cannot be verified." >&2
+    echo "pre-push: run 'pip install polib' (it is in requirements.txt)." >&2
+    exit 1
+fi
+
+echo "pre-push: verifying translation catalogs..."
+if ! "$PYTHON" scripts/check_translations.py --check-compiled --quiet; then
+    cat >&2 <<'MSG'
+
+pre-push: REFUSING TO PUSH — the translation catalogs have errors.
+
+  Most likely one of:
+    * a .po was edited but not compiled   -> python manage.py compilemessages
+    * makemessages invented translations  -> python scripts/strip_fuzzy_translations.py
+    * a new string is untranslated        -> translate it, then compile
+
+  Full detail (including the advisory lists):
+    python scripts/check_translations.py
+
+MSG
+    exit 1
+fi
+
+echo "pre-push: checking templates for unescaped translations in JavaScript..."
+if ! "$PYTHON" scripts/check_template_i18n.py --quiet; then
+    cat >&2 <<'MSG'
+
+pre-push: REFUSING TO PUSH — a translation reaches a JavaScript string
+literal unescaped. A locale whose translation contains an apostrophe will
+break that entire script block, as French did in production.
+
+  Fix each site reported above with:
+    {% trans "Some text" as msg_thing %}
+    ...
+    doSomething('{{ msg_thing|escapejs }}');
+
+MSG
+    exit 1
+fi
+
+echo "pre-push: translations OK."

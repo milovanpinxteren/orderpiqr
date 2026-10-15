@@ -120,8 +120,13 @@
                             <option value="total">{% trans "Total quantity" %}</option>
                         </select>
                     </div>
+                    {# One msgid, matching updateOrderImportanceButton() in       #}
+                    {# orderImportance.js. Split as "Order Importance" + ":" +   #}
+                    {# "Enabled" this label drew on different catalog entries    #}
+                    {# before and after the first tap, so it visibly changed     #}
+                    {# wording in any locale where the two did not coincide.     #}
                     <button id="toggle-order-btn" class="btn-toggle">
-                        {% trans "Order Importance" %}: {% trans "Enabled" %}
+                        {% trans "Order Importance: Enabled" %}
                     </button>
                 </div>
 

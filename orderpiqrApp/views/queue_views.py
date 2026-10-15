@@ -79,7 +79,7 @@ def queue_display(request):
     try:
         customer = request.user.userprofile.customer
     except UserProfile.DoesNotExist:
-        return render(request, 'queue/display.html', {'error': 'No customer profile found'})
+        return render(request, 'queue/display.html', {'error': _('No customer profile found')})
 
     if not is_queue_enabled(customer):
         return redirect('index')
@@ -122,7 +122,7 @@ def queue_picker(request):
     try:
         customer = request.user.userprofile.customer
     except UserProfile.DoesNotExist:
-        return render(request, 'queue/picker.html', {'error': 'No customer profile found'})
+        return render(request, 'queue/picker.html', {'error': _('No customer profile found')})
 
     if not is_queue_enabled(customer):
         return redirect('index')
@@ -359,7 +359,7 @@ def queue_manage(request):
     """
     customer = get_customer_for_staff(request)
     if not customer:
-        return render(request, 'manage/queue/list.html', {'error': 'No customer profile found', 'active_nav': 'queue'})
+        return render(request, 'manage/queue/list.html', {'error': _('No customer profile found'), 'active_nav': 'queue'})
 
     # Get all orders for this customer
     all_orders = Order.objects.filter(customer=customer).annotate(

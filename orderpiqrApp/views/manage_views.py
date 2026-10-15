@@ -1987,9 +1987,9 @@ def inventory_logs_export(request):
 
     writer = csv.writer(response)
     writer.writerow([
-        'Date/Time', 'Product Code', 'Product Description',
-        'Old Qty', 'New Qty', 'Change', 'Type', 'Reason',
-        'User', 'Device', 'Notes'
+        _('Date/Time'), _('Product Code'), _('Product Description'),
+        _('Old Qty'), _('New Qty'), _('Change'), _('Type'), _('Reason'),
+        _('User'), _('Device'), _('Notes')
     ])
 
     for log in logs:

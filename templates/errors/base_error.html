@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Error{% endblock %} - OrderPiqR</title>
+    <title>{% block title %}{% trans "Error" %}{% endblock %} - OrderPiqR</title>
     <link rel="icon" type="image/png" href="{% static 'orderpiqrApp/img/favicon.png' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -261,14 +261,14 @@
                     </svg>
                     {% endblock %}
                 </div>
-                <div class="error-code">{% block error_code %}Error{% endblock %}</div>
-                <h1 class="error-title">{% block error_title %}Something went wrong{% endblock %}</h1>
+                <div class="error-code">{% block error_code %}{% trans "Error" %}{% endblock %}</div>
+                <h1 class="error-title">{% block error_title %}{% trans "Something went wrong" %}{% endblock %}</h1>
             </div>
 
             <div class="error-body">
                 <p class="error-message">
                     {% block error_message %}
-                    An unexpected error occurred. Please try again later.
+                    {% trans "An unexpected error occurred. Please try again later." %}
                     {% endblock %}
                 </p>
 

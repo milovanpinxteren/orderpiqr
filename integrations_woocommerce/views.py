@@ -11,6 +11,7 @@ import secrets
 
 from django.db import IntegrityError, transaction
 from django.http import HttpResponse, JsonResponse
+from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 
@@ -55,12 +56,12 @@ def connect(request):
     token = PairingToken.find(data.get('pairing_key'))
     if token is None or token.is_used:
         return _error('invalid_pairing_key',
-                      'This pairing key is not valid. Generate a new one in '
-                      'the OrderPiqr portal.')
+                      _('This pairing key is not valid. Generate a new one in '
+                        'the OrderPiqr portal.'))
     if token.is_expired:
         return _error('expired_pairing_key',
-                      'This pairing key has expired. Generate a new one in '
-                      'the OrderPiqr portal.')
+                      _('This pairing key has expired. Generate a new one in '
+                        'the OrderPiqr portal.'))
 
     try:
         store_url = normalize_store_url(data.get('store_url'))
@@ -75,8 +76,8 @@ def connect(request):
     except WooCommerceAPIError as exc:
         logger.info("Connect check failed for %s: %s", store_url, exc)
         return _error('store_unreachable',
-                      'Could not reach the store with these API credentials. '
-                      'Check the store URL and REST API key.')
+                      _('Could not reach the store with these API credentials. '
+                        'Check the store URL and REST API key.'))
 
     customer = token.customer
     store_name = _clip(data.get('store_name'), 255) or store_url.split('//', 1)[-1]
@@ -123,9 +124,9 @@ def connect(request):
         logger.warning("Webhook registration failed for %s: %s", store_url, exc)
         connection.delete()  # cascades the store
         return _error('webhook_registration_failed',
-                      'The store accepted the credentials but webhook '
-                      'registration failed. Check that the REST API key has '
-                      'Read/Write permissions.')
+                      _('The store accepted the credentials but webhook '
+                        'registration failed. Check that the REST API key has '
+                        'Read/Write permissions.'))
 
     services.enqueue_product_sync(connection)
     token.mark_used()
@@ -236,7 +237,7 @@ def disconnect(request):
     if store is None:
         return JsonResponse({'status': 'disconnected'})  # already gone
     if not store.check_plugin_token(str(data.get('plugin_token') or '')):
-        return _error('unauthorized', 'Invalid plugin token.', status=403)
+        return _error('unauthorized', _('Invalid plugin token.'), status=403)
 
     if store.connection.status != 'disconnected':
         store.connection.status = 'disconnected'
@@ -257,7 +258,7 @@ def status(request):
         request.headers.get('X-OrderPiqr-Plugin-Token', ''),
     )
     if store is None:
-        return _error('unauthorized', 'Invalid connection or plugin token.',
+        return _error('unauthorized', _('Invalid connection or plugin token.'),
                       status=401)
 
     connection = store.connection

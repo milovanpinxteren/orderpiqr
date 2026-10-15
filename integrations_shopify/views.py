@@ -8,6 +8,7 @@ from django.conf import settings
 from django.db import IntegrityError
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
@@ -92,7 +93,7 @@ def app_entry(request):
 
     if token:
         try:
-            _, token_shop = verify_session_token(token)
+            _claims, token_shop = verify_session_token(token)
             shop_domain = token_shop
         except InvalidSessionToken as exc:
             logger.warning("Invalid session token on app entry: %s", exc)
@@ -131,7 +132,7 @@ def _authenticated_shop(request):
     if not token:
         return None
     try:
-        _, shop_domain = verify_session_token(token)
+        _claims, shop_domain = verify_session_token(token)
     except InvalidSessionToken:
         return None
     return (ShopifyShop.objects
@@ -261,7 +262,7 @@ def api_orders(request):
             query=query, first=25, after=after)
     except Exception:
         logger.exception("Order browse failed for %s", shop.shop_domain)
-        return JsonResponse({'error': 'Could not load orders from Shopify'}, status=502)
+        return JsonResponse({'error': _('Could not load orders from Shopify')}, status=502)
 
     links = {
         link.external_order_id: link
@@ -300,7 +301,7 @@ def api_push_orders(request):
     except (json.JSONDecodeError, KeyError, TypeError):
         return JsonResponse({'error': 'invalid request'}, status=400)
     if not order_ids:
-        return JsonResponse({'error': 'no orders selected'}, status=400)
+        return JsonResponse({'error': _('no orders selected')}, status=400)
 
     connection = shop.connection
     connector = connection.get_connector()
@@ -308,7 +309,7 @@ def api_push_orders(request):
         payloads = connector.fetch_orders(order_ids)
     except Exception:
         logger.exception("Order fetch failed for %s", shop.shop_domain)
-        return JsonResponse({'error': 'Could not load orders from Shopify'}, status=502)
+        return JsonResponse({'error': _('Could not load orders from Shopify')}, status=502)
 
     imported = already = needs_mapping = skipped = 0
     orders = []
@@ -386,10 +387,10 @@ def api_map_product(request):
     link = ProductLink.objects.filter(
         connection=shop.connection, pk=link_id).first()
     if link is None:
-        return JsonResponse({'error': 'link not found'}, status=404)
+        return JsonResponse({'error': _('link not found')}, status=404)
     product = resolve_product(shop.connection.customer, product_code)
     if product is None:
-        return JsonResponse({'error': 'no product with that code'}, status=404)
+        return JsonResponse({'error': _('no product with that code')}, status=404)
 
     link.product = product
     link.identifier_value = product_code
@@ -418,13 +419,13 @@ def api_link_account(request):
     from django.contrib.auth import authenticate
     user = authenticate(request, username=username, password=password)
     if user is None:
-        return JsonResponse({'error': 'Invalid username or password'}, status=403)
+        return JsonResponse({'error': _('Invalid username or password')}, status=403)
     if not user.groups.filter(name='companyadmin').exists():
         return JsonResponse(
-            {'error': 'This account is not a company admin'}, status=403)
+            {'error': _('This account is not a company admin')}, status=403)
     profile = getattr(user, 'userprofile', None)
     if profile is None:
-        return JsonResponse({'error': 'Account has no company'}, status=403)
+        return JsonResponse({'error': _('Account has no company')}, status=403)
 
     services.link_to_existing_account(shop, profile.customer)
     shop.refresh_from_db()
@@ -453,7 +454,7 @@ def api_set_picker_password(request):
     except (json.JSONDecodeError, KeyError):
         return JsonResponse({'error': 'invalid request'}, status=400)
     if len(password) < 8:
-        return JsonResponse({'error': 'password too short (min 8 characters)'}, status=400)
+        return JsonResponse({'error': _('password too short (min 8 characters)')}, status=400)
 
     store_handle = shop.shop_domain.replace('.myshopify.com', '')
     user = services.ensure_picker_user(shop.connection.customer, store_handle)

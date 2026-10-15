@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from integrations.crypto import decrypt, encrypt
 from integrations.models import Connection
@@ -31,8 +32,8 @@ class ShopifyShop(models.Model):
     subscription_checked_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name = 'Shopify shop'
-        verbose_name_plural = 'Shopify shops'
+        verbose_name = _('Shopify shop')
+        verbose_name_plural = _('Shopify shops')
 
     def __str__(self):
         return self.shop_domain

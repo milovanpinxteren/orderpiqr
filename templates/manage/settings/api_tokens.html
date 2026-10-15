@@ -37,7 +37,7 @@
                     {% endfor %}
                 </select>
                 <button type="submit" class="btn btn-primary"
-                        onclick="return confirm('{% trans "Creating a token replaces your existing token of the same type. Continue?" %}');">
+                        onclick="return confirm('{% trans "Creating a token replaces your existing token of the same type. Continue?" as msg_replace_token %}{{ msg_replace_token|escapejs }}');">
                     {% trans "Create token" %}
                 </button>
             </form>
@@ -62,7 +62,7 @@
                             <td>{{ token.created|date:"d M Y H:i" }}</td>
                             <td class="actions-col">
                                 <form method="post" class="inline-form"
-                                      onsubmit="return confirm('{% trans "Revoke this token? Systems using it will lose access immediately." %}');">
+                                      onsubmit="return confirm('{% trans "Revoke this token? Systems using it will lose access immediately." as msg_revoke_token %}{{ msg_revoke_token|escapejs }}');">
                                     {% csrf_token %}
                                     <input type="hidden" name="action" value="revoke">
                                     <input type="hidden" name="key_hash" value="{{ token.key_hash }}">
@@ -122,11 +122,12 @@
 .docs-link { margin-top: var(--spacing-md); }
 </style>
 
+{% trans "Token copied to clipboard" as msg_token_copied %}
 <script>
 function copyToken() {
     const token = document.getElementById('new-token').textContent.trim();
     navigator.clipboard.writeText(token).then(() => {
-        showNotification("{% trans 'Token copied to clipboard' %}");
+        showNotification("{{ msg_token_copied|escapejs }}");
     });
 }
 </script>

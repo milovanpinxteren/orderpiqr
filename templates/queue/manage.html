@@ -39,7 +39,7 @@
         <div class="panel queue-panel">
             <div class="panel-header">
                 <h2>{% trans "Current Queue" %}</h2>
-                <span class="order-count">{{ queue_orders.count }} {% trans "orders" %}</span>
+                <span class="order-count">{% blocktrans count counter=queue_orders.count trimmed %}{{ counter }} order{% plural %}{{ counter }} orders{% endblocktrans %}</span>
             </div>
             <div class="panel-content"
                  id="queue-list"
@@ -53,7 +53,7 @@
         <div class="panel available-panel">
             <div class="panel-header">
                 <h2>{% trans "Available Orders" %}</h2>
-                <span class="order-count">{{ available_orders.count }} {% trans "orders" %}</span>
+                <span class="order-count">{% blocktrans count counter=available_orders.count trimmed %}{{ counter }} order{% plural %}{{ counter }} orders{% endblocktrans %}</span>
             </div>
             <div class="panel-content" id="available-list">
                 {% if available_orders %}
@@ -62,7 +62,7 @@
                     <div class="order-item available" data-order-id="{{ order.order_id }}">
                         <div class="order-info">
                             <span class="order-code">{{ order.order_code }}</span>
-                            <span class="item-count">{{ order.item_count }} {% trans "items" %}</span>
+                            <span class="item-count">{% blocktrans count counter=order.item_count trimmed %}{{ counter }} item{% plural %}{{ counter }} items{% endblocktrans %}</span>
                         </div>
                         <button class="btn-add" onclick="addToQueue({{ order.order_id }})">
                             {% trans "Add to Queue" %}
@@ -90,10 +90,10 @@
                     <div class="order-item completed">
                         <div class="order-info">
                             <span class="order-code">{{ order.order_code }}</span>
-                            <span class="item-count">{{ order.item_count }} {% trans "items" %}</span>
+                            <span class="item-count">{% blocktrans count counter=order.item_count trimmed %}{{ counter }} item{% plural %}{{ counter }} items{% endblocktrans %}</span>
                         </div>
                         <span class="completed-time">
-                            {{ order.completed_at|timesince }} {% trans "ago" %}
+                            {% blocktrans with since=order.completed_at|timesince trimmed %}{{ since }} ago{% endblocktrans %}
                         </span>
                     </div>
                     {% endfor %}
@@ -112,6 +112,10 @@
     <div id="notification-container" class="notification-container"></div>
 
     <script>
+        {% trans "Queue order saved" as msg_queue_saved %}
+        {% trans "Order added to queue" as msg_order_queued %}
+        {% trans "Order removed from queue" as msg_order_unqueued %}
+
         const csrfToken = "{{ csrf_token }}";
 
         // Initialize Sortable for drag-and-drop reordering
@@ -154,7 +158,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'ok') {
-                    showNotification('{% trans "Queue order saved" %}', false);
+                    showNotification('{{ msg_queue_saved|escapejs }}', false);
                 } else {
                     showNotification(data.message, true);
                 }
@@ -171,7 +175,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'ok') {
-                    showNotification('{% trans "Order added to queue" %}', false);
+                    showNotification('{{ msg_order_queued|escapejs }}', false);
                     location.reload();
                 } else {
                     showNotification(data.message, true);
@@ -189,7 +193,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'ok') {
-                    showNotification('{% trans "Order removed from queue" %}', false);
+                    showNotification('{{ msg_order_unqueued|escapejs }}', false);
                     location.reload();
                 } else {
                     showNotification(data.message, true);

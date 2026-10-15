@@ -29,7 +29,7 @@
         banner.id = 'install-prompt-banner';
         banner.innerHTML =
             '<div class="install-prompt-inner">' +
-                '<button class="install-prompt-close" id="install-prompt-close" aria-label="Close">&times;</button>' +
+                '<button class="install-prompt-close" id="install-prompt-close" aria-label="' + gettext('Close') + '">&times;</button>' +
                 '<div class="install-prompt-icon"><img src="/static/icons/icon-192.png" alt="Orderpiqr"></div>' +
                 '<div class="install-prompt-title">' + gettext('Install Orderpiqr') + '</div>' +
                 '<div class="install-prompt-desc">' + gettext('Add Orderpiqr to your home screen for quick access') + '</div>' +

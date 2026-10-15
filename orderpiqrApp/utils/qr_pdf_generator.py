@@ -66,7 +66,7 @@ class QRPDFGenerator:
 
             # Draw Header
             c.setFont("Helvetica-Bold", 28)
-            header_text = f"Order: {order.order_code}"
+            header_text = _("Order: %(code)s") % {"code": order.order_code}
             text_width = c.stringWidth(header_text, "Helvetica-Bold", 28)
             header_x = (page_width - text_width) / 2
             c.drawString(header_x, header_y, header_text)

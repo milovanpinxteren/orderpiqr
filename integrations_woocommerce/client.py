@@ -7,6 +7,7 @@ import logging
 
 import requests
 from django.conf import settings
+from django.utils.translation import gettext as _
 
 logger = logging.getLogger(__name__)
 
@@ -26,9 +27,9 @@ def normalize_store_url(store_url):
     url = str(store_url or '').strip().rstrip('/')
     if url.startswith('http://'):
         if not settings.DEBUG:
-            raise ValueError('Plain http store URLs are only allowed in DEBUG')
+            raise ValueError(_('Plain http store URLs are only allowed in DEBUG'))
     elif not url.startswith('https://'):
-        raise ValueError('Store URL must start with https://')
+        raise ValueError(_('Store URL must start with https://'))
     return url
 
 

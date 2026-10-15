@@ -73,11 +73,12 @@
 }
 </style>
 
+{% trans "Pairing key copied to clipboard" as msg_key_copied %}
 <script>
 function copyPairingKey() {
     const key = document.getElementById('pairing-key').textContent.trim();
     navigator.clipboard.writeText(key).then(() => {
-        showNotification("{% trans 'Pairing key copied to clipboard' %}");
+        showNotification("{{ msg_key_copied|escapejs }}");
     });
 }
 </script>

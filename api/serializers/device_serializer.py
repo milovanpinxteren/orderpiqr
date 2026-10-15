@@ -1,3 +1,4 @@
+from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from orderpiqrApp.models import Device
@@ -22,7 +23,7 @@ class FingerprintUniquePerCustomerMixin:
             clash = clash.exclude(pk=self.instance.pk)
         if clash.exists():
             raise serializers.ValidationError(
-                'A device with this fingerprint is already registered for your company.')
+                _('A device with this fingerprint is already registered for your company.'))
         return value
 
 
