@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import activate
 
-from orderpiqrApp.models import Customer, Order, OrderLine, Product, UserProfile
+from orderpiqrApp.models import Customer, Order, OrderLine, Product, UserProfile, PickList, Device
 
 
 class BulkActionTestCase(TestCase):
@@ -210,6 +210,49 @@ class ListPageRenderTests(BulkActionTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'bulk-banner')
 
+    def test_picklists_list_renders_with_filters(self):
+        from orderpiqrApp.models import Device, PickList
+        device = Device.objects.create(
+            user=self.admin, customer=self.customer, device_fingerprint='fp-1',
+            name='Phone', description='', last_login=timezone.now(), lists_picked=0)
+        p1 = PickList.objects.create(
+            picklist_code='LIST-001', customer=self.customer, device=device)
+        p2 = PickList.objects.create(
+            picklist_code='OTHER-001', customer=self.customer, device=device)
+        response = self.client.get(reverse('manage_picklists'), {
+            'q': 'LIST',
+            'status': 'pending',
+            'device': str(device.device_id),
+            'date_from': '2026-01-01',
+            'date_to': '2026-12-31',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'LIST-001')
+        self.assertNotContains(response, 'OTHER-001')
+        self.assertContains(response, 'date-from-filter')
+        self.assertContains(response, 'bulk-banner')
+
+    def test_picklists_device_filter_is_a_searchable_select(self):
+        # The combobox enhances the native select, which must survive intact:
+        # currentFilters() and its onchange read it directly.
+        def make_device(fingerprint, name):
+            return Device.objects.create(
+                user=self.admin, customer=self.customer,
+                device_fingerprint=fingerprint, name=name, description='',
+                last_login=timezone.now(), lists_picked=0)
+
+        make_device('fp-1', 'Freezer Phone')
+        make_device('fp-2', 'Dock Tablet')
+
+        response = self.client.get(reverse('manage_picklists'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'manage/searchableSelect')
+        self.assertContains(response, "SearchableSelect.init('device-filter')")
+        self.assertContains(response, 'id="device-filter"')
+        self.assertContains(response, 'onchange="applyFilters()"')
+        self.assertContains(response, 'Freezer Phone')
+        self.assertContains(response, 'Dock Tablet')
+
 
 class ProductsBulkActionTests(BulkActionTestCase):
     def setUp(self):
@@ -270,3 +313,170 @@ class ProductsBulkActionTests(BulkActionTestCase):
     def test_empty_selection_rejected(self):
         response = self.post_json(self.url, {'action': 'delete', 'product_ids': []})
         self.assertEqual(response.status_code, 400)
+
+
+class PicklistsBulkActionTests(BulkActionTestCase):
+    def setUp(self):
+        super().setUp()
+        self.url = reverse('manage_picklists_bulk_action')
+        from orderpiqrApp.models import Device
+        self.device = Device.objects.create(
+            user=self.admin, customer=self.customer, device_fingerprint='fp-1',
+            name='Phone', description='', last_login=timezone.now(), lists_picked=0)
+
+    def make_picklist(self, code, device=None, order=None, **kwargs):
+        from orderpiqrApp.models import PickList
+        if device is None:
+            device = self.device
+        return PickList.objects.create(
+            picklist_code=code, customer=self.customer, device=device,
+            order=order, **kwargs)
+
+    def test_complete_marks_successful_and_closes_order(self):
+        order = Order.objects.create(customer=self.customer, order_code='O1', status='in_progress')
+        picklist = self.make_picklist('P1', order=order, pick_started=True)
+        response = self.post_json(self.url, {
+            'action': 'complete',
+            'picklist_ids': [picklist.picklist_id],
+        })
+        self.assertEqual(response.status_code, 200)
+        picklist.refresh_from_db()
+        order.refresh_from_db()
+        self.assertTrue(picklist.successful)
+        self.assertEqual(order.status, 'completed')
+        self.assertIsNotNone(order.completed_at)
+        self.assertIn('marked as completed', response.json()['message'])
+
+    def test_complete_skips_already_marked_picklists(self):
+        completed = self.make_picklist('P1', successful=True)
+        failed = self.make_picklist('P2', successful=False)
+        response = self.post_json(self.url, {
+            'action': 'complete',
+            'picklist_ids': [completed.picklist_id, failed.picklist_id],
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('skipped', response.json()['message'])
+
+    def test_archive_marks_archived(self):
+        picklist = self.make_picklist('P1')
+        response = self.post_json(self.url, {
+            'action': 'archive',
+            'picklist_ids': [picklist.picklist_id],
+        })
+        self.assertEqual(response.status_code, 200)
+        picklist.refresh_from_db()
+        self.assertTrue(picklist.archived)
+        self.assertIn('archived', response.json()['message'])
+
+    def test_archive_skips_already_archived(self):
+        archived = self.make_picklist('P1', archived=True)
+        response = self.post_json(self.url, {
+            'action': 'archive',
+            'picklist_ids': [archived.picklist_id],
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('skipped', response.json()['message'])
+
+    def test_ignores_other_customers_picklists(self):
+        foreign_device = Device.objects.create(
+            customer=self.other_customer, device_fingerprint='fp-2',
+            name='Other Phone', description='', last_login=timezone.now(), lists_picked=0)
+        foreign = PickList.objects.create(
+            picklist_code='F1', customer=self.other_customer, device=foreign_device)
+        # If this wasn't scoped to the customer, we'd try to complete a foreign picklist
+        response = self.post_json(self.url, {
+            'action': 'complete',
+            'picklist_ids': [foreign.picklist_id],
+        })
+        self.assertEqual(response.status_code, 400)
+        foreign.refresh_from_db()
+        self.assertIsNone(foreign.successful)
+
+    def test_select_all_applies_filters(self):
+        # Create picklists with different statuses
+        pending = self.make_picklist('P1', pick_started=None)
+        in_progress = self.make_picklist('P2', pick_started=True)
+        completed = self.make_picklist('P3', successful=True)
+
+        # Complete all pending picklists
+        response = self.post_json(self.url, {
+            'action': 'complete',
+            'select_all': True,
+            'filters': {'status': 'pending'},
+        })
+        self.assertEqual(response.status_code, 200)
+        pending.refresh_from_db()
+        in_progress.refresh_from_db()
+        completed.refresh_from_db()
+        self.assertTrue(pending.successful)
+        self.assertIsNone(in_progress.successful)
+        self.assertTrue(completed.successful)
+
+    def test_select_all_filters_by_device(self):
+        other_device = Device.objects.create(
+            customer=self.customer, device_fingerprint='fp-2',
+            name='Tablet', description='', last_login=timezone.now(), lists_picked=0)
+        phone_list = self.make_picklist('P1')
+        tablet_list = self.make_picklist('P2', device=other_device)
+
+        response = self.post_json(self.url, {
+            'action': 'archive',
+            'select_all': True,
+            'filters': {'device': str(self.device.device_id)},
+        })
+        self.assertEqual(response.status_code, 200)
+        phone_list.refresh_from_db()
+        tablet_list.refresh_from_db()
+        self.assertTrue(phone_list.archived)
+        self.assertFalse(tablet_list.archived)
+
+    def test_select_all_filters_by_code(self):
+        match = self.make_picklist('MATCH-001')
+        nomatch = self.make_picklist('OTHER-001')
+
+        response = self.post_json(self.url, {
+            'action': 'archive',
+            'select_all': True,
+            'filters': {'q': 'MATCH'},
+        })
+        self.assertEqual(response.status_code, 200)
+        match.refresh_from_db()
+        nomatch.refresh_from_db()
+        self.assertTrue(match.archived)
+        self.assertFalse(nomatch.archived)
+
+    def test_select_all_filters_by_date_range(self):
+        old = self.make_picklist('P1')
+        PickList.objects.filter(pk=old.pk).update(
+            created_at=timezone.now() - timedelta(days=30))
+        recent = self.make_picklist('P2')
+
+        cutoff = (timezone.now() - timedelta(days=7)).date().isoformat()
+        response = self.post_json(self.url, {
+            'action': 'archive',
+            'select_all': True,
+            'filters': {'date_from': cutoff},
+        })
+        self.assertEqual(response.status_code, 200)
+        old.refresh_from_db()
+        recent.refresh_from_db()
+        self.assertFalse(old.archived)
+        self.assertTrue(recent.archived)
+
+    def test_empty_selection_rejected(self):
+        response = self.post_json(self.url, {'action': 'complete', 'picklist_ids': []})
+        self.assertEqual(response.status_code, 400)
+
+    def test_unknown_action_rejected(self):
+        self.make_picklist('P1')
+        response = self.post_json(self.url, {'action': 'delete', 'select_all': True})
+        self.assertEqual(response.status_code, 400)
+
+    def test_complete_adds_admin_stamp_to_notes(self):
+        picklist = self.make_picklist('P1')
+        response = self.post_json(self.url, {
+            'action': 'complete',
+            'picklist_ids': [picklist.picklist_id],
+        })
+        picklist.refresh_from_db()
+        self.assertIn('Marked completed by boss', picklist.notes)

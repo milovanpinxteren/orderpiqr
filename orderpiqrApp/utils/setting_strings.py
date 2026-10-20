@@ -89,6 +89,13 @@ SEEDED_SETTING_STRINGS = {
         ),
         'option_labels': [],
     },
+    'picklist_search_enabled': {
+        'label': gettext_noop('Picklist search'),
+        'help_text': gettext_noop(
+            'Let pickers search for an order by its code and claim it without scanning the QR code.'
+        ),
+        'option_labels': [],
+    },
 }
 
 

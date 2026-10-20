@@ -163,6 +163,41 @@
             <select id="camera-select" class="dropdown"></select>
             <button id="camera-stop-btn" class="camera-stop-btn" type="button">{% trans "Stop camera" %}</button>
         </div>
+        {# Opposite corner from #camera-options-toggle: both float over the   #}
+        {# feed and must stay tappable with the other panel open. Hidden      #}
+        {# until the settings gate below confirms picklist_search_enabled —   #}
+        {# a warehouse that only scans printed QRs must not be offered a      #}
+        {# claim path, which strands lists.                                   #}
+        <button id="picklist-search-toggle" class="picklist-search-toggle" type="button"
+                style="display: none;" aria-expanded="false"
+                aria-controls="picklist-search-panel"
+                aria-label="{% trans 'Search orders' %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"/>
+                <line x1="16.5" y1="16.5" x2="21" y2="21"/>
+            </svg>
+        </button>
+        {# URLs as data-* attributes, never hardcoded in the module: every    #}
+        {# page here is served under an i18n language prefix. The claim URL   #}
+        {# carries a placeholder id of 0 for the module to substitute, the    #}
+        {# same trick queue/picker.html uses.                                 #}
+        <div id="picklist-search-panel" class="picklist-search-panel hidden"
+             data-search-url="{% url 'picklist_search' %}"
+             data-claim-url="{% url 'queue_claim_order' order_id=0 %}"
+             data-index-url="{% url 'index' %}">
+            <div class="picklist-search-bar">
+                <input id="picklist-search-input" class="picklist-search-input" type="search"
+                       placeholder="{% trans 'Order code…' %}"
+                       aria-label="{% trans 'Order code' %}"
+                       autocomplete="off" autocorrect="off" autocapitalize="characters"
+                       enterkeyhint="search">
+                <button id="picklist-search-close" class="picklist-search-close" type="button"
+                        aria-label="{% trans 'Close search' %}">×</button>
+            </div>
+            <div id="picklist-search-results" class="picklist-search-results"
+                 aria-live="polite"></div>
+        </div>
         <div id="camera-error" class="camera-error hidden">
             <p id="camera-error-text"></p>
             <button id="camera-retry-btn" type="button">{% trans "Enable camera" %}</button>
@@ -269,6 +304,15 @@
                 queueLink.style.display = 'none';
             }
         }
+        // Search-and-claim is for phones that cannot decode a dense picklist
+        // QR. Strict true: a missing key must leave the button hidden, since
+        // claiming from a warehouse that does not use the queue strands lists.
+        if (window.SETTINGS.picklist_search_enabled === true) {
+            const searchToggle = document.getElementById('picklist-search-toggle');
+            if (searchToggle) {
+                searchToggle.style.display = 'flex';
+            }
+        }
     } catch (e) {
         window.SETTINGS = {};
         console.error("Failed to parse settings JSON:", e);
@@ -360,6 +404,7 @@
 <script src="{% get_static_prefix %}orderpiqrApp/js/domUpdater.js" type="module"></script>
 <script src="{% get_static_prefix %}orderpiqrApp/js/scanEventReporter.js" type="module"></script>
 <script src="{% get_static_prefix %}orderpiqrApp/js/manualOverride.js" type="module"></script>
+<script src="{% get_static_prefix %}orderpiqrApp/js/picklistSearch.js" type="module"></script>
 <script src="{% static 'orderpiqrApp/js/installPrompt.js' %}"></script>
 <script src="{% get_static_prefix %}orderpiqrApp/js/camera_page.js" type="module"></script>
 <!-- Self-hosted (was https://unpkg.com/html5-qrcode, byte-identical to 2.3.8

@@ -815,3 +815,169 @@ button:hover {
 .bulk-confirm-qty:hover {
     background-color: #0e7a0e;
 }
+
+/* Picklist search: floating magnifier + panel over the camera feed, for
+   phones that cannot decode a dense picklist QR. Same visual family as the
+   camera options toggle/panel in camera_controls.css, but it lives here
+   because that file is shared with the inventory picker and this feature is
+   scan-page only.
+
+   Opposite corner from #camera-options-toggle on purpose: the two buttons
+   must never overlap, and the panel below the magnifier must not cover it. */
+.picklist-search-toggle {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 5;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.picklist-search-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.65);
+}
+
+.picklist-search-toggle svg {
+    width: 20px;
+    height: 20px;
+}
+
+.picklist-search-panel {
+    position: absolute;
+    top: 58px;
+    left: 14px;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    width: calc(100% - 28px);
+    max-width: 420px;
+}
+
+.picklist-search-panel.hidden {
+    display: none;
+}
+
+.picklist-search-bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.picklist-search-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 1rem;      /* below 1rem iOS Safari zooms the page on focus */
+    padding: 0.45em 0.6em;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+}
+
+.picklist-search-close {
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    font-size: 1.1rem;
+    line-height: 1;
+    color: #555;
+}
+
+/* Capped and scrollable: the endpoint returns up to 20 rows and the panel
+   floats over a feed that is only about a third of the screen tall. */
+.picklist-search-results {
+    max-height: 46vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.picklist-search-empty {
+    margin: 0;
+    padding: 10px 4px;
+    color: #777;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.picklist-search-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+        "code action"
+        "meta action";
+    gap: 2px 10px;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #e6eaee;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.picklist-search-row.in-progress {
+    background-color: #fff8e6;
+    border-color: #f0dca8;
+}
+
+.picklist-search-row.busy {
+    opacity: 0.6;
+}
+
+.picklist-search-row-code {
+    grid-area: code;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #222;
+    overflow-wrap: anywhere;
+}
+
+.picklist-search-row-meta {
+    grid-area: meta;
+    font-size: 0.75rem;
+    color: #777;
+}
+
+.picklist-search-row-action {
+    grid-area: action;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.picklist-search-row-start {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #0e7a0e;
+}
+
+.picklist-search-row-holder {
+    font-size: 0.72rem;
+    color: #8a6d1a;
+    overflow-wrap: anywhere;
+}
+
+.picklist-search-row-takeover {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #b9690f;
+}

@@ -233,7 +233,10 @@ class DeviceViewSet(viewsets.ModelViewSet):
         if not created:
             device.last_login = timezone.now()
             device.user = request.user
-            device.save(update_fields=['last_login', 'user'])
+            # Re-registering is activity: an archived device must come back into
+            # view rather than keep working invisibly. See utils.devices.touch_device.
+            device.archived = False
+            device.save(update_fields=['last_login', 'user', 'archived'])
 
         return Response({
             'status': 'ok',

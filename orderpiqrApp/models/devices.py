@@ -48,6 +48,13 @@ class Device(models.Model):
                                     choices=DISPLAY_MODES)
     last_build_id = models.CharField(_("Last Build"), max_length=64, blank=True, default='')
 
+    # Dead phones accumulate and there is no safe way to delete most of them:
+    # PickList.device cascades, and billing counts picklists. Archiving hides a
+    # device from the admin list without touching its history. It is not a
+    # block: a device that shows activity again un-archives itself, see
+    # ``orderpiqrApp.utils.devices.touch_device``.
+    archived = models.BooleanField(_("Archived"), default=False)
+
     class Meta:
         verbose_name = _("Device")
         verbose_name_plural = _("Devices")

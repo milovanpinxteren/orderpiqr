@@ -77,6 +77,27 @@ def is_queue_enabled(customer):
     return definition.cast_value(raw_value) if raw_value else True
 
 
+def is_picklist_search_enabled(customer):
+    """Whether pickers may look an order up by code and claim it without
+    scanning its QR. Off unless asked for: it is the escape hatch for phones
+    that cannot read a dense picklist QR, not a second way to start work."""
+    if not customer:
+        return False
+
+    try:
+        definition = SettingDefinition.objects.get(key='picklist_search_enabled')
+    except SettingDefinition.DoesNotExist:
+        return False
+
+    customer_value = CustomerSettingValue.objects.filter(
+        customer=customer,
+        definition=definition
+    ).first()
+
+    raw_value = customer_value.value if customer_value else definition.default_value
+    return definition.cast_value(raw_value) if raw_value else False
+
+
 @transaction.atomic
 def modify_inventory(
     product,

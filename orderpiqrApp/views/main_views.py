@@ -5,6 +5,7 @@ from django.urls import reverse
 from orderpiqrApp.models import Product, SettingDefinition, CustomerSettingValue, Order
 from orderpiqrApp.utils.build_id import get_build_id
 from orderpiqrApp.utils.devices import pin_device_cookie, resolve_device
+from orderpiqrApp.utils.inventory import is_picklist_search_enabled
 from orderpiqrApp.utils.scan_events import log_auth_bounce
 import json
 
@@ -82,4 +83,8 @@ def get_customer_settings(customer):
         customer_value = next((v for v in values if v.definition_id == definition.id), None)
         raw_value = customer_value.value if customer_value else definition.default_value
         settings[key] = definition.cast_value(raw_value)
+    # The scan page branches on this key, so it has to be present even on a
+    # database where the seeding migration has not run; the helper is also what
+    # the search endpoint gates on, so both sides always agree.
+    settings['picklist_search_enabled'] = is_picklist_search_enabled(customer)
     return settings

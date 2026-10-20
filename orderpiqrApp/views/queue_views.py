@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from django.db.models import Count, Max
+from django.db.models import Count, Max, Sum
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
@@ -16,7 +16,7 @@ from django.db.models import Subquery, OuterRef
 from orderpiqrApp.models import Order, UserProfile, PickList, ProductPick
 from orderpiqrApp.utils.decorators import company_admin_required
 from orderpiqrApp.utils.devices import register_device, resolve_device
-from orderpiqrApp.utils.inventory import is_queue_enabled
+from orderpiqrApp.utils.inventory import is_picklist_search_enabled, is_queue_enabled
 from orderpiqrApp.utils.scan_events import log_scan_event
 
 
@@ -165,6 +165,58 @@ def queue_picker_partial(request):
     return render(request, 'queue/_picker_orders.html', context)
 
 
+SEARCH_RESULT_LIMIT = 20
+SEARCH_RECENT_DAYS = 3
+
+
+@login_required
+def picklist_search(request):
+    """Look up claimable orders by code, for phones that cannot read a dense
+    picklist QR. The result rows feed the same claim endpoint as the queue.
+    """
+    try:
+        customer = request.user.userprofile.customer
+    except UserProfile.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': _('No customer profile')}, status=400)
+
+    if not is_picklist_search_enabled(customer):
+        return JsonResponse({
+            'status': 'error',
+            'message': _('Picklist search is disabled for your company.')
+        }, status=403)
+
+    query = (request.GET.get('q') or '').strip()
+
+    # Only the last few days are searchable. Prod carries 269 queued orders
+    # going back weeks that nobody will ever pick; surfacing them would make
+    # the search useless and invite claims on dead work.
+    cutoff = timezone.now() - timedelta(days=SEARCH_RECENT_DAYS)
+    orders = Order.objects.filter(
+        customer=customer,
+        status__in=['queued', 'in_progress'],
+        created_at__gte=cutoff,
+    )
+    if query:
+        orders = orders.filter(order_code__icontains=query)
+
+    orders = _annotate_picker(orders).annotate(
+        line_count=Count('lines'),
+        item_count=Sum('lines__quantity'),
+    ).order_by('-created_at', 'queue_position')[:SEARCH_RESULT_LIMIT]
+
+    results = [{
+        'order_id': order.order_id,
+        'order_code': order.order_code,
+        'status': order.status,
+        'line_count': order.line_count,
+        'item_count': order.item_count or 0,
+        'picked_by': order.picked_by,
+        'created_at': order.created_at.isoformat(),
+    } for order in orders]
+
+    return JsonResponse({'status': 'ok', 'results': results})
+
+
 @login_required
 @require_POST
 def queue_claim_order(request, order_id):
@@ -179,7 +231,10 @@ def queue_claim_order(request, order_id):
     except UserProfile.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': _('No customer profile')}, status=400)
 
-    if not is_queue_enabled(customer):
+    # Claiming is the shared tail of two features: the queue and picklist
+    # search. Refuse only when neither is on, or searching for an order would
+    # find it and then be unable to start it.
+    if not is_queue_enabled(customer) and not is_picklist_search_enabled(customer):
         return JsonResponse({
             'status': 'error',
             'message': _('The order queue is disabled for your company.')

@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Count, Q, Sum, Max
 from django.db.models.functions import TruncDate
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from django.utils.translation import gettext as _, ngettext
@@ -698,6 +699,42 @@ def _filtered_orders(customer, params):
     return orders
 
 
+def _filtered_picklists(customer, params):
+    """PickList queryset for the given filter params (status, code, device, date
+    range). Shared by the list view and the bulk endpoint's select-all mode so
+    that "select everything matching this filter" means exactly what the list
+    shows."""
+    picklists = PickList.objects.filter(customer=customer).select_related('device', 'order')
+    status = params.get('status') or ''
+    if status == 'pending':
+        picklists = picklists.filter(pick_started__isnull=True)
+    elif status == 'in_progress':
+        picklists = picklists.filter(pick_started=True, successful__isnull=True, archived=False)
+    elif status == 'completed':
+        picklists = picklists.filter(successful=True)
+    elif status == 'failed':
+        picklists = picklists.filter(successful=False)
+    elif status == 'archived':
+        picklists = picklists.filter(archived=True)
+    search = (params.get('q') or '').strip()
+    if search:
+        picklists = picklists.filter(picklist_code__icontains=search)
+    device_id = params.get('device') or ''
+    if device_id:
+        try:
+            device_id = int(device_id)
+            picklists = picklists.filter(device_id=device_id)
+        except (ValueError, TypeError):
+            pass
+    date_from = parse_date(params.get('date_from') or '')
+    if date_from:
+        picklists = picklists.filter(created_at__date__gte=date_from)
+    date_to = parse_date(params.get('date_to') or '')
+    if date_to:
+        picklists = picklists.filter(created_at__date__lte=date_to)
+    return picklists
+
+
 @company_admin_required
 def orders_list(request):
     """List all orders with search and filter."""
@@ -1134,38 +1171,33 @@ def queue_manage(request):
 
 @company_admin_required
 def picklists_list(request):
-    """List all picklists (read-only)."""
+    """List all picklists with search and filter."""
     context = get_base_context(request, 'picklists')
     customer = context['customer']
 
     if not customer:
         return redirect('manage_dashboard')
 
-    # Get picklists
-    picklists = PickList.objects.filter(customer=customer).select_related('device', 'order')
+    picklists = _filtered_picklists(customer, request.GET).order_by('-created_at')
 
-    # Filter by status (using pick_started and successful fields)
-    status_filter = request.GET.get('status', '')
-    if status_filter == 'pending':
-        picklists = picklists.filter(pick_started__isnull=True)
-    elif status_filter == 'in_progress':
-        picklists = picklists.filter(pick_started=True, successful__isnull=True, archived=False)
-    elif status_filter == 'completed':
-        picklists = picklists.filter(successful=True)
-    elif status_filter == 'failed':
-        picklists = picklists.filter(successful=False)
-    elif status_filter == 'archived':
-        picklists = picklists.filter(archived=True)
-    context['status_filter'] = status_filter
+    # Context for filter bar
+    context['status_filter'] = request.GET.get('status', '')
+    context['q'] = request.GET.get('q', '').strip()
+    context['device_filter'] = request.GET.get('device', '')
+    context['date_from'] = request.GET.get('date_from', '')
+    context['date_to'] = request.GET.get('date_to', '')
 
-    # Ordering
-    picklists = picklists.order_by('-created_at')
+    # Device dropdown: archived devices stay selectable — filtering history by
+    # a retired phone is a main reason to archive instead of delete — but sort
+    # last and are labelled, so the live fleet comes first.
+    context['devices'] = Device.objects.filter(customer=customer).order_by('archived', 'name')
 
     # Pagination
     paginator = Paginator(picklists, 25)
     page = request.GET.get('page', 1)
     context['picklists'] = paginator.get_page(page)
     context['paginator'] = paginator
+    context['querystring'] = _querystring_without_page(request)
 
     return render(request, 'manage/picklists/list.html', context)
 
@@ -1233,6 +1265,96 @@ def picklist_close(request, picklist_id):
     if next_url == 'detail':
         return redirect('manage_picklist_detail', picklist_id=picklist.picklist_id)
     return redirect('manage_picklists')
+
+
+@company_admin_required
+def picklists_bulk_action(request):
+    """Handle bulk actions on picklists (AJAX): complete or archive. Accepts
+    either an explicit id list or select_all + the list's current filters.
+    Only picklists that meet the action's precondition are touched; others are
+    counted and reported as skipped."""
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': _("Invalid request method.")}, status=405)
+
+    customer = get_customer_from_user(request.user)
+    if not customer:
+        return JsonResponse({'status': 'error', 'message': _("No customer found.")}, status=400)
+
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'status': 'error', 'message': _("Invalid request.")}, status=400)
+
+    action = data.get('action', '')
+
+    if data.get('select_all'):
+        picklists = _filtered_picklists(customer, data.get('filters') or {})
+    else:
+        picklist_ids = data.get('picklist_ids', [])
+        if not picklist_ids:
+            return JsonResponse({'status': 'error', 'message': _("No picklists selected.")}, status=400)
+        picklists = PickList.objects.filter(customer=customer, picklist_id__in=picklist_ids)
+    count = picklists.count()
+    if not count:
+        return JsonResponse({'status': 'error', 'message': _("No picklists selected.")}, status=400)
+
+    now = timezone.now()
+
+    if action == 'complete':
+        # Only complete picklists that haven't been marked complete/failed yet
+        completable = picklists.filter(successful__isnull=True)
+        completed = 0
+        for picklist in completable:
+            picklist.successful = True
+            if picklist.pick_time:
+                picklist.time_taken = now - picklist.pick_time
+            stamp = f"{request.user.username} at {timezone.localtime(now).strftime('%Y-%m-%d %H:%M')}"
+            note = f"Marked completed by {stamp}"
+            picklist.notes = f"{picklist.notes}\n{note}" if picklist.notes else note
+            picklist.save()
+            # Update linked order if it exists and isn't already completed
+            if picklist.order and picklist.order.status != 'completed':
+                picklist.order.status = 'completed'
+                picklist.order.completed_at = now
+                picklist.order.save(update_fields=['status', 'completed_at'])
+            completed += 1
+        skipped = count - completed
+        message = ngettext(
+            "%(count)s picklist marked as completed.",
+            "%(count)s picklists marked as completed.",
+            completed) % {'count': completed}
+        if skipped:
+            message += " " + ngettext(
+                "%(count)s picklist skipped (already marked).",
+                "%(count)s picklists skipped (already marked).",
+                skipped) % {'count': skipped}
+        return JsonResponse({'status': 'ok', 'message': message})
+
+    elif action == 'archive':
+        # Only archive picklists that aren't already archived
+        archivable = picklists.filter(archived=False)
+        archived = 0
+        for picklist in archivable:
+            picklist.archived = True
+            stamp = f"{request.user.username} at {timezone.localtime(now).strftime('%Y-%m-%d %H:%M')}"
+            note = f"Archived by {stamp}"
+            picklist.notes = f"{picklist.notes}\n{note}" if picklist.notes else note
+            picklist.save()
+            archived += 1
+        skipped = count - archived
+        message = ngettext(
+            "%(count)s picklist archived.",
+            "%(count)s picklists archived.",
+            archived) % {'count': archived}
+        if skipped:
+            message += " " + ngettext(
+                "%(count)s picklist skipped (already archived).",
+                "%(count)s picklists skipped (already archived).",
+                skipped) % {'count': skipped}
+        return JsonResponse({'status': 'ok', 'message': message})
+
+    else:
+        return JsonResponse({'status': 'error', 'message': _("Invalid action.")}, status=400)
 
 
 # ============================================
@@ -1567,6 +1689,34 @@ def health_list(request):
 # Devices (Read-only overview)
 # ============================================
 
+def _filtered_devices(customer, params):
+    """Device queryset for the given filter params (show, name search, last-seen
+    range). Shared by the list view and the bulk endpoint's select-all mode so
+    "select everything matching this filter" means exactly what the list shows."""
+    devices = Device.objects.filter(customer=customer)
+    show = params.get('show') or 'active'
+    if show not in ('active', 'archived', 'all'):
+        show = 'active'
+    if show == 'active':
+        devices = devices.filter(archived=False)
+    elif show == 'archived':
+        devices = devices.filter(archived=True)
+    search = (params.get('q') or '').strip()
+    if search:
+        devices = devices.filter(
+            Q(name__icontains=search) | Q(description__icontains=search)
+            | Q(user__username__icontains=search))
+    # Last-seen range: "not seen since the summer" is the archive-candidate
+    # filter, so this ranges over activity, not registration date.
+    seen_from = parse_date(params.get('seen_from') or '')
+    if seen_from:
+        devices = devices.filter(last_login__date__gte=seen_from)
+    seen_to = parse_date(params.get('seen_to') or '')
+    if seen_to:
+        devices = devices.filter(last_login__date__lte=seen_to)
+    return devices
+
+
 @company_admin_required
 def devices_list(request):
     """What each picker's phone actually is, and how it is behaving.
@@ -1586,7 +1736,19 @@ def devices_list(request):
     day_ago = now - timedelta(days=1)
     week_ago = now - timedelta(days=7)
 
-    devices = list(Device.objects.filter(customer=customer).select_related('user'))
+    show = request.GET.get('show', 'active')
+    if show not in ('active', 'archived', 'all'):
+        show = 'active'
+
+    all_devices = Device.objects.filter(customer=customer)
+    archived_count = all_devices.filter(archived=True).count()
+    active_count = all_devices.filter(archived=False).count()
+
+    # Deleting a device cascades its picklists away and billing counts those,
+    # so the template needs this to know whether Delete may be offered at all.
+    devices = list(_filtered_devices(customer, request.GET)
+                   .select_related('user')
+                   .annotate(picklist_count=Count('picklist')))
 
     # Errors and overrides per device over the last 24 hours, in one query.
     recent_events = (ScanEvent.objects
@@ -1613,6 +1775,9 @@ def devices_list(request):
         device.overrides_today = counts.get('manual_override', 0)
         device.restarts_today = counts.get('app_lifecycle', 0)
         device.bounces_today = counts.get('auth_bounce', 0)
+        # The one number shown in the table; the full breakdown (incl. restarts
+        # and overrides, which are activity rather than problems) is the title.
+        device.issues_today = device.errors_today + device.bounces_today
         device.lists_week = lists_week.get(device.device_id, 0)
         # An outdated build is only meaningful for a device we have heard from
         # recently; a phone last seen in September is simply gone.
@@ -1636,13 +1801,182 @@ def devices_list(request):
     for device in devices:
         device.possible_duplicate = names[(device.name or '').strip().lower()] > 1
 
-    context['devices'] = devices
     context['current_build'] = current_build
     context['duplicate_count'] = sum(1 for d in devices if d.possible_duplicate)
     context['browser_tab_count'] = sum(1 for d in devices if d.display_mode == 'browser')
     context['unknown_mode_count'] = sum(1 for d in devices if not d.display_mode)
+    context['show'] = show
+    context['active_count'] = active_count
+    context['archived_count'] = archived_count
+
+    # Counted before pagination: the bulk bar's "select all N matching" must
+    # mean the whole filtered set, not the visible page.
+    context['device_count'] = len(devices)
+    paginator = Paginator(devices, 25)
+    context['devices'] = paginator.get_page(request.GET.get('page', 1))
+    context['paginator'] = paginator
+    context['querystring'] = _querystring_without_page(request)
+    context['q'] = (request.GET.get('q') or '').strip()
+    context['seen_from'] = request.GET.get('seen_from', '')
+    context['seen_to'] = request.GET.get('seen_to', '')
 
     return render(request, 'manage/devices/list.html', context)
+
+
+def _devices_redirect(request):
+    """Back to the devices list on the filter the admin was looking at."""
+    show = request.POST.get('show', '')
+    url = reverse('manage_devices')
+    if show in ('archived', 'all'):
+        return redirect(f"{url}?show={show}")
+    return redirect(url)
+
+
+@company_admin_required
+def device_archive(request, device_id):
+    """Hide a dead phone from the devices list without touching its history.
+
+    Archiving is reversible and is not a block: the device keeps working, and
+    any activity un-archives it again (see utils.devices.touch_device).
+    """
+    if request.method != 'POST':
+        return redirect('manage_devices')
+
+    context = get_base_context(request)
+    customer = context['customer']
+    if not customer:
+        return redirect('manage_dashboard')
+
+    device = get_object_or_404(Device, device_id=device_id, customer=customer)
+    if not device.archived:
+        device.archived = True
+        device.save(update_fields=['archived'])
+    messages.success(request, _("Device archived."))
+    return _devices_redirect(request)
+
+
+@company_admin_required
+def device_restore(request, device_id):
+    """Bring an archived device back onto the active list."""
+    if request.method != 'POST':
+        return redirect('manage_devices')
+
+    context = get_base_context(request)
+    customer = context['customer']
+    if not customer:
+        return redirect('manage_dashboard')
+
+    device = get_object_or_404(Device, device_id=device_id, customer=customer)
+    if device.archived:
+        device.archived = False
+        device.save(update_fields=['archived'])
+    messages.success(request, _("Device restored."))
+    return _devices_redirect(request)
+
+
+@company_admin_required
+def device_delete(request, device_id):
+    """Delete a device, but only one that never picked anything.
+
+    PickList.device cascades, so deleting a device with history would silently
+    destroy the picklists billing counts. That is re-checked here and not left
+    to the template: the only safe cleanup for a device with history is archive.
+    """
+    if request.method != 'POST':
+        return redirect('manage_devices')
+
+    context = get_base_context(request)
+    customer = context['customer']
+    if not customer:
+        return redirect('manage_dashboard')
+
+    device = get_object_or_404(Device, device_id=device_id, customer=customer)
+    if PickList.objects.filter(device=device).exists():
+        messages.error(request, _("Devices with picked lists can only be archived."))
+        return _devices_redirect(request)
+
+    device.delete()
+    messages.success(request, _("Device deleted."))
+    return _devices_redirect(request)
+
+
+@company_admin_required
+def devices_bulk_action(request):
+    """Handle bulk actions on devices (AJAX): archive, restore, delete.
+    Accepts either an explicit id list or select_all + the list's current
+    filters. Delete skips devices with picked lists — their deletion would
+    cascade into billed history — and reports them as archive-only."""
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': _("Invalid request method.")}, status=405)
+
+    customer = get_customer_from_user(request.user)
+    if not customer:
+        return JsonResponse({'status': 'error', 'message': _("No customer found.")}, status=400)
+
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'status': 'error', 'message': _("Invalid request.")}, status=400)
+
+    action = data.get('action', '')
+
+    if data.get('select_all'):
+        devices = _filtered_devices(customer, data.get('filters') or {})
+    else:
+        device_ids = data.get('device_ids', [])
+        if not device_ids:
+            return JsonResponse({'status': 'error', 'message': _("No devices selected.")}, status=400)
+        devices = Device.objects.filter(customer=customer, device_id__in=device_ids)
+    count = devices.count()
+    if not count:
+        return JsonResponse({'status': 'error', 'message': _("No devices selected.")}, status=400)
+
+    if action == 'archive':
+        archived = devices.filter(archived=False).update(archived=True)
+        skipped = count - archived
+        message = ngettext(
+            "%(count)s device archived.",
+            "%(count)s devices archived.",
+            archived) % {'count': archived}
+        if skipped:
+            message += " " + ngettext(
+                "%(count)s device skipped (already archived).",
+                "%(count)s devices skipped (already archived).",
+                skipped) % {'count': skipped}
+        return JsonResponse({'status': 'ok', 'message': message})
+
+    elif action == 'restore':
+        restored = devices.filter(archived=True).update(archived=False)
+        skipped = count - restored
+        message = ngettext(
+            "%(count)s device restored.",
+            "%(count)s devices restored.",
+            restored) % {'count': restored}
+        if skipped:
+            message += " " + ngettext(
+                "%(count)s device skipped (not archived).",
+                "%(count)s devices skipped (not archived).",
+                skipped) % {'count': skipped}
+        return JsonResponse({'status': 'ok', 'message': message})
+
+    elif action == 'delete':
+        deletable = devices.filter(picklist__isnull=True)
+        deleted = deletable.count()
+        deletable.delete()
+        skipped = count - deleted
+        message = ngettext(
+            "%(count)s device deleted.",
+            "%(count)s devices deleted.",
+            deleted) % {'count': deleted}
+        if skipped:
+            message += " " + ngettext(
+                "%(count)s device with picked lists skipped (archive it instead).",
+                "%(count)s devices with picked lists skipped (archive them instead).",
+                skipped) % {'count': skipped}
+        return JsonResponse({'status': 'ok', 'message': message})
+
+    else:
+        return JsonResponse({'status': 'error', 'message': _("Invalid action.")}, status=400)
 
 
 # ============================================

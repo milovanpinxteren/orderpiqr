@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-15 15:06+0200\n"
+"POT-Creation-Date: 2026-10-20 17:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -373,7 +373,7 @@ msgid "No product data found on page"
 msgstr ""
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:48
-#: .\templates\index.html:241
+#: .\templates\index.html:276
 msgid "Offline mode: using cached product data"
 msgstr ""
 
@@ -382,7 +382,7 @@ msgid "Cached product data is not usable"
 msgstr ""
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:54
-#: .\templates\index.html:243
+#: .\templates\index.html:278
 msgid "No product data available while offline"
 msgstr ""
 
@@ -539,6 +539,14 @@ msgstr ""
 msgid "An error occurred"
 msgstr ""
 
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\searchableSelect.js:58
+msgid "Clear"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\manage\searchableSelect.js:68
+msgid "No matches"
+msgstr ""
+
 #: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:49
 msgid "Manual override: %(product)s confirmed"
 msgstr ""
@@ -615,6 +623,79 @@ msgstr ""
 msgid "Neither field in the picklist row matches a known product code."
 msgstr "Neither field in the picklist row matches a known product code."
 
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:57
+msgid "%(count)s item"
+msgid_plural "%(count)s items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:60
+msgid "%(count)s line"
+msgid_plural "%(count)s lines"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:78
+msgid ""
+"%(name)s is picking this order right now. Take it over? Picks they already "
+"recorded are kept."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:81
+msgid ""
+"This order is being picked by someone else. Take it over? Picks they already "
+"recorded are kept."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:95
+msgid "No matching orders"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:124
+msgid "Picking: %(name)s"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:125
+msgid "In Progress"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:130
+msgid "Take Over"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:135
+msgid "Start Picking"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:162
+msgid "Order search is not available."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:166
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:168
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:175
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:176
+msgid "Could not search orders"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:186
+msgid "Start picking order %(code)s?"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:219
+msgid "Order claimed! Redirecting..."
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:242
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:251
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:255
+msgid "Error claiming order"
+msgstr ""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\picklistSearch.js:272
+msgid "Searching…"
+msgstr ""
+
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:49
 msgid "No camera found on this device."
 msgstr "No camera found on this device."
@@ -642,6 +723,28 @@ msgstr "Stop camera"
 #: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
 msgid "Start camera"
 msgstr "Start camera"
+
+#: .\templates\manage\devices\list.html:332
+msgid "Archive %(count)s device?"
+msgid_plural "Archive %(count)s devices?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\templates\manage\devices\list.html:341
+msgid "Restore %(count)s device?"
+msgid_plural "Restore %(count)s devices?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\templates\manage\devices\list.html:350
+msgid ""
+"Delete %(count)s device? Devices with picked lists are skipped — they can "
+"only be archived."
+msgid_plural ""
+"Delete %(count)s devices? Devices with picked lists are skipped — they can "
+"only be archived."
+msgstr[0] ""
+msgstr[1] ""
 
 #: .\templates\manage\orders\list.html:294
 msgid ""
@@ -673,6 +776,18 @@ msgstr[1] ""
 msgid "Remove %(count)s order from the queue? Only queued orders are affected."
 msgid_plural ""
 "Remove %(count)s orders from the queue? Only queued orders are affected."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\templates\manage\picklists\list.html:222
+msgid "Mark %(count)s picklist as completed?"
+msgid_plural "Mark %(count)s picklists as completed?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\templates\manage\picklists\list.html:231
+msgid "Archive %(count)s picklist?"
+msgid_plural "Archive %(count)s picklists?"
 msgstr[0] ""
 msgstr[1] ""
 

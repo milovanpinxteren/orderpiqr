@@ -133,6 +133,27 @@ def stamp_device_context(device, request, payload=None):
     return device
 
 
+def touch_device(device, when=None):
+    """Stamp last activity on a device, un-archiving it if it was archived.
+
+    Every activity stamp goes through here because archiving must never hide a
+    device that is still working: a phone archived by mistake (or taken back out
+    of the drawer) would otherwise keep picking while being invisible to the
+    admin who archived it. One UPDATE either way — this sits on the hot pick
+    path — and ``archived`` is only written when it is actually set.
+    """
+    if device is None:
+        return device
+    when = when or timezone.now()
+    values = {'last_login': when}
+    if device.archived:
+        values['archived'] = False
+    Device.objects.filter(pk=device.pk).update(**values)
+    device.last_login = when
+    device.archived = False
+    return device
+
+
 def resolve_device(request, payload=None, customer=None, touch=True):
     """Return the Device for this request, scoped to the user's customer.
 
@@ -154,8 +175,7 @@ def resolve_device(request, payload=None, customer=None, touch=True):
 
     remember_fingerprint(request, fingerprint)
     if touch:
-        device.last_login = timezone.now()
-        device.save(update_fields=['last_login'])
+        touch_device(device)
     return device
 
 
@@ -191,9 +211,10 @@ def register_device(request, name=None, payload=None, customer=None, fingerprint
     if not created:
         device.user = request.user
         device.last_login = now
+        device.archived = False   # re-registering is activity; see touch_device
         if name:
             device.name = name
-        device.save(update_fields=['user', 'name', 'last_login'])
+        device.save(update_fields=['user', 'name', 'last_login', 'archived'])
 
     remember_fingerprint(request, fingerprint)
     return device, created

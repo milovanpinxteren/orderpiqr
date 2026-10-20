@@ -22,6 +22,7 @@ from orderpiqrApp.views.queue_views import (
     queue_picker,
     queue_picker_partial,
     queue_claim_order,
+    picklist_search,
     queue_manage,
     queue_manage_partial,
     queue_add_order,
@@ -50,8 +51,13 @@ from orderpiqrApp.views.manage_views import (
     picklists_list,
     picklist_detail,
     picklist_close,
+    picklists_bulk_action,
     health_list,
     devices_list,
+    device_archive,
+    device_restore,
+    device_delete,
+    devices_bulk_action,
     profile,
     settings_view,
     logout_view,
@@ -86,6 +92,9 @@ urlpatterns = [
     path('queue/', queue_picker, name='queue_picker'),
     path('queue/partial/', queue_picker_partial, name='queue_picker_partial'),
     path('queue/claim/<int:order_id>/', queue_claim_order, name='queue_claim_order'),
+
+    # Picklist search (Mobile - find an order by code when its QR will not scan)
+    path('picklist-search/', picklist_search, name='picklist_search'),
 
     # Queue Management (Admin)
     path('queue/manage/', queue_manage, name='queue_manage'),
@@ -124,12 +133,17 @@ urlpatterns = [
     path('manage/picklists/', picklists_list, name='manage_picklists'),
     path('manage/picklists/<int:picklist_id>/', picklist_detail, name='manage_picklist_detail'),
     path('manage/picklists/<int:picklist_id>/close/', picklist_close, name='manage_picklist_close'),
+    path('manage/picklists/bulk-action/', picklists_bulk_action, name='manage_picklists_bulk_action'),
 
     # Pick-flow Health
     path('manage/health/', health_list, name='manage_health'),
 
-    # Devices (Read-only)
+    # Devices
     path('manage/devices/', devices_list, name='manage_devices'),
+    path('manage/devices/<int:device_id>/archive/', device_archive, name='manage_device_archive'),
+    path('manage/devices/<int:device_id>/restore/', device_restore, name='manage_device_restore'),
+    path('manage/devices/<int:device_id>/delete/', device_delete, name='manage_device_delete'),
+    path('manage/devices/bulk-action/', devices_bulk_action, name='manage_devices_bulk_action'),
 
     # Integrations
     path('manage/integrations/', integrations_list, name='manage_integrations'),

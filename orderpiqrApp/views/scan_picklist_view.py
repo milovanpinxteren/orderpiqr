@@ -16,6 +16,7 @@ from orderpiqrApp.utils.devices import (
     resolve_device,
     resolve_device_unauthenticated,
     stamp_device_context,
+    touch_device,
 )
 from orderpiqrApp.utils.inventory import decrement_inventory_for_picklist
 from orderpiqrApp.utils.products import resolve_product
@@ -170,8 +171,7 @@ def scan_picklist(request):
         return device_error
     if device:
         # Update last_login on activity
-        device.last_login = local_time
-        device.save(update_fields=['last_login'])
+        touch_device(device, local_time)
         # Once per list, not once per pick: these values barely ever change.
         stamp_device_context(device, request, payload=data)
     else:
@@ -372,7 +372,7 @@ def product_pick(request):
     if not device:
         return JsonResponse({"status": "error", "message": _("Device not found with given fingerprint")}, status=404)
     # Update last_login on activity
-    Device.objects.filter(pk=device.pk).update(last_login=timezone.now())
+    touch_device(device)
 
     if manual_override:
         # Logged before any lookup can fail: an override is a picker telling
@@ -460,7 +460,7 @@ def bulk_product_pick(request):
         return device_error
     if not device:
         return JsonResponse({"status": "error", "message": _("Device not found")}, status=404)
-    Device.objects.filter(pk=device.pk).update(last_login=timezone.now())
+    touch_device(device)
 
     if manual_override:
         # Same contract as product_pick: logged before any lookup can fail. This
@@ -536,8 +536,7 @@ def complete_picklist(request):
             if not device:
                 raise Device.DoesNotExist()
             # Update last_login on activity
-            device.last_login = timezone.now()
-            device.save(update_fields=['last_login'])
+            touch_device(device)
             picklist = PickList.objects.filter(picklist_code=order_id, customer=device.customer,
                                                device=device).first()
             if picklist:

@@ -5,11 +5,25 @@
 {% block page_title %}{% trans "Pick Lists" %}{% endblock %}
 {% block page_subtitle %}<p class="page-subtitle">{% trans "View picking operations" %}</p>{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'orderpiqrApp/css/manage/list.css' %}">
+{% endblock %}
+
 {% block content %}
-<!-- Filters -->
+<!-- Search & Filters -->
 <div class="search-filters">
+    <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input type="text" class="form-control" id="search-input"
+               placeholder="{% trans 'Search picklist code...' %}"
+               value="{{ q|default:'' }}"
+               onkeyup="handleSearch(event)">
+    </div>
     <div class="filter-group">
-        <select class="form-control" id="status-filter" onchange="applyFilter()">
+        <select class="form-control" id="status-filter" onchange="applyFilters()">
             <option value="">{% trans "All Status" %}</option>
             <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>{% trans "Pending" %}</option>
             <option value="in_progress" {% if status_filter == 'in_progress' %}selected{% endif %}>{% trans "In Progress" %}</option>
@@ -17,6 +31,35 @@
             <option value="failed" {% if status_filter == 'failed' %}selected{% endif %}>{% trans "Failed" %}</option>
             <option value="archived" {% if status_filter == 'archived' %}selected{% endif %}>{% trans "Archived" %}</option>
         </select>
+        {% if devices %}
+        <select class="form-control" id="device-filter" onchange="applyFilters()">
+            <option value="">{% trans "All Devices" %}</option>
+            {% for device in devices %}
+            <option value="{{ device.device_id }}"
+                    {% if device.archived %}data-archived="true"{% endif %}
+                    {% if device_filter|stringformat:"s" == device.device_id|stringformat:"s" %}selected{% endif %}>
+                {{ device.name }}{% if device.archived %} ({% trans "archived" %}){% endif %}
+            </option>
+            {% endfor %}
+        </select>
+        {% endif %}
+        <input type="date" class="form-control" id="date-from-filter" title="{% trans 'From date' %}"
+               value="{{ date_from|default:'' }}" onchange="applyFilters()">
+        <input type="date" class="form-control" id="date-to-filter" title="{% trans 'To date' %}"
+               value="{{ date_to|default:'' }}" onchange="applyFilters()">
+    </div>
+</div>
+
+<!-- Bulk Actions Bar -->
+<div class="bulk-bar" id="bulk-bar">
+    <div class="bulk-bar-inner">
+        <span class="bulk-count">{% blocktrans trimmed %}<span id="bulk-count">0</span> selected{% endblocktrans %}</span>
+        <div class="bulk-actions">
+            <button class="btn btn-sm btn-secondary" onclick="bulkComplete()">{% trans "Mark as Completed" %}</button>
+            <button class="btn btn-sm btn-secondary" onclick="bulkArchive()">{% trans "Archive" %}</button>
+        </div>
+        <button class="bulk-clear" onclick="ListTools.clearSelection()">✕</button>
+        <div class="bulk-banner" id="bulk-banner"></div>
     </div>
 </div>
 
@@ -28,6 +71,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th class="col-checkbox"><input type="checkbox" id="select-all"></th>
                         <th>{% trans "Picklist" %}</th>
                         <th>{% trans "Order" %}</th>
                         <th>{% trans "Device" %}</th>
@@ -40,6 +84,7 @@
                 <tbody>
                     {% for picklist in picklists %}
                     <tr>
+                        <td class="col-checkbox"><input type="checkbox" class="row-checkbox" value="{{ picklist.picklist_id }}"></td>
                         <td>
                             <strong>{{ picklist.picklist_code|default:picklist.picklist_id }}</strong>
                         </td>
@@ -99,8 +144,8 @@
         {% if paginator.num_pages > 1 %}
         <div class="pagination">
             {% if picklists.has_previous %}
-            <a href="?page=1{% if status_filter %}&status={{ status_filter }}{% endif %}" class="pagination-btn">&laquo;</a>
-            <a href="?page={{ picklists.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="pagination-btn">&lsaquo;</a>
+            <a href="?page=1{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&laquo;</a>
+            <a href="?page={{ picklists.previous_page_number }}{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&lsaquo;</a>
             {% endif %}
 
             <span class="pagination-info">
@@ -108,8 +153,8 @@
             </span>
 
             {% if picklists.has_next %}
-            <a href="?page={{ picklists.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="pagination-btn">&rsaquo;</a>
-            <a href="?page={{ paginator.num_pages }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="pagination-btn">&raquo;</a>
+            <a href="?page={{ picklists.next_page_number }}{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&rsaquo;</a>
+            <a href="?page={{ paginator.num_pages }}{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&raquo;</a>
             {% endif %}
         </div>
         {% endif %}
@@ -119,9 +164,15 @@
             <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M9 5l7 7-7 7"/>
             </svg>
+            {% if q or status_filter or device_filter or date_from or date_to %}
+            <h3>{% trans "No pick lists found" %}</h3>
+            <p>{% trans "Try adjusting your search or filter criteria." %}</p>
+            <a href="{% url 'manage_picklists' %}" class="btn btn-secondary">{% trans "Clear Filters" %}</a>
+            {% else %}
             <h3>{% trans "No pick lists yet" %}</h3>
             <p>{% trans "Pick lists are created automatically when pickers claim orders from the queue." %}</p>
             <a href="{% url 'manage_queue' %}" class="btn btn-primary">{% trans "Go to Queue" %}</a>
+            {% endif %}
         </div>
         {% endif %}
     </div>
@@ -136,12 +187,63 @@
 .p-0 { padding: 0 !important; }
 </style>
 
+<script src="{% static 'orderpiqrApp/js/manage/listTools.js' %}"></script>
+<script src="{% static 'orderpiqrApp/js/manage/searchableSelect.js' %}"></script>
 <script>
-function applyFilter() {
-    const status = document.getElementById('status-filter').value;
-    let url = '{% url "manage_picklists" %}';
-    if (status) url += '?status=' + status;
-    window.location.href = url;
+function handleSearch(event) {
+    if (event.key === 'Enter') {
+        applyFilters();
+    }
 }
+
+function currentFilters() {
+    const deviceEl = document.getElementById('device-filter');
+    return {
+        q: document.getElementById('search-input').value,
+        status: document.getElementById('status-filter').value,
+        device: deviceEl ? deviceEl.value : '',
+        date_from: document.getElementById('date-from-filter').value,
+        date_to: document.getElementById('date-to-filter').value,
+    };
+}
+
+function applyFilters() {
+    const params = new URLSearchParams();
+    const filters = currentFilters();
+    for (const [key, value] of Object.entries(filters)) {
+        if (value) params.set(key, value);
+    }
+    window.location.href = '{% url "manage_picklists" %}?' + params.toString();
+}
+
+function bulkComplete() {
+    ListTools.bulkAction('complete', {
+        confirmMessage: n => interpolate(ngettext(
+            'Mark %(count)s picklist as completed?',
+            'Mark %(count)s picklists as completed?',
+            n), {count: n}, true)
+    });
+}
+
+function bulkArchive() {
+    ListTools.bulkAction('archive', {
+        confirmMessage: n => interpolate(ngettext(
+            'Archive %(count)s picklist?',
+            'Archive %(count)s picklists?',
+            n), {count: n}, true)
+    });
+}
+
+// A customer can run dozens of devices, so the device filter needs typing
+// to be usable; the native <select> stays as the value holder for
+// currentFilters() and its onchange.
+SearchableSelect.init('device-filter');
+
+ListTools.init({
+    bulkUrl: '{% url "manage_picklists_bulk_action" %}',
+    idKey: 'picklist_ids',
+    totalCount: {{ paginator.count|default:0 }},
+    filterParams: currentFilters(),
+});
 </script>
 {% endblock %}

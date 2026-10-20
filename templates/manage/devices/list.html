@@ -5,6 +5,10 @@
 {% block page_title %}{% trans "Devices" %}{% endblock %}
 {% block page_subtitle %}<p class="page-subtitle">{% trans "View registered picking devices" %}</p>{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'orderpiqrApp/css/manage/list.css' %}">
+{% endblock %}
+
 {% block content %}
 <!-- Summary first: these three numbers are the ones that explain most support
      calls — a phone running in a browser tab can silently lose its stored
@@ -13,7 +17,7 @@
 <div class="stats-grid mb-lg">
     <div class="stat-card">
         <div class="stat-card-header"><span class="stat-card-title">{% trans "Devices" %}</span></div>
-        <div class="stat-card-value">{{ devices|length }}</div>
+        <div class="stat-card-value">{{ device_count }}</div>
         <div class="stat-card-change">{% trans "registered" %}</div>
     </div>
     <div class="stat-card">
@@ -33,6 +37,50 @@
     </div>
 </div>
 
+<!-- Search & Filters -->
+<div class="search-filters">
+    <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input type="text" class="form-control" id="search-input"
+               placeholder="{% trans 'Search device, picker...' %}"
+               value="{{ q|default:'' }}"
+               onkeyup="handleSearch(event)">
+    </div>
+    <div class="filter-group">
+        <!-- Dead phones pile up, so the list shows only live devices by
+             default. An archived device is hidden, not blocked: it un-archives
+             itself the moment it picks again. -->
+        <select class="form-control" id="show-filter" onchange="applyFilters()">
+            <option value="active" {% if show == 'active' %}selected{% endif %}>{% blocktrans %}Active ({{ active_count }}){% endblocktrans %}</option>
+            <option value="archived" {% if show == 'archived' %}selected{% endif %}>{% blocktrans %}Archived ({{ archived_count }}){% endblocktrans %}</option>
+            <option value="all" {% if show == 'all' %}selected{% endif %}>{% trans "All" %}</option>
+        </select>
+        {# Ranges over last activity, not registration: "not seen since the  #}
+        {# summer" is how an admin finds the archive candidates.             #}
+        <input type="date" class="form-control" id="seen-from-filter" title="{% trans 'Last seen from' %}"
+               value="{{ seen_from|default:'' }}" onchange="applyFilters()">
+        <input type="date" class="form-control" id="seen-to-filter" title="{% trans 'Last seen until' %}"
+               value="{{ seen_to|default:'' }}" onchange="applyFilters()">
+    </div>
+</div>
+
+<!-- Bulk Actions Bar -->
+<div class="bulk-bar" id="bulk-bar">
+    <div class="bulk-bar-inner">
+        <span class="bulk-count">{% blocktrans trimmed %}<span id="bulk-count">0</span> selected{% endblocktrans %}</span>
+        <div class="bulk-actions">
+            <button class="btn btn-sm btn-secondary" onclick="bulkArchive()">{% trans "Archive" %}</button>
+            <button class="btn btn-sm btn-secondary" onclick="bulkRestore()">{% trans "Restore" %}</button>
+            <button class="btn btn-sm btn-danger" onclick="bulkDelete()">{% trans "Delete" %}</button>
+        </div>
+        <button class="bulk-clear" onclick="ListTools.clearSelection()">✕</button>
+        <div class="bulk-banner" id="bulk-banner"></div>
+    </div>
+</div>
+
 {% if devices %}
 <div class="card">
     <div class="card-header">
@@ -44,38 +92,43 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th class="col-checkbox"><input type="checkbox" id="select-all"></th>
                         <th>{% trans "Device" %}</th>
                         <th>{% trans "Picker" %}</th>
                         <th>{% trans "Phone" %}</th>
                         <th>{% trans "App" %}</th>
                         <th class="text-right">{% trans "Lists (7d)" %}</th>
-                        <th class="text-right">{% trans "Errors" %}</th>
-                        <th class="text-right">{% trans "Logouts" %}</th>
-                        <th class="text-right">{% trans "Restarts" %}</th>
-                        <th class="text-right">{% trans "Overrides" %}</th>
+                        <th class="text-right">{% trans "Issues (24h)" %}</th>
                         <th>{% trans "Last Seen" %}</th>
+                        <th class="text-right">{% trans "Actions" %}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for device in devices %}
-                    <tr>
+                    <tr{% if device.archived %} class="row-archived"{% endif %}>
+                        <td class="col-checkbox"><input type="checkbox" class="row-checkbox" value="{{ device.device_id }}"></td>
                         <td>
                             <span class="status-indicator {% if device.is_active %}active{% endif %}"></span>
-                            <strong>{{ device.name|default:device.device_id|truncatechars:28 }}</strong>
+                            <strong {% if device.description %}title="{{ device.description }}"{% endif %}>
+                                {{ device.name|default:device.device_id|truncatechars:28 }}
+                            </strong>
+                            {% if device.archived %}
+                            <span class="badge badge-secondary">{% trans "archived" %}</span>
+                            {% endif %}
                             {% if device.possible_duplicate %}
-                            <br><span class="badge badge-warning" title="{% trans 'Another device carries the same name. A phone that loses its stored identity registers again as a new device — and is then refused its own picklist.' %}">{% trans "possible duplicate" %}</span>
+                            <span class="badge badge-warning" title="{% trans 'Another device carries the same name. A phone that loses its stored identity registers again as a new device — and is then refused its own picklist.' %}">{% trans "possible duplicate" %}</span>
                             {% endif %}
                             {% if device.unnamed %}
-                            <br><span class="badge badge-secondary">{% trans "never named" %}</span>
-                            {% endif %}
-                            {% if device.description %}
-                            <br><span class="text-muted">{{ device.description|truncatechars:40 }}</span>
+                            <span class="badge badge-secondary">{% trans "never named" %}</span>
                             {% endif %}
                         </td>
                         <td class="text-muted">{{ device.user.username|default:"-" }}</td>
                         <td class="text-muted">
-                            {% if device.os %}{{ device.os }} {{ device.os_version }}{% else %}<span class="text-muted">{% trans "unknown" %}</span>{% endif %}
-                            {% if device.browser %}<br><span class="text-muted">{{ device.browser }} {{ device.browser_version }}</span>{% endif %}
+                            {% if device.os %}
+                            <span {% if device.browser %}title="{{ device.browser }} {{ device.browser_version }}"{% endif %}>{{ device.os }} {{ device.os_version }}</span>
+                            {% else %}
+                            <span class="text-muted">{% trans "unknown" %}</span>
+                            {% endif %}
                         </td>
                         <td>
                             {% if device.display_mode == 'standalone' %}
@@ -86,14 +139,16 @@
                             <span class="text-muted">-</span>
                             {% endif %}
                             {% if device.build_outdated %}
-                            <br><span class="badge badge-warning" title="{% trans 'This device is still running an older version of the app.' %}">{% trans "old version" %}</span>
+                            <span class="badge badge-warning" title="{% trans 'This device is still running an older version of the app.' %}">{% trans "old version" %}</span>
                             {% endif %}
                         </td>
                         <td class="text-right">{{ device.lists_week }}</td>
-                        <td class="text-right">{% if device.errors_today %}<strong>{{ device.errors_today }}</strong>{% else %}0{% endif %}</td>
-                        <td class="text-right">{% if device.bounces_today %}<strong>{{ device.bounces_today }}</strong>{% else %}0{% endif %}</td>
-                        <td class="text-right">{{ device.restarts_today }}</td>
-                        <td class="text-right">{{ device.overrides_today }}</td>
+                        {% blocktrans asvar issues_breakdown with errors=device.errors_today logouts=device.bounces_today restarts=device.restarts_today overrides=device.overrides_today trimmed %}
+                            {{ errors }} errors · {{ logouts }} logouts · {{ restarts }} restarts · {{ overrides }} manual overrides
+                        {% endblocktrans %}
+                        <td class="text-right" title="{{ issues_breakdown }}">
+                            {% if device.issues_today %}<strong>{{ device.issues_today }}</strong>{% else %}0{% endif %}
+                        </td>
                         <td class="text-muted">
                             {% if device.last_login %}
                             <span title="{{ device.last_login|date:'j M Y H:i' }}">{% blocktrans with since=device.last_login|timesince trimmed %}{{ since }} ago{% endblocktrans %}</span>
@@ -101,10 +156,56 @@
                             <span class="text-muted">{% trans "Never" %}</span>
                             {% endif %}
                         </td>
+                        <td class="text-right">
+                            <div class="device-actions">
+                                {% if device.archived %}
+                                <form method="post" action="{% url 'manage_device_restore' device.device_id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="show" value="{{ show }}">
+                                    <button type="submit" class="btn btn-sm btn-secondary">{% trans "Restore" %}</button>
+                                </form>
+                                {% else %}
+                                <form method="post" action="{% url 'manage_device_archive' device.device_id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="show" value="{{ show }}">
+                                    <button type="submit" class="btn btn-sm btn-secondary">{% trans "Archive" %}</button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if paginator.num_pages > 1 %}
+        <div class="pagination">
+            {% if devices.has_previous %}
+            <a href="?page=1{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&laquo;</a>
+            <a href="?page={{ devices.previous_page_number }}{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&lsaquo;</a>
+            {% endif %}
+
+            <span class="pagination-info">
+                {% blocktrans with num=devices.number total=paginator.num_pages trimmed %}Page {{ num }} of {{ total }}{% endblocktrans %}
+            </span>
+
+            {% if devices.has_next %}
+            <a href="?page={{ devices.next_page_number }}{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&rsaquo;</a>
+            <a href="?page={{ paginator.num_pages }}{% if querystring %}&{{ querystring }}{% endif %}" class="pagination-btn">&raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% elif active_count or archived_count %}
+<div class="card">
+    <div class="card-body">
+        <div class="empty-state">
+            <h3>{% trans "No devices match this filter" %}</h3>
+            <p>{% trans "Switch the filter above to see your other devices." %}</p>
+            <a href="{% url 'manage_devices' %}" class="btn btn-secondary">{% trans "Clear Filters" %}</a>
         </div>
     </div>
 </div>
@@ -139,70 +240,25 @@
 {% endif %}
 
 <style>
-.devices-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--spacing-md);
-}
-
-.device-card {
-    background: var(--bg-card);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    border: 2px solid transparent;
-    transition: all var(--transition-fast);
-}
-
-.device-card.active {
-    border-color: var(--success);
-}
-
-.device-card:hover {
-    box-shadow: var(--shadow-md);
-}
-
-.device-header {
+.device-actions {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--spacing-md);
-    background: var(--gray-50);
-    border-bottom: 1px solid var(--border-color);
-}
-
-.device-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--gray-200);
-    border-radius: var(--border-radius);
-    color: var(--gray-600);
-}
-
-.device-card.active .device-icon {
-    background: var(--success-light);
-    color: var(--success);
-}
-
-.device-icon svg {
-    width: 20px;
-    height: 20px;
-}
-
-.device-status {
-    display: flex;
-    align-items: center;
     gap: var(--spacing-xs);
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* Archived rows stay readable but clearly out of the way. */
+.table tbody tr.row-archived {
+    opacity: 0.55;
 }
 
 .status-indicator {
+    display: inline-block;
     width: 8px;
     height: 8px;
     border-radius: 50%;
     background: var(--gray-400);
+    margin-right: var(--spacing-xs);
 }
 
 .status-indicator.active {
@@ -213,44 +269,6 @@
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.5; }
-}
-
-.status-text {
-    font-size: 0.8125rem;
-    color: var(--text-secondary);
-}
-
-.device-body {
-    padding: var(--spacing-md);
-}
-
-.device-name {
-    margin: 0 0 var(--spacing-md);
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.device-info {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-}
-
-.info-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.info-label {
-    font-size: 0.8125rem;
-    color: var(--text-secondary);
-}
-
-.info-value {
-    font-size: 0.8125rem;
-    color: var(--text-primary);
 }
 
 .info-box {
@@ -281,4 +299,65 @@
     margin-bottom: 0;
 }
 </style>
+
+<script src="{% static 'orderpiqrApp/js/manage/listTools.js' %}"></script>
+<script>
+function handleSearch(event) {
+    if (event.key === 'Enter') {
+        applyFilters();
+    }
+}
+
+function currentFilters() {
+    return {
+        q: document.getElementById('search-input').value,
+        show: document.getElementById('show-filter').value,
+        seen_from: document.getElementById('seen-from-filter').value,
+        seen_to: document.getElementById('seen-to-filter').value,
+    };
+}
+
+function applyFilters() {
+    const params = new URLSearchParams();
+    const filters = currentFilters();
+    for (const [key, value] of Object.entries(filters)) {
+        if (value) params.set(key, value);
+    }
+    window.location.href = '{% url "manage_devices" %}?' + params.toString();
+}
+
+function bulkArchive() {
+    ListTools.bulkAction('archive', {
+        confirmMessage: n => interpolate(ngettext(
+            'Archive %(count)s device?',
+            'Archive %(count)s devices?',
+            n), {count: n}, true)
+    });
+}
+
+function bulkRestore() {
+    ListTools.bulkAction('restore', {
+        confirmMessage: n => interpolate(ngettext(
+            'Restore %(count)s device?',
+            'Restore %(count)s devices?',
+            n), {count: n}, true)
+    });
+}
+
+function bulkDelete() {
+    ListTools.bulkAction('delete', {
+        confirmMessage: n => interpolate(ngettext(
+            'Delete %(count)s device? Devices with picked lists are skipped — they can only be archived.',
+            'Delete %(count)s devices? Devices with picked lists are skipped — they can only be archived.',
+            n), {count: n}, true)
+    });
+}
+
+ListTools.init({
+    bulkUrl: '{% url "manage_devices_bulk_action" %}',
+    idKey: 'device_ids',
+    totalCount: {{ device_count|default:0 }},
+    filterParams: currentFilters(),
+});
+</script>
 {% endblock %}
