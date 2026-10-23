@@ -43,6 +43,10 @@ const urlsToCache = [
     STATIC_PREFIX + 'orderpiqrApp/js/scanEventReporter.js',
     STATIC_PREFIX + 'orderpiqrApp/js/manualOverride.js',
     STATIC_PREFIX + 'orderpiqrApp/js/picklistSearch.js',
+    // Its own graph entry, not imported by camera_page — and needed most on
+    // an offline reload: it is the module that tells the picker their queued
+    // picks are queued rather than lost.
+    STATIC_PREFIX + 'orderpiqrApp/js/syncBadge.js',
     STATIC_PREFIX + 'orderpiqrApp/js/fingerprint.js',
     STATIC_PREFIX + 'orderpiqrApp/js/pickOutbox.js',
     STATIC_PREFIX + 'orderpiqrApp/js/appUpdater.js',
