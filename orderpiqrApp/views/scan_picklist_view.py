@@ -3,6 +3,7 @@ from datetime import timedelta, timezone as dt_timezone
 
 from django.db import IntegrityError, transaction
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.utils import timezone
 from django.utils.translation import gettext as _
 import json
@@ -84,6 +85,26 @@ def client_version(request):
     moment) when they differ. Public: the id is a hash of public static files.
     """
     return JsonResponse({'buildId': get_build_id()})
+
+
+@require_GET
+def service_worker(request):
+    """The app-shell service worker, rendered rather than served as a static
+    file so its cache name carries the current build id.
+
+    A static serviceWorker.js can't see server state, and a cache name that
+    never changes would mean every phone keeps a pre-cache from before the
+    last deploy forever — the fetch handler inside only ever reads from
+    CACHE_NAME, so a new name on every deploy is what makes 'activate' throw
+    the stale one away and repopulate it. Cache-Control: no-cache so the
+    browser re-checks the script itself on every registration update, rather
+    than caching the rendering of the previous deploy for a day.
+    """
+    response = render(request, 'serviceWorker.js', {
+        'cache_name': 'orderpiqr-shell-' + get_build_id(),
+    }, content_type='application/javascript')
+    response['Cache-Control'] = 'no-cache'
+    return response
 
 
 @require_POST
@@ -356,6 +377,27 @@ def scan_picklist(request):
     })
 
 
+def _client_pick_id(payload):
+    """The client's id for this pick operation, or '' when it sent none.
+
+    Trimmed to the column width so an oversized or junk value can never turn a
+    retry into a 500 — an unrecognisable id simply means no replay protection.
+    """
+    return str(payload.get("pickId") or "").strip()[:64]
+
+
+def _duplicate_pick_row(picklist, pick_id):
+    """The row this pick id already marked on this picklist, or None.
+
+    The id is stamped on every row an operation marks, so one hit means the
+    whole operation (single or bulk) already landed.
+    """
+    if not pick_id:
+        return None
+    return (ProductPick.objects.filter(picklist=picklist, client_pick_id=pick_id)
+            .select_related("product").order_by("id").first())
+
+
 def product_pick(request):
     payload = json.loads(request.body.decode("utf-8"))
     order_id = payload.get("orderID")
@@ -364,6 +406,7 @@ def product_pick(request):
     successful = bool(payload.get("successful", True))
     manual_override = bool(payload.get("manualOverride", False))
     time_taken_ms = payload.get("timeTakenMs")
+    pick_id = _client_pick_id(payload)
     scanned_at = payload.get("scannedAt") or timezone.now().isoformat()
 
     device, device_error = _resolve_device(request, device_fp)
@@ -374,19 +417,17 @@ def product_pick(request):
     # Update last_login on activity
     touch_device(device)
 
-    if manual_override:
-        # Logged before any lookup can fail: an override is a picker telling
-        # us scanning didn't work, and that signal must survive even when the
-        # pick itself cannot be recorded (every override was silently lost
-        # for two weeks because this log sat behind the picklist 404).
-        log_scan_event(device.customer, device, 'manual_override',
-                       scanned_code=product_code, picklist_code=order_id,
-                       message="Pick confirmed manually instead of by scan")
-
     picklist = (PickList.objects.filter(picklist_code=order_id, customer=device.customer, device=device)
                 .select_related("customer", "device")
                 .first())
     if not picklist:
+        if manual_override:
+            # The override signal must survive even when the pick itself cannot
+            # be recorded (every override was silently lost for two weeks
+            # because this log sat behind the picklist 404).
+            log_scan_event(device.customer, device, 'manual_override',
+                           scanned_code=product_code, picklist_code=order_id,
+                           message="Pick confirmed manually instead of by scan")
         log_scan_event(device.customer, device, 'sync_error',
                        scanned_code=product_code, picklist_code=order_id,
                        message=f"Pick registered but no picklist '{order_id}' exists for this device")
@@ -394,6 +435,27 @@ def product_pick(request):
         # scan of this dead list is silently lost the same way.
         return JsonResponse({"status": "error", "error_code": "picklist_not_found",
                              "message": _("PickList not found for device/customer")}, status=404)
+
+    # A retried pick must not consume a second row. Answered before the product
+    # lookup, before any write, and before the override log: the first attempt
+    # already logged the override, so a replay that logged it again would
+    # inflate the unscannable-products metric with every reception drop.
+    already = _duplicate_pick_row(picklist, pick_id)
+    if already is not None:
+        return JsonResponse({
+            "status": "ok",
+            "duplicate": True,
+            "picklist_code": picklist.picklist_code,
+            "product_code": already.product.code,
+            "updated_productpick_id": already.id,
+            "remaining_for_product": ProductPick.objects.filter(
+                picklist=picklist, product=already.product, successful__isnull=True).count(),
+        }, status=200)
+
+    if manual_override:
+        log_scan_event(device.customer, device, 'manual_override',
+                       scanned_code=product_code, picklist_code=order_id,
+                       message="Pick confirmed manually instead of by scan")
 
     try:
         product = resolve_product(device.customer, product_code)
@@ -413,17 +475,24 @@ def product_pick(request):
         return JsonResponse({"status": "noop", "message": _("No pending ProductPick rows for this product.")},
                             status=200, )
 
-    time_taken = timedelta(milliseconds=int(time_taken_ms))
+    # timeTakenMs is optional, matching the bulk path. A pick that sat in the
+    # client's offline queue has no live stopwatch to report, and `int(None)`
+    # here used to raise — losing the very pick the retry was meant to save.
+    try:
+        time_taken = timedelta(milliseconds=int(time_taken_ms)) if time_taken_ms else None
+    except (TypeError, ValueError):
+        time_taken = None
 
     # Update fields
     pp.successful = successful
     pp.time_taken = time_taken
+    pp.client_pick_id = pick_id
 
     # Append device/scanned info to notes
     stamp = f"device={device_fp}; scanned_at={scanned_at}"
     pp.notes = f"{pp.notes}\n{stamp}" if pp.notes else stamp
 
-    pp.save(update_fields=["successful", "time_taken", "notes"])
+    pp.save(update_fields=["successful", "time_taken", "notes", "client_pick_id"])
 
     remaining_for_product = qs.filter(successful__isnull=True).count()
 
@@ -447,6 +516,7 @@ def bulk_product_pick(request):
     device_fp = payload.get("deviceFingerprint")
     quantity = payload.get("quantity")
     time_taken_ms = payload.get("timeTakenMs")
+    pick_id = _client_pick_id(payload)
     scanned_at = payload.get("scannedAt") or timezone.now().isoformat()
 
     if not quantity or int(quantity) < 1:
@@ -462,19 +532,19 @@ def bulk_product_pick(request):
         return JsonResponse({"status": "error", "message": _("Device not found")}, status=404)
     touch_device(device)
 
-    if manual_override:
-        # Same contract as product_pick: logged before any lookup can fail. This
-        # is the high-volume override path — "All N taken" after a triple-tap on
-        # an unscannable line — and it was counted as zero, so every override
-        # figure we have under-reports the products that cannot be scanned.
-        log_scan_event(device.customer, device, 'manual_override',
-                       scanned_code=product_code, picklist_code=order_id,
-                       message=f"{quantity} units confirmed manually instead of by scan")
-
     picklist = (PickList.objects.filter(picklist_code=order_id, customer=device.customer, device=device)
                 .select_related("customer", "device")
                 .first())
     if not picklist:
+        if manual_override:
+            # Same contract as product_pick: the override signal survives the
+            # 404. This is the high-volume override path — "All N taken" after
+            # a triple-tap on an unscannable line — and it was counted as zero,
+            # so every override figure we have under-reports the products that
+            # cannot be scanned.
+            log_scan_event(device.customer, device, 'manual_override',
+                           scanned_code=product_code, picklist_code=order_id,
+                           message=f"{quantity} units confirmed manually instead of by scan")
         # Without this the bulk path's stop-the-line 404 was only ever recorded
         # by the client, i.e. never when the phone was offline.
         log_scan_event(device.customer, device, 'sync_error',
@@ -483,6 +553,30 @@ def bulk_product_pick(request):
                                f"'{order_id}' exists for this device")
         return JsonResponse({"status": "error", "error_code": "picklist_not_found",
                              "message": _("PickList not found")}, status=404)
+
+    # Checked before the availability test, which is what a replay would trip
+    # over: the rows this operation marked are no longer unpicked, so a retry
+    # would otherwise be rejected with "only N unpicked rows available".
+    already = _duplicate_pick_row(picklist, pick_id)
+    if already is not None:
+        return JsonResponse({
+            "status": "ok",
+            "duplicate": True,
+            "picklist_code": picklist.picklist_code,
+            "product_code": already.product.code,
+            "updated_count": ProductPick.objects.filter(
+                picklist=picklist, client_pick_id=pick_id).count(),
+            "remaining_for_product": ProductPick.objects.filter(
+                picklist=picklist, product=already.product, successful__isnull=True).count(),
+        }, status=200)
+
+    if manual_override:
+        # After the duplicate check on purpose: the first attempt logged this
+        # override, and a replayed one would count the same unscannable line
+        # twice.
+        log_scan_event(device.customer, device, 'manual_override',
+                       scanned_code=product_code, picklist_code=order_id,
+                       message=f"{quantity} units confirmed manually instead of by scan")
 
     product = resolve_product(device.customer, product_code)
     if not product:
@@ -509,7 +603,10 @@ def bulk_product_pick(request):
             pp.successful = True
             pp.time_taken = time_taken if i == 0 else timedelta(0)
             pp.notes = f"{pp.notes}\n{stamp}" if pp.notes else stamp
-            pp.save(update_fields=["successful", "time_taken", "notes"])
+            # Every row this operation marks carries the id, so the duplicate
+            # check above finds it no matter which row it looks at.
+            pp.client_pick_id = pick_id
+            pp.save(update_fields=["successful", "time_taken", "notes", "client_pick_id"])
 
     remaining = qs.filter(successful__isnull=True).count()
 
@@ -539,7 +636,17 @@ def complete_picklist(request):
             touch_device(device)
             picklist = PickList.objects.filter(picklist_code=order_id, customer=device.customer,
                                                device=device).first()
-            if picklist:
+            if picklist and picklist.successful:
+                # Already completed by this device. A retried completion used to
+                # fall through and run the whole finish again: inventory
+                # decremented twice, the platform write-back queued twice, and
+                # time_taken stretched to "now minus pick_time" every time.
+                return JsonResponse({
+                    'status': 'ok',
+                    'duplicate': True,
+                    'message': _('Picklist processed successfully'),
+                })
+            elif picklist:
                 now = timezone.localtime(timezone.now())  # now in local time
                 pick_time = timezone.localtime(picklist.pick_time)  # ensure pick_time is also local
                 picklist.time_taken = now - pick_time

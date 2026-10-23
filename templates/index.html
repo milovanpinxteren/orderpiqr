@@ -202,6 +202,15 @@
             <p id="camera-error-text"></p>
             <button id="camera-retry-btn" type="button">{% trans "Enable camera" %}</button>
         </div>
+        {# Centered between the two corner toggles on purpose — top-left is the  #}
+        {# search magnifier, top-right the camera options gear, both 38px round  #}
+        {# buttons 14px from their edge. Hidden by default; syncBadge.js is the  #}
+        {# only thing that ever shows it, and it does so purely off pickOutbox's #}
+        {# outbox-changed event, never polling. #}
+        <div id="sync-badge" class="sync-badge hidden" role="status" aria-live="polite">
+            <span class="sync-badge-count"></span>
+            <span class="sync-badge-flag"></span>
+        </div>
     </div>
     <div id="scanned-list-container" class="scanned-list-container">
         <h4 id="picklist-code-display" class="picklist-code-display" style="display: none;">
@@ -405,6 +414,7 @@
 <script src="{% get_static_prefix %}orderpiqrApp/js/scanEventReporter.js" type="module"></script>
 <script src="{% get_static_prefix %}orderpiqrApp/js/manualOverride.js" type="module"></script>
 <script src="{% get_static_prefix %}orderpiqrApp/js/picklistSearch.js" type="module"></script>
+<script src="{% get_static_prefix %}orderpiqrApp/js/syncBadge.js" type="module"></script>
 <script src="{% static 'orderpiqrApp/js/installPrompt.js' %}"></script>
 <script src="{% get_static_prefix %}orderpiqrApp/js/camera_page.js" type="module"></script>
 <!-- Self-hosted (was https://unpkg.com/html5-qrcode, byte-identical to 2.3.8

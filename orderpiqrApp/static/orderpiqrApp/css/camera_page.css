@@ -917,6 +917,21 @@ button:hover {
     text-align: center;
 }
 
+/* Prepended above the rows when the panel is serving the cached snapshot
+   instead of a live response. Same amber family as the sync badge's offline
+   state and the in-progress row, so "offline" reads as one color everywhere
+   on this page rather than three different warnings. */
+.picklist-search-offline-banner {
+    margin: 0 0 2px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background-color: #fff8e6;
+    border: 1px solid #f0dca8;
+    color: #8a6d1a;
+    font-size: 0.78rem;
+    text-align: center;
+}
+
 .picklist-search-row {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -980,4 +995,60 @@ button:hover {
     font-size: 0.8rem;
     font-weight: 600;
     color: #b9690f;
+}
+
+/* Sync badge: the only on-screen sign that queued picks exist. Centered
+   between the two corner toggles (search at left, camera options at right,
+   both top:14px/38px round) so it never sits under either — max-width keeps
+   long translated counts from reaching them on a narrow phone. Same
+   translucent-dark family as the toggles by default; the amber/green states
+   borrow the palette already used for "in progress" and "success" elsewhere
+   on this page rather than inventing new colors. */
+.sync-badge {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    max-width: calc(100% - 120px);
+    padding: 7px 12px;
+    border-radius: 14px;
+    background-color: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sync-badge.hidden {
+    display: none;
+}
+
+.sync-badge-flag {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.68rem;
+}
+
+.sync-badge-flag:empty {
+    display: none;
+}
+
+.sync-badge.sync-badge-offline {
+    background-color: #fff8e6;
+    color: #8a6d1a;
+}
+
+.sync-badge.sync-badge-offline .sync-badge-flag {
+    color: #b9690f;
+}
+
+.sync-badge.sync-badge-flash {
+    background-color: #118f11;
+    color: #fff;
 }
