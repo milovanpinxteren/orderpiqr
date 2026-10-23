@@ -1162,5 +1162,9 @@ msgstr "wymaga przypisania produktu: %(count)s"
 msgid "%(count)s skipped"
 msgstr "pominięto: %(count)s"
 
+#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
+msgid "Open your browser menu"
+msgstr "Otwórz menu przeglądarki"
+
 #~ msgid "Error getting device fingerprint."
 #~ msgstr "Błąd podczas pobierania odcisku urządzenia."

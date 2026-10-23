@@ -1161,5 +1161,9 @@ msgstr "%(count)s потребують зіставлення товарів"
 msgid "%(count)s skipped"
 msgstr "Пропущено: %(count)s"
 
+#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
+msgid "Open your browser menu"
+msgstr "Відкрийте меню браузера"
+
 #~ msgid "Error getting device fingerprint."
 #~ msgstr "Помилка отримання відбитка пристрою."
