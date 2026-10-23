@@ -1092,5 +1092,9 @@ msgstr "%(count)s overgeslagen"
 msgid "Open your browser menu"
 msgstr "Open het menu van je browser"
 
+#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
+msgid "You have the app installed — open it from your home screen"
+msgstr "Je hebt de app geïnstalleerd — open hem vanaf je beginscherm"
+
 #~ msgid "Error getting device fingerprint."
 #~ msgstr "Fout bij ophalen van apparaat-ID."

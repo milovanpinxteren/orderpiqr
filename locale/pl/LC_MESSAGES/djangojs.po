@@ -1166,5 +1166,9 @@ msgstr "pominięto: %(count)s"
 msgid "Open your browser menu"
 msgstr "Otwórz menu przeglądarki"
 
+#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
+msgid "You have the app installed — open it from your home screen"
+msgstr "Aplikacja jest zainstalowana — otwórz ją z ekranu głównego"
+
 #~ msgid "Error getting device fingerprint."
 #~ msgstr "Błąd podczas pobierania odcisku urządzenia."

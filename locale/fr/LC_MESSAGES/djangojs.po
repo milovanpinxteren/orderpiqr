@@ -1115,5 +1115,9 @@ msgstr "%(count)s ignorée(s)"
 msgid "Open your browser menu"
 msgstr "Ouvrez le menu de votre navigateur"
 
+#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
+msgid "You have the app installed — open it from your home screen"
+msgstr "L'application est installée — ouvrez-la depuis votre écran d'accueil"
+
 #~ msgid "Error getting device fingerprint."
 #~ msgstr "Erreur lors de l'obtention de l'empreinte de l'appareil."

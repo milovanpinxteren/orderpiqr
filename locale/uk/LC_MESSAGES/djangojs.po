@@ -1165,5 +1165,9 @@ msgstr "Пропущено: %(count)s"
 msgid "Open your browser menu"
 msgstr "Відкрийте меню браузера"
 
+#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
+msgid "You have the app installed — open it from your home screen"
+msgstr "Застосунок установлено — відкрийте його з головного екрана"
+
 #~ msgid "Error getting device fingerprint."
 #~ msgstr "Помилка отримання відбитка пристрою."
