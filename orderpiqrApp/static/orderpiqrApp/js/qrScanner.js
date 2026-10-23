@@ -19,6 +19,27 @@ let cameras = [];
 let onScan = null;
 let isRunning = false;
 let isPaused = false;
+// Set once the picker explicitly chooses a camera from the dropdown this
+// session. Until then iOS starts by facing-mode, not by a stored device id —
+// see startPreferred().
+let userPickedCamera = false;
+
+// iPhones/iPads: a stored deviceId frequently resolves to the ultra-wide lens,
+// which cannot focus on a close barcode, so the camera runs but never decodes.
+// Prod bore this out — iOS pickers fell back to the manual-override triple-tap
+// on ~19% of picks versus ~6% on Android, with zero camera errors because the
+// camera *starts* fine. Starting by {facingMode:"environment"} instead lets
+// iOS choose its autofocus wide camera. iPadOS 13+ reports as "MacIntel" with
+// touch points, so the platform check mirrors installPrompt.js.
+function isIOS() {
+    try {
+        const ua = navigator.userAgent || '';
+        return /iPad|iPhone|iPod/.test(ua)
+            || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    } catch (e) {
+        return false;
+    }
+}
 
 // Reached through the global rather than an import: clientHealth.js is a
 // classic script and must stay outside this module graph.
@@ -50,7 +71,7 @@ function startCamera() {
                 return;
             }
             populateCameraSelect();
-            startWith(pickDefaultCamera());
+            startPreferred();
         })
         .catch(err => {
             console.error('Camera permission/enumeration failed:', err);
@@ -61,15 +82,74 @@ function startCamera() {
         });
 }
 
+// Decide how to start the camera. The picker's explicit dropdown choice always
+// wins. Otherwise iOS starts by facing-mode (see isIOS()); every other platform
+// keeps the device-id path that already works well there.
+function startPreferred() {
+    const saved = localStorage.getItem(LAST_CAMERA_KEY);
+    const savedValid = saved && cameras.some(c => c.id === saved);
+    if (userPickedCamera && savedValid) {
+        startWith(saved);
+        return;
+    }
+    if (isIOS()) {
+        startWithFacingMode();
+        return;
+    }
+    if (savedValid) {
+        startWith(saved);
+        return;
+    }
+    startWith(pickDefaultCamera());
+}
+
 function pickDefaultCamera() {
     const saved = localStorage.getItem(LAST_CAMERA_KEY);
     if (saved && cameras.some(c => c.id === saved)) {
         return saved;
     }
-    // Prefer a back-facing camera by label; phones usually list the front
-    // camera first, so the last one is the better blind guess.
-    const back = cameras.find(c => /back|rear|environment|achter/i.test(c.label || ''));
-    return back ? back.id : cameras[cameras.length - 1].id;
+    // Prefer a back-facing camera, but skip the ultra-wide and telephoto lenses:
+    // the ultra-wide cannot focus on a close barcode and the telephoto's framing
+    // is wrong for one. "Wide"/"dual wide" is the main autofocus camera and is
+    // kept. Phones usually list the front camera first, so the last entry is the
+    // better blind guess when no label matches.
+    const backCams = cameras.filter(c => /back|rear|environment|achter|rück|arrière/i.test(c.label || ''));
+    const focusable = backCams.find(c => !/ultra|tele|groothoek/i.test(c.label || ''));
+    const chosen = focusable || backCams[0] || cameras[cameras.length - 1];
+    return chosen.id;
+}
+
+// iOS start path: hand the library a facing-mode constraint instead of a device
+// id so iOS selects its default autofocus wide camera. Falls back to explicit
+// device selection if the constraint is refused (e.g. a device with no
+// environment-facing camera).
+function startWithFacingMode() {
+    hideCameraError();
+    scannerInstance.start(
+        {facingMode: {ideal: 'environment'}},
+        SCAN_CONFIG,
+        decodedText => onScan(decodedText),
+        () => { /* per-frame decode misses are expected noise */ }
+    )
+        .then(() => {
+            isRunning = true;
+            isPaused = false;
+            syncStopButton();
+            // We did not pick a device id, so there is nothing stable to persist
+            // or to highlight in the dropdown; the dropdown still drives manual
+            // override within the session.
+        })
+        .catch(err => {
+            console.error('facingMode start failed, falling back to device id:', err);
+            reportCameraError('facingmode_failed', 'environment facingMode refused: ' + err);
+            if (cameras.length > 0) {
+                startWith(pickDefaultCamera());
+            } else {
+                isRunning = false;
+                syncStopButton();
+                showCameraError(gettext("Could not start the camera."));
+            }
+        });
 }
 
 function startWith(cameraId) {
@@ -130,7 +210,12 @@ function wireControls() {
     });
 
     select.addEventListener('change', () => {
-        if (select.value) switchCamera(select.value);
+        if (select.value) {
+            // An explicit choice overrides the iOS facing-mode default for the
+            // rest of this session (startPreferred honours userPickedCamera).
+            userPickedCamera = true;
+            switchCamera(select.value);
+        }
     });
 
     stopBtn.addEventListener('click', () => {
