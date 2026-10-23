@@ -115,6 +115,41 @@
             '</div>';
     }
 
+    // Generic "add to home screen" steps for platforms with no programmatic
+    // install prompt and no iOS Share sheet — chiefly Android Chrome when the
+    // beforeinstallprompt event is not available (the app is already installed,
+    // or the browser's install heuristics have not fired). Without this the link
+    // used to open a banner with a title and no action at all.
+    function genericStepsContent() {
+        return '<div class="install-prompt-steps">' +
+                '<div class="install-prompt-step">' +
+                    '<span class="install-prompt-step-num">1</span>' +
+                    '<span>' + gettext('Open your browser menu') + ' ⋮</span>' +
+                '</div>' +
+                '<div class="install-prompt-step">' +
+                    '<span class="install-prompt-step-num">2</span>' +
+                    '<span>' + gettext('Tap "Add to Home Screen"') + '</span>' +
+                '</div>' +
+            '</div>';
+    }
+
+    // A browser tab cannot see or launch the home-screen app, and there is no
+    // web API to open an installed PWA from one. The best we can do is not offer
+    // to install what is already installed: on Android, getInstalledRelatedApps
+    // reports the installed PWA (via the manifest's related_applications
+    // self-entry). Elsewhere — and on iOS — it is unavailable, so this resolves
+    // false and the link stays visible; its click still gives real instructions.
+    function isInstalledApp() {
+        try {
+            if (navigator.getInstalledRelatedApps) {
+                return navigator.getInstalledRelatedApps()
+                    .then(function (apps) { return !!(apps && apps.length); })
+                    .catch(function () { return false; });
+            }
+        } catch (e) { /* fall through */ }
+        return Promise.resolve(false);
+    }
+
     // The persistent link. Unlike the banner it is never dismissed: a device
     // that has not installed the app keeps a small, out-of-the-way way to do so
     // from the settings menu. It is the holdouts that matter — a browser tab
@@ -122,9 +157,16 @@
     // storage eviction, which an installed app is exempt from.
     function setupInstallLink() {
         if (isStandalone()) return;
+        isInstalledApp().then(function (installed) {
+            if (installed) return;   // already on the home screen; nothing to offer
+            showInstallLink();
+        });
+    }
+
+    function showInstallLink() {
         const slot = document.getElementById('install-link-slot');
         const row = document.getElementById('install-row');
-        if (!slot) return;
+        if (!slot || document.getElementById('install-link')) return;
 
         const link = document.createElement('a');
         link.href = '#';
@@ -147,10 +189,10 @@
                 deferredPrompt.userChoice.then(function () { deferredPrompt = null; });
                 return;
             }
-            // No native prompt (iOS always; Android if it never fired): show the
-            // instructions, forced past the one-time dismiss since the picker
-            // explicitly asked for them.
-            createBanner(isIOS() ? iosStepsContent() : '', true);
+            // No native prompt: show platform-appropriate instructions, forced
+            // past the one-time dismiss since the picker explicitly asked. Never
+            // an empty banner — that is the dead modal this replaces.
+            createBanner(isIOS() ? iosStepsContent() : genericStepsContent(), true);
         });
     }
 

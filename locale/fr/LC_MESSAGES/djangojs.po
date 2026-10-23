@@ -1111,5 +1111,9 @@ msgstr "%(count)s à associer à un produit"
 msgid "%(count)s skipped"
 msgstr "%(count)s ignorée(s)"
 
+#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
+msgid "Open your browser menu"
+msgstr "Ouvrez le menu de votre navigateur"
+
 #~ msgid "Error getting device fingerprint."
 #~ msgstr "Erreur lors de l'obtention de l'empreinte de l'appareil."

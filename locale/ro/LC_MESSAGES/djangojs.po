@@ -1129,5 +1129,9 @@ msgstr "%(count)s necesită asociere de produs"
 msgid "%(count)s skipped"
 msgstr "%(count)s omise"
 
+#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
+msgid "Open your browser menu"
+msgstr "Deschide meniul browserului"
+
 #~ msgid "Error getting device fingerprint."
 #~ msgstr "Eroare la obținerea amprentei dispozitivului."

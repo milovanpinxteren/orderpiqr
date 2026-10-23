@@ -1088,5 +1088,9 @@ msgstr "%(count)s moeten nog aan een product gekoppeld worden"
 msgid "%(count)s skipped"
 msgstr "%(count)s overgeslagen"
 
+#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
+msgid "Open your browser menu"
+msgstr "Open het menu van je browser"
+
 #~ msgid "Error getting device fingerprint."
 #~ msgstr "Fout bij ophalen van apparaat-ID."

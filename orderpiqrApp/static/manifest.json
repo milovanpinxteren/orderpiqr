@@ -3,6 +3,10 @@
   "short_name": "Orderpiqr",
   "start_url": "/",
   "display": "standalone",
+  "prefer_related_applications": false,
+  "related_applications": [
+    {"platform": "webapp", "url": "/static/manifest.json"}
+  ],
   "background_color": "#ffffff",
   "theme_color": "#0d6efd",
   "icons": [
