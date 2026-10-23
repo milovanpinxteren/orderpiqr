@@ -908,6 +908,10 @@ export function resortCurrentPicklist(sortingMode) {
     currentPicklist.length = 0;
     currentPicklist.push(...sorted);
     updateScannedList(currentPicklist, productData);
+    // The order of the saved copy matters as much as its contents: a picker
+    // who sorted by location and then reloads must not get the pre-sort order
+    // back mid-aisle.
+    persistActiveList();
 }
 
 // Listen for sort change events from the dropdown

@@ -417,19 +417,17 @@ def product_pick(request):
     # Update last_login on activity
     touch_device(device)
 
-    if manual_override:
-        # Logged before any lookup can fail: an override is a picker telling
-        # us scanning didn't work, and that signal must survive even when the
-        # pick itself cannot be recorded (every override was silently lost
-        # for two weeks because this log sat behind the picklist 404).
-        log_scan_event(device.customer, device, 'manual_override',
-                       scanned_code=product_code, picklist_code=order_id,
-                       message="Pick confirmed manually instead of by scan")
-
     picklist = (PickList.objects.filter(picklist_code=order_id, customer=device.customer, device=device)
                 .select_related("customer", "device")
                 .first())
     if not picklist:
+        if manual_override:
+            # The override signal must survive even when the pick itself cannot
+            # be recorded (every override was silently lost for two weeks
+            # because this log sat behind the picklist 404).
+            log_scan_event(device.customer, device, 'manual_override',
+                           scanned_code=product_code, picklist_code=order_id,
+                           message="Pick confirmed manually instead of by scan")
         log_scan_event(device.customer, device, 'sync_error',
                        scanned_code=product_code, picklist_code=order_id,
                        message=f"Pick registered but no picklist '{order_id}' exists for this device")
@@ -439,8 +437,9 @@ def product_pick(request):
                              "message": _("PickList not found for device/customer")}, status=404)
 
     # A retried pick must not consume a second row. Answered before the product
-    # lookup and before any write: this call already succeeded once, so the only
-    # honest reply is the original one.
+    # lookup, before any write, and before the override log: the first attempt
+    # already logged the override, so a replay that logged it again would
+    # inflate the unscannable-products metric with every reception drop.
     already = _duplicate_pick_row(picklist, pick_id)
     if already is not None:
         return JsonResponse({
@@ -452,6 +451,11 @@ def product_pick(request):
             "remaining_for_product": ProductPick.objects.filter(
                 picklist=picklist, product=already.product, successful__isnull=True).count(),
         }, status=200)
+
+    if manual_override:
+        log_scan_event(device.customer, device, 'manual_override',
+                       scanned_code=product_code, picklist_code=order_id,
+                       message="Pick confirmed manually instead of by scan")
 
     try:
         product = resolve_product(device.customer, product_code)
@@ -528,19 +532,19 @@ def bulk_product_pick(request):
         return JsonResponse({"status": "error", "message": _("Device not found")}, status=404)
     touch_device(device)
 
-    if manual_override:
-        # Same contract as product_pick: logged before any lookup can fail. This
-        # is the high-volume override path — "All N taken" after a triple-tap on
-        # an unscannable line — and it was counted as zero, so every override
-        # figure we have under-reports the products that cannot be scanned.
-        log_scan_event(device.customer, device, 'manual_override',
-                       scanned_code=product_code, picklist_code=order_id,
-                       message=f"{quantity} units confirmed manually instead of by scan")
-
     picklist = (PickList.objects.filter(picklist_code=order_id, customer=device.customer, device=device)
                 .select_related("customer", "device")
                 .first())
     if not picklist:
+        if manual_override:
+            # Same contract as product_pick: the override signal survives the
+            # 404. This is the high-volume override path — "All N taken" after
+            # a triple-tap on an unscannable line — and it was counted as zero,
+            # so every override figure we have under-reports the products that
+            # cannot be scanned.
+            log_scan_event(device.customer, device, 'manual_override',
+                           scanned_code=product_code, picklist_code=order_id,
+                           message=f"{quantity} units confirmed manually instead of by scan")
         # Without this the bulk path's stop-the-line 404 was only ever recorded
         # by the client, i.e. never when the phone was offline.
         log_scan_event(device.customer, device, 'sync_error',
@@ -565,6 +569,14 @@ def bulk_product_pick(request):
             "remaining_for_product": ProductPick.objects.filter(
                 picklist=picklist, product=already.product, successful__isnull=True).count(),
         }, status=200)
+
+    if manual_override:
+        # After the duplicate check on purpose: the first attempt logged this
+        # override, and a replayed one would count the same unscannable line
+        # twice.
+        log_scan_event(device.customer, device, 'manual_override',
+                       scanned_code=product_code, picklist_code=order_id,
+                       message=f"{quantity} units confirmed manually instead of by scan")
 
     product = resolve_product(device.customer, product_code)
     if not product:

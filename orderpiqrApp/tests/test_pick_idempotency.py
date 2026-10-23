@@ -357,3 +357,48 @@ class CompletePicklistReplayTests(PickIdempotencyTestCase):
         self.assertNotIn('duplicate', response.json())
         picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
         self.assertTrue(picklist.successful)
+
+
+class ManualOverrideReplayTests(PickIdempotencyTestCase):
+    """A replayed override op must not count the same unscannable line twice.
+
+    The manual_override scan event feeds the health page's unscannable-products
+    metric; before the dedupe-aware ordering, every reception-drop retry of an
+    override pick logged a fresh event.
+    """
+
+    def override_events(self):
+        from orderpiqrApp.models import ScanEvent
+        return ScanEvent.objects.filter(event_type='manual_override').count()
+
+    def test_replayed_override_pick_logs_one_event(self):
+        self.scan(['SMOOTHIE-1', 'SMOOTHIE-1'])
+
+        self.pick(pickId='pick-abc', manualOverride=True)
+        self.pick(pickId='pick-abc', manualOverride=True)
+
+        self.assertEqual(self.override_events(), 1)
+        self.assertEqual(self.picked_count(), 1)
+
+    def test_replayed_override_bulk_logs_one_event(self):
+        self.scan(['SMOOTHIE-1', 'SMOOTHIE-1', 'SMOOTHIE-1'])
+
+        self.bulk_pick(2, pickId='bulk-abc', manualOverride=True)
+        self.bulk_pick(2, pickId='bulk-abc', manualOverride=True)
+
+        self.assertEqual(self.override_events(), 1)
+        self.assertEqual(self.picked_count(), 2)
+
+    def test_override_on_a_lost_picklist_still_logs(self):
+        # The 404 path must keep the override signal (the two-lost-weeks bug):
+        # moving the log behind the duplicate check must not lose this case.
+        response = self.pick(order_id='NO-SUCH-LIST', pickId='pick-abc', manualOverride=True)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(self.override_events(), 1)
+
+    def test_override_bulk_on_a_lost_picklist_still_logs(self):
+        response = self.bulk_pick(2, order_id='NO-SUCH-LIST', pickId='bulk-abc', manualOverride=True)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(self.override_events(), 1)
