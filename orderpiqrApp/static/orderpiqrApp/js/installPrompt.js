@@ -22,8 +22,12 @@
         localStorage.setItem(DISMISS_KEY, 'true');
     }
 
-    function createBanner(content) {
-        if (localStorage.getItem(DISMISS_KEY)) return;
+    // force=true shows the banner even after it was dismissed once — used when
+    // the picker explicitly asks via the persistent install link, which is not
+    // the nag the one-time dismiss is meant to silence.
+    function createBanner(content, force) {
+        if (!force && localStorage.getItem(DISMISS_KEY)) return;
+        if (document.getElementById('install-prompt-banner')) return;  // already showing
 
         const banner = document.createElement('div');
         banner.id = 'install-prompt-banner';
@@ -83,13 +87,11 @@
         }, 0);
     });
 
-    // --- iOS: show instructions ---
-    document.addEventListener('DOMContentLoaded', function () {
-        if (isStandalone()) return;
-        if (!isIOS()) return;
-
-        const content =
-            '<div class="install-prompt-steps">' +
+    // The iOS "add to home screen" steps, shared by the one-time banner and the
+    // persistent link (iOS has no programmatic install prompt, so instructions
+    // are all we can offer).
+    function iosStepsContent() {
+        return '<div class="install-prompt-steps">' +
                 '<div class="install-prompt-step">' +
                     '<span class="install-prompt-step-num">1</span>' +
                     '<span>' + gettext('Tap the Share button') +
@@ -111,7 +113,52 @@
                     '</span>' +
                 '</div>' +
             '</div>';
+    }
 
-        createBanner(content);
+    // The persistent link. Unlike the banner it is never dismissed: a device
+    // that has not installed the app keeps a small, out-of-the-way way to do so
+    // from the settings menu. It is the holdouts that matter — a browser tab
+    // loses its device identity and the offline pick queue to Safari's 7-day
+    // storage eviction, which an installed app is exempt from.
+    function setupInstallLink() {
+        if (isStandalone()) return;
+        const slot = document.getElementById('install-link-slot');
+        const row = document.getElementById('install-row');
+        if (!slot) return;
+
+        const link = document.createElement('a');
+        link.href = '#';
+        link.id = 'install-link';
+        link.className = 'install-link';
+        link.setAttribute('role', 'button');
+        // Reuses the banner's already-translated label, so the link adds no new
+        // string to the catalogs.
+        link.innerHTML =
+            '<img src="/static/icons/icon-192.png" alt="" class="install-link-icon">' +
+            '<span>' + gettext('Install Orderpiqr') + '</span>';
+        slot.appendChild(link);
+        if (row) row.hidden = false;
+
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (deferredPrompt) {
+                // Android/Chrome: fire the real install prompt.
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(function () { deferredPrompt = null; });
+                return;
+            }
+            // No native prompt (iOS always; Android if it never fired): show the
+            // instructions, forced past the one-time dismiss since the picker
+            // explicitly asked for them.
+            createBanner(isIOS() ? iosStepsContent() : '', true);
+        });
+    }
+
+    // --- iOS: one-time instruction banner (unchanged behaviour) + the link ---
+    document.addEventListener('DOMContentLoaded', function () {
+        setupInstallLink();
+        if (isStandalone()) return;
+        if (!isIOS()) return;
+        createBanner(iosStepsContent());
     });
 })();

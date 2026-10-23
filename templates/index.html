@@ -132,6 +132,15 @@
 
                 <!-- Account -->
                 <div class="settings-section settings-section-account">
+                    {# Install affordance: a small, always-available link for #}
+                    {# devices not yet running as the installed app. Hidden by #}
+                    {# default and revealed only for non-standalone devices by #}
+                    {# installPrompt.js, which also fills in the (already       #}
+                    {# translated) label and wires the click. Kept separate     #}
+                    {# from the one-time install banner, which is unchanged.    #}
+                    <div class="settings-row install-row" id="install-row" hidden>
+                        <span id="install-link-slot"></span>
+                    </div>
                     <div class="settings-row">
                         <div class="language-switcher">{% include 'partials/language_switcher.html' %}</div>
                         <a href="{% url 'login' %}" class="btn-logout">{% trans "Log out" %}</a>

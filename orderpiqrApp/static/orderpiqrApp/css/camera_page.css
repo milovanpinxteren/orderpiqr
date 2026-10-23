@@ -247,6 +247,36 @@ body {
     background-color: #fef2f2;
 }
 
+/* Persistent "add to home screen" link in the settings menu, shown only on
+   non-installed devices (revealed by installPrompt.js). Deliberately small and
+   quiet — it is an always-available affordance, not a prompt. */
+.install-row {
+    justify-content: flex-start;
+}
+
+.install-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #118f11;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    transition: background-color 0.15s;
+}
+
+.install-link:hover {
+    background-color: #f0f8f0;
+}
+
+.install-link-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
 .dropdown {
     font-size: 0.8rem;
     padding: 0.35em 0.5em;
