@@ -5,14 +5,11 @@ from django.conf.urls.i18n import i18n_patterns
 from django.views.i18n import JavaScriptCatalog
 
 from orderpiqr.views import *
-from orderpiqrApp.views import scan_picklist, complete_picklist, product_pick, bulk_product_pick, scan_event, client_version
+from orderpiqrApp.views import scan_picklist, complete_picklist, product_pick, bulk_product_pick, scan_event, client_version, service_worker
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from api.views.documentation_views import documentation_view
 from django.views.generic import TemplateView, RedirectView
-from django.views.static import serve
-from django.conf import settings
-from django.urls import re_path
 from django.contrib.admin.views.decorators import staff_member_required
 from orderpiqrApp.views.auth.signup_view import signup
 
@@ -60,7 +57,11 @@ urlpatterns = [
     path('orderpiqr/client-version', client_version, name='client-version'),
     # Keep this outside of i18n to enable POST
     path('offline/', TemplateView.as_view(template_name='offline.html'), name='offline'),
-    re_path(r'^serviceWorker\.js$', serve, {'document_root': settings.BASE_DIR, 'path': 'serviceWorker.js'}),
+    # Rendered, not served as a static file: the cache name baked into it has
+    # to carry the current build id (see service_worker view). Outside i18n
+    # for the same reason as the route above — a language-prefixed URL would
+    # not match the fixed '/serviceWorker.js' path the page registers.
+    path('serviceWorker.js', service_worker, name='service-worker'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),

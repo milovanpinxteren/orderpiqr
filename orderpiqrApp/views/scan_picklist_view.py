@@ -3,6 +3,7 @@ from datetime import timedelta, timezone as dt_timezone
 
 from django.db import IntegrityError, transaction
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.utils import timezone
 from django.utils.translation import gettext as _
 import json
@@ -84,6 +85,26 @@ def client_version(request):
     moment) when they differ. Public: the id is a hash of public static files.
     """
     return JsonResponse({'buildId': get_build_id()})
+
+
+@require_GET
+def service_worker(request):
+    """The app-shell service worker, rendered rather than served as a static
+    file so its cache name carries the current build id.
+
+    A static serviceWorker.js can't see server state, and a cache name that
+    never changes would mean every phone keeps a pre-cache from before the
+    last deploy forever — the fetch handler inside only ever reads from
+    CACHE_NAME, so a new name on every deploy is what makes 'activate' throw
+    the stale one away and repopulate it. Cache-Control: no-cache so the
+    browser re-checks the script itself on every registration update, rather
+    than caching the rendering of the previous deploy for a day.
+    """
+    response = render(request, 'serviceWorker.js', {
+        'cache_name': 'orderpiqr-shell-' + get_build_id(),
+    }, content_type='application/javascript')
+    response['Cache-Control'] = 'no-cache'
+    return response
 
 
 @require_POST

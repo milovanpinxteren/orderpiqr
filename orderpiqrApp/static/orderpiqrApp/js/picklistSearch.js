@@ -23,6 +23,12 @@ const interpolate = window.interpolate;
 // enough that the picker does not think the panel is dead.
 const DEBOUNCE_MS = 300;
 
+// The browse-mode (empty query) response is the only one worth keeping: it is
+// the full pick-day list, so any later query can be served out of it offline
+// by filtering client-side. A filtered response is a subset and would make a
+// worse cache than the one already on disk, so only browse mode overwrites it.
+const SNAPSHOT_KEY = 'orderpiqr_queue_snapshot';
+
 const toggle = document.getElementById('picklist-search-toggle');
 const panel = document.getElementById('picklist-search-panel');
 const input = document.getElementById('picklist-search-input');
@@ -89,7 +95,10 @@ function renderMessage(text) {
     resultsBox.appendChild(empty);
 }
 
-function renderResults(results) {
+// `offline` threads through to startClaim rather than being handled here, so
+// there is exactly one place a tap can turn into a POST — easy to miss if the
+// check only lived at the call site instead.
+function renderResults(results, offline) {
     resultsBox.textContent = '';
     if (!results.length) {
         renderMessage(gettext('No matching orders'));
@@ -137,9 +146,57 @@ function renderResults(results) {
         }
         row.appendChild(action);
 
-        row.addEventListener('click', () => startClaim(order, row));
+        row.addEventListener('click', () => startClaim(order, row, offline));
         resultsBox.appendChild(row);
     });
+}
+
+function saveSnapshot(results) {
+    try {
+        localStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ts: Date.now(), results: results}));
+    } catch (e) {
+        // Best-effort: a snapshot that fails to write just means no offline
+        // fallback later, not a broken search panel now.
+    }
+}
+
+function readSnapshot() {
+    try {
+        const raw = localStorage.getItem(SNAPSHOT_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || Object.prototype.toString.call(parsed.results) !== '[object Array]') return null;
+        return parsed;
+    } catch (e) {
+        return null;    // storage can throw outright in private modes
+    }
+}
+
+function renderOfflineBanner(ts) {
+    const banner = document.createElement('div');
+    banner.className = 'picklist-search-offline-banner';
+    banner.textContent = interpolate(
+        gettext('Offline — showing the list from %(time)s'),
+        {time: new Date(ts).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})},
+        true);
+    resultsBox.insertBefore(banner, resultsBox.firstChild);
+}
+
+// Called wherever runSearch gives up on the network. Returns false when there
+// is nothing to fall back to, so the caller can fall through to the plain
+// "Could not search orders" message that existed before this queue existed.
+function tryOfflineFallback(query) {
+    const snapshot = readSnapshot();
+    if (!snapshot) return false;
+
+    const needle = query.toLowerCase();
+    const filtered = needle
+        ? snapshot.results.filter(order => String(order.order_code || '').toLowerCase().indexOf(needle) !== -1)
+        : snapshot.results;
+
+    renderResults(filtered, true);
+    renderOfflineBanner(snapshot.ts);
+    return true;
 }
 
 function runSearch(query) {
@@ -162,23 +219,44 @@ function runSearch(query) {
                     (data && data.message) || gettext('Order search is not available.'), true);
                 return;
             }
-            if (!data || data.status !== 'ok') {
+            if (!data) {
+                // No parseable body at all reads the same to the picker as no
+                // response ever arriving — try the cached list before the
+                // generic failure message.
+                if (tryOfflineFallback(query)) return;
                 renderMessage(gettext('Could not search orders'));
-                showNotification(
-                    (data && data.message) || gettext('Could not search orders'), true);
+                showNotification(gettext('Could not search orders'), true);
                 return;
             }
-            renderResults(data.results || []);
+            if (data.status !== 'ok') {
+                // A real response that says "no" (a feature-off message, a
+                // validation error) is not a connectivity problem, so it does
+                // not get the offline fallback.
+                renderMessage(gettext('Could not search orders'));
+                showNotification(data.message || gettext('Could not search orders'), true);
+                return;
+            }
+            if (!query) {
+                saveSnapshot(data.results || []);
+            }
+            renderResults(data.results || [], false);
         })
         .catch(() => {
             if (seq !== requestSeq) return;
+            if (tryOfflineFallback(query)) return;
             renderMessage(gettext('Could not search orders'));
             showNotification(gettext('Could not search orders'), true);
         });
 }
 
-function startClaim(order, row) {
+function startClaim(order, row, offline) {
     if (claiming) return;
+    if (offline) {
+        // The row came from the cached snapshot, not a live search — claiming
+        // is out of scope while offline, so the tap must not reach fetch at all.
+        showNotification(gettext("You're offline — reconnect to claim orders."), true);
+        return;
+    }
 
     const force = order.status === 'in_progress';
     const message = force
@@ -312,6 +390,15 @@ function init() {
             // A phone keyboard's search key should not wait out the debounce.
             event.preventDefault();
             clearTimeout(debounceTimer);
+            runSearch(input.value.trim());
+        }
+    });
+
+    // Reception is back: an open panel showing snapshot rows (whose taps
+    // refuse to claim) should swap to live rows without waiting for a
+    // keystroke.
+    window.addEventListener('online', () => {
+        if (!panel.classList.contains('hidden')) {
             runSearch(input.value.trim());
         }
     });

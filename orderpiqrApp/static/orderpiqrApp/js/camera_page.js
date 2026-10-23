@@ -63,6 +63,94 @@ export let currentPicklist = []; // Array to store the current picklist
 export let currentOrderID = null;
 let originalPicklistOrder = []; // Store the original order for re-sorting
 
+// ---------------------------------------------------------------------------
+// Active-list persistence
+//
+// currentPicklist otherwise lives only in page memory: a reload while a list
+// is in progress — a deploy, a crash, the picker switching apps and the
+// browser reclaiming the tab — used to lose it outright even though the
+// server still has every pick that reached it. This mirrors it to
+// localStorage on every mutation so a reload can pick the list back up.
+//
+// It does NOT re-claim anything: the server already has this list (the claim
+// was queued before the list ever reached the screen), and any outbox ops
+// still pending for it are untouched — they flush on their own once the page
+// is back, same as any other reload.
+// ---------------------------------------------------------------------------
+
+const ACTIVE_LIST_KEY = 'orderpiqr_active_list';
+const ACTIVE_LIST_MAX_AGE_MS = 12 * 60 * 60 * 1000;
+
+function persistActiveList() {
+    try {
+        // An empty list has nothing to restore, and is about to be (or just
+        // was) cleared by the completion path — never resurrect it.
+        if (!currentOrderID || currentPicklist.length === 0) return;
+        localStorage.setItem(ACTIVE_LIST_KEY, JSON.stringify({
+            orderID: currentOrderID,
+            picklist: currentPicklist,
+            originalCounts: originalProductCounts,
+            originalOrder: originalPicklistOrder,
+            savedAt: Date.now(),
+        }));
+    } catch (e) {
+        // Storage can throw outright in private modes; the restore safety
+        // net is best-effort and must never block picking.
+    }
+}
+
+function clearActiveList() {
+    try {
+        localStorage.removeItem(ACTIVE_LIST_KEY);
+    } catch (e) {
+        // Nothing left to try.
+    }
+}
+
+// Only called when loadClaimedOrder() found no server-rendered or
+// sessionStorage claim — those both mean a fresh list was just handed to
+// this device, which must win over whatever was saved from before.
+function restoreActiveList() {
+    try {
+        const raw = localStorage.getItem(ACTIVE_LIST_KEY);
+        if (!raw) return false;
+        const saved = JSON.parse(raw);
+        if (!saved || !saved.orderID || !Array.isArray(saved.picklist) || saved.picklist.length === 0) {
+            return false;
+        }
+        if (!saved.savedAt || Date.now() - saved.savedAt >= ACTIVE_LIST_MAX_AGE_MS) {
+            // Stale enough that the server lock has almost certainly moved on
+            // (STALE_LOCK_AFTER on the server is 10 minutes); resurrecting it
+            // would hand the picker a list someone else may now hold.
+            clearActiveList();
+            return false;
+        }
+        if (!productData || productData.length === 0) {
+            // Nothing to render the list against yet; leave the saved entry
+            // in place and try again on a later load.
+            return false;
+        }
+
+        currentPicklist.length = 0;
+        currentPicklist.push(...saved.picklist);
+        currentOrderID = saved.orderID;
+        originalPicklistOrder = Array.isArray(saved.originalOrder) && saved.originalOrder.length > 0
+            ? saved.originalOrder : [...currentPicklist];
+        Object.keys(originalProductCounts).forEach(key => delete originalProductCounts[key]);
+        Object.assign(originalProductCounts, saved.originalCounts || {});
+
+        updateScannedList(currentPicklist, productData);
+        updatePicklistCodeDisplay(currentOrderID);
+        lastPickTs = Date.now();
+
+        showNotification(gettext("Restored your list in progress."), false);
+        return true;
+    } catch (e) {
+        console.error('Error restoring active list', e);
+        return false;
+    }
+}
+
 // Toggle button for order importance
 const toggleButton = document.getElementById('toggle-order-btn');
 
@@ -125,6 +213,7 @@ initializeScanner((scannedCode) => {
         originalProductCounts = result.originalCounts;  // Add this line
         originalPicklistOrder = result.originalOrder || [...currentPicklist]; // Store original order
         updatePicklistCodeDisplay(currentOrderID);
+        persistActiveList();
 
         lastPickTs = Date.now();
         setTimeout(() => {
@@ -173,6 +262,7 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 // Correct scan, remove the first product from the list
                 currentPicklist.splice(0, 1);
                 updateScannedList(currentPicklist, productData); // Update the table after removing the first product
+                persistActiveList();
                 onSuccessfulPick(rawCode)
 
                 const product = productData.find(item => item.code === firstProductCode);  // Match code in productData
@@ -199,6 +289,7 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 // Valid scan, remove the product from the list
                 currentPicklist.splice(index, 1);
                 updateScannedList(currentPicklist, productData);  // Update the table after a valid scan
+                persistActiveList();
                 onSuccessfulPick(rawCode);
 
                 const product = productData.find(item => item.code === code);
@@ -291,6 +382,7 @@ if (picklistLostOkBtn && !picklistLostOkBtn.dataset.bound) {
         currentPicklist.length = 0;
         currentOrderID = null;
         Object.keys(originalProductCounts).forEach(key => delete originalProductCounts[key]);
+        clearActiveList();
         updateScannedList(currentPicklist, productData);
         const codeDisplay = document.getElementById('picklist-code-display');
         if (codeDisplay) codeDisplay.style.display = 'none';
@@ -314,6 +406,12 @@ export function onSuccessfulPick(scannedCode, {manualOverride = false} = {}) {
             });
             return;
         }
+        // Persisted here, not only at the scan-path splice sites: the manual
+        // override (manualOverride.js) splices the list itself and reaches
+        // this function as its only stop in this module — without this line a
+        // reload would restore an overridden item back onto the list.
+        persistActiveList();
+
         const now = Date.now();
         const timeTakenMs = lastPickTs ? (now - lastPickTs) : null;
         lastPickTs = now;
@@ -364,6 +462,10 @@ export function notifyPicklistCompleted(orderID) {
         console.error('notifyPicklistCompleted without an order id');
         return;
     }
+    // The list is finished — nothing left to offer a reload, and restoring it
+    // later would hand the picker a phantom list for an order the server (and
+    // every call site here) just marked done.
+    clearActiveList();
     queuedThisSession(enqueue('complete', '/orderpiqr/complete-picklist', {orderID}));
 }
 
@@ -399,6 +501,7 @@ function applyAlreadyPicked(alreadyPicked) {
     }
     if (kept > 0) {
         updateScannedList(currentPicklist, productData);
+        persistActiveList();
         showNotification(
             interpolate(ngettext(
                 'Kept %(count)s already-picked item from the previous attempt.',
@@ -418,6 +521,7 @@ function claimRejected(orderID, data) {
         currentPicklist.length = 0;
         currentOrderID = null;
         Object.keys(originalProductCounts).forEach(key => delete originalProductCounts[key]);
+        clearActiveList();
         updateScannedList(currentPicklist, productData);
         const codeDisplay = document.getElementById('picklist-code-display');
         if (codeDisplay) codeDisplay.style.display = 'none';
@@ -676,6 +780,7 @@ function executeBulkPick(productCode, quantity, returnToScanner) {
     }
 
     updateScannedList(currentPicklist, productData);
+    persistActiveList();
 
     // Send to server
     notifyBulkProductPicked({
@@ -891,11 +996,18 @@ function loadClaimedOrder() {
 
         // Set the last pick timestamp
         lastPickTs = Date.now();
+        persistActiveList();
 
         showNotification(gettext("Order loaded from queue"), false);
         console.log('[Queue] Order loaded successfully');
     } else {
         console.log('[Queue] No claimed order found or invalid data');
+        // Neither the server nor sessionStorage handed this page a list — the
+        // only remaining candidate is whatever this device itself saved
+        // before a reload. Both sources above take precedence because they
+        // mean a NEW list was just assigned; restoring an old one over that
+        // would silently discard it.
+        restoreActiveList();
     }
 }
 
