@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 17:00+0200\n"
+"POT-Creation-Date: 2026-10-23 12:23+0200\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,7 +52,7 @@ msgid "Cannot delete device with pick list history. Unassign the user instead."
 msgstr ""
 
 #: .\api\views\device_views.py:166
-#: .\orderpiqrApp\views\scan_picklist_view.py:462
+#: .\orderpiqrApp\views\scan_picklist_view.py:528
 msgid "Device not found"
 msgstr ""
 
@@ -83,8 +83,8 @@ msgstr ""
 #: .\api\views\inventory_views.py:176 .\api\views\inventory_views.py:251
 #: .\api\views\product_views.py:195 .\orderpiqrApp\views\inventory_views.py:133
 #: .\orderpiqrApp\views\inventory_views.py:194
-#: .\orderpiqrApp\views\scan_picklist_view.py:406
-#: .\orderpiqrApp\views\scan_picklist_view.py:489
+#: .\orderpiqrApp\views\scan_picklist_view.py:464
+#: .\orderpiqrApp\views\scan_picklist_view.py:571
 #: .\templates\inventory\picker.html:172
 msgid "Product not found"
 msgstr ""
@@ -178,7 +178,7 @@ msgid "This order is already being picked"
 msgstr ""
 
 #: .\api\views\queue_views.py:451 .\orderpiqrApp\views\queue_views.py:315
-#: .\orderpiqrApp\views\scan_picklist_view.py:265
+#: .\orderpiqrApp\views\scan_picklist_view.py:286
 msgid "This order has already been completed"
 msgstr ""
 
@@ -435,7 +435,7 @@ msgstr ""
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:51 .\orderpiqrApp\models\products.py:22
-#: .\orderpiqrApp\models\products.py:57 .\templates\index.html:221
+#: .\orderpiqrApp\models\products.py:57 .\templates\index.html:230
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -1174,16 +1174,20 @@ msgstr ""
 msgid "PickList %(id)s for Device %(device)s"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:60
+#: .\orderpiqrApp\models\picklists.py:63
+msgid "Client Pick Id"
+msgstr ""
+
+#: .\orderpiqrApp\models\picklists.py:67
 msgid "Product Pick"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:61
+#: .\orderpiqrApp\models\picklists.py:68
 #: .\templates\manage\picklists\detail.html:112
 msgid "Product Picks"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:64
+#: .\orderpiqrApp\models\picklists.py:71
 #, python-format
 msgid "Pick of %(product)s in PickList %(picklist_id)s"
 msgstr ""
@@ -1306,14 +1310,14 @@ msgid "Customer setting values"
 msgstr ""
 
 #: .\orderpiqrApp\models\products.py:10
-#: .\orderpiqrApp\views\manage_views.py:2375 .\templates\index.html:214
+#: .\orderpiqrApp\views\manage_views.py:2375 .\templates\index.html:223
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr ""
 
 #: .\orderpiqrApp\models\products.py:12
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:92 .\templates\index.html:105
-#: .\templates\index.html:216 .\templates\index.html:220
+#: .\templates\index.html:225 .\templates\index.html:229
 #: .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:122
 #: .\templates\manage\products\form.html:45
@@ -2366,61 +2370,62 @@ msgstr ""
 msgid "Order unlocked"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:50
+#: .\orderpiqrApp\views\scan_picklist_view.py:51
 msgid "This device is registered for multiple companies. Please log in."
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:189
+#: .\orderpiqrApp\views\scan_picklist_view.py:210
 msgid "Device not found and user not authenticated"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:202
+#: .\orderpiqrApp\views\scan_picklist_view.py:223
 msgid "User has no customer profile"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:249
+#: .\orderpiqrApp\views\scan_picklist_view.py:270
 msgid "This order is already being picked by another device"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:334
+#: .\orderpiqrApp\views\scan_picklist_view.py:355
 #, python-format
 msgid ""
 "Unknown product code '%(code)s'. Add it to your products and scan the list "
 "again."
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:350
-#: .\orderpiqrApp\views\scan_picklist_view.py:574
+#: .\orderpiqrApp\views\scan_picklist_view.py:371
+#: .\orderpiqrApp\views\scan_picklist_view.py:635
+#: .\orderpiqrApp\views\scan_picklist_view.py:669
 msgid "Picklist processed successfully"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:373
-#: .\orderpiqrApp\views\scan_picklist_view.py:577
+#: .\orderpiqrApp\views\scan_picklist_view.py:416
+#: .\orderpiqrApp\views\scan_picklist_view.py:672
 msgid "Device not found with given fingerprint"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:396
+#: .\orderpiqrApp\views\scan_picklist_view.py:439
 msgid "PickList not found for device/customer"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:413
+#: .\orderpiqrApp\views\scan_picklist_view.py:471
 msgid "No pending ProductPick rows for this product."
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:485
+#: .\orderpiqrApp\views\scan_picklist_view.py:551
 msgid "PickList not found"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:499
+#: .\orderpiqrApp\views\scan_picklist_view.py:581
 #, python-format
 msgid "Requested %(wanted)s but only %(available)s unpicked rows available"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:571
+#: .\orderpiqrApp\views\scan_picklist_view.py:666
 msgid "No picklist found for this device and order"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:579
+#: .\orderpiqrApp\views\scan_picklist_view.py:674
 msgid "Product not found for one of the product codes"
 msgstr ""
 
@@ -2662,17 +2667,17 @@ msgstr ""
 msgid "Enable camera"
 msgstr "Enable camera"
 
-#: .\templates\index.html:208 .\templates\manage\health\list.html:272
+#: .\templates\index.html:217 .\templates\manage\health\list.html:272
 #: .\templates\manage\health\list.html:425
 #: .\templates\manage\picklists\list.html:75
 msgid "Picklist"
 msgstr ""
 
-#: .\templates\index.html:215
+#: .\templates\index.html:224
 msgid "Product Name"
 msgstr ""
 
-#: .\templates\index.html:219 .\templates\manage\orders\form.html:61
+#: .\templates\index.html:228 .\templates\manage\orders\form.html:61
 msgid "Qty"
 msgstr ""
 

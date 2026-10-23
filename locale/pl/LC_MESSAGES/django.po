@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 17:00+0200\n"
+"POT-Creation-Date: 2026-10-23 12:23+0200\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,7 +56,7 @@ msgstr ""
 "odłącz od niego użytkownika."
 
 #: .\api\views\device_views.py:166
-#: .\orderpiqrApp\views\scan_picklist_view.py:462
+#: .\orderpiqrApp\views\scan_picklist_view.py:528
 msgid "Device not found"
 msgstr "Nie znaleziono urządzenia"
 
@@ -88,8 +88,8 @@ msgstr "Zarządzanie inwentarzem nie jest włączone"
 #: .\api\views\product_views.py:195
 #: .\orderpiqrApp\views\inventory_views.py:133
 #: .\orderpiqrApp\views\inventory_views.py:194
-#: .\orderpiqrApp\views\scan_picklist_view.py:406
-#: .\orderpiqrApp\views\scan_picklist_view.py:489
+#: .\orderpiqrApp\views\scan_picklist_view.py:464
+#: .\orderpiqrApp\views\scan_picklist_view.py:571
 #: .\templates\inventory\picker.html:172
 msgid "Product not found"
 msgstr "Nie znaleziono produktu"
@@ -185,7 +185,7 @@ msgid "This order is already being picked"
 msgstr "To zamówienie jest już kompletowane"
 
 #: .\api\views\queue_views.py:451 .\orderpiqrApp\views\queue_views.py:315
-#: .\orderpiqrApp\views\scan_picklist_view.py:265
+#: .\orderpiqrApp\views\scan_picklist_view.py:286
 msgid "This order has already been completed"
 msgstr "To zamówienie zostało już zrealizowane"
 
@@ -449,7 +449,7 @@ msgstr "Wiadomość"
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
 #: .\orderpiqrApp\models\picklists.py:51 .\orderpiqrApp\models\products.py:22
-#: .\orderpiqrApp\models\products.py:57 .\templates\index.html:221
+#: .\orderpiqrApp\models\products.py:57 .\templates\index.html:230
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
 #: .\templates\manage\orders\form.html:60
@@ -1206,16 +1206,21 @@ msgstr "Listy kompletacyjne"
 msgid "PickList %(id)s for Device %(device)s"
 msgstr "Lista kompletacyjna %(id)s dla urządzenia %(device)s"
 
-#: .\orderpiqrApp\models\picklists.py:60
+#: .\orderpiqrApp\models\picklists.py:63
+#| msgid "Lists Picked"
+msgid "Client Pick Id"
+msgstr "ID kompletacji klienta"
+
+#: .\orderpiqrApp\models\picklists.py:67
 msgid "Product Pick"
 msgstr "Kompletacja produktu"
 
-#: .\orderpiqrApp\models\picklists.py:61
+#: .\orderpiqrApp\models\picklists.py:68
 #: .\templates\manage\picklists\detail.html:112
 msgid "Product Picks"
 msgstr "Kompletacje produktów"
 
-#: .\orderpiqrApp\models\picklists.py:64
+#: .\orderpiqrApp\models\picklists.py:71
 #, python-format
 msgid "Pick of %(product)s in PickList %(picklist_id)s"
 msgstr "Kompletacja %(product)s na liście %(picklist_id)s"
@@ -1343,14 +1348,14 @@ msgid "Customer setting values"
 msgstr "Wartości ustawień klienta"
 
 #: .\orderpiqrApp\models\products.py:10
-#: .\orderpiqrApp\views\manage_views.py:2375 .\templates\index.html:214
+#: .\orderpiqrApp\views\manage_views.py:2375 .\templates\index.html:223
 #: .\templates\manage\products\form.html:19
 msgid "Product Code"
 msgstr "Kod produktu"
 
 #: .\orderpiqrApp\models\products.py:12
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:92 .\templates\index.html:105
-#: .\templates\index.html:216 .\templates\index.html:220
+#: .\templates\index.html:225 .\templates\index.html:229
 #: .\templates\manage\orders\form.html:62
 #: .\templates\manage\picklists\detail.html:122
 #: .\templates\manage\products\form.html:45
@@ -2301,14 +2306,11 @@ msgstr "Urządzenie usunięte."
 
 #: .\orderpiqrApp\views\manage_views.py:1928
 #: .\orderpiqrApp\views\manage_views.py:1932
-#| msgid "No orders selected."
 msgid "No devices selected."
 msgstr "Nie wybrano żadnych urządzeń."
 
 #: .\orderpiqrApp\views\manage_views.py:1938
 #, python-format
-#| msgid "%(count)s picklist archived."
-#| msgid_plural "%(count)s picklists archived."
 msgid "%(count)s device archived."
 msgid_plural "%(count)s devices archived."
 msgstr[0] "%(count)s urządzenie zarchiwizowane."
@@ -2318,8 +2320,6 @@ msgstr[3] "%(count)s urządzenia zarchiwizowanego."
 
 #: .\orderpiqrApp\views\manage_views.py:1943
 #, python-format
-#| msgid "%(count)s picklist skipped (already archived)."
-#| msgid_plural "%(count)s picklists skipped (already archived)."
 msgid "%(count)s device skipped (already archived)."
 msgid_plural "%(count)s devices skipped (already archived)."
 msgstr[0] "%(count)s urządzenie pominięte (już zarchiwizowane)."
@@ -2329,8 +2329,6 @@ msgstr[3] "%(count)s urządzenia pominiętego (już zarchiwizowanego)."
 
 #: .\orderpiqrApp\views\manage_views.py:1952
 #, python-format
-#| msgid "%(count)s order deleted."
-#| msgid_plural "%(count)s orders deleted."
 msgid "%(count)s device restored."
 msgid_plural "%(count)s devices restored."
 msgstr[0] "%(count)s urządzenie przywrócone."
@@ -2340,8 +2338,6 @@ msgstr[3] "%(count)s urządzenia przywróconego."
 
 #: .\orderpiqrApp\views\manage_views.py:1957
 #, python-format
-#| msgid "%(count)s order skipped (not queued)."
-#| msgid_plural "%(count)s orders skipped (not queued)."
 msgid "%(count)s device skipped (not archived)."
 msgid_plural "%(count)s devices skipped (not archived)."
 msgstr[0] "%(count)s urządzenie pominięte (niezarchiwizowane)."
@@ -2351,8 +2347,6 @@ msgstr[3] "%(count)s urządzenia pominiętego (niezarchiwizowanego)."
 
 #: .\orderpiqrApp\views\manage_views.py:1968
 #, python-format
-#| msgid "%(count)s order deleted."
-#| msgid_plural "%(count)s orders deleted."
 msgid "%(count)s device deleted."
 msgid_plural "%(count)s devices deleted."
 msgstr[0] "%(count)s urządzenie usunięte."
@@ -2362,8 +2356,6 @@ msgstr[3] "%(count)s urządzenia usuniętego."
 
 #: .\orderpiqrApp\views\manage_views.py:1973
 #, python-format
-#| msgid "%(count)s picklist skipped (already archived)."
-#| msgid_plural "%(count)s picklists skipped (already archived)."
 msgid "%(count)s device with picked lists skipped (archive it instead)."
 msgid_plural ""
 "%(count)s devices with picked lists skipped (archive them instead)."
@@ -2552,23 +2544,23 @@ msgstr "Zamówienie nie jest w trakcie realizacji"
 msgid "Order unlocked"
 msgstr "Zamówienie odblokowane"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:50
+#: .\orderpiqrApp\views\scan_picklist_view.py:51
 msgid "This device is registered for multiple companies. Please log in."
 msgstr "To urządzenie jest zarejestrowane dla wielu firm. Zaloguj się."
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:189
+#: .\orderpiqrApp\views\scan_picklist_view.py:210
 msgid "Device not found and user not authenticated"
 msgstr "Nie znaleziono urządzenia, a użytkownik nie jest uwierzytelniony"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:202
+#: .\orderpiqrApp\views\scan_picklist_view.py:223
 msgid "User has no customer profile"
 msgstr "Użytkownik nie ma profilu klienta"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:249
+#: .\orderpiqrApp\views\scan_picklist_view.py:270
 msgid "This order is already being picked by another device"
 msgstr "To zamówienie jest już kompletowane na innym urządzeniu"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:334
+#: .\orderpiqrApp\views\scan_picklist_view.py:355
 #, python-format
 msgid ""
 "Unknown product code '%(code)s'. Add it to your products and scan the list "
@@ -2577,40 +2569,41 @@ msgstr ""
 "Nieznany kod produktu '%(code)s'. Dodaj go do swoich produktów i zeskanuj "
 "listę ponownie."
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:350
-#: .\orderpiqrApp\views\scan_picklist_view.py:574
+#: .\orderpiqrApp\views\scan_picklist_view.py:371
+#: .\orderpiqrApp\views\scan_picklist_view.py:635
+#: .\orderpiqrApp\views\scan_picklist_view.py:669
 msgid "Picklist processed successfully"
 msgstr "Lista kompletacyjna przetworzona pomyślnie"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:373
-#: .\orderpiqrApp\views\scan_picklist_view.py:577
+#: .\orderpiqrApp\views\scan_picklist_view.py:416
+#: .\orderpiqrApp\views\scan_picklist_view.py:672
 msgid "Device not found with given fingerprint"
 msgstr "Nie znaleziono urządzenia o podanym odcisku palca"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:396
+#: .\orderpiqrApp\views\scan_picklist_view.py:439
 msgid "PickList not found for device/customer"
 msgstr "Nie znaleziono listy kompletacyjnej dla urządzenia/klienta"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:413
+#: .\orderpiqrApp\views\scan_picklist_view.py:471
 msgid "No pending ProductPick rows for this product."
 msgstr "Brak oczekujących wierszy pobrania dla tego produktu."
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:485
+#: .\orderpiqrApp\views\scan_picklist_view.py:551
 msgid "PickList not found"
 msgstr "Nie znaleziono listy kompletacyjnej"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:499
+#: .\orderpiqrApp\views\scan_picklist_view.py:581
 #, python-format
 msgid "Requested %(wanted)s but only %(available)s unpicked rows available"
 msgstr ""
 "Zażądano %(wanted)s, a dostępnych jest tylko %(available)s "
 "nieskompletowanych wierszy"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:571
+#: .\orderpiqrApp\views\scan_picklist_view.py:666
 msgid "No picklist found for this device and order"
 msgstr "Nie znaleziono listy kompletacyjnej dla tego urządzenia i zamówienia"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:579
+#: .\orderpiqrApp\views\scan_picklist_view.py:674
 msgid "Product not found for one of the product codes"
 msgstr "Nie znaleziono produktu dla jednego z kodów produktów"
 
@@ -2870,17 +2863,17 @@ msgstr "Zamknij wyszukiwanie"
 msgid "Enable camera"
 msgstr "Włącz kamerę"
 
-#: .\templates\index.html:208 .\templates\manage\health\list.html:272
+#: .\templates\index.html:217 .\templates\manage\health\list.html:272
 #: .\templates\manage\health\list.html:425
 #: .\templates\manage\picklists\list.html:75
 msgid "Picklist"
 msgstr "Lista kompletacyjna"
 
-#: .\templates\index.html:215
+#: .\templates\index.html:224
 msgid "Product Name"
 msgstr "Nazwa produktu"
 
-#: .\templates\index.html:219 .\templates\manage\orders\form.html:61
+#: .\templates\index.html:228 .\templates\manage\orders\form.html:61
 msgid "Qty"
 msgstr "Ilość"
 
@@ -3263,7 +3256,6 @@ msgid "not seen since the update"
 msgstr "niewidziane od aktualizacji"
 
 #: .\templates\manage\devices\list.html:48
-#| msgid "Search orders..."
 msgid "Search device, picker..."
 msgstr "Szukaj urządzenia, kompletującego..."
 
@@ -3282,12 +3274,10 @@ msgid "All"
 msgstr "Wszystkie"
 
 #: .\templates\manage\devices\list.html:63
-#| msgid "Last seen"
 msgid "Last seen from"
 msgstr "Ostatnio widziane od"
 
 #: .\templates\manage\devices\list.html:65
-#| msgid "Last seen"
 msgid "Last seen until"
 msgstr "Ostatnio widziane do"
 
