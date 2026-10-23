@@ -55,6 +55,13 @@ class ProductPick(models.Model):
     time_taken = models.DurationField(_("Time Taken"), null=True, blank=True)
     successful = models.BooleanField(_("Successful"), null=True, blank=True)
     notes = models.TextField(_("Notes"), blank=True, null=True)
+    # The client's own id for the pick operation that marked this row. A phone
+    # in a cold store loses reception mid-list and retries its queued picks, so
+    # the same pick can arrive two or three times; this is what lets the server
+    # recognise the replay and mark the row once. Not unique at the DB level:
+    # one bulk operation stamps the same id on every row it marks.
+    client_pick_id = models.CharField(_("Client Pick Id"), max_length=64, blank=True,
+                                      default='', db_index=True)
 
     class Meta:
         verbose_name = _("Product Pick")

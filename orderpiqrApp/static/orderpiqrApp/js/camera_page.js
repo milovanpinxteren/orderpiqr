@@ -4,11 +4,13 @@ import {showNotification} from './notifications.js';
 import {toggleOrderImportance, updateOrderImportanceButton, getIsOrderImportant} from './orderImportance.js';
 import {handlePicklist, sortPicklist, canonicalCode, findProductByCode} from './picklistHandler.js';
 import {updateScannedList} from './domUpdater.js';
-import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprint function
 import {reportScanEvent} from './scanEventReporter.js';
 import {initAppUpdater} from './appUpdater.js';
+import {enqueue} from './pickOutbox.js';
 
 const gettext = window.gettext;
+const ngettext = window.ngettext;
+const interpolate = window.interpolate;
 // Access the productData object injected into the HTML
 export let productData;
 // top-level (near other state)
@@ -180,7 +182,7 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 showPickFollowUpOverlay(firstProductCode, productLabel);
 
                 if (currentPicklist.length === 0) {
-                    notifyPicklistCompleted(currentOrderID, csrfToken);
+                    notifyPicklistCompleted(currentOrderID);
                 }
             } else {
                 // Incorrect scan, show error notification
@@ -206,7 +208,7 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 showPickFollowUpOverlay(code, productLabel);
 
                 if (currentPicklist.length === 0) {
-                    notifyPicklistCompleted(currentOrderID, csrfToken);
+                    notifyPicklistCompleted(currentOrderID);
                 }
             } else {
                 // Three different problems used to share one message. Telling
@@ -320,11 +322,7 @@ export function onSuccessfulPick(scannedCode, {manualOverride = false} = {}) {
             orderID: currentOrderID,
             productCode: scannedCode,
             timeTakenMs,
-            manualOverride,
-            csrfToken
-        }).catch(err => {
-            console.error('product-pick update failed', err);
-            showNotification(gettext("Could not update product pick."), true);
+            manualOverride
         });
     } catch (e) {
         console.error('onSuccessfulPick error', e);
@@ -332,98 +330,204 @@ export function onSuccessfulPick(scannedCode, {manualOverride = false} = {}) {
 }
 
 
-function notifyProductPicked({orderID, productCode, timeTakenMs, manualOverride = false, csrfToken}) {
-    return getDeviceFingerprint()
-        .then(deviceFingerprint => {
-            return fetch('/orderpiqr/product-pick', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify({
-                    orderID,                 // your PickList/Order identifier
-                    productCode,             // e.g. SKU/code string
-                    successful: true,        // this call is only for successful scans
-                    timeTakenMs,             // duration since previous successful pick
-                    manualOverride,          // triple-tap override; logged server-side
-                    deviceFingerprint,
-                    scannedAt: new Date().toISOString()
-                })
-            });
-        })
-        .then(response => {
-            // A 404 here means the pick was NOT recorded server-side (e.g. the
-            // picklist never registered) — surface it instead of swallowing it.
-            if (!response.ok) {
-                return response.json().catch(() => ({})).then(data => {
-                    // Server rejection (not a network failure) — report it so
-                    // the admin dashboard shows the silently lost pick.
-                    reportScanEvent('sync_error', {
-                        scannedCode: productCode,
-                        picklistCode: orderID ? String(orderID) : '',
-                        message: data.message || `product-pick rejected (HTTP ${response.status})`
-                    });
-                    if (data.error_code === 'picklist_not_found') {
-                        showPicklistLostOverlay();
-                    }
-                    throw new Error(data.message || `product-pick failed (HTTP ${response.status})`);
-                });
-            }
-            return response;
-        });
+// Queued rather than sent (pickOutbox.js): a pick made during a reception drop
+// used to be lost outright while the list advanced on screen. The outbox owns
+// the retry and the idempotency key; the rejection path lives in the
+// outbox-op-rejected listener further down, because the response can now
+// arrive long after this call — even in a later page session.
+function notifyProductPicked({orderID, productCode, timeTakenMs, manualOverride = false}) {
+    return queuedThisSession(enqueue('pick', '/orderpiqr/product-pick', {
+        orderID,                 // your PickList/Order identifier
+        productCode,             // e.g. SKU/code string
+        successful: true,        // this call is only for successful scans
+        timeTakenMs,             // duration since previous successful pick
+        manualOverride,          // triple-tap override; logged server-side
+        scannedAt: new Date().toISOString()
+    }));
 }
 
 
-export function notifyPicklistCompleted(orderID, csrfToken) {
+// Op ids this page session queued. An op that only reaches the server after a
+// reload belongs to a session that is over: it must still be recorded and
+// reported, but it must not congratulate — or alarm — a picker who has since
+// moved on to another list. Ids are removed again as the ops settle.
+const sessionOpIds = new Set();
+
+function queuedThisSession(opId) {
+    if (opId) sessionOpIds.add(opId);
+    return opId;
+}
+
+export function notifyPicklistCompleted(orderID) {
     if (!orderID) {
         // Same contract as onSuccessfulPick: no order, nothing to complete.
         console.error('notifyPicklistCompleted without an order id');
         return;
     }
-    getDeviceFingerprint()
-        .then(deviceFingerprint => {
-            fetch('/orderpiqr/complete-picklist', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify({
-                    orderID,
-                    deviceFingerprint  // ✅ include fingerprint
-                })
-            })
-                .then(response => response.json().then(data => ({ok: response.ok, data})))
-                .then(({ok, data}) => {
-                    if (ok && data.status === 'ok') {
-                        console.log('Picklist completed successfully:', data);
-                        showNotification(gettext("Picklist completed!"), false);
-                    } else {
-                        // Only celebrate when the server actually recorded it.
-                        console.error('Complete-picklist rejected:', data);
-                        showNotification(gettext("Error completing picklist."), true);
-                        // Server rejection (network failures land in .catch below
-                        // and are not reported — the report would fail too).
-                        reportScanEvent('sync_error', {
-                            picklistCode: orderID ? String(orderID) : '',
-                            message: (data && data.message) || 'complete-picklist rejected'
-                        });
-                        if (data && data.error_code === 'picklist_not_found') {
-                            showPicklistLostOverlay();
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Error completing picklist:', error);
-                    showNotification(gettext("Error completing picklist."), true);
-                });
-        })
-        .catch(error => {
-            console.error('Error getting device fingerprint:', error);
-            showNotification(gettext("Error getting device fingerprint."), true);
-        });
+    queuedThisSession(enqueue('complete', '/orderpiqr/complete-picklist', {orderID}));
 }
+
+
+// ---------------------------------------------------------------------------
+// Outbox results
+//
+// The four pick-flow POSTs are queued, not awaited (pickOutbox.js), so their
+// responses arrive here instead of at the call site — seconds, or a reload,
+// later. Every handler therefore re-checks that the response still concerns
+// the list currently on screen before it touches it. A pure network failure
+// produces no event at all: the outbox retries, and the sync badge is what
+// makes the wait visible.
+// ---------------------------------------------------------------------------
+
+function sameOrder(orderID) {
+    return currentOrderID !== null && orderID !== null && orderID !== undefined
+        && String(orderID).trim() === String(currentOrderID).trim();
+}
+
+// Restart of a list with recorded work: the server kept those picks, so drop
+// them from the fresh list instead of making the picker redo (and double-
+// record) them.
+function applyAlreadyPicked(alreadyPicked) {
+    let kept = 0;
+    for (const [code, n] of Object.entries(alreadyPicked)) {
+        for (let i = 0; i < n; i++) {
+            const idx = currentPicklist.indexOf(code);
+            if (idx === -1) break;
+            currentPicklist.splice(idx, 1);
+            kept++;
+        }
+    }
+    if (kept > 0) {
+        updateScannedList(currentPicklist, productData);
+        showNotification(
+            interpolate(ngettext(
+                'Kept %(count)s already-picked item from the previous attempt.',
+                'Kept %(count)s already-picked items from the previous attempt.',
+                kept), {count: kept}, true)
+        );
+    }
+}
+
+// The server refused the list (unknown product, order picked elsewhere, ...).
+// Clear it locally: picking a list that was never registered would silently
+// record nothing. The order id goes too, so the next pick is refused with
+// "scan the list QR first" instead of queueing into the void.
+function claimRejected(orderID, data) {
+    console.error('Picklist rejected by server:', data);
+    if (sameOrder(orderID)) {
+        currentPicklist.length = 0;
+        currentOrderID = null;
+        Object.keys(originalProductCounts).forEach(key => delete originalProductCounts[key]);
+        updateScannedList(currentPicklist, productData);
+        const codeDisplay = document.getElementById('picklist-code-display');
+        if (codeDisplay) codeDisplay.style.display = 'none';
+        showNotification((data && data.message) || gettext("Error sending picklist."), true);
+    }
+    reportScanEvent('sync_error', {
+        picklistCode: orderID ? String(orderID) : '',
+        message: (data && data.message) || 'scan-picklist rejected by server'
+    });
+}
+
+// A rejected pick is a pick the server did NOT record — the one case the
+// outbox cannot fix by trying again, so it is always reported. The picker is
+// only told about picks they can still do something about: a stale op from a
+// previous session would otherwise greet them with a stack of red toasts on
+// page open, about a list they finished hours ago.
+function pickRejected(op, status, data, thisSession) {
+    const payload = op.payload || {};
+    const endpoint = op.kind === 'bulk' ? 'bulk-product-pick' : 'product-pick';
+    reportScanEvent('sync_error', {
+        scannedCode: payload.productCode || '',
+        picklistCode: payload.orderID ? String(payload.orderID) : '',
+        message: (data && data.message) || `${endpoint} rejected (HTTP ${status})`
+    });
+    if (thisSession || sameOrder(payload.orderID)) {
+        showNotification(op.kind === 'bulk'
+            ? gettext("Could not update bulk product pick.")
+            : gettext("Could not update product pick."), true);
+    }
+    if (data && data.error_code === 'picklist_not_found' && sameOrder(payload.orderID)) {
+        // Stop the line only for the list in the picker's hands; a 404 for an
+        // older list would otherwise clear the current one.
+        showPicklistLostOverlay();
+    }
+}
+
+function completeRejected(op, status, data, thisSession) {
+    console.error('Complete-picklist rejected:', data);
+    const orderID = (op.payload || {}).orderID;
+    if (thisSession || sameOrder(orderID)) {
+        showNotification(gettext("Error completing picklist."), true);
+    }
+    reportScanEvent('sync_error', {
+        picklistCode: orderID ? String(orderID) : '',
+        message: (data && data.message) || `complete-picklist rejected (HTTP ${status})`
+    });
+    if (data && data.error_code === 'picklist_not_found' && sameOrder(orderID)) {
+        showPicklistLostOverlay();
+    }
+}
+
+// Claims whose already_picked has been applied. Trimming is not idempotent —
+// applying the same response twice would remove items nobody picked — and an
+// op can be answered twice if the queue could not record that it was sent.
+const trimmedClaims = new Set();
+
+document.addEventListener('outbox-op-done', function (event) {
+    const detail = event.detail || {};
+    const op = detail.op;
+    if (!op) return;
+    const data = detail.data;            // null when the body was not JSON
+    const payload = op.payload || {};
+    const thisSession = sessionOpIds.delete(op.id);
+
+    // A response carrying duplicate:true is a retry of an op that had already
+    // landed. It is deliberately invisible: the list on screen already reflects
+    // the pick, and the server changed nothing.
+    if (op.kind === 'claim') {
+        if (data && data.status && data.status !== 'ok') {
+            // A 200 that says "error" is still a refusal — that is how the
+            // view reports a list it will not claim.
+            claimRejected(payload.orderID, data);
+            return;
+        }
+        if (data && data.already_picked && sameOrder(payload.orderID) && !trimmedClaims.has(op.id)) {
+            trimmedClaims.add(op.id);
+            applyAlreadyPicked(data.already_picked);
+        }
+        return;
+    }
+
+    if (op.kind === 'complete') {
+        if (data && data.status && data.status !== 'ok') {
+            completeRejected(op, 200, data, thisSession);
+            return;
+        }
+        // Only celebrate a completion the picker is still waiting for.
+        if (thisSession) {
+            console.log('Picklist completed successfully:', data);
+            showNotification(gettext("Picklist completed!"), false);
+        }
+    }
+});
+
+document.addEventListener('outbox-op-rejected', function (event) {
+    const detail = event.detail || {};
+    const op = detail.op;
+    if (!op) return;
+    const data = detail.data;
+    const status = detail.status;
+    const thisSession = sessionOpIds.delete(op.id);
+
+    if (op.kind === 'claim') {
+        claimRejected((op.payload || {}).orderID, data);
+    } else if (op.kind === 'complete') {
+        completeRejected(op, status, data, thisSession);
+    } else {
+        pickRejected(op, status, data, thisSession);
+    }
+});
 
 
 // Fallback if the window.productData is not available
@@ -576,12 +680,8 @@ function executeBulkPick(productCode, quantity, returnToScanner) {
     // Send to server
     notifyBulkProductPicked({
         orderID: currentOrderID, productCode, quantity, timeTakenMs,
-        manualOverride: ctx.manualOverride === true, csrfToken
-    })
-        .catch(function (err) {
-            console.error('bulk-product-pick update failed', err);
-            showNotification(gettext("Could not update bulk product pick."), true);
-        });
+        manualOverride: ctx.manualOverride === true
+    });
 
     // Show notification
     const product = productData.find(function (item) { return item.code === productCode; });
@@ -600,7 +700,7 @@ function executeBulkPick(productCode, quantity, returnToScanner) {
     if (currentPicklist.length === 0) {
         isProcessingScan = false;
         resumeScanner();
-        notifyPicklistCompleted(currentOrderID, csrfToken);
+        notifyPicklistCompleted(currentOrderID);
     } else if (returnToScanner) {
         isProcessingScan = false;
         resumeScanner();
@@ -618,45 +718,17 @@ function executeBulkPick(productCode, quantity, returnToScanner) {
     }
 }
 
-function notifyBulkProductPicked({orderID, productCode, quantity, timeTakenMs, manualOverride = false, csrfToken}) {
-    return getDeviceFingerprint()
-        .then(function (deviceFingerprint) {
-            return fetch('/orderpiqr/bulk-product-pick', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify({
-                    orderID,
-                    productCode,
-                    quantity,
-                    timeTakenMs,
-                    deviceFingerprint,
-                    manualOverride,          // bulk confirm of an unscannable line
-                    scannedAt: new Date().toISOString()
-                })
-            });
-        })
-        .then(response => {
-            // Same contract as notifyProductPicked: a rejection means the
-            // picks were NOT recorded — report it and stop the line when the
-            // picklist itself is gone.
-            if (!response.ok) {
-                return response.json().catch(() => ({})).then(data => {
-                    reportScanEvent('sync_error', {
-                        scannedCode: productCode,
-                        picklistCode: orderID ? String(orderID) : '',
-                        message: data.message || `bulk-product-pick rejected (HTTP ${response.status})`
-                    });
-                    if (data.error_code === 'picklist_not_found') {
-                        showPicklistLostOverlay();
-                    }
-                    throw new Error(data.message || `bulk-product-pick failed (HTTP ${response.status})`);
-                });
-            }
-            return response;
-        });
+// Same contract as notifyProductPicked: queued, idempotent, and answered by
+// the outbox listeners rather than here.
+function notifyBulkProductPicked({orderID, productCode, quantity, timeTakenMs, manualOverride = false}) {
+    return queuedThisSession(enqueue('bulk', '/orderpiqr/bulk-product-pick', {
+        orderID,
+        productCode,
+        quantity,
+        timeTakenMs,
+        manualOverride,          // bulk confirm of an unscannable line
+        scannedAt: new Date().toISOString()
+    }));
 }
 
 // Bulk overlay event listeners

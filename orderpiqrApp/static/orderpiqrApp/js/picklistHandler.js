@@ -1,8 +1,8 @@
 // picklistHandler.js
 import {updateScannedList} from './domUpdater.js';
-import {getDeviceFingerprint} from './fingerprint.js';  // Import the fingerprint function
 import {showNotification} from './notifications.js';
 import {reportScanEvent} from './scanEventReporter.js';
+import {enqueue} from './pickOutbox.js';
 
 const gettext = window.gettext;  // Pull it from the global scope
 const ngettext = window.ngettext;
@@ -191,79 +191,32 @@ export function handlePicklist(code, currentPicklist, productData, skipConfirm =
 
             // If you need to save the orderID, you can handle it here separately later
             const orderID = rows[0];  // First row is the orderID
-            getDeviceFingerprint()
-                .then(deviceFingerprint => {
-                    // Send the request with picklist and device fingerprint
-                    fetch('/orderpiqr/scan-picklist', {  // Update the URL to your endpoint
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': csrfToken  // Include CSRF token in the headers
-                        },
-                        body: JSON.stringify({
-                            orderID: orderID,
-                            picklist: currentPicklist,
-                            deviceFingerprint: deviceFingerprint,  // Add fingerprint to the request
-                            // Device context, recorded once per list rather
-                            // than once per pick: which build this phone runs,
-                            // and whether the app is installed or a browser tab
-                            // (a tab can lose its identity to storage eviction).
-                            ...(window.orderpiqrHealth ? window.orderpiqrHealth.context() : {}),
-                        })
-                    })
-                        .then(response => response.json().then(data => ({ok: response.ok, data})))
-                        .then(({ok, data}) => {
-                            if (ok && data.status === 'ok' && data.already_picked) {
-                                // Restart of a list with recorded work: the
-                                // server kept those picks, so drop them from
-                                // the fresh list instead of making the picker
-                                // redo (and double-record) them.
-                                let kept = 0;
-                                for (const [code, n] of Object.entries(data.already_picked)) {
-                                    for (let i = 0; i < n; i++) {
-                                        const idx = currentPicklist.indexOf(code);
-                                        if (idx === -1) break;
-                                        currentPicklist.splice(idx, 1);
-                                        kept++;
-                                    }
-                                }
-                                if (kept > 0) {
-                                    updateScannedList(currentPicklist, productData);
-                                    showNotification(
-                                        interpolate(ngettext(
-                                            'Kept %(count)s already-picked item from the previous attempt.',
-                                            'Kept %(count)s already-picked items from the previous attempt.',
-                                            kept), {count: kept}, true)
-                                    );
-                                }
-                            }
-                            if (!ok || data.status !== 'ok') {
-                                // The server refused the list (unknown product,
-                                // order picked elsewhere, ...). Clear it locally:
-                                // picking a list that was never registered would
-                                // silently record nothing.
-                                console.error('Picklist rejected by server:', data);
-                                currentPicklist.length = 0;
-                                updateScannedList(currentPicklist, productData);
-                                showNotification((data && data.message) || gettext("Error sending picklist."), true);
-                                // Server rejection only — network failures land
-                                // in .catch and are not reported (the report
-                                // itself would fail too).
-                                reportScanEvent('sync_error', {
-                                    picklistCode: scannedOrderID,
-                                    message: (data && data.message) || 'scan-picklist rejected by server'
-                                });
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error sending picklist:', error);
-                            showNotification(gettext("Error sending picklist."), true);
-                        });
-                })
-                .catch(error => {
-                    console.error('Error getting device fingerprint:', error);
-                    showNotification(gettext("Error getting device fingerprint."), true);
-                });
+            // The claim is queued, not awaited, and the list starts on the
+            // device immediately: that is what kills the ghost list a failed
+            // claim used to create. The outbox is strictly FIFO, so this claim
+            // reaches the server before any pick for this order can.
+            //
+            // Enqueueing synchronously — before this function returns the list
+            // to its caller, which is what makes picking possible — is what
+            // makes that guarantee hold. Resolving the device fingerprint here
+            // first (as this used to) would leave a window in which a pick
+            // could be queued ahead of its own claim; the outbox fills the
+            // fingerprint in instead.
+            //
+            // The response is handled in camera_page.js (on outbox-op-done /
+            // outbox-op-rejected): trimming already-picked items and clearing a
+            // refused list both need the live picklist state, which lives there.
+            enqueue('claim', '/orderpiqr/scan-picklist', {
+                orderID: orderID,
+                // A copy: the caller starts splicing this list as soon as it
+                // gets it, and the claim must describe the list as scanned.
+                picklist: [...currentPicklist],
+                // Device context, recorded once per list rather than once per
+                // pick: which build this phone runs, and whether the app is
+                // installed or a browser tab (a tab can lose its identity to
+                // storage eviction).
+                ...(window.orderpiqrHealth ? window.orderpiqrHealth.context() : {}),
+            });
 
             // Reset flag after processing the picklist
             isProcessingPicklist = false;

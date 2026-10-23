@@ -356,6 +356,27 @@ def scan_picklist(request):
     })
 
 
+def _client_pick_id(payload):
+    """The client's id for this pick operation, or '' when it sent none.
+
+    Trimmed to the column width so an oversized or junk value can never turn a
+    retry into a 500 — an unrecognisable id simply means no replay protection.
+    """
+    return str(payload.get("pickId") or "").strip()[:64]
+
+
+def _duplicate_pick_row(picklist, pick_id):
+    """The row this pick id already marked on this picklist, or None.
+
+    The id is stamped on every row an operation marks, so one hit means the
+    whole operation (single or bulk) already landed.
+    """
+    if not pick_id:
+        return None
+    return (ProductPick.objects.filter(picklist=picklist, client_pick_id=pick_id)
+            .select_related("product").order_by("id").first())
+
+
 def product_pick(request):
     payload = json.loads(request.body.decode("utf-8"))
     order_id = payload.get("orderID")
@@ -364,6 +385,7 @@ def product_pick(request):
     successful = bool(payload.get("successful", True))
     manual_override = bool(payload.get("manualOverride", False))
     time_taken_ms = payload.get("timeTakenMs")
+    pick_id = _client_pick_id(payload)
     scanned_at = payload.get("scannedAt") or timezone.now().isoformat()
 
     device, device_error = _resolve_device(request, device_fp)
@@ -395,6 +417,21 @@ def product_pick(request):
         return JsonResponse({"status": "error", "error_code": "picklist_not_found",
                              "message": _("PickList not found for device/customer")}, status=404)
 
+    # A retried pick must not consume a second row. Answered before the product
+    # lookup and before any write: this call already succeeded once, so the only
+    # honest reply is the original one.
+    already = _duplicate_pick_row(picklist, pick_id)
+    if already is not None:
+        return JsonResponse({
+            "status": "ok",
+            "duplicate": True,
+            "picklist_code": picklist.picklist_code,
+            "product_code": already.product.code,
+            "updated_productpick_id": already.id,
+            "remaining_for_product": ProductPick.objects.filter(
+                picklist=picklist, product=already.product, successful__isnull=True).count(),
+        }, status=200)
+
     try:
         product = resolve_product(device.customer, product_code)
         if not product:
@@ -413,17 +450,24 @@ def product_pick(request):
         return JsonResponse({"status": "noop", "message": _("No pending ProductPick rows for this product.")},
                             status=200, )
 
-    time_taken = timedelta(milliseconds=int(time_taken_ms))
+    # timeTakenMs is optional, matching the bulk path. A pick that sat in the
+    # client's offline queue has no live stopwatch to report, and `int(None)`
+    # here used to raise — losing the very pick the retry was meant to save.
+    try:
+        time_taken = timedelta(milliseconds=int(time_taken_ms)) if time_taken_ms else None
+    except (TypeError, ValueError):
+        time_taken = None
 
     # Update fields
     pp.successful = successful
     pp.time_taken = time_taken
+    pp.client_pick_id = pick_id
 
     # Append device/scanned info to notes
     stamp = f"device={device_fp}; scanned_at={scanned_at}"
     pp.notes = f"{pp.notes}\n{stamp}" if pp.notes else stamp
 
-    pp.save(update_fields=["successful", "time_taken", "notes"])
+    pp.save(update_fields=["successful", "time_taken", "notes", "client_pick_id"])
 
     remaining_for_product = qs.filter(successful__isnull=True).count()
 
@@ -447,6 +491,7 @@ def bulk_product_pick(request):
     device_fp = payload.get("deviceFingerprint")
     quantity = payload.get("quantity")
     time_taken_ms = payload.get("timeTakenMs")
+    pick_id = _client_pick_id(payload)
     scanned_at = payload.get("scannedAt") or timezone.now().isoformat()
 
     if not quantity or int(quantity) < 1:
@@ -484,6 +529,22 @@ def bulk_product_pick(request):
         return JsonResponse({"status": "error", "error_code": "picklist_not_found",
                              "message": _("PickList not found")}, status=404)
 
+    # Checked before the availability test, which is what a replay would trip
+    # over: the rows this operation marked are no longer unpicked, so a retry
+    # would otherwise be rejected with "only N unpicked rows available".
+    already = _duplicate_pick_row(picklist, pick_id)
+    if already is not None:
+        return JsonResponse({
+            "status": "ok",
+            "duplicate": True,
+            "picklist_code": picklist.picklist_code,
+            "product_code": already.product.code,
+            "updated_count": ProductPick.objects.filter(
+                picklist=picklist, client_pick_id=pick_id).count(),
+            "remaining_for_product": ProductPick.objects.filter(
+                picklist=picklist, product=already.product, successful__isnull=True).count(),
+        }, status=200)
+
     product = resolve_product(device.customer, product_code)
     if not product:
         return JsonResponse({"status": "error", "message": _("Product not found")}, status=404)
@@ -509,7 +570,10 @@ def bulk_product_pick(request):
             pp.successful = True
             pp.time_taken = time_taken if i == 0 else timedelta(0)
             pp.notes = f"{pp.notes}\n{stamp}" if pp.notes else stamp
-            pp.save(update_fields=["successful", "time_taken", "notes"])
+            # Every row this operation marks carries the id, so the duplicate
+            # check above finds it no matter which row it looks at.
+            pp.client_pick_id = pick_id
+            pp.save(update_fields=["successful", "time_taken", "notes", "client_pick_id"])
 
     remaining = qs.filter(successful__isnull=True).count()
 
@@ -539,7 +603,17 @@ def complete_picklist(request):
             touch_device(device)
             picklist = PickList.objects.filter(picklist_code=order_id, customer=device.customer,
                                                device=device).first()
-            if picklist:
+            if picklist and picklist.successful:
+                # Already completed by this device. A retried completion used to
+                # fall through and run the whole finish again: inventory
+                # decremented twice, the platform write-back queued twice, and
+                # time_taken stretched to "now minus pick_time" every time.
+                return JsonResponse({
+                    'status': 'ok',
+                    'duplicate': True,
+                    'message': _('Picklist processed successfully'),
+                })
+            elif picklist:
                 now = timezone.localtime(timezone.now())  # now in local time
                 pick_time = timezone.localtime(picklist.pick_time)  # ensure pick_time is also local
                 picklist.time_taken = now - pick_time
