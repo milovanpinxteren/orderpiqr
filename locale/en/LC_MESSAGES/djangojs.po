@@ -970,3 +970,7 @@ msgstr ""
 #: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
 msgid "Open your browser menu"
 msgstr "Open your browser menu"
+
+#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
+msgid "You have the app installed — open it from your home screen"
+msgstr "You have the app installed — open it from your home screen"

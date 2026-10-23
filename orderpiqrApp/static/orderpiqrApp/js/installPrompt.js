@@ -150,17 +150,36 @@
         return Promise.resolve(false);
     }
 
-    // The persistent link. Unlike the banner it is never dismissed: a device
-    // that has not installed the app keeps a small, out-of-the-way way to do so
-    // from the settings menu. It is the holdouts that matter — a browser tab
-    // loses its device identity and the offline pick queue to Safari's 7-day
-    // storage eviction, which an installed app is exempt from.
+    // The settings-menu affordance. A browser tab is the mode we want people
+    // out of — it loses its device identity and the offline pick queue to
+    // Safari's 7-day storage eviction, which an installed app is exempt from.
+    // So: if the app is NOT installed, offer to install it; if it IS installed
+    // (and they are still in a browser tab), remind them to open it from the
+    // home screen instead. A page cannot launch the installed app — there is no
+    // web API for it — so the reminder is text, not a button.
     function setupInstallLink() {
-        if (isStandalone()) return;
+        if (isStandalone()) return;   // already in the app; nothing to say
         isInstalledApp().then(function (installed) {
-            if (installed) return;   // already on the home screen; nothing to offer
-            showInstallLink();
+            if (installed) {
+                showInstalledReminder();
+            } else {
+                showInstallLink();
+            }
         });
+    }
+
+    function showInstalledReminder() {
+        const slot = document.getElementById('install-link-slot');
+        const row = document.getElementById('install-row');
+        if (!slot || slot.firstChild) return;
+
+        const reminder = document.createElement('div');
+        reminder.className = 'install-reminder';
+        reminder.innerHTML =
+            '<img src="/static/icons/icon-192.png" alt="" class="install-link-icon">' +
+            '<span>' + gettext('You have the app installed — open it from your home screen') + '</span>';
+        slot.appendChild(reminder);
+        if (row) row.hidden = false;
     }
 
     function showInstallLink() {

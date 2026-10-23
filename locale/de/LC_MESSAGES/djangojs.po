@@ -1125,5 +1125,9 @@ msgstr "%(count)s übersprungen"
 msgid "Open your browser menu"
 msgstr "Öffne das Browser-Menü"
 
+#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
+msgid "You have the app installed — open it from your home screen"
+msgstr "Die App ist installiert — öffne sie über deinen Startbildschirm"
+
 #~ msgid "Error getting device fingerprint."
 #~ msgstr "Fehler beim Abrufen des Geräte-Fingerprints."

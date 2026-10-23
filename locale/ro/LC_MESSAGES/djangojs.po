@@ -1133,5 +1133,9 @@ msgstr "%(count)s omise"
 msgid "Open your browser menu"
 msgstr "Deschide meniul browserului"
 
+#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
+msgid "You have the app installed — open it from your home screen"
+msgstr "Aplicația este instalată — deschide-o din ecranul principal"
+
 #~ msgid "Error getting device fingerprint."
 #~ msgstr "Eroare la obținerea amprentei dispozitivului."
