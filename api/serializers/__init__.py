@@ -5,3 +5,4 @@ from .picklist_serializer import PickListSerializer, PickListDetailSerializer, P
 from .productpick_serializer import ProductPickSerializer, ProductPickUpdateSerializer, ProductPickBulkUpdateSerializer
 from .device_serializer import DeviceSerializer, DeviceCreateSerializer, DeviceStatsSerializer
 from .inventory_serializer import InventoryLogSerializer, InventoryModifySerializer
+from .scanevent_serializer import ScanEventSerializer

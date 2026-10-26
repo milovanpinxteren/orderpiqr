@@ -15,7 +15,7 @@ from django.utils import timezone
 from django.utils.dateparse import parse_date
 from django.utils.translation import gettext as _, ngettext
 from collections import Counter
-from datetime import datetime, time, timedelta
+from datetime import timedelta
 import json
 import csv
 import io
@@ -28,6 +28,7 @@ from orderpiqrApp.utils.csv_import import (
     CSVImportError, read_csv_rows, parse_bool, PRODUCT_CSV_FIELDS, ORDER_CSV_FIELDS,
 )
 from orderpiqrApp.utils.build_id import get_build_id
+from orderpiqrApp.utils.health import health_window, pick_outcomes
 from orderpiqrApp.utils.inventory import is_inventory_enabled, is_queue_enabled, modify_inventory
 from orderpiqrApp.utils.login_qr import active_token, issue_token, login_url
 from orderpiqrApp.utils.products import code_conflict, merge_products, resolve_product, set_alias_codes, set_primary_code
@@ -1367,41 +1368,11 @@ def picklists_bulk_action(request):
 def _health_window(request):
     """Resolve the dashboard's time window from the query string.
 
-    Returns (start, end, preset, label). Every number on the page is computed
-    from this one window — the previous version filtered the event list by the
-    dates but the tiles by a separate rolling 7 days, and ignored the filter
-    entirely for stale picklists, so three parts of one screen could describe
-    three different periods.
-
-    The default is the last 24 hours rather than the calendar day: shifts run
-    into the evening, and the question is almost always asked the next morning.
+    Thin wrapper over `utils.health.health_window`, which takes the dict-like
+    of query params directly so the API endpoint can share the exact same
+    logic without a request object.
     """
-    now = timezone.now()
-    date_from = parse_date(request.GET.get('date_from', '') or '')
-    date_to = parse_date(request.GET.get('date_to', '') or '')
-
-    if date_from or date_to:
-        start = (timezone.make_aware(datetime.combine(date_from, time.min))
-                 if date_from else now - timedelta(days=365))
-        end = (timezone.make_aware(datetime.combine(date_to, time.max))
-               if date_to else now)
-        return start, end, 'custom', _('custom range')
-
-    preset = request.GET.get('preset') or '24h'
-    today = timezone.localdate(now)
-    if preset == 'today':
-        return (timezone.make_aware(datetime.combine(today, time.min)), now,
-                'today', _('today'))
-    if preset == 'yesterday':
-        yesterday = today - timedelta(days=1)
-        return (timezone.make_aware(datetime.combine(yesterday, time.min)),
-                timezone.make_aware(datetime.combine(yesterday, time.max)),
-                'yesterday', _('yesterday'))
-    if preset == '7d':
-        return now - timedelta(days=7), now, '7d', _('last 7 days')
-    if preset == '30d':
-        return now - timedelta(days=30), now, '30d', _('last 30 days')
-    return now - timedelta(hours=24), now, '24h', _('last 24 hours')
+    return health_window(request.GET)
 
 
 # Which event types roll up into each headline tile. Severity answers "how bad",
@@ -1556,45 +1527,12 @@ def _add_problem_codes(context, customer, window):
 def _add_pick_outcomes(context, customer, start, end):
     """Did the work actually get recorded? The metric that measures real harm.
 
-    Lines left pending on a list the client marked complete are picks the
-    picker made and the server never stored. On 2026-10-11 that was 15.2% of
-    all lines; nothing on this page would have shown it.
+    Thin wrapper over `utils.health.pick_outcomes`, which returns the dict
+    instead of mutating a view context so the API endpoint can reuse it too.
     """
-    picklists = PickList.objects.filter(
-        customer=customer, pick_time__gte=start, pick_time__lte=end, archived=False)
-
-    completed_ids = list(picklists.filter(successful=True).values_list('picklist_id', flat=True))
-    total_lines = ProductPick.objects.filter(picklist__in=picklists).count()
-    # Union on purpose: completion normally resolves pending rows to lost, but
-    # a completion that bypassed the hooks (admin-direct ORM write) leaves them
-    # pending — those are lost all the same.
-    lost_lines = ProductPick.objects.filter(picklist__in=picklists).filter(
-        Q(outcome='lost') | Q(outcome='pending', picklist_id__in=completed_ids)).count()
-    short_lines = ProductPick.objects.filter(
-        picklist__in=picklists, outcome='short').count()
-
-    restarted = picklists.filter(notes__contains='Restarted by device')
-
-    # Fleet facts for the same window, so every number on the page describes one
-    # period. A device still on an older build matters because a half-rolled-out
-    # deploy looks exactly like "the app broke this morning".
-    devices_used = picklists.exclude(device__isnull=True).values('device_id').distinct().count()
-    current_build = get_build_id()
+    outcomes, current_build = pick_outcomes(customer, start, end)
     context['current_build'] = current_build
-    context['outcomes'] = {
-        'lists_total': picklists.count(),
-        'lists_completed': len(completed_ids),
-        'lists_open': picklists.filter(successful__isnull=True).count(),
-        'lines_total': total_lines,
-        'lines_short': short_lines,
-        'lines_lost': lost_lines,
-        'lines_lost_pct': round(100.0 * lost_lines / total_lines, 1) if total_lines else 0.0,
-        'lists_restarted': restarted.count(),
-        'devices_used': devices_used,
-        'devices_on_old_build': Device.objects.filter(
-            customer=customer, last_login__gte=start, last_login__lte=end,
-        ).exclude(last_build_id='').exclude(last_build_id=current_build).count(),
-    }
+    context['outcomes'] = outcomes
 
 
 @company_admin_required

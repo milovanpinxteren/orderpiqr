@@ -92,7 +92,7 @@ class PickListViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = PickList.objects.filter(
             customer=self.request.user.userprofile.customer
-        ).select_related('device', 'order')
+        ).select_related('device__user', 'order')
 
         # Manual filtering
         successful = self.request.query_params.get('successful')

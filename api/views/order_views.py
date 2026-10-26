@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _
 from api.serializers import OrderSerializer, OrderDetailSerializer, OrderCreateSerializer
 from orderpiqrApp.models import Order, OrderLine, Product
 from orderpiqrApp.utils.products import add_alias_codes, resolve_product
+from orderpiqrApp.utils.health import build_pick_aggregates
 from rest_framework import filters
 from django.db import DatabaseError, transaction
 from django.db.models import Count, Max, Sum
@@ -154,6 +155,15 @@ def _upsert_order(customer, order_data, source, counters):
         - `?ordering=status` - Sort by status
 
         **Example:** `GET /api/orders/?status=queued&ordering=queue_position`
+
+        **Pick aggregates:** every line under `lines` carries `requested_quantity`,
+        `picked_quantity`, `short_quantity` and `lost_quantity` for the (order, product)
+        pair — computed once per request in a single grouped query, not per line. Two
+        lines for the same product on the same order repeat the same aggregate; do not
+        sum them. A nightly reconciliation pull is one call per date, e.g.
+        `GET /api/orders/?search=-20261025` (order codes carry the date), which typically
+        pages through 2-4 pages at the default page size — there is no need to page
+        `/api/productpicks/` separately to get this picture.
         """
     ),
     retrieve=extend_schema(
@@ -255,6 +265,23 @@ class OrderViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return OrderCreateSerializer
         return OrderSerializer
+
+    def get_serializer(self, *args, **kwargs):
+        """Inject `pick_aggregates` into the context for list/retrieve, so the
+        nested line serializers can show requested/picked/short/lost without
+        every other action (create, cancel, stats, ...) paying for the query.
+
+        `args[0]` is the page (a list of Order instances) for `list`, or the
+        single instance for `retrieve` — both built from one grouped query
+        over `build_pick_aggregates`, never one query per order.
+        """
+        if self.action in ('list', 'retrieve') and args:
+            target = args[0]
+            order_ids = [target.order_id] if isinstance(target, Order) else [o.order_id for o in target]
+            context = self.get_serializer_context()
+            context['pick_aggregates'] = build_pick_aggregates(order_ids)
+            kwargs['context'] = context
+        return super().get_serializer(*args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save(customer=self.request.user.userprofile.customer)
@@ -404,7 +431,12 @@ class OrderViewSet(viewsets.ModelViewSet):
                 order_code=code,
                 customer=request.user.userprofile.customer
             )
-            serializer = OrderDetailSerializer(order)
+            # Same aggregates as list/retrieve — this is a third route to the
+            # same OrderDetailSerializer, built directly rather than through
+            # get_serializer(), so it needs the context given explicitly too.
+            context = self.get_serializer_context()
+            context['pick_aggregates'] = build_pick_aggregates([order.order_id])
+            serializer = OrderDetailSerializer(order, context=context)
             return Response(serializer.data)
         except Order.DoesNotExist:
             return Response(

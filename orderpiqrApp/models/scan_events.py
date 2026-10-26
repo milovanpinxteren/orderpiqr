@@ -85,6 +85,10 @@ class ScanEvent(models.Model):
             models.Index(fields=['customer', 'event_type', 'created_at']),
             models.Index(fields=['customer', 'severity', 'created_at']),
             models.Index(fields=['customer', 'device', 'created_at']),
+            # The API's picklist_code filter (one list's events, nightly pulls)
+            # had no index to lean on — the other four all key off event_type,
+            # severity or device instead.
+            models.Index(fields=['customer', 'picklist_code', 'created_at']),
         ]
 
     @property

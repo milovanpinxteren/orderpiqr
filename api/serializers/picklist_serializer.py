@@ -8,6 +8,11 @@ class PickListSerializer(serializers.ModelSerializer):
     Basic serializer for PickList model.
     """
     device_name = serializers.CharField(source='device.name', read_only=True)
+    # Who was actually holding the device, not just which device it was — a
+    # phone is often shared across a shift, so "device 12" alone can't answer
+    # "who picked this list".
+    device_user = serializers.IntegerField(source='device.user_id', read_only=True, allow_null=True)
+    device_username = serializers.CharField(source='device.user.username', read_only=True, allow_null=True)
     order_code = serializers.CharField(source='order.order_code', read_only=True, allow_null=True)
     product_count = serializers.SerializerMethodField(
         help_text="Number of products in this pick list"
@@ -23,6 +28,8 @@ class PickListSerializer(serializers.ModelSerializer):
             'picklist_code',
             'device',
             'device_name',
+            'device_user',
+            'device_username',
             'created_at',
             'updated_at',
             'pick_started',
@@ -34,7 +41,7 @@ class PickListSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             'customer', 'created_at', 'updated_at', 'device_name',
-            'order_code', 'product_count'
+            'device_user', 'device_username', 'order_code', 'product_count'
         ]
 
     def get_product_count(self, obj) -> int:

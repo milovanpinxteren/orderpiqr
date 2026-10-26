@@ -319,6 +319,8 @@ All endpoints require JWT authentication. Obtain a token via `POST /api/token/` 
         {'name': 'picklists', 'description': 'Pick list management - picking jobs assigned to devices'},
         {'name': 'productpicks', 'description': 'Product picks - individual items within a pick list'},
         {'name': 'orderlines', 'description': 'Order lines - individual items within an order'},
+        {'name': 'scanevents', 'description': 'Scan events - pick-flow health events (failed scans, rejected picklists, overrides)'},
+        {'name': 'health', 'description': 'Pick-flow health aggregates - the same counters shown on the manage health page'},
     ]
 }
 
