@@ -307,7 +307,7 @@ class HealthListTests(ManageHealthTestCase):
                                          description='Thing')
         ProductPick.objects.create(product=product, picklist=stale, quantity=1)
         ProductPick.objects.create(product=product, picklist=stale, quantity=1,
-                                   successful=True)
+                                   outcome='picked')
         PickList.objects.filter(pk=stale.pk).update(
             notes='Restarted by device Scanner 1 at x\nRestarted by device Scanner 1 at y')
 
@@ -403,13 +403,16 @@ class HealthOutcomeTests(ManageHealthTestCase):
         self.product = Product.objects.create(customer=self.customer, code='P-1',
                                               description='Thing')
 
-    def _list(self, code, successful, picked, pending):
+    def _list(self, code, successful, picked, pending, short=0):
         picklist = PickList.objects.create(
             customer=self.customer, device=self.device, picklist_code=code,
             pick_started=True, successful=successful)
         for _ in range(picked):
             ProductPick.objects.create(product=self.product, picklist=picklist,
-                                       quantity=1, successful=True)
+                                       quantity=1, outcome='picked')
+        for _ in range(short):
+            ProductPick.objects.create(product=self.product, picklist=picklist,
+                                       quantity=1, outcome='short', short_reason='other')
         for _ in range(pending):
             ProductPick.objects.create(product=self.product, picklist=picklist,
                                        quantity=1)
@@ -424,6 +427,26 @@ class HealthOutcomeTests(ManageHealthTestCase):
         self.assertEqual(outcomes['lines_total'], 10)
         self.assertEqual(outcomes['lines_lost'], 2)
         self.assertEqual(outcomes['lines_lost_pct'], 20.0)
+
+    def test_resolved_lost_lines_count_without_a_completed_parent(self):
+        # Lost is a recorded outcome in its own right (the completion hooks
+        # write it); it must count even when the parent list looks open.
+        picklist = self._list('PL-LOST', successful=None, picked=1, pending=1)
+        ProductPick.objects.filter(picklist=picklist, outcome='pending').update(
+            outcome='lost')
+
+        outcomes = self.client.get(self.url).context['outcomes']
+
+        self.assertEqual(outcomes['lines_lost'], 1)
+
+    def test_short_lines_are_counted_separately(self):
+        # Declared shorts are recorded work, not lost picks.
+        self._list('PL-SHORT', successful=True, picked=3, pending=0, short=2)
+
+        outcomes = self.client.get(self.url).context['outcomes']
+
+        self.assertEqual(outcomes['lines_short'], 2)
+        self.assertEqual(outcomes['lines_lost'], 0)
 
     def test_pending_lines_on_an_open_list_are_not_lost(self):
         # Still being picked is not the same as silently dropped.

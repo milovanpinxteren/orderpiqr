@@ -43,7 +43,7 @@ class PickIdempotencyTestCase(ScanEndpointTestCase):
 
     def picked_count(self, order_id='ORD-1'):
         picklist = PickList.objects.get(picklist_code=order_id, customer=self.customer)
-        return ProductPick.objects.filter(picklist=picklist, successful=True).count()
+        return ProductPick.objects.filter(picklist=picklist, outcome='picked').count()
 
 
 class ProductPickReplayTests(PickIdempotencyTestCase):
@@ -81,7 +81,7 @@ class ProductPickReplayTests(PickIdempotencyTestCase):
         self.scan(['SMOOTHIE-1'])
         self.pick(pickId='pick-abc')
 
-        pp = ProductPick.objects.get(successful=True)
+        pp = ProductPick.objects.get(outcome='picked')
         self.assertEqual(pp.client_pick_id, 'pick-abc')
 
     def test_distinct_pick_ids_mark_distinct_rows(self):
@@ -120,7 +120,7 @@ class ProductPickReplayTests(PickIdempotencyTestCase):
 
         self.assertTrue(second.json()['duplicate'])
         self.assertEqual(self.picked_count(), 1)
-        self.assertEqual(ProductPick.objects.get(successful=True).client_pick_id, 'x' * 64)
+        self.assertEqual(ProductPick.objects.get(outcome='picked').client_pick_id, 'x' * 64)
 
     def test_pick_id_from_another_picklist_does_not_collide(self):
         self.scan(['SMOOTHIE-1'], order_id='ORD-1')
@@ -151,7 +151,7 @@ class ProductPickTimeTakenTests(PickIdempotencyTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.picked_count(), 1)
-        self.assertIsNone(ProductPick.objects.get(successful=True).time_taken)
+        self.assertIsNone(ProductPick.objects.get(outcome='picked').time_taken)
 
     def test_missing_time_taken_ms_is_accepted(self):
         self.scan(['SMOOTHIE-1'])
@@ -170,7 +170,7 @@ class ProductPickTimeTakenTests(PickIdempotencyTestCase):
         response = self.pick(timeTakenMs='not-a-number')
 
         self.assertEqual(response.status_code, 200)
-        self.assertIsNone(ProductPick.objects.get(successful=True).time_taken)
+        self.assertIsNone(ProductPick.objects.get(outcome='picked').time_taken)
 
 
 class BulkProductPickReplayTests(PickIdempotencyTestCase):
@@ -281,7 +281,7 @@ class ClaimReplayTests(PickIdempotencyTestCase):
 
         self.assertEqual(self.picked_count(), 1)
         self.assertTrue(
-            ProductPick.objects.filter(client_pick_id='pick-abc', successful=True).exists())
+            ProductPick.objects.filter(client_pick_id='pick-abc', outcome='picked').exists())
 
 
 class CompletePicklistReplayTests(PickIdempotencyTestCase):

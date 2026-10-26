@@ -24,6 +24,7 @@ from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiExam
         - `?product=123` - Filter by product ID
         - `?successful=true` - Only successful picks
         - `?successful=false` - Only failed picks
+        - `?outcome=pending|picked|short|lost` - Filter by recorded outcome
 
         **Ordering:**
         - `?ordering=product__location` - Sort by product location (useful for picking order)
@@ -105,6 +106,10 @@ class ProductPickViewSet(viewsets.ModelViewSet):
             elif successful.lower() == 'false':
                 queryset = queryset.filter(successful=False)
 
+        outcome = self.request.query_params.get('outcome')
+        if outcome in ProductPick.Outcome.values:
+            queryset = queryset.filter(outcome=outcome)
+
         return queryset
 
     def destroy(self, request, *args, **kwargs):
@@ -137,9 +142,10 @@ class ProductPickViewSet(viewsets.ModelViewSet):
     def success(self, request, pk=None):
         """Mark a product pick as successful."""
         pick = self.get_object()
-        pick.successful = True
+        pick.outcome = ProductPick.Outcome.PICKED
+        pick.short_reason = ''
         pick.notes = request.data.get('notes', pick.notes)
-        pick.save(update_fields=['successful', 'notes'])
+        pick.save(update_fields=['outcome', 'successful', 'short_reason', 'notes'])
 
         return Response({
             'status': 'ok',
@@ -153,6 +159,7 @@ class ProductPickViewSet(viewsets.ModelViewSet):
             "application/json": {
                 "type": "object",
                 "properties": {
+                    "reason": {"type": "string", "description": "Short reason slug (not_found, insufficient_stock, damaged, wrong_product, other)"},
                     "notes": {"type": "string", "description": "Reason for failure (recommended)"}
                 }
             }
@@ -171,11 +178,15 @@ class ProductPickViewSet(viewsets.ModelViewSet):
     )
     @action(detail=True, methods=['post'])
     def fail(self, request, pk=None):
-        """Mark a product pick as failed."""
+        """Mark a product pick as failed (declared short)."""
         pick = self.get_object()
-        pick.successful = False
+        pick.outcome = ProductPick.Outcome.SHORT
+        reason = str(request.data.get('reason') or '').strip()
+        if reason not in ProductPick.ShortReason.values:
+            reason = ProductPick.ShortReason.OTHER
+        pick.short_reason = reason
         pick.notes = request.data.get('notes', pick.notes)
-        pick.save(update_fields=['successful', 'notes'])
+        pick.save(update_fields=['outcome', 'successful', 'short_reason', 'notes'])
 
         return Response({
             'status': 'ok',
@@ -255,7 +266,19 @@ class ProductPickViewSet(viewsets.ModelViewSet):
                         id=pick_id,
                         picklist__customer=customer
                     )
-                    pick.successful = pick_data.get('successful')
+                    # Legacy writers post `successful`; an explicit outcome wins.
+                    outcome = pick_data.get('outcome')
+                    if outcome not in ProductPick.Outcome.values:
+                        outcome = ProductPick.outcome_from_successful(
+                            pick_data.get('successful'))
+                    pick.outcome = outcome
+                    if outcome == ProductPick.Outcome.SHORT:
+                        reason = str(pick_data.get('short_reason') or '').strip()
+                        if reason not in ProductPick.ShortReason.values:
+                            reason = pick.short_reason or ProductPick.ShortReason.OTHER
+                        pick.short_reason = reason
+                    else:
+                        pick.short_reason = ''
                     if 'notes' in pick_data:
                         pick.notes = pick_data['notes']
                     pick.save()
@@ -297,6 +320,8 @@ class ProductPickViewSet(viewsets.ModelViewSet):
                             "total_picks": 1500,
                             "successful": 1450,
                             "failed": 30,
+                            "short": 30,
+                            "lost": 5,
                             "pending": 20,
                             "success_rate": 98.0,
                             "avg_quantity": 1.2,
@@ -315,13 +340,16 @@ class ProductPickViewSet(viewsets.ModelViewSet):
         customer = request.user.userprofile.customer
         picks = ProductPick.objects.filter(picklist__customer=customer)
 
-        successful = picks.filter(successful=True).count()
-        failed = picks.filter(successful=False).count()
+        # Recomputed via outcome: `failed` keeps its key but now means
+        # "declared short"; lost rows are reported separately, not as failed.
+        successful = picks.filter(outcome=ProductPick.Outcome.PICKED).count()
+        failed = picks.filter(outcome=ProductPick.Outcome.SHORT).count()
+        lost = picks.filter(outcome=ProductPick.Outcome.LOST).count()
         total_completed = successful + failed
         success_rate = round((successful / total_completed * 100) if total_completed > 0 else 0, 1)
 
         # Products with most failures
-        problem_products = picks.filter(successful=False).values(
+        problem_products = picks.filter(outcome=ProductPick.Outcome.SHORT).values(
             'product__product_id', 'product__code', 'product__description'
         ).annotate(
             failure_count=Count('id')
@@ -331,7 +359,9 @@ class ProductPickViewSet(viewsets.ModelViewSet):
             'total_picks': picks.count(),
             'successful': successful,
             'failed': failed,
-            'pending': picks.filter(successful__isnull=True).count(),
+            'short': failed,
+            'lost': lost,
+            'pending': picks.filter(outcome=ProductPick.Outcome.PENDING).count(),
             'success_rate': success_rate,
             'avg_quantity': picks.aggregate(avg=Avg('quantity'))['avg'] or 0,
             'problem_products': [

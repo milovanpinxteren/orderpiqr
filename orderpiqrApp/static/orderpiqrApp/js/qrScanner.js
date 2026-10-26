@@ -10,9 +10,34 @@
 const gettext = window.gettext || (s => s);
 
 const LAST_CAMERA_KEY = 'orderpiqr_last_camera_id';
+// Sentinel value of the iOS-only "let the phone choose" dropdown entry. Not a
+// device id, so it can never collide with one.
+const AUTO_CAMERA_VALUE = '__auto__';
 // No qrbox/formatsToSupport: the full frame is scanned and every format the
 // library knows is accepted, matching the old Html5QrcodeScanner behavior.
 const SCAN_CONFIG = {fps: 5, aspectRatio: 1.0};
+
+// Resolution hints. iOS getUserMedia hands back ~640x480 when nothing is asked
+// for, which is marginal for a dense DataMatrix or a small GS1-128 — the camera
+// looks fine and simply never decodes. "ideal" is a hint, not a requirement: a
+// phone that cannot do 1080p returns its best instead of failing.
+//
+// These CANNOT go in start()'s first argument. html5-qrcode 2.3.8 runs that
+// argument through createVideoConstraints(), which throws unless the object has
+// exactly one key and that key is 'deviceId' or 'facingMode'. The supported
+// route is the scan config's videoConstraints, which start() passes to
+// getUserMedia *instead of* the first argument:
+//     var a = c ? s.videoConstraints : h.createVideoConstraints(t);
+// (vendor/html5-qrcode-2.3.8.min.js). The first argument is still required to
+// be truthy, so both start paths keep passing a library-legal one — it is also
+// what the bare retry below falls back to.
+const RESOLUTION_HINTS = {width: {ideal: 1920}, height: {ideal: 1080}};
+// Library-legal facing-mode argument. Note the *string* form: the same 2.3.8
+// validator only accepts {facingMode: "environment"} or {facingMode: {exact:
+// ...}} — the {ideal: ...} form this file used before was rejected outright,
+// which sent every iOS start straight down the device-id fallback the
+// facing-mode fix existed to avoid.
+const FACING_MODE_ARG = {facingMode: 'environment'};
 
 let scannerInstance = null;
 let cameras = [];
@@ -39,6 +64,63 @@ function isIOS() {
     } catch (e) {
         return false;
     }
+}
+
+// Running as the installed home-screen app rather than a browser tab. Matches
+// installPrompt.js; it matters here because iOS scopes the camera permission to
+// the installed app separately from Safari, so the fix we tell the picker about
+// depends on which one they are in.
+function isStandalone() {
+    try {
+        return window.matchMedia('(display-mode: standalone)').matches
+            || window.navigator.standalone === true;
+    } catch (e) {
+        return false;
+    }
+}
+
+// Errors reach us in two shapes: getCameras() rejects with the raw DOMException
+// (so err.name is "NotAllowedError"), while start() rejects with a *string* the
+// library builds — "Error getting userMedia, error = NotAllowedError: ...".
+// Flatten both before matching.
+function describeError(err) {
+    try {
+        if (!err) return '';
+        return String(err.name || '') + ' ' + String(err.message || err);
+    } catch (e) {
+        return '';
+    }
+}
+
+function looksDenied(err) {
+    return /NotAllowedError|PermissionDeniedError|Permission denied/i
+        .test(describeError(err));
+}
+
+// A camera that is absent is not a camera that is blocked; sending it down the
+// permission path would tell the picker to go fix a setting that does not exist.
+function looksMissing(err) {
+    return /NotFoundError|DevicesNotFoundError/i.test(describeError(err));
+}
+
+// Best-effort permission state, resolving to 'denied' / 'granted' / 'prompt' /
+// 'unknown' and never rejecting. Safari has not reliably supported the 'camera'
+// permission name — query() may reject or throw synchronously — so the error we
+// already have is the fallback, and also the tie-breaker: a NotAllowedError is
+// authoritative even if query() cheerfully answers 'prompt'.
+function cameraPermissionState(err) {
+    const sniffed = looksDenied(err) ? 'denied' : 'unknown';
+    try {
+        if (navigator.permissions && navigator.permissions.query) {
+            return navigator.permissions.query({name: 'camera'})
+                .then(status => {
+                    const state = (status && status.state) || 'unknown';
+                    return sniffed === 'denied' ? 'denied' : state;
+                })
+                .catch(() => sniffed);
+        }
+    } catch (e) { /* unsupported permission name: fall through to the sniff */ }
+    return Promise.resolve(sniffed);
 }
 
 // Reached through the global rather than an import: clientHealth.js is a
@@ -77,9 +159,52 @@ function startCamera() {
             console.error('Camera permission/enumeration failed:', err);
             // A denied camera is otherwise indistinguishable from a picker who
             // simply stopped scanning.
-            reportCameraError('permission_denied', 'Camera access denied or enumeration failed: ' + err);
-            showCameraError(gettext("Camera access was denied. Allow camera access for this site in your browser settings, then tap the button below."));
+            handlePermissionFailure(err);
         });
+}
+
+// The generic "we were refused" text, kept for every platform whose fix really
+// is "flip the switch in browser settings and tap retry".
+function genericDeniedMessage() {
+    return gettext("Camera access was denied. Allow camera access for this site in your browser settings, then tap the button below.");
+}
+
+// Shared handling for a blocked camera. The message has to differ by platform
+// because the fix does. On iOS the old text was actively wrong twice over:
+//   - An installed PWA has its own camera permission. Granting it to Safari
+//     changes nothing, and WebKit keeps serving the cached denial until the app
+//     is force-quit and relaunched — so the retry button *cannot* succeed from
+//     inside the app, and must stop claiming it will.
+//   - In a Safari tab the switch is not in iOS Settings at all but behind the
+//     "aA" menu in the address bar.
+// Everywhere else iOS also differs from Android in that getCameras() fails
+// instantly with no re-prompt, so a retry re-renders the identical error and
+// the tap reads as dead. The relabel plus the exact steps are the only honest
+// feedback available.
+function handlePermissionFailure(err) {
+    if (looksMissing(err)) {
+        reportCameraError('no_camera', 'No usable camera: ' + describeError(err));
+        showCameraError(gettext("No camera found on this device."));
+        setRetryLabel(null);
+        return;
+    }
+    cameraPermissionState(err).then(state => {
+        if (isIOS() && state === 'denied') {
+            if (isStandalone()) {
+                reportCameraError('permission_denied_standalone', 'Camera blocked for the installed iOS app');
+                showCameraError(gettext("Camera access is blocked for this app. Open iPhone Settings, find this app, allow Camera, then close the app fully and reopen it."));
+                setRetryLabel(gettext("Try again after reopening the app"));
+                return;
+            }
+            reportCameraError('permission_denied_browser', 'Camera blocked in iOS Safari');
+            showCameraError(gettext("Camera access is blocked. In Safari, tap the ‘aA’ icon in the address bar → Website Settings → Camera → Allow, then tap the button below."));
+            setRetryLabel(null);
+            return;
+        }
+        reportCameraError('permission_denied', 'Camera denied or enumeration failed: ' + describeError(err));
+        showCameraError(genericDeniedMessage());
+        setRetryLabel(null);
+    });
 }
 
 // Decide how to start the camera. The picker's explicit dropdown choice always
@@ -119,29 +244,66 @@ function pickDefaultCamera() {
     return chosen.id;
 }
 
+// Single entry point to the library's start(). Tries the resolution-hinted
+// constraints first and, if they are refused (OverconstrainedError on a phone
+// that dislikes 1080p is the expected case), retries once with the bare
+// argument that worked before. A sharper picture is never worth costing a
+// picker a working camera.
+function startStream(legacyArg, videoConstraints) {
+    const config = Object.assign({}, SCAN_CONFIG, {videoConstraints: videoConstraints});
+    const onDecode = decodedText => onScan(decodedText);
+    const onMiss = () => { /* per-frame decode misses are expected noise */ };
+    // start() validates its arguments *synchronously* and throws plain strings;
+    // only getUserMedia failures come back as a rejection. Normalising both to a
+    // rejection keeps every caller's .catch the single error path.
+    let first;
+    try {
+        first = scannerInstance.start(legacyArg, config, onDecode, onMiss);
+    } catch (e) {
+        return Promise.reject(e);
+    }
+    return first
+        .catch(err => {
+            if (looksDenied(err)) throw err;   // retrying a refusal just fails twice
+            console.warn('Camera start with resolution hints failed, retrying bare:', err);
+            reportCameraError('resolution_fallback', 'Resolution hints refused: ' + describeError(err));
+            return scannerInstance.start(legacyArg, SCAN_CONFIG, onDecode, onMiss);
+        });
+}
+
 // iOS start path: hand the library a facing-mode constraint instead of a device
 // id so iOS selects its default autofocus wide camera. Falls back to explicit
 // device selection if the constraint is refused (e.g. a device with no
 // environment-facing camera).
 function startWithFacingMode() {
     hideCameraError();
-    scannerInstance.start(
-        {facingMode: {ideal: 'environment'}},
-        SCAN_CONFIG,
-        decodedText => onScan(decodedText),
-        () => { /* per-frame decode misses are expected noise */ }
+    startStream(
+        FACING_MODE_ARG,
+        Object.assign({facingMode: {ideal: 'environment'}}, RESOLUTION_HINTS)
     )
         .then(() => {
             isRunning = true;
             isPaused = false;
             syncStopButton();
-            // We did not pick a device id, so there is nothing stable to persist
-            // or to highlight in the dropdown; the dropdown still drives manual
-            // override within the session.
+            // We did not pick a device id, so there is nothing stable to persist;
+            // the dropdown shows the "automatic" entry instead of a lens, which
+            // is what is actually in force.
+            const select = document.getElementById('camera-select');
+            if (select && select.querySelector('option[value="' + AUTO_CAMERA_VALUE + '"]')) {
+                select.value = AUTO_CAMERA_VALUE;
+            }
         })
         .catch(err => {
             console.error('facingMode start failed, falling back to device id:', err);
-            reportCameraError('facingmode_failed', 'environment facingMode refused: ' + err);
+            if (looksDenied(err)) {
+                // No lens choice fixes a refused permission; retrying every
+                // device id would only stack identical failures.
+                isRunning = false;
+                syncStopButton();
+                handlePermissionFailure(err);
+                return;
+            }
+            reportCameraError('facingmode_failed', 'environment facingMode refused: ' + describeError(err));
             if (cameras.length > 0) {
                 startWith(pickDefaultCamera());
             } else {
@@ -154,11 +316,9 @@ function startWithFacingMode() {
 
 function startWith(cameraId) {
     hideCameraError();
-    scannerInstance.start(
+    startStream(
         cameraId,
-        SCAN_CONFIG,
-        decodedText => onScan(decodedText),
-        () => { /* per-frame decode misses are expected noise */ }
+        Object.assign({deviceId: {exact: cameraId}}, RESOLUTION_HINTS)
     )
         .then(() => {
             isRunning = true;
@@ -172,7 +332,11 @@ function startWith(cameraId) {
             console.error('Error starting camera:', err);
             isRunning = false;
             syncStopButton();
-            reportCameraError('start_failed', 'Camera failed to start: ' + err);
+            if (looksDenied(err)) {
+                handlePermissionFailure(err);
+                return;
+            }
+            reportCameraError('start_failed', 'Camera failed to start: ' + describeError(err));
             showCameraError(gettext("Could not start the camera."));
         });
 }
@@ -210,12 +374,19 @@ function wireControls() {
     });
 
     select.addEventListener('change', () => {
-        if (select.value) {
-            // An explicit choice overrides the iOS facing-mode default for the
-            // rest of this session (startPreferred honours userPickedCamera).
-            userPickedCamera = true;
-            switchCamera(select.value);
+        if (!select.value) return;
+        if (select.value === AUTO_CAMERA_VALUE) {
+            // Back to the platform default lens. Nothing is persisted on
+            // purpose: the stored device id is precisely what this steps away
+            // from, and writing one would resurrect it on the next session.
+            userPickedCamera = false;
+            stopCamera().then(startWithFacingMode);
+            return;
         }
+        // An explicit choice overrides the iOS facing-mode default for the
+        // rest of this session (startPreferred honours userPickedCamera).
+        userPickedCamera = true;
+        switchCamera(select.value);
     });
 
     stopBtn.addEventListener('click', () => {
@@ -236,6 +407,18 @@ function populateCameraSelect() {
     const select = document.getElementById('camera-select');
     if (!select) return;
     select.innerHTML = '';
+    // iOS only. The raw lens list is a trap here: picking any entry leaves the
+    // facing-mode path for a device id, which is how pickers land back on the
+    // ultra-wide that cannot focus on a close barcode — the exact failure the
+    // facing-mode default removed. Without this entry there is also no way back
+    // once a lens has been chosen. Other platforms are fine on device ids and
+    // keep the plain list.
+    if (isIOS()) {
+        const auto = document.createElement('option');
+        auto.value = AUTO_CAMERA_VALUE;
+        auto.textContent = gettext("Automatic (recommended)");
+        select.appendChild(auto);
+    }
     cameras.forEach((camera, index) => {
         const option = document.createElement('option');
         option.value = camera.id;
@@ -243,6 +426,9 @@ function populateCameraSelect() {
             gettext("Camera %(number)s").replace("%(number)s", index + 1);
         select.appendChild(option);
     });
+    // Reflect the mode actually in force; startWith() overwrites this with the
+    // device id once a concrete lens is running.
+    if (isIOS() && !userPickedCamera) select.value = AUTO_CAMERA_VALUE;
 }
 
 function syncStopButton() {
@@ -250,6 +436,17 @@ function syncStopButton() {
     if (stopBtn) {
         stopBtn.textContent = isRunning ? gettext("Stop camera") : gettext("Start camera");
     }
+}
+
+// The template ships the retry button's default label already translated, so
+// the original is captured once and reused rather than restated here. Passing
+// null restores it — the relabel is per-error, not sticky.
+let defaultRetryLabel = null;
+function setRetryLabel(label) {
+    const btn = document.getElementById('camera-retry-btn');
+    if (!btn) return;
+    if (defaultRetryLabel === null) defaultRetryLabel = btn.textContent;
+    btn.textContent = label || defaultRetryLabel;
 }
 
 function showCameraError(message) {
@@ -262,6 +459,9 @@ function showCameraError(message) {
 function hideCameraError() {
     const box = document.getElementById('camera-error');
     if (box) box.classList.add('hidden');
+    // Every start attempt begins here, so the button goes back to its default
+    // promise before the next error decides whether to override it again.
+    setRetryLabel(null);
 }
 
 export function pauseScanner() {

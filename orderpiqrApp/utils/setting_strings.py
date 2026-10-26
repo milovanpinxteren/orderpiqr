@@ -96,6 +96,13 @@ SEEDED_SETTING_STRINGS = {
         ),
         'option_labels': [],
     },
+    'short_pick_enabled': {
+        'label': gettext_noop('Short picks'),
+        'help_text': gettext_noop(
+            'Let pickers report items they cannot pick (missing, damaged, wrong product) instead of leaving the line pending.'
+        ),
+        'option_labels': [],
+    },
 }
 
 

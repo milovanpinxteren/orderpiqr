@@ -64,6 +64,30 @@ export let currentOrderID = null;
 let originalPicklistOrder = []; // Store the original order for re-sorting
 
 // ---------------------------------------------------------------------------
+// Declared shorts
+//
+// Lines the picker could not fill: {productCode: {qty, reason}}. They are
+// taken OFF currentPicklist (there is nothing left to pick) but they are not
+// gone — the server recorded them as outcome='short', they render at the
+// bottom of the table, they survive a reload, and a later scan of the same
+// product reclaims one of them.
+//
+// Cleared wherever currentPicklist is cleared, and nowhere else: a short that
+// outlived its list would be attributed to the next one.
+// ---------------------------------------------------------------------------
+const shortedLines = {};
+
+function clearShortedLines() {
+    Object.keys(shortedLines).forEach(key => delete shortedLines[key]);
+}
+
+// One render entry point, so that nothing can redraw the table and silently
+// drop the short rows (manualOverride.js reaches it through this export).
+export function renderList() {
+    updateScannedList(currentPicklist, productData, shortedLines);
+}
+
+// ---------------------------------------------------------------------------
 // Active-list persistence
 //
 // currentPicklist otherwise lives only in page memory: a reload while a list
@@ -85,10 +109,18 @@ function persistActiveList() {
     try {
         // An empty list has nothing to restore, and is about to be (or just
         // was) cleared by the completion path — never resurrect it.
-        if (!currentOrderID || currentPicklist.length === 0) return;
+        //
+        // Unless shorts are open: "nothing left to pick, two lines missing" is
+        // a real state the picker can sit in (the summary overlay's "Keep
+        // picking"), and it is precisely the state a reload used to erase.
+        // Every completion path calls clearActiveList(), so an empty list with
+        // no shorts still never survives.
+        if (!currentOrderID) return;
+        if (currentPicklist.length === 0 && Object.keys(shortedLines).length === 0) return;
         localStorage.setItem(ACTIVE_LIST_KEY, JSON.stringify({
             orderID: currentOrderID,
             picklist: currentPicklist,
+            shorted: shortedLines,
             originalCounts: originalProductCounts,
             originalOrder: originalPicklistOrder,
             savedAt: Date.now(),
@@ -115,7 +147,11 @@ function restoreActiveList() {
         const raw = localStorage.getItem(ACTIVE_LIST_KEY);
         if (!raw) return false;
         const saved = JSON.parse(raw);
-        if (!saved || !saved.orderID || !Array.isArray(saved.picklist) || saved.picklist.length === 0) {
+        if (!saved || !saved.orderID || !Array.isArray(saved.picklist)) {
+            return false;
+        }
+        const savedShorts = (saved.shorted && typeof saved.shorted === 'object') ? saved.shorted : {};
+        if (saved.picklist.length === 0 && Object.keys(savedShorts).length === 0) {
             return false;
         }
         if (!saved.savedAt || Date.now() - saved.savedAt >= ACTIVE_LIST_MAX_AGE_MS) {
@@ -138,8 +174,10 @@ function restoreActiveList() {
             ? saved.originalOrder : [...currentPicklist];
         Object.keys(originalProductCounts).forEach(key => delete originalProductCounts[key]);
         Object.assign(originalProductCounts, saved.originalCounts || {});
+        clearShortedLines();
+        Object.assign(shortedLines, savedShorts);
 
-        updateScannedList(currentPicklist, productData);
+        renderList();
         updatePicklistCodeDisplay(currentOrderID);
         lastPickTs = Date.now();
 
@@ -212,6 +250,11 @@ initializeScanner((scannedCode) => {
         currentOrderID = result.orderID
         originalProductCounts = result.originalCounts;  // Add this line
         originalPicklistOrder = result.originalOrder || [...currentPicklist]; // Store original order
+        // A new (or restarted) list starts with no declared shorts. On a
+        // restart the server sends back what it kept, in already_short on the
+        // claim response — applied by applyAlreadyShort once that lands.
+        clearShortedLines();
+        renderList();
         updatePicklistCodeDisplay(currentOrderID);
         persistActiveList();
 
@@ -261,7 +304,7 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
             if (code === firstProductCode) {
                 // Correct scan, remove the first product from the list
                 currentPicklist.splice(0, 1);
-                updateScannedList(currentPicklist, productData); // Update the table after removing the first product
+                renderList(); // Update the table after removing the first product
                 persistActiveList();
                 onSuccessfulPick(rawCode)
 
@@ -271,15 +314,14 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                 console.log('currentPicklist.length', currentPicklist.length)
                 showPickFollowUpOverlay(firstProductCode, productLabel);
 
-                if (currentPicklist.length === 0) {
-                    notifyPicklistCompleted(currentOrderID);
-                }
-            } else {
+                maybeCompleteList();
+            } else if (!reclaimShort(code, rawCode)) {
                 // Incorrect scan, show error notification
                 showNotification(gettext("Incorrect scan, please try again."), true);
                 reportScanEvent('wrong_product', {
                     scannedCode: rawCode,
                     picklistCode: currentOrderID ? String(currentOrderID) : '',
+                    reason: 'order_mismatch',
                     message: `expected ${firstProductCode}` + (rawSuffix ? `; resolves to ${code}` : '') + listState
                 });
             }
@@ -288,7 +330,7 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
             if (index !== -1) {
                 // Valid scan, remove the product from the list
                 currentPicklist.splice(index, 1);
-                updateScannedList(currentPicklist, productData);  // Update the table after a valid scan
+                renderList();  // Update the table after a valid scan
                 persistActiveList();
                 onSuccessfulPick(rawCode);
 
@@ -298,14 +340,17 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
 
                 showPickFollowUpOverlay(code, productLabel);
 
-                if (currentPicklist.length === 0) {
-                    notifyPicklistCompleted(currentOrderID);
-                }
-            } else {
+                maybeCompleteList();
+            } else if (!reclaimShort(code, rawCode)) {
                 // Three different problems used to share one message. Telling
                 // them apart matters on the floor: an over-scan of a finished
                 // line needs no action, a wrong grab needs a different item,
                 // and a truly unknown code needs the admin.
+                //
+                // Reclaiming a declared short is checked first (above): the
+                // item is off the list precisely because the picker said it
+                // was missing, so without that check finding it after all
+                // would be logged as a wrong grab.
                 const knownProduct = findProductByCode(productData, rawCode);
                 const originalTotal = knownProduct ? (originalProductCounts[code] || 0) : 0;
                 if (knownProduct && originalTotal > 0) {
@@ -315,9 +360,14 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                             .replace("%(total)s", originalTotal),
                         true
                     );
+                    // Stays unknown_product on purpose: the scanner re-fires
+                    // while the phone hovers over a line that is already done,
+                    // and counting those as wrong grabs would drown the
+                    // lookalike-pair signal below in noise.
                     reportScanEvent('unknown_product', {
                         scannedCode: rawCode,
                         picklistCode: currentOrderID ? String(currentOrderID) : '',
+                        reason: 'already_picked',
                         message: `already picked: all ${originalTotal} units of ${code} registered` + listState
                     });
                 } else if (knownProduct) {
@@ -326,16 +376,28 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
                             .replace("%(product)s", knownProduct.description || code),
                         true
                     );
-                    reportScanEvent('unknown_product', {
+                    // THE wrong grab: a product this warehouse stocks, scanned
+                    // against an order that does not contain it — the picker
+                    // took the wrong item off the shelf. It was logged as
+                    // unknown_product for years, which is why wrong_product has
+                    // never once been recorded in production.
+                    //
+                    // The order's codes ride along so the pairs can be mined
+                    // later ("whenever they grab X, the order wanted Y"), which
+                    // is the whole point of telling this case apart. Capped at
+                    // 30 distinct codes: the message column is not a transcript.
+                    reportScanEvent('wrong_product', {
                         scannedCode: rawCode,
                         picklistCode: currentOrderID ? String(currentOrderID) : '',
-                        message: `known product ${code} is not in this order` + listState
+                        reason: 'not_in_order',
+                        message: `wrong grab: scanned ${code}; order lines: [${orderLineCodes(currentPicklist)}]` + listState
                     });
                 } else {
                     showNotification(gettext("Product code not found in the list."), true);
                     reportScanEvent('unknown_product', {
                         scannedCode: rawCode,
                         picklistCode: currentOrderID ? String(currentOrderID) : '',
+                        reason: 'unknown_code',
                         message: (rawSuffix ? `resolves to ${code}, which is not on the list` : 'code unknown to catalog') + listState
                     });
                 }
@@ -345,6 +407,196 @@ export function handleProductCode(code, currentPicklist, productData, isOrderImp
         console.error('Error in handleProductCode:', error);
         showNotification(gettext("An unexpected error occurred, please try again. If this issue persists, contact support"), true);
     }
+}
+
+// The order's distinct product codes, for the wrong-grab pair-mining payload.
+// Capped so one scan of the wrong box on a 200-line order cannot write a
+// kilobyte into the health log.
+const MAX_PAIR_MINING_CODES = 30;
+
+function orderLineCodes(list) {
+    const seen = [];
+    for (const raw of list) {
+        const code = String(raw);
+        if (seen.indexOf(code) === -1) {
+            seen.push(code);
+            if (seen.length >= MAX_PAIR_MINING_CODES) break;
+        }
+    }
+    return seen.join(', ');
+}
+
+
+// ---------------------------------------------------------------------------
+// Short picks (R1)
+//
+// A line the picker cannot fill is a fact worth recording: without it the row
+// simply stays pending, the completion sweep turns it into 'lost', and nobody
+// can tell "we were out of stock" from "the app never heard about the pick".
+// ---------------------------------------------------------------------------
+
+// Units of this product still to pick, i.e. the ceiling for a short.
+export function remainingForProduct(code) {
+    return currentPicklist.filter(c => c === String(code)).length;
+}
+
+export function productLabelFor(code) {
+    const product = (productData || []).find(item => item.code === String(code));
+    return product ? product.description : String(code);
+}
+
+// Declared shorts, newest state, for the completion summary.
+export function shortSummary() {
+    return Object.keys(shortedLines)
+        .filter(code => shortedLines[code] && shortedLines[code].qty > 0)
+        .map(code => ({
+            code: code,
+            qty: shortedLines[code].qty,
+            reason: shortedLines[code].reason,
+            label: productLabelFor(code),
+        }));
+}
+
+// Scanner handover for the short overlays. Every overlay on this page follows
+// the same contract (see #bulk-pick-overlay): pause on open, and on close
+// resume AND release isProcessingScan — forgetting the flag leaves the page
+// looking alive while silently ignoring every further scan.
+export function pauseForOverlay() {
+    pauseScanner();
+}
+
+export function resumeFromOverlay() {
+    isProcessingScan = false;
+    resumeScanner();
+}
+
+// The picker reports N units of a line as missing. Returns true when a
+// blocking overlay has taken ownership of the scanner (the completion
+// summary), so the caller knows not to resume it itself.
+export function declareShort(code, quantity, reason, reasonText) {
+    const stringCode = String(code);
+    if (!currentOrderID) {
+        // Same contract as onSuccessfulPick: unattributable work is refused
+        // rather than queued into the void.
+        console.error('declareShort without an active order', stringCode);
+        showNotification(gettext("No active picklist — scan the list QR first."), true);
+        return false;
+    }
+    const available = remainingForProduct(stringCode);
+    if (available === 0) return false;
+
+    let qty = parseInt(quantity, 10);
+    if (isNaN(qty) || qty < 1) qty = 1;
+    if (qty > available) qty = available;
+
+    let removed = 0;
+    for (let i = currentPicklist.length - 1; i >= 0 && removed < qty; i--) {
+        if (currentPicklist[i] === stringCode) {
+            currentPicklist.splice(i, 1);
+            removed++;
+        }
+    }
+
+    const existing = shortedLines[stringCode];
+    shortedLines[stringCode] = {
+        qty: (existing ? existing.qty : 0) + removed,
+        // The latest reason wins for display; the server keeps one reason per
+        // row, so an earlier batch's reason is not rewritten there.
+        reason: reason,
+    };
+
+    renderList();
+    persistActiveList();
+
+    // Queued like every other business-critical POST: a short declared in the
+    // cold aisle with no reception must not be the one thing that is lost.
+    // Same endpoint as a pick, with successful:false — the kind is what makes
+    // the outbox treat it as unsheddable work.
+    queuedThisSession(enqueue('short', '/orderpiqr/product-pick', {
+        orderID: currentOrderID,
+        productCode: stringCode,
+        successful: false,
+        shortReason: reason,
+        quantity: removed,
+        reasonText: reasonText || '',
+        scannedAt: new Date().toISOString()
+    }));
+
+    showNotification(interpolate(ngettext(
+        'Reported %(count)s item missing: %(product)s',
+        'Reported %(count)s items missing: %(product)s',
+        removed), {count: removed, product: productLabelFor(stringCode)}, true));
+
+    return maybeCompleteList();
+}
+
+// The picker declared this line short and then found the item after all. The
+// server reclaims the short row on the next successful pick of the product
+// (flipping it back to picked and clearing the reason), so the client only
+// has to undo its own bookkeeping and send the ordinary pick.
+function reclaimShort(code, rawCode) {
+    const entry = shortedLines[String(code)];
+    if (!entry || !(entry.qty > 0)) return false;
+
+    entry.qty -= 1;
+    if (entry.qty <= 0) delete shortedLines[String(code)];
+
+    renderList();
+    onSuccessfulPick(rawCode);      // persists the list itself
+    showNotification(gettext("Found after all: %(product)s")
+        .replace("%(product)s", productLabelFor(code)));
+    return true;
+}
+
+// The single place a list is finished. There were four of these (two scan
+// paths, the bulk overlay and the manual override), and a list finished with
+// declared shorts has to stop and ask — "nothing left to pick" no longer
+// means "everything was picked".
+//
+// Returns true when the blocking summary overlay now owns the scanner.
+function maybeCompleteList() {
+    if (currentPicklist.length > 0) return false;
+    if (!currentOrderID) return false;
+
+    const shorts = shortSummary();
+    if (shorts.length === 0) {
+        notifyPicklistCompleted(currentOrderID);
+        return false;
+    }
+
+    const summaryOverlay = document.getElementById('short-complete-overlay');
+    if (summaryOverlay) {
+        // shortPick.js owns the overlay; reached by event rather than import
+        // so this module stays the leaf of that pair. dispatchEvent is
+        // synchronous, so the overlay is either open by the time this returns
+        // or nothing handled the request.
+        pauseScanner();
+        document.dispatchEvent(new CustomEvent('short-complete-request', {detail: {shorts: shorts}}));
+        if (!summaryOverlay.classList.contains('hidden')) return true;
+        // Nobody opened it (shortPick.js failed to load, a listener threw).
+        // Stranding the picker behind a paused scanner on a finished list is
+        // far worse than finishing it unasked, so fall through.
+        resumeScanner();
+    }
+
+    notifyPicklistCompleted(currentOrderID);
+    clearShortedLines();
+    renderList();
+    return false;
+}
+
+// "Finish list" on the summary overlay.
+export function finishList() {
+    if (!currentOrderID) return;
+    notifyPicklistCompleted(currentOrderID);
+    clearShortedLines();
+    renderList();
+}
+
+// Exported for manualOverride.js, whose own 0-length check used to call
+// notifyPicklistCompleted directly (with an undefined csrfToken argument).
+export function completeIfFinished() {
+    return maybeCompleteList();
 }
 
 // Stop-the-line: the server no longer has this device's picklist (taken
@@ -365,7 +617,18 @@ function showPicklistLostOverlay() {
     pauseScanner();
     hideBulkPickOverlay();
     hideConfirmationOverlay();
+    hideShortOverlays();
     lostOverlay.classList.remove('hidden');
+}
+
+// Reached by id rather than through shortPick.js so that the stop-the-line
+// path keeps working even if that module failed to load — the one overlay
+// that must always win.
+function hideShortOverlays() {
+    ['short-pick-overlay', 'short-complete-overlay'].forEach(function (id) {
+        const node = document.getElementById(id);
+        if (node) node.classList.add('hidden');
+    });
 }
 
 // Guarded against double-binding: if this module ever loads twice (as it
@@ -382,8 +645,9 @@ if (picklistLostOkBtn && !picklistLostOkBtn.dataset.bound) {
         currentPicklist.length = 0;
         currentOrderID = null;
         Object.keys(originalProductCounts).forEach(key => delete originalProductCounts[key]);
+        clearShortedLines();
         clearActiveList();
-        updateScannedList(currentPicklist, productData);
+        renderList();
         const codeDisplay = document.getElementById('picklist-code-display');
         if (codeDisplay) codeDisplay.style.display = 'none';
         isProcessingScan = false;
@@ -500,12 +764,51 @@ function applyAlreadyPicked(alreadyPicked) {
         }
     }
     if (kept > 0) {
-        updateScannedList(currentPicklist, productData);
+        renderList();
         persistActiveList();
         showNotification(
             interpolate(ngettext(
                 'Kept %(count)s already-picked item from the previous attempt.',
                 'Kept %(count)s already-picked items from the previous attempt.',
+                kept), {count: kept}, true)
+        );
+    }
+}
+
+// Same contract as applyAlreadyPicked, for the lines the previous attempt
+// declared missing: the server kept those rows as outcome='short', so they
+// come off the fresh list and reappear as short rows instead of asking the
+// picker to walk back to a shelf they already found empty.
+//
+// The response carries counts, not reasons (the restart answer is a map of
+// code -> units), so a restored short shows the generic reason until the
+// picker re-declares it. Deliberate: inventing a reason here would put words
+// in the picker's mouth on a health metric.
+function applyAlreadyShort(alreadyShort) {
+    let kept = 0;
+    for (const [code, n] of Object.entries(alreadyShort)) {
+        let taken = 0;
+        for (let i = 0; i < n; i++) {
+            const idx = currentPicklist.indexOf(code);
+            if (idx === -1) break;
+            currentPicklist.splice(idx, 1);
+            taken++;
+        }
+        if (taken === 0) continue;
+        const existing = shortedLines[code];
+        shortedLines[code] = {
+            qty: (existing ? existing.qty : 0) + taken,
+            reason: existing ? existing.reason : 'other',
+        };
+        kept += taken;
+    }
+    if (kept > 0) {
+        renderList();
+        persistActiveList();
+        showNotification(
+            interpolate(ngettext(
+                'Kept %(count)s item reported missing in the previous attempt.',
+                'Kept %(count)s items reported missing in the previous attempt.',
                 kept), {count: kept}, true)
         );
     }
@@ -521,8 +824,9 @@ function claimRejected(orderID, data) {
         currentPicklist.length = 0;
         currentOrderID = null;
         Object.keys(originalProductCounts).forEach(key => delete originalProductCounts[key]);
+        clearShortedLines();
         clearActiveList();
-        updateScannedList(currentPicklist, productData);
+        renderList();
         const codeDisplay = document.getElementById('picklist-code-display');
         if (codeDisplay) codeDisplay.style.display = 'none';
         showNotification((data && data.message) || gettext("Error sending picklist."), true);
@@ -547,9 +851,17 @@ function pickRejected(op, status, data, thisSession) {
         message: (data && data.message) || `${endpoint} rejected (HTTP ${status})`
     });
     if (thisSession || sameOrder(payload.orderID)) {
-        showNotification(op.kind === 'bulk'
-            ? gettext("Could not update bulk product pick.")
-            : gettext("Could not update product pick."), true);
+        let message;
+        if (op.kind === 'bulk') {
+            message = gettext("Could not update bulk product pick.");
+        } else if (op.kind === 'short') {
+            // Not a pick that failed: a declaration the server refused, so the
+            // line is back to looking like ordinary un-picked work.
+            message = gettext("Could not report missing items.");
+        } else {
+            message = gettext("Could not update product pick.");
+        }
+        showNotification(message, true);
     }
     if (data && data.error_code === 'picklist_not_found' && sameOrder(payload.orderID)) {
         // Stop the line only for the list in the picker's hands; a 404 for an
@@ -596,9 +908,13 @@ document.addEventListener('outbox-op-done', function (event) {
             claimRejected(payload.orderID, data);
             return;
         }
-        if (data && data.already_picked && sameOrder(payload.orderID) && !trimmedClaims.has(op.id)) {
+        if (data && (data.already_picked || data.already_short)
+            && sameOrder(payload.orderID) && !trimmedClaims.has(op.id)) {
             trimmedClaims.add(op.id);
-            applyAlreadyPicked(data.already_picked);
+            if (data.already_picked) applyAlreadyPicked(data.already_picked);
+            // After the picked trim, not before: both consume units of the
+            // same codes off the fresh list, and picked work outranks a short.
+            if (data.already_short) applyAlreadyShort(data.already_short);
         }
         return;
     }
@@ -779,7 +1095,7 @@ function executeBulkPick(productCode, quantity, returnToScanner) {
         }
     }
 
-    updateScannedList(currentPicklist, productData);
+    renderList();
     persistActiveList();
 
     // Send to server
@@ -803,9 +1119,13 @@ function executeBulkPick(productCode, quantity, returnToScanner) {
     hideBulkPickOverlay();
 
     if (currentPicklist.length === 0) {
-        isProcessingScan = false;
-        resumeScanner();
-        notifyPicklistCompleted(currentOrderID);
+        // maybeCompleteList() returns true when it opened the blocking shorts
+        // summary, which then owns the scanner — resuming here would put the
+        // camera back behind a modal the picker has not answered yet.
+        if (!maybeCompleteList()) {
+            isProcessingScan = false;
+            resumeScanner();
+        }
     } else if (returnToScanner) {
         isProcessingScan = false;
         resumeScanner();
@@ -907,7 +1227,7 @@ export function resortCurrentPicklist(sortingMode) {
     // Update the array in place to maintain reference
     currentPicklist.length = 0;
     currentPicklist.push(...sorted);
-    updateScannedList(currentPicklist, productData);
+    renderList();
     // The order of the saved copy matters as much as its contents: a picker
     // who sorted by location and then reloads must not get the pre-sort order
     // back mid-aisle.
@@ -922,7 +1242,7 @@ document.addEventListener('picklist-sort-change', function (e) {
 // Listen for list view changes (individual vs grouped) from the dropdown.
 // Display-only: updateScannedList reads the mode from window.SETTINGS.
 document.addEventListener('picklist-view-change', function () {
-    updateScannedList(currentPicklist, productData);
+    renderList();
 });
 
 // Check for claimed order from queue on page load
@@ -979,6 +1299,9 @@ function loadClaimedOrder() {
 
         currentOrderID = data.order_code;
         originalPicklistOrder = [...currentPicklist];
+        // A freshly claimed order carries no shorts from whatever this device
+        // was holding before.
+        clearShortedLines();
 
         // Apply sorting preference
         const sortingPreference = window.SETTINGS?.picklist_sorting ?? "original";
@@ -990,7 +1313,7 @@ function loadClaimedOrder() {
 
         // Update the display
         console.log('[Queue] Calling updateScannedList...');
-        updateScannedList(currentPicklist, productData);
+        renderList();
         updatePicklistCodeDisplay(currentOrderID);
 
         // Store original counts for overlay display
@@ -1026,4 +1349,8 @@ if (document.readyState === 'loading') {
 
 // Self-update: reload for a new deploy, but only while no list is in
 // progress — currentPicklist lives in page memory, a reload would lose it.
-initAppUpdater(() => currentPicklist.length === 0 && !isProcessingScan);
+// Open shorts count as in progress: an empty list with declared shorts is the
+// picker sitting in front of the completion summary.
+initAppUpdater(() => currentPicklist.length === 0
+    && Object.keys(shortedLines).length === 0
+    && !isProcessingScan);

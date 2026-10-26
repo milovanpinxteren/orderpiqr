@@ -119,13 +119,37 @@ class ScanPicklistTests(ScanEndpointTestCase):
         picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
         picks = ProductPick.objects.filter(picklist=picklist)
         self.assertEqual(picks.count(), 3)
-        self.assertEqual(picks.filter(successful=True).count(), 1)
-        self.assertEqual(picks.filter(successful__isnull=True).count(), 2)
+        self.assertEqual(picks.filter(outcome='picked').count(), 1)
+        self.assertEqual(picks.filter(outcome='pending').count(), 2)
 
     def test_restart_without_recorded_picks_keeps_nothing(self):
         self.scan(['SMOOTHIE-1'])
         response = self.scan(['SMOOTHIE-1'])
         self.assertEqual(response.json()['already_picked'], {})
+        self.assertEqual(response.json()['already_short'], {})
+
+    def test_restart_preserves_short_rows(self):
+        # A declared short is recorded work exactly like a pick: it must
+        # survive a restart and be reported separately so the client can
+        # render it as short, not as picked.
+        self.scan(['SMOOTHIE-1', 'SMOOTHIE-1', 'SALAD-1'])
+        self.client.post('/orderpiqr/product-pick', data=json.dumps({
+            'orderID': 'ORD-1', 'productCode': 'SMOOTHIE-1',
+            'deviceFingerprint': FINGERPRINT, 'successful': False,
+            'shortReason': 'not_found',
+        }), content_type='application/json')
+
+        response = self.scan(['SMOOTHIE-1', 'SMOOTHIE-1', 'SALAD-1'])
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['already_picked'], {})
+        self.assertEqual(response.json()['already_short'], {'SMOOTHIE-1': 1})
+        picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
+        picks = ProductPick.objects.filter(picklist=picklist)
+        self.assertEqual(picks.count(), 3)
+        short = picks.get(outcome='short')
+        self.assertEqual(short.short_reason, 'not_found')
+        self.assertEqual(picks.filter(outcome='pending').count(), 2)
 
     def test_scan_of_order_held_by_other_device_is_rejected(self):
         order = Order.objects.create(
@@ -202,7 +226,7 @@ class ScanPicklistTests(ScanEndpointTestCase):
         self.assertEqual(response.json()['already_picked'], {'SMOOTHIE-1': 1})
         picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
         self.assertEqual(
-            ProductPick.objects.filter(picklist=picklist, successful=True).count(), 1)
+            ProductPick.objects.filter(picklist=picklist, outcome='picked').count(), 1)
 
     def test_stale_lock_takeover_is_logged(self):
         self._held_order()

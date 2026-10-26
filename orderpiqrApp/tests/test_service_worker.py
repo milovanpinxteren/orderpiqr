@@ -48,6 +48,16 @@ class ServiceWorkerViewTests(TestCase):
         ):
             self.assertIn(expected, body)
 
+    def test_precaches_the_short_pick_modules(self):
+        # Both of these are load-bearing offline: shortPick.js is how a picker
+        # reports a line they cannot fill (the case most likely to happen in
+        # the cold corner of the warehouse where reception dies), and
+        # shortReasons.js is import-only — no tag in index.html names it, so
+        # nothing else would ever put it in the cache.
+        body = self.client.get('/serviceWorker.js').content.decode('utf-8')
+        self.assertIn("orderpiqrApp/js/shortPick.js", body)
+        self.assertIn("orderpiqrApp/js/shortReasons.js", body)
+
     def test_fetch_handler_never_intercepts_non_get(self):
         # The four business-critical POSTs must reach the network untouched;
         # this just guards the early-return is still present in the source.

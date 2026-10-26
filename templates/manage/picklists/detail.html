@@ -127,7 +127,7 @@
                     </thead>
                     <tbody>
                         {% for pick in product_picks %}
-                        <tr class="{% if pick.successful %}row-completed{% endif %}">
+                        <tr class="{% if pick.outcome == 'picked' %}row-completed{% endif %}">
                             <td>
                                 <div class="product-info">
                                     <strong>{{ pick.product.code }}</strong>
@@ -143,10 +143,12 @@
                             </td>
                             <td class="text-center">{{ pick.quantity }}</td>
                             <td>
-                                {% if pick.successful == True %}
+                                {% if pick.outcome == 'picked' %}
                                 <span class="badge badge-success">{% trans "Picked" %}</span>
-                                {% elif pick.successful == False %}
-                                <span class="badge badge-danger">{% trans "Failed" %}</span>
+                                {% elif pick.outcome == 'short' %}
+                                <span class="badge badge-danger">{% trans "Short" %} &mdash; {{ pick.get_short_reason_display }}</span>
+                                {% elif pick.outcome == 'lost' %}
+                                <span class="badge badge-warning">{% trans "Lost" %}</span>
                                 {% else %}
                                 <span class="badge badge-secondary">{% trans "Pending" %}</span>
                                 {% endif %}

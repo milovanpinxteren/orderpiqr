@@ -28,7 +28,21 @@
 import {getDeviceFingerprint} from './fingerprint.js';
 
 const STORAGE_KEY = 'orderpiqr_pick_outbox';
-const KINDS = ['claim', 'pick', 'bulk', 'complete'];
+// 'short' targets the same URL as 'pick' (/orderpiqr/product-pick, with
+// successful:false). The kind is kept distinct because it drives client-side
+// semantics — never shed, carries a pickId, its own rejection copy — which
+// are independent of the endpoint it happens to share.
+const KINDS = ['claim', 'pick', 'bulk', 'complete', 'short'];
+
+// Ops nobody can reconstruct. A dropped short is as bad as a dropped pick: it
+// is the picker's declaration that a line could not be filled, and losing it
+// turns a recorded short back into an invisible "lost" line — exactly the
+// distinction this feature exists to record.
+const WORK_KINDS = ['pick', 'bulk', 'short'];
+
+function isWork(kind) {
+    return WORK_KINDS.indexOf(kind) !== -1;
+}
 
 const MAX_OPS = 200;
 const MAX_BYTES = 128 * 1024;
@@ -157,7 +171,7 @@ function persist(ops) {
                 return false;
             }
             const index = dropIndex(ops);
-            if (ops[index].kind === 'pick' || ops[index].kind === 'bulk') return false;
+            if (isWork(ops[index].kind)) return false;
             ops.splice(index, 1);
         }
     }
@@ -169,7 +183,7 @@ function writeOps(ops) {
 
     while (kept.length > 0 && overBounds(kept)) {
         const index = dropIndex(kept);
-        if (kept[index].kind === 'pick' || kept[index].kind === 'bulk') droppedWork += 1;
+        if (isWork(kept[index].kind)) droppedWork += 1;
         kept.splice(index, 1);
     }
 
@@ -418,7 +432,7 @@ export function enqueue(kind, url, payload) {
         }
         const body = Object.assign({}, payload || {});
         if (!body.deviceFingerprint) body.deviceFingerprint = cachedFingerprint || '';
-        if ((kind === 'pick' || kind === 'bulk') && !body.pickId) {
+        if (isWork(kind) && !body.pickId) {
             // The server deduplicates on this: a retry of an op whose response
             // was lost must not mark a second row.
             body.pickId = newId();

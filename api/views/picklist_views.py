@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.utils.translation import gettext as _
 from api.serializers import PickListSerializer, PickListDetailSerializer
-from orderpiqrApp.models import PickList
+from orderpiqrApp.models import PickList, resolve_pending_picks_to_lost
 from rest_framework import filters
 from django.db.models import Avg, Count, Q
 from django.utils import timezone
@@ -92,7 +92,7 @@ class PickListViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = PickList.objects.filter(
             customer=self.request.user.userprofile.customer
-        ).select_related('device', 'order')
+        ).select_related('device__user', 'order')
 
         # Manual filtering
         successful = self.request.query_params.get('successful')
@@ -179,6 +179,11 @@ class PickListViewSet(viewsets.ModelViewSet):
         if notes:
             picklist.notes = notes
         picklist.save()
+
+        # Only a completion claimed successful means "the work is done": lines
+        # still pending on it were never recorded, i.e. lost.
+        if successful:
+            resolve_pending_picks_to_lost(picklist)
 
         # Update order status if linked
         order_status = None

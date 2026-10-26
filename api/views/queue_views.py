@@ -1,3 +1,5 @@
+from collections import Counter
+
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -482,14 +484,31 @@ def queue_claim_order(request, order_id):
                 pick_list.pick_started = True
                 pick_list.order = order
                 pick_list.save()
-                # Clear existing product picks
-                ProductPick.objects.filter(picklist=pick_list).delete()
+                # Rebuild only the rows with nothing recorded on them. An
+                # unconditional delete here was the same recorded-work wipe the
+                # HTML claim path had: picked and short rows are real physical
+                # work and must survive a re-claim.
+                ProductPick.objects.filter(
+                    picklist=pick_list,
+                    outcome__in=[ProductPick.Outcome.PENDING,
+                                 ProductPick.Outcome.LOST]).delete()
 
-            # Create ProductPick entries from order lines
+            # Create ProductPick entries from order lines, skipping units whose
+            # outcome is already recorded — the returned picklist is what the
+            # picker sees, so it must show remaining work only.
+            preserved = Counter(
+                ProductPick.objects.filter(
+                    picklist=pick_list,
+                    outcome__in=[ProductPick.Outcome.PICKED,
+                                 ProductPick.Outcome.SHORT])
+                .values_list('product_id', flat=True))
             picklist_products = []
             lines = order.lines.select_related('product').all()
             for line in lines:
                 for _i in range(line.quantity):
+                    if preserved[line.product_id] > 0:
+                        preserved[line.product_id] -= 1
+                        continue
                     ProductPick.objects.create(
                         product=line.product,
                         picklist=pick_list,

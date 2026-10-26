@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 12:23+0200\n"
+"POT-Creation-Date: 2026-10-26 12:22+0100\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -202,7 +202,7 @@ msgstr ""
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:89
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\picklist.js:209
 #: .\orderpiqrApp\static\orderpiqrApp\admin\js\tour\sections\product.js:89
-#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:32
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:36
 msgid "Close"
 msgstr "Schließen"
 
@@ -478,7 +478,6 @@ msgid "No product data found on page"
 msgstr "Keine Produktdaten auf der Seite gefunden"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:50
-#: .\templates\index.html:285
 msgid "Offline mode: using cached product data"
 msgstr "Offlinemodus: zwischengespeicherte Produktdaten werden verwendet."
 
@@ -487,44 +486,43 @@ msgid "Cached product data is not usable"
 msgstr "Zwischengespeicherte Produktdaten sind nicht verwendbar."
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:56
-#: .\templates\index.html:287
 msgid "No product data available while offline"
 msgstr "Keine Produktdaten im Offlinemodus verfügbar."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:146
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:184
 msgid "Restored your list in progress."
 msgstr "Laufende Liste wiederhergestellt."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:195
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:233
 msgid "This picklist is already in progress. Restart it from the beginning?"
 msgstr "Diese Pickliste ist bereits in Bearbeitung. Von vorne neu starten?"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:251
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:294
 msgid "That is not a product barcode."
 msgstr "Das ist kein Produkt-Barcode."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:270
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:297
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:313
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:339
 msgid "Scanned %(product)s"
 msgstr "%(product)s gescannt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:279
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:320
 msgid "Incorrect scan, please try again."
 msgstr "Falscher Scan, versuche es noch einmal."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:313
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:358
 msgid "%(product)s: all %(total)s already picked."
 msgstr "%(product)s: alle %(total)s wurden bereits gepickt."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:325
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:375
 msgid "%(product)s is not in this order."
 msgstr "%(product)s gehört nicht zu dieser Bestellung."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:335
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:396
 msgid "Product code not found in the list."
 msgstr "Produktcode nicht in der Liste gefunden."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:346
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:408
 msgid ""
 "An unexpected error occurred, please try again. If this issue persists, "
 "contact support"
@@ -532,17 +530,28 @@ msgstr ""
 "Ein unerwarteter Fehler ist aufgetreten, versuche es noch einmal. Wenn das "
 "Problem weiterhin besteht, wende dich an den Support"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:362
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:482
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:666
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:1078
+msgid "No active picklist — scan the list QR first."
+msgstr "Keine aktive Pickliste — zuerst den Listen-QR scannen."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:526
+msgid "Reported %(count)s item missing: %(product)s"
+msgid_plural "Reported %(count)s items missing: %(product)s"
+msgstr[0] "%(count)s Artikel als fehlend gemeldet: %(product)s"
+msgstr[1] "%(count)s Artikel als fehlend gemeldet: %(product)s"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:546
+msgid "Found after all: %(product)s"
+msgstr "Doch noch gefunden: %(product)s"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:614
 msgid "This list is no longer assigned to you. Scan the list QR again."
 msgstr ""
 "Diese Liste ist dir nicht mehr zugewiesen. Scanne den Listen-QR erneut."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:402
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:762
-msgid "No active picklist — scan the list QR first."
-msgstr "Keine aktive Pickliste — zuerst den Listen-QR scannen."
-
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:507
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:771
 msgid "Kept %(count)s already-picked item from the previous attempt."
 msgid_plural "Kept %(count)s already-picked items from the previous attempt."
 msgstr[0] ""
@@ -550,93 +559,121 @@ msgstr[0] ""
 msgstr[1] ""
 "%(count)s bereits gepickte Artikel aus dem letzten Versuch übernommen."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:528
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:810
+msgid "Kept %(count)s item reported missing in the previous attempt."
+msgid_plural "Kept %(count)s items reported missing in the previous attempt."
+msgstr[0] "%(count)s Artikel aus dem vorherigen Versuch als fehlend übernommen."
+msgstr[1] "%(count)s Artikel aus dem vorherigen Versuch als fehlend übernommen."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:832
 msgid "Error sending picklist."
 msgstr "Fehler beim Senden der Pickliste."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:551
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:856
 msgid "Could not update bulk product pick."
 msgstr "Sammelkommissionierung konnte nicht aktualisiert werden."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:552
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:860
+msgid "Could not report missing items."
+msgstr "Fehlende Artikel konnten nicht gemeldet werden."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:862
 msgid "Could not update product pick."
 msgstr "Produkt-Pick konnte nicht aktualisiert werden."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:565
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:877
 msgid "Error completing picklist."
 msgstr "Fehler beim Abschließen der Pickliste."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:614
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:930
 msgid "Picklist completed!"
 msgstr "Pickliste abgeschlossen!"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:640
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:956
 msgid "No product data was found, cannot update list"
 msgstr "Keine Produktdaten gefunden, Liste kann nicht aktualisiert werden"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:660
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:976
 msgid "Picked %(picked)s of %(total)s"
 msgstr "%(picked)s von %(total)s gepickt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:666
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:982
 msgid "<strong>%(total)s</strong> in total"
 msgstr "<strong>%(total)s</strong> insgesamt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:668
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:984
 msgid "Take %(remaining)s more"
 msgstr "Nimm noch %(remaining)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:671
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:987
 msgid "Take <strong>%(remaining)s</strong> more"
 msgstr "Nimm noch <strong>%(remaining)s</strong>"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:673
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:989
 msgid "%(total)s in total"
 msgstr "%(total)s insgesamt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:741
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:1057
 msgid "All %(total)s taken"
 msgstr "Alle %(total)s genommen"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:742
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:1058
 msgid "Pick All"
 msgstr "Alle picken"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:795
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:1111
 msgid "Picked %(quantity)s of %(product)s"
 msgstr "%(quantity)s von %(product)s gepickt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:863
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:1183
 msgid "Please enter a valid quantity"
 msgstr "Bitte gib eine gültige Menge ein"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:962
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:1286
 msgid "Cannot load order: product data not available"
 msgstr "Bestellung kann nicht geladen werden: Produktdaten nicht verfügbar"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:1001
+#: .\orderpiqrApp\static\orderpiqrApp\js\camera_page.js:1328
 msgid "Order loaded from queue"
 msgstr "Bestellung aus Warteschlange geladen"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:34
+#: .\orderpiqrApp\static\orderpiqrApp\js\domUpdater.js:61
+msgid "Report missing"
+msgstr "Als fehlend melden"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\domUpdater.js:133
+msgid "Missing — %(reason)s"
+msgstr "Fehlt — %(reason)s"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:38
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:199
 msgid "Install Orderpiqr"
 msgstr "Orderpiqr installieren"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:35
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:39
 msgid "Add Orderpiqr to your home screen for quick access"
 msgstr "Orderpiqr zum Startbildschirm hinzufügen für schnellen Zugriff"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:64
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:68
 msgid "Install"
 msgstr "Installieren"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:95
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:97
 msgid "Tap the Share button"
 msgstr "Tippe auf die Teilen-Taste"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:105
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:107
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:131
 msgid "Tap \"Add to Home Screen\""
 msgstr "Tippe auf \"Zum Home-Bildschirm\""
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:127
+msgid "Open your browser menu"
+msgstr "Öffne das Browser-Menü"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\installPrompt.js:180
+msgid "You have the app installed — open it from your home screen"
+msgstr "Die App ist installiert — öffne sie über deinen Startbildschirm"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\manage\listTools.js:51
 #, javascript-format
@@ -665,11 +702,11 @@ msgstr "Leeren"
 msgid "No matches"
 msgstr "Keine Treffer"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:49
+#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:50
 msgid "Manual override: %(product)s confirmed"
 msgstr "Manuelle Bestätigung: %(product)s bestätigt"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:52
+#: .\orderpiqrApp\static\orderpiqrApp\js\manualOverride.js:53
 msgid "Manual override: %(code)s confirmed"
 msgstr "Manuelle Bestätigung: %(code)s bestätigt"
 
@@ -827,11 +864,12 @@ msgstr "Fehler beim Übernehmen der Bestellung"
 msgid "Searching…"
 msgstr "Suche läuft…"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:49
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:152
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:187
 msgid "No camera found on this device."
 msgstr "Keine Kamera auf diesem Gerät gefunden."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:60
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:169
 msgid ""
 "Camera access was denied. Allow camera access for this site in your browser "
 "settings, then tap the button below."
@@ -839,21 +877,72 @@ msgstr ""
 "Kamerazugriff wurde verweigert. Erlaube den Kamerazugriff für diese Seite in"
 " deinen Browser-Einstellungen und tippe dann auf die Schaltfläche unten."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:96
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:195
+msgid ""
+"Camera access is blocked for this app. Open iPhone Settings, find this app, "
+"allow Camera, then close the app fully and reopen it."
+msgstr "Der Kamerazugriff ist für diese App blockiert. Öffne die iPhone-Einstellungen, suche diese App, erlaube die Kamera, schließe die App dann vollständig und öffne sie erneut."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:196
+msgid "Try again after reopening the app"
+msgstr "Nach dem erneuten Öffnen der App noch einmal versuchen"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:200
+msgid ""
+"Camera access is blocked. In Safari, tap the ‘aA’ icon in the address bar → "
+"Website Settings → Camera → Allow, then tap the button below."
+msgstr "Der Kamerazugriff ist blockiert. Tippe in Safari auf das ‘aA’-Symbol in der Adressleiste → Website-Einstellungen → Kamera → Erlauben und tippe dann auf die Taste unten."
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:312
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:340
 msgid "Could not start the camera."
 msgstr "Die Kamera konnte nicht gestartet werden."
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:158
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:419
+msgid "Automatic (recommended)"
+msgstr "Automatisch (empfohlen)"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:426
 msgid "Camera %(number)s"
 msgstr "Kamera %(number)s"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:437
 msgid "Stop camera"
 msgstr "Kamera stoppen"
 
-#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:166
+#: .\orderpiqrApp\static\orderpiqrApp\js\qrScanner.js:437
 msgid "Start camera"
 msgstr "Kamera starten"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\shortPick.js:75
+msgid "%(count)s unit still to pick"
+msgid_plural "%(count)s units still to pick"
+msgstr[0] "%(count)s Einheit noch zu picken"
+msgstr[1] "%(count)s Einheiten noch zu picken"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\shortPick.js:224
+msgid "%(count)s× %(product)s — %(reason)s"
+msgstr "%(count)s× %(product)s — %(reason)s"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\shortReasons.js:31
+msgid "Not at location"
+msgstr "Nicht am Standort"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\shortReasons.js:33
+msgid "Not enough stock"
+msgstr "Nicht genug Bestand"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\shortReasons.js:35
+msgid "Damaged"
+msgstr "Beschädigt"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\shortReasons.js:37
+msgid "Wrong product in the spot"
+msgstr "Falsches Produkt am Platz"
+
+#: .\orderpiqrApp\static\orderpiqrApp\js\shortReasons.js:39
+msgid "Other"
+msgstr "Sonstiges"
 
 #: .\orderpiqrApp\static\orderpiqrApp\js\syncBadge.js:34
 msgid "%(count)s pick waiting to sync"
@@ -869,265 +958,213 @@ msgstr "offline"
 msgid "All picks synced"
 msgstr "Alle Picks synchronisiert"
 
-#: .\templates\manage\devices\list.html:332
-msgid "Archive %(count)s device?"
-msgid_plural "Archive %(count)s devices?"
-msgstr[0] "%(count)s Gerät archivieren?"
-msgstr[1] "%(count)s Geräte archivieren?"
+#~ msgid "Archive %(count)s device?"
+#~ msgid_plural "Archive %(count)s devices?"
+#~ msgstr[0] "%(count)s Gerät archivieren?"
+#~ msgstr[1] "%(count)s Geräte archivieren?"
 
-#: .\templates\manage\devices\list.html:341
-msgid "Restore %(count)s device?"
-msgid_plural "Restore %(count)s devices?"
-msgstr[0] "%(count)s Gerät wiederherstellen?"
-msgstr[1] "%(count)s Geräte wiederherstellen?"
+#~ msgid "Restore %(count)s device?"
+#~ msgid_plural "Restore %(count)s devices?"
+#~ msgstr[0] "%(count)s Gerät wiederherstellen?"
+#~ msgstr[1] "%(count)s Geräte wiederherstellen?"
 
-#: .\templates\manage\devices\list.html:350
-msgid ""
-"Delete %(count)s device? Devices with picked lists are skipped — they can "
-"only be archived."
-msgid_plural ""
-"Delete %(count)s devices? Devices with picked lists are skipped — they can "
-"only be archived."
-msgstr[0] ""
-"%(count)s Gerät löschen? Geräte mit gepickten Listen werden übersprungen — "
-"sie können nur archiviert werden."
-msgstr[1] ""
-"%(count)s Geräte löschen? Geräte mit gepickten Listen werden übersprungen — "
-"sie können nur archiviert werden."
+#~ msgid ""
+#~ "Delete %(count)s device? Devices with picked lists are skipped — they can "
+#~ "only be archived."
+#~ msgid_plural ""
+#~ "Delete %(count)s devices? Devices with picked lists are skipped — they can "
+#~ "only be archived."
+#~ msgstr[0] ""
+#~ "%(count)s Gerät löschen? Geräte mit gepickten Listen werden übersprungen — "
+#~ "sie können nur archiviert werden."
+#~ msgstr[1] ""
+#~ "%(count)s Geräte löschen? Geräte mit gepickten Listen werden übersprungen — "
+#~ "sie können nur archiviert werden."
 
-#: .\templates\manage\orders\list.html:294
-msgid ""
-"Delete %(count)s order? Orders currently being picked are skipped. This "
-"cannot be undone."
-msgid_plural ""
-"Delete %(count)s orders? Orders currently being picked are skipped. This "
-"cannot be undone."
-msgstr[0] ""
-"%(count)s Bestellung löschen? Bestellungen, die gerade gepickt werden, "
-"werden übersprungen. Dies kann nicht rückgängig gemacht werden."
-msgstr[1] ""
-"%(count)s Bestellungen löschen? Bestellungen, die gerade gepickt werden, "
-"werden übersprungen. Dies kann nicht rückgängig gemacht werden."
+#~ msgid ""
+#~ "Delete %(count)s order? Orders currently being picked are skipped. This "
+#~ "cannot be undone."
+#~ msgid_plural ""
+#~ "Delete %(count)s orders? Orders currently being picked are skipped. This "
+#~ "cannot be undone."
+#~ msgstr[0] ""
+#~ "%(count)s Bestellung löschen? Bestellungen, die gerade gepickt werden, "
+#~ "werden übersprungen. Dies kann nicht rückgängig gemacht werden."
+#~ msgstr[1] ""
+#~ "%(count)s Bestellungen löschen? Bestellungen, die gerade gepickt werden, "
+#~ "werden übersprungen. Dies kann nicht rückgängig gemacht werden."
 
-#: .\templates\manage\orders\list.html:303
-msgid ""
-"Reset %(count)s order to draft? In-progress orders are unclaimed and their "
-"picking progress is discarded. Completed and cancelled orders are skipped."
-msgid_plural ""
-"Reset %(count)s orders to draft? In-progress orders are unclaimed and their "
-"picking progress is discarded. Completed and cancelled orders are skipped."
-msgstr[0] ""
-"%(count)s Bestellung auf Entwurf zurücksetzen? Bestellungen in Bearbeitung "
-"werden freigegeben und ihr Kommissionierfortschritt wird verworfen. "
-"Abgeschlossene und stornierte Bestellungen werden übersprungen."
-msgstr[1] ""
-"%(count)s Bestellungen auf Entwurf zurücksetzen? Bestellungen in Bearbeitung"
-" werden freigegeben und ihr Kommissionierfortschritt wird verworfen. "
-"Abgeschlossene und stornierte Bestellungen werden übersprungen."
+#~ msgid ""
+#~ "Reset %(count)s order to draft? In-progress orders are unclaimed and their "
+#~ "picking progress is discarded. Completed and cancelled orders are skipped."
+#~ msgid_plural ""
+#~ "Reset %(count)s orders to draft? In-progress orders are unclaimed and their "
+#~ "picking progress is discarded. Completed and cancelled orders are skipped."
+#~ msgstr[0] ""
+#~ "%(count)s Bestellung auf Entwurf zurücksetzen? Bestellungen in Bearbeitung "
+#~ "werden freigegeben und ihr Kommissionierfortschritt wird verworfen. "
+#~ "Abgeschlossene und stornierte Bestellungen werden übersprungen."
+#~ msgstr[1] ""
+#~ "%(count)s Bestellungen auf Entwurf zurücksetzen? Bestellungen in Bearbeitung"
+#~ " werden freigegeben und ihr Kommissionierfortschritt wird verworfen. "
+#~ "Abgeschlossene und stornierte Bestellungen werden übersprungen."
 
-#: .\templates\manage\orders\list.html:312
-msgid "Add %(count)s order to the queue? Only draft orders are added."
-msgid_plural "Add %(count)s orders to the queue? Only draft orders are added."
-msgstr[0] ""
-"%(count)s Bestellung zur Warteschlange hinzufügen? Nur Bestellungen im "
-"Entwurfsstatus werden hinzugefügt."
-msgstr[1] ""
-"%(count)s Bestellungen zur Warteschlange hinzufügen? Nur Bestellungen im "
-"Entwurfsstatus werden hinzugefügt."
+#~ msgid "Add %(count)s order to the queue? Only draft orders are added."
+#~ msgid_plural "Add %(count)s orders to the queue? Only draft orders are added."
+#~ msgstr[0] ""
+#~ "%(count)s Bestellung zur Warteschlange hinzufügen? Nur Bestellungen im "
+#~ "Entwurfsstatus werden hinzugefügt."
+#~ msgstr[1] ""
+#~ "%(count)s Bestellungen zur Warteschlange hinzufügen? Nur Bestellungen im "
+#~ "Entwurfsstatus werden hinzugefügt."
 
-#: .\templates\manage\orders\list.html:321
-msgid ""
-"Remove %(count)s order from the queue? Only queued orders are affected."
-msgid_plural ""
-"Remove %(count)s orders from the queue? Only queued orders are affected."
-msgstr[0] ""
-"%(count)s Bestellung aus der Warteschlange entfernen? Betroffen sind nur "
-"Bestellungen in der Warteschlange."
-msgstr[1] ""
-"%(count)s Bestellungen aus der Warteschlange entfernen? Betroffen sind nur "
-"Bestellungen in der Warteschlange."
+#~ msgid ""
+#~ "Remove %(count)s order from the queue? Only queued orders are affected."
+#~ msgid_plural ""
+#~ "Remove %(count)s orders from the queue? Only queued orders are affected."
+#~ msgstr[0] ""
+#~ "%(count)s Bestellung aus der Warteschlange entfernen? Betroffen sind nur "
+#~ "Bestellungen in der Warteschlange."
+#~ msgstr[1] ""
+#~ "%(count)s Bestellungen aus der Warteschlange entfernen? Betroffen sind nur "
+#~ "Bestellungen in der Warteschlange."
 
-#: .\templates\manage\picklists\list.html:222
-msgid "Mark %(count)s picklist as completed?"
-msgid_plural "Mark %(count)s picklists as completed?"
-msgstr[0] "%(count)s Pickliste als abgeschlossen markieren?"
-msgstr[1] "%(count)s Picklisten als abgeschlossen markieren?"
+#~ msgid "Mark %(count)s picklist as completed?"
+#~ msgid_plural "Mark %(count)s picklists as completed?"
+#~ msgstr[0] "%(count)s Pickliste als abgeschlossen markieren?"
+#~ msgstr[1] "%(count)s Picklisten als abgeschlossen markieren?"
 
-#: .\templates\manage\picklists\list.html:231
-msgid "Archive %(count)s picklist?"
-msgid_plural "Archive %(count)s picklists?"
-msgstr[0] "%(count)s Pickliste archivieren?"
-msgstr[1] "%(count)s Picklisten archivieren?"
+#~ msgid "Archive %(count)s picklist?"
+#~ msgid_plural "Archive %(count)s picklists?"
+#~ msgstr[0] "%(count)s Pickliste archivieren?"
+#~ msgstr[1] "%(count)s Picklisten archivieren?"
 
-#: .\templates\manage\products\list.html:301
-msgid ""
-"Delete %(count)s product? Products used in orders are skipped. This cannot "
-"be undone."
-msgid_plural ""
-"Delete %(count)s products? Products used in orders are skipped. This cannot "
-"be undone."
-msgstr[0] ""
-"%(count)s Produkt löschen? Produkte, die in Bestellungen verwendet werden, "
-"werden übersprungen. Dies kann nicht rückgängig gemacht werden."
-msgstr[1] ""
-"%(count)s Produkte löschen? Produkte, die in Bestellungen verwendet werden, "
-"werden übersprungen. Dies kann nicht rückgängig gemacht werden."
+#~ msgid ""
+#~ "Delete %(count)s product? Products used in orders are skipped. This cannot "
+#~ "be undone."
+#~ msgid_plural ""
+#~ "Delete %(count)s products? Products used in orders are skipped. This cannot "
+#~ "be undone."
+#~ msgstr[0] ""
+#~ "%(count)s Produkt löschen? Produkte, die in Bestellungen verwendet werden, "
+#~ "werden übersprungen. Dies kann nicht rückgängig gemacht werden."
+#~ msgstr[1] ""
+#~ "%(count)s Produkte löschen? Produkte, die in Bestellungen verwendet werden, "
+#~ "werden übersprungen. Dies kann nicht rückgängig gemacht werden."
 
 # === CAMERA PAGE / OTHER JS (leftover msgids without msgstr) ===
-#: .\templates\shopify\app.html:324
-msgid "Could not load status"
-msgstr "Status konnte nicht geladen werden"
+#~ msgid "Could not load status"
+#~ msgstr "Status konnte nicht geladen werden"
 
-#: .\templates\shopify\app.html:344
-msgid "Linking…"
-msgstr "Wird verknüpft…"
+#~ msgid "Linking…"
+#~ msgstr "Wird verknüpft…"
 
-#: .\templates\shopify\app.html:356
-msgid "Linked to %(name)s"
-msgstr "Verknüpft mit %(name)s"
+#~ msgid "Linked to %(name)s"
+#~ msgstr "Verknüpft mit %(name)s"
 
-#: .\templates\shopify\app.html:362
-msgid "Linking failed"
-msgstr "Verknüpfung fehlgeschlagen"
+#~ msgid "Linking failed"
+#~ msgstr "Verknüpfung fehlgeschlagen"
 
-#: .\templates\shopify\app.html:366
-msgid "Link account"
-msgstr "Konto verknüpfen"
+#~ msgid "Link account"
+#~ msgstr "Konto verknüpfen"
 
-#: .\templates\shopify\app.html:385
-msgid "Variant %(id)s"
-msgstr "Variante %(id)s"
+#~ msgid "Variant %(id)s"
+#~ msgstr "Variante %(id)s"
 
-#: .\templates\shopify\app.html:388
-msgid "Product code"
-msgstr "Produktcode"
+#~ msgid "Product code"
+#~ msgstr "Produktcode"
 
-#: .\templates\shopify\app.html:390
-msgid "Link"
-msgstr "Verknüpfen"
+#~ msgid "Link"
+#~ msgstr "Verknüpfen"
 
-#: .\templates\shopify\app.html:398
-msgid "Linked"
-msgstr "Verknüpft"
+#~ msgid "Linked"
+#~ msgstr "Verknüpft"
 
-#: .\templates\shopify\app.html:401
-msgid "Link failed"
-msgstr "Verknüpfen fehlgeschlagen"
+#~ msgid "Link failed"
+#~ msgstr "Verknüpfen fehlgeschlagen"
 
-#: .\templates\shopify\app.html:422
-msgid "Password set"
-msgstr "Passwort festgelegt"
+#~ msgid "Password set"
+#~ msgstr "Passwort festgelegt"
 
-#: .\templates\shopify\app.html:425
-msgid "Failed"
-msgstr "Fehlgeschlagen"
+#~ msgid "Failed"
+#~ msgstr "Fehlgeschlagen"
 
-#: .\templates\shopify\app.html:443
-msgid "Settings saved"
-msgstr "Einstellungen gespeichert"
+#~ msgid "Settings saved"
+#~ msgstr "Einstellungen gespeichert"
 
-#: .\templates\shopify\app.html:443
-msgid "Save failed"
-msgstr "Speichern fehlgeschlagen"
+#~ msgid "Save failed"
+#~ msgstr "Speichern fehlgeschlagen"
 
-#: .\templates\shopify\app.html:459
-msgid "Sync queued…"
-msgstr "Synchronisierung eingeplant…"
+#~ msgid "Sync queued…"
+#~ msgstr "Synchronisierung eingeplant…"
 
-#: .\templates\shopify\app.html:463
-msgid "Syncing… %(processed)s / %(total)s product"
-msgid_plural "Syncing… %(processed)s / %(total)s products"
-msgstr[0] "Synchronisierung… %(processed)s / %(total)s Produkt"
-msgstr[1] "Synchronisierung… %(processed)s / %(total)s Produkte"
+#~ msgid "Syncing… %(processed)s / %(total)s product"
+#~ msgid_plural "Syncing… %(processed)s / %(total)s products"
+#~ msgstr[0] "Synchronisierung… %(processed)s / %(total)s Produkt"
+#~ msgstr[1] "Synchronisierung… %(processed)s / %(total)s Produkte"
 
-#: .\templates\shopify\app.html:468
-msgid "Syncing… %(processed)s product"
-msgid_plural "Syncing… %(processed)s products"
-msgstr[0] "Synchronisierung… %(processed)s Produkt"
-msgstr[1] "Synchronisierung… %(processed)s Produkte"
+#~ msgid "Syncing… %(processed)s product"
+#~ msgid_plural "Syncing… %(processed)s products"
+#~ msgstr[0] "Synchronisierung… %(processed)s Produkt"
+#~ msgstr[1] "Synchronisierung… %(processed)s Produkte"
 
-#: .\templates\shopify\app.html:473
-msgid "Last sync: %(linked)s linked, %(unresolved)s need mapping"
-msgstr ""
-"Letzte Synchronisierung: %(linked)s verknüpft, %(unresolved)s benötigen eine"
-" Zuordnung"
+#~ msgid "Last sync: %(linked)s linked, %(unresolved)s need mapping"
+#~ msgstr ""
+#~ "Letzte Synchronisierung: %(linked)s verknüpft, %(unresolved)s benötigen eine"
+#~ " Zuordnung"
 
-#: .\templates\shopify\app.html:477
-msgid "Sync failed — try again or contact support"
-msgstr ""
-"Synchronisierung fehlgeschlagen — versuchen Sie es erneut oder wenden Sie "
-"sich an den Support"
+#~ msgid "Sync failed — try again or contact support"
+#~ msgstr ""
+#~ "Synchronisierung fehlgeschlagen — versuchen Sie es erneut oder wenden Sie "
+#~ "sich an den Support"
 
-#: .\templates\shopify\app.html:504
-msgid "Product sync started"
-msgstr "Produktsynchronisierung gestartet"
+#~ msgid "Product sync started"
+#~ msgstr "Produktsynchronisierung gestartet"
 
-#: .\templates\shopify\app.html:507
-msgid "Could not start sync"
-msgstr "Synchronisierung konnte nicht gestartet werden"
+#~ msgid "Could not start sync"
+#~ msgstr "Synchronisierung konnte nicht gestartet werden"
 
-#: .\templates\shopify\app.html:562
-msgid "cancelled"
-msgstr "storniert"
+#~ msgid "cancelled"
+#~ msgstr "storniert"
 
-#: .\templates\shopify\app.html:572
-msgid "imported"
-msgstr "importiert"
+#~ msgid "imported"
+#~ msgstr "importiert"
 
-#: .\templates\shopify\app.html:582
-msgid "%(count)s order loaded"
-msgid_plural "%(count)s orders loaded"
-msgstr[0] "%(count)s Bestellung geladen"
-msgstr[1] "%(count)s Bestellungen geladen"
+#~ msgid "%(count)s order loaded"
+#~ msgid_plural "%(count)s orders loaded"
+#~ msgstr[0] "%(count)s Bestellung geladen"
+#~ msgstr[1] "%(count)s Bestellungen geladen"
 
-#: .\templates\shopify\app.html:595
-msgid "Push %(count)s to OrderPiqr"
-msgstr "%(count)s an OrderPiqr übertragen"
+#~ msgid "Push %(count)s to OrderPiqr"
+#~ msgstr "%(count)s an OrderPiqr übertragen"
 
-#: .\templates\shopify\app.html:596
-msgid "Push selected to OrderPiqr"
-msgstr "Ausgewählte an OrderPiqr übertragen"
+#~ msgid "Push selected to OrderPiqr"
+#~ msgstr "Ausgewählte an OrderPiqr übertragen"
 
-#: .\templates\shopify\app.html:606
-msgid "Loading orders…"
-msgstr "Bestellungen werden geladen…"
+#~ msgid "Loading orders…"
+#~ msgstr "Bestellungen werden geladen…"
 
 # === CAMERA PAGE / OTHER JS (leftover msgids without msgstr) ===
-#: .\templates\shopify\app.html:611
-msgid "Could not load orders."
-msgstr "Bestellungen konnten nicht geladen werden."
+#~ msgid "Could not load orders."
+#~ msgstr "Bestellungen konnten nicht geladen werden."
 
-#: .\templates\shopify\app.html:644
-msgid "Pushing… %(done)s/%(total)s"
-msgstr "Übertragung… %(done)s/%(total)s"
+#~ msgid "Pushing… %(done)s/%(total)s"
+#~ msgstr "Übertragung… %(done)s/%(total)s"
 
-#: .\templates\shopify\app.html:651
-msgid "Push failed"
-msgstr "Übertragung fehlgeschlagen"
+#~ msgid "Push failed"
+#~ msgstr "Übertragung fehlgeschlagen"
 
-#: .\templates\shopify\app.html:655
-msgid "%(count)s imported"
-msgstr "%(count)s importiert"
+#~ msgid "%(count)s imported"
+#~ msgstr "%(count)s importiert"
 
-#: .\templates\shopify\app.html:658
-msgid "%(count)s already in OrderPiqr"
-msgstr "%(count)s bereits in OrderPiqr"
+#~ msgid "%(count)s already in OrderPiqr"
+#~ msgstr "%(count)s bereits in OrderPiqr"
 
-#: .\templates\shopify\app.html:661
-msgid "%(count)s need product mapping"
-msgstr "%(count)s benötigen eine Produktzuordnung"
+#~ msgid "%(count)s need product mapping"
+#~ msgstr "%(count)s benötigen eine Produktzuordnung"
 
-#: .\templates\shopify\app.html:664
-msgid "%(count)s skipped"
-msgstr "%(count)s übersprungen"
-
-#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
-msgid "Open your browser menu"
-msgstr "Öffne das Browser-Menü"
-
-#: orderpiqrApp/static/orderpiqrApp/js/installPrompt.js:0
-msgid "You have the app installed — open it from your home screen"
-msgstr "Die App ist installiert — öffne sie über deinen Startbildschirm"
+#~ msgid "%(count)s skipped"
+#~ msgstr "%(count)s übersprungen"
 
 #~ msgid "Error getting device fingerprint."
 #~ msgstr "Fehler beim Abrufen des Geräte-Fingerprints."

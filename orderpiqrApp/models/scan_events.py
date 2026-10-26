@@ -26,6 +26,9 @@ class ScanEvent(models.Model):
         ('app_lifecycle', _('App restarted or reloaded')),
         ('camera_error', _('Camera unavailable')),
         ('auth_bounce', _('Picker sent back to login')),
+        # A picker declaring units they could not pick — recorded work, not a
+        # failure of the app, hence severity info.
+        ('short_pick', _('Short pick declared')),
     ]
 
     # event_type says what happened; severity says how much it hurt. Keeping
@@ -50,6 +53,7 @@ class ScanEvent(models.Model):
         'app_lifecycle': 'info',
         'camera_error': 'error',
         'auth_bounce': 'error',
+        'short_pick': 'info',
     }
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name=_("Customer"))
@@ -81,6 +85,10 @@ class ScanEvent(models.Model):
             models.Index(fields=['customer', 'event_type', 'created_at']),
             models.Index(fields=['customer', 'severity', 'created_at']),
             models.Index(fields=['customer', 'device', 'created_at']),
+            # The API's picklist_code filter (one list's events, nightly pulls)
+            # had no index to lean on — the other four all key off event_type,
+            # severity or device instead.
+            models.Index(fields=['customer', 'picklist_code', 'created_at']),
         ]
 
     @property
