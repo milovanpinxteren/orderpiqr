@@ -32,7 +32,7 @@ from orderpiqrApp.utils.inventory import is_inventory_enabled, is_queue_enabled,
 from orderpiqrApp.utils.login_qr import active_token, issue_token, login_url
 from orderpiqrApp.utils.products import code_conflict, merge_products, resolve_product, set_alias_codes, set_primary_code
 from orderpiqrApp.utils.start_page import QUEUE, SCAN, TOKEN_START_PAGE_CHOICES
-from orderpiqrApp.models import Product, ProductBarcode, Order, OrderLine, PickList, ProductPick, Device, CustomerSettingValue, SettingDefinition, InventoryLog, ScanEvent
+from orderpiqrApp.models import Product, ProductBarcode, Order, OrderLine, PickList, ProductPick, Device, CustomerSettingValue, SettingDefinition, InventoryLog, ScanEvent, resolve_pending_picks_to_lost
 from django.contrib.auth.models import User
 
 
@@ -1247,6 +1247,8 @@ def picklist_close(request, picklist_id):
         note = f"Marked completed by {stamp}"
         picklist.notes = f"{picklist.notes}\n{note}" if picklist.notes else note
         picklist.save()
+        # Pending lines on an admin-closed list were never recorded either.
+        resolve_pending_picks_to_lost(picklist)
         if picklist.order and picklist.order.status != 'completed':
             picklist.order.status = 'completed'
             picklist.order.completed_at = now
@@ -1312,6 +1314,7 @@ def picklists_bulk_action(request):
             note = f"Marked completed by {stamp}"
             picklist.notes = f"{picklist.notes}\n{note}" if picklist.notes else note
             picklist.save()
+            resolve_pending_picks_to_lost(picklist)
             # Update linked order if it exists and isn't already completed
             if picklist.order and picklist.order.status != 'completed':
                 picklist.order.status = 'completed'
@@ -1562,8 +1565,13 @@ def _add_pick_outcomes(context, customer, start, end):
 
     completed_ids = list(picklists.filter(successful=True).values_list('picklist_id', flat=True))
     total_lines = ProductPick.objects.filter(picklist__in=picklists).count()
-    lost_lines = ProductPick.objects.filter(
-        picklist_id__in=completed_ids, successful__isnull=True).count()
+    # Union on purpose: completion normally resolves pending rows to lost, but
+    # a completion that bypassed the hooks (admin-direct ORM write) leaves them
+    # pending — those are lost all the same.
+    lost_lines = ProductPick.objects.filter(picklist__in=picklists).filter(
+        Q(outcome='lost') | Q(outcome='pending', picklist_id__in=completed_ids)).count()
+    short_lines = ProductPick.objects.filter(
+        picklist__in=picklists, outcome='short').count()
 
     restarted = picklists.filter(notes__contains='Restarted by device')
 
@@ -1578,6 +1586,7 @@ def _add_pick_outcomes(context, customer, start, end):
         'lists_completed': len(completed_ids),
         'lists_open': picklists.filter(successful__isnull=True).count(),
         'lines_total': total_lines,
+        'lines_short': short_lines,
         'lines_lost': lost_lines,
         'lines_lost_pct': round(100.0 * lost_lines / total_lines, 1) if total_lines else 0.0,
         'lists_restarted': restarted.count(),
@@ -1665,7 +1674,7 @@ def health_list(request):
     # to keep restarting it — both already stored, neither ever shown.
     pending_counts = dict(
         ProductPick.objects
-        .filter(picklist__in=stale, successful__isnull=True)
+        .filter(picklist__in=stale, outcome='pending')
         .values_list('picklist')
         .annotate(n=Count('id'))
         .values_list('picklist', 'n'))

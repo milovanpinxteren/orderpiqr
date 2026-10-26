@@ -67,6 +67,8 @@ class PickListDetailSerializer(PickListSerializer):
                 'product_location': pp.product.location,
                 'quantity': pp.quantity,
                 'successful': pp.successful,
+                'outcome': pp.outcome,
+                'short_reason': pp.short_reason,
                 'time_taken': str(pp.time_taken) if pp.time_taken else None,
                 'notes': pp.notes,
             }

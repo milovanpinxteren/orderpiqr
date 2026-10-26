@@ -127,6 +127,10 @@
                 <div class="live-value">{{ outcomes.lines_lost }}</div>
                 <div class="live-label">{% trans "picks not recorded" %} ({{ outcomes.lines_lost_pct }}%)</div>
             </div>
+            <div class="live-item {% if outcomes.lines_short %}live-warn{% endif %}">
+                <div class="live-value">{{ outcomes.lines_short }}</div>
+                <div class="live-label">{% trans "lines short" %}</div>
+            </div>
             <div class="live-item {% if outcomes.lists_restarted %}live-warn{% endif %}">
                 <div class="live-value">{{ outcomes.lists_restarted }}</div>
                 <div class="live-label">{% trans "lists restarted" %}</div>

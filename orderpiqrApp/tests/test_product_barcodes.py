@@ -137,6 +137,7 @@ class ResolveGs1Tests(ProductBarcodeTestCase):
         self.assertEqual(response.status_code, 200)
         picklist = PickList.objects.get(picklist_code='ORD-1', customer=self.customer)
         pick = ProductPick.objects.get(picklist=picklist, product=self.smoothie)
+        self.assertEqual(pick.outcome, 'picked')
         self.assertTrue(pick.successful)
 
 
@@ -161,6 +162,7 @@ class ScanWithAliasTests(ProductBarcodeTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['status'], 'ok')
         pick = ProductPick.objects.get(product=self.smoothie)
+        self.assertEqual(pick.outcome, 'picked')
         self.assertTrue(pick.successful)
 
     def test_pick_scanning_old_barcode_registers(self):

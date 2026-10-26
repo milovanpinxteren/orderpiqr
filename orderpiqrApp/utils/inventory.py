@@ -98,6 +98,27 @@ def is_picklist_search_enabled(customer):
     return definition.cast_value(raw_value) if raw_value else False
 
 
+def is_short_pick_enabled(customer):
+    """Whether pickers may declare units short (missing/damaged/wrong product)
+    from the scan page. Off unless asked for: a short is a stock-accuracy
+    statement, so a warehouse must opt into recording them."""
+    if not customer:
+        return False
+
+    try:
+        definition = SettingDefinition.objects.get(key='short_pick_enabled')
+    except SettingDefinition.DoesNotExist:
+        return False
+
+    customer_value = CustomerSettingValue.objects.filter(
+        customer=customer,
+        definition=definition
+    ).first()
+
+    raw_value = customer_value.value if customer_value else definition.default_value
+    return definition.cast_value(raw_value) if raw_value else False
+
+
 @transaction.atomic
 def modify_inventory(
     product,
@@ -180,7 +201,7 @@ def decrement_inventory_for_picklist(picklist, user):
     logs = []
     product_picks = ProductPick.objects.filter(
         picklist=picklist,
-        successful=True
+        outcome=ProductPick.Outcome.PICKED
     ).select_related('product')
 
     # Aggregate quantities by product

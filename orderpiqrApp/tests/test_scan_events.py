@@ -136,6 +136,7 @@ class ProductPickCaptureTests(ScanEndpointTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['status'], 'ok')
         pp = ProductPick.objects.get(product=self.smoothie)
+        self.assertEqual(pp.outcome, 'picked')
         self.assertTrue(pp.successful)
 
         event = ScanEvent.objects.get(event_type='manual_override')
@@ -150,6 +151,7 @@ class ProductPickCaptureTests(ScanEndpointTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(ScanEvent.objects.filter(event_type='manual_override').exists())
         pp = ProductPick.objects.get(product=self.smoothie)
+        self.assertEqual(pp.outcome, 'picked')
         self.assertTrue(pp.successful)
 
     def test_override_on_dead_picklist_still_logs_manual_override(self):

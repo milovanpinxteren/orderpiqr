@@ -295,19 +295,27 @@ def queue_claim_order(request, order_id):
                 # already_picked so the new picker's on-screen list is short by
                 # exactly the work that was already done.
                 for pl in old_picklists:
-                    kept = ProductPick.objects.filter(picklist=pl, successful=True).count()
-                    ProductPick.objects.filter(picklist=pl).exclude(successful=True).delete()
+                    # Picked and short rows are both recorded facts; only rows
+                    # with nothing recorded (pending, lost) are rebuilt.
+                    kept = ProductPick.objects.filter(
+                        picklist=pl,
+                        outcome__in=[ProductPick.Outcome.PICKED,
+                                     ProductPick.Outcome.SHORT]).count()
+                    ProductPick.objects.filter(
+                        picklist=pl,
+                        outcome__in=[ProductPick.Outcome.PENDING,
+                                     ProductPick.Outcome.LOST]).delete()
                     pl.notes = ((pl.notes or '') + '\n' + (
                         f"Force-reclaimed by device {device.name} at "
                         f"{timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M')}; "
-                        f"{kept} recorded pick(s) preserved")).strip()
+                        f"{kept} recorded line(s) preserved")).strip()
                     pl.save()
                     log_scan_event(
                         customer, pl.device, 'picklist_rejected',
                         picklist_code=pl.picklist_code or '',
                         reason='force_reclaimed',
                         message=(f"Order taken over by {device.name}; "
-                                 f"{kept} recorded pick(s) preserved"))
+                                 f"{kept} recorded line(s) preserved"))
 
             if order.status == 'completed':
                 return JsonResponse({
@@ -351,14 +359,20 @@ def queue_claim_order(request, order_id):
                 # whose picklist already held successful picks erased them, so
                 # stock had left the shelf with no record, no inventory
                 # decrement and no platform write-back.
-                ProductPick.objects.filter(picklist=pick_list).exclude(successful=True).delete()
+                ProductPick.objects.filter(
+                    picklist=pick_list,
+                    outcome__in=[ProductPick.Outcome.PENDING,
+                                 ProductPick.Outcome.LOST]).delete()
 
             # Create ProductPick entries from order lines, skipping units that
-            # were already picked before this claim — the returned picklist is
-            # what the picker sees on screen, so it must show remaining work,
-            # not work someone already did.
+            # were already picked or declared short before this claim — the
+            # returned picklist is what the picker sees on screen, so it must
+            # show remaining work, not work someone already recorded.
             preserved = Counter(
-                ProductPick.objects.filter(picklist=pick_list, successful=True)
+                ProductPick.objects.filter(
+                    picklist=pick_list,
+                    outcome__in=[ProductPick.Outcome.PICKED,
+                                 ProductPick.Outcome.SHORT])
                 .values_list('product_id', flat=True))
             picklist_products = []
             for line in order.lines.select_related('product').all():

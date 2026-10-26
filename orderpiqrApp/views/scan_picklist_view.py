@@ -8,7 +8,10 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 import json
 from django.views.decorators.http import require_GET, require_POST
-from orderpiqrApp.models import Device, Order, PickList, Product, ProductPick, ScanEvent
+from orderpiqrApp.models import (
+    Device, Order, PickList, Product, ProductPick, ScanEvent,
+    resolve_pending_picks_to_lost,
+)
 from orderpiqrApp.utils.build_id import get_build_id
 from django.utils.dateparse import parse_datetime
 from orderpiqrApp.utils.devices import (
@@ -303,12 +306,21 @@ def scan_picklist(request):
 
                 # A restart must not erase recorded work: deleting everything
                 # here turned every accidental or panic re-scan (e.g. after a
-                # stop-the-line overlay) into a wiped list. Pending rows are
-                # rebuilt below; successful rows survive and count against the
-                # re-scanned list's quantities.
-                ProductPick.objects.filter(picklist=pick_list).exclude(successful=True).delete()
-                preserved = Counter(
-                    ProductPick.objects.filter(picklist=pick_list, successful=True)
+                # stop-the-line overlay) into a wiped list. Pending and lost
+                # rows are rebuilt below; picked AND short rows survive (both
+                # are recorded facts) and count against the re-scanned list's
+                # quantities.
+                ProductPick.objects.filter(
+                    picklist=pick_list,
+                    outcome__in=[ProductPick.Outcome.PENDING, ProductPick.Outcome.LOST],
+                ).delete()
+                preserved_picked = Counter(
+                    ProductPick.objects.filter(
+                        picklist=pick_list, outcome=ProductPick.Outcome.PICKED)
+                    .values_list('product_id', flat=True))
+                preserved_short = Counter(
+                    ProductPick.objects.filter(
+                        picklist=pick_list, outcome=ProductPick.Outcome.SHORT)
                     .values_list('product_id', flat=True))
                 created = False
 
@@ -321,11 +333,13 @@ def scan_picklist(request):
                     pick_started=True,
                     order=order  # Link to order if it exists
                 )
-                preserved = Counter()
+                preserved_picked = Counter()
+                preserved_short = Counter()
                 created = True
 
             # Original product handling
             already_picked = {}
+            already_short = {}
             for product_code in picklist:
                 product = resolve_product(device.customer, product_code)
                 if not product:
@@ -333,11 +347,17 @@ def scan_picklist(request):
                     # transaction, so the order lock and half-built picklist
                     # don't survive a list we refused.
                     raise Product.DoesNotExist(product_code)
-                if preserved[product.pk] > 0:
+                if preserved_picked[product.pk] > 0:
                     # This unit was already picked before the restart; tell
                     # the client so it drops it from the list on screen.
-                    preserved[product.pk] -= 1
+                    preserved_picked[product.pk] -= 1
                     already_picked[product.code] = already_picked.get(product.code, 0) + 1
+                    continue
+                if preserved_short[product.pk] > 0:
+                    # Declared short before the restart: still recorded work,
+                    # reported separately so the client can render it as such.
+                    preserved_short[product.pk] -= 1
+                    already_short[product.code] = already_short.get(product.code, 0) + 1
                     continue
                 ProductPick.objects.create(
                     product=product,
@@ -374,6 +394,8 @@ def scan_picklist(request):
         'product_count': len(picklist),
         # Units kept from before a restart, keyed by primary product code.
         'already_picked': already_picked,
+        # Units declared short before a restart — kept, but not picked.
+        'already_short': already_short,
     })
 
 
@@ -398,6 +420,7 @@ def _duplicate_pick_row(picklist, pick_id):
             .select_related("product").order_by("id").first())
 
 
+@require_POST
 def product_pick(request):
     payload = json.loads(request.body.decode("utf-8"))
     order_id = payload.get("orderID")
@@ -408,6 +431,20 @@ def product_pick(request):
     time_taken_ms = payload.get("timeTakenMs")
     pick_id = _client_pick_id(payload)
     scanned_at = payload.get("scannedAt") or timezone.now().isoformat()
+    # A short declaration carries a reason slug; anything unrecognised becomes
+    # 'other' rather than an error — the declaration itself must never be lost
+    # to a client/server vocabulary mismatch.
+    short_reason = str(payload.get("shortReason") or "").strip()
+    if short_reason not in ProductPick.ShortReason.values:
+        short_reason = ProductPick.ShortReason.OTHER
+    # Free-text detail for 'other'; stored in notes, not in the slug column.
+    reason_text = str(payload.get("reasonText") or "").strip()
+    # quantity is only honoured for shorts ("3 units missing" is one client
+    # operation); a successful pick always marks exactly one row.
+    try:
+        quantity = max(1, int(payload.get("quantity") or 1))
+    except (TypeError, ValueError):
+        quantity = 1
 
     device, device_error = _resolve_device(request, device_fp)
     if device_error:
@@ -448,8 +485,10 @@ def product_pick(request):
             "picklist_code": picklist.picklist_code,
             "product_code": already.product.code,
             "updated_productpick_id": already.id,
+            "outcome": already.outcome,
             "remaining_for_product": ProductPick.objects.filter(
-                picklist=picklist, product=already.product, successful__isnull=True).count(),
+                picklist=picklist, product=already.product,
+                outcome=ProductPick.Outcome.PENDING).count(),
         }, status=200)
 
     if manual_override:
@@ -467,14 +506,6 @@ def product_pick(request):
                        message=f"Pick registered but product '{product_code}' does not exist for this customer")
         return JsonResponse({"status": "error", "message": _("Product not found")}, status=404)
 
-    # Find the next unpicked row for this product in this picklist
-    qs = ProductPick.objects.filter(picklist=picklist, product=product).order_by("id")
-    pp = qs.filter(successful__isnull=True).first() or qs.filter(successful=False).first()
-    if not pp:
-        # Idempotent: nothing left to update for this product
-        return JsonResponse({"status": "noop", "message": _("No pending ProductPick rows for this product.")},
-                            status=200, )
-
     # timeTakenMs is optional, matching the bulk path. A pick that sat in the
     # client's offline queue has no live stopwatch to report, and `int(None)`
     # here used to raise — losing the very pick the retry was meant to save.
@@ -483,25 +514,75 @@ def product_pick(request):
     except (TypeError, ValueError):
         time_taken = None
 
-    # Update fields
-    pp.successful = successful
-    pp.time_taken = time_taken
-    pp.client_pick_id = pick_id
-
-    # Append device/scanned info to notes
+    # Append device/scanned info (and any free-text reason) to notes
     stamp = f"device={device_fp}; scanned_at={scanned_at}"
-    pp.notes = f"{pp.notes}\n{stamp}" if pp.notes else stamp
+    if reason_text:
+        stamp = f"{reason_text}\n{stamp}"
 
-    pp.save(update_fields=["successful", "time_taken", "notes", "client_pick_id"])
+    qs = ProductPick.objects.filter(picklist=picklist, product=product).order_by("id")
+    update_fields = ["outcome", "short_reason", "successful", "time_taken",
+                     "notes", "client_pick_id"]
 
-    remaining_for_product = qs.filter(successful__isnull=True).count()
+    if successful:
+        # Pending first; then a declared short (the picker found it after all —
+        # reclaim, clearing the reason); then a lost row (a late outbox flush
+        # after completion reclaims it — truer health metric). Never touch
+        # picked rows.
+        pp = (qs.filter(outcome=ProductPick.Outcome.PENDING).first()
+              or qs.filter(outcome=ProductPick.Outcome.SHORT).first()
+              or qs.filter(outcome=ProductPick.Outcome.LOST).first())
+        if not pp:
+            # Idempotent: nothing left to update for this product
+            return JsonResponse({"status": "noop", "message": _("No pending ProductPick rows for this product.")},
+                                status=200, )
+
+        pp.outcome = ProductPick.Outcome.PICKED
+        pp.short_reason = ''
+        pp.time_taken = time_taken
+        pp.client_pick_id = pick_id
+        pp.notes = f"{pp.notes}\n{stamp}" if pp.notes else stamp
+        pp.save(update_fields=update_fields)
+        marked = [pp]
+        outcome = ProductPick.Outcome.PICKED
+    else:
+        # A short can cover several units at once ("3 missing"); marked under a
+        # lock so a concurrent pick cannot grab the same rows, every row
+        # carrying the same pickId (bulk convention) so a replay is recognised
+        # whichever row the duplicate check finds. Never re-mark short rows,
+        # never touch picked ones.
+        with transaction.atomic():
+            marked = list(
+                qs.filter(outcome__in=[ProductPick.Outcome.PENDING,
+                                       ProductPick.Outcome.LOST])
+                .select_for_update()[:quantity])
+            if not marked:
+                return JsonResponse({"status": "noop", "message": _("No pending ProductPick rows for this product.")},
+                                    status=200, )
+            for i, pp in enumerate(marked):
+                pp.outcome = ProductPick.Outcome.SHORT
+                pp.short_reason = short_reason
+                pp.time_taken = time_taken if i == 0 else None
+                pp.client_pick_id = pick_id
+                pp.notes = f"{pp.notes}\n{stamp}" if pp.notes else stamp
+                pp.save(update_fields=update_fields)
+        outcome = ProductPick.Outcome.SHORT
+        # After the duplicate check, so a replayed declaration cannot count the
+        # same missing units twice. English literal: stored diagnostic.
+        log_scan_event(device.customer, device, 'short_pick',
+                       reason=short_reason, scanned_code=product_code,
+                       picklist_code=order_id,
+                       message=f"{len(marked)} unit(s) declared short ({short_reason})")
+
+    remaining_for_product = qs.filter(outcome=ProductPick.Outcome.PENDING).count()
 
     return JsonResponse(
         {
             "status": "ok",
             "picklist_code": picklist.picklist_code,
             "product_code": product.code,
-            "updated_productpick_id": pp.id,
+            "updated_productpick_id": marked[0].id,
+            "outcome": outcome,
+            "updated_count": len(marked),
             "remaining_for_product": remaining_for_product,
         },
         status=200,
@@ -567,7 +648,8 @@ def bulk_product_pick(request):
             "updated_count": ProductPick.objects.filter(
                 picklist=picklist, client_pick_id=pick_id).count(),
             "remaining_for_product": ProductPick.objects.filter(
-                picklist=picklist, product=already.product, successful__isnull=True).count(),
+                picklist=picklist, product=already.product,
+                outcome=ProductPick.Outcome.PENDING).count(),
         }, status=200)
 
     if manual_override:
@@ -583,7 +665,7 @@ def bulk_product_pick(request):
         return JsonResponse({"status": "error", "message": _("Product not found")}, status=404)
 
     qs = ProductPick.objects.filter(
-        picklist=picklist, product=product, successful__isnull=True
+        picklist=picklist, product=product, outcome=ProductPick.Outcome.PENDING
     ).order_by("id")
 
     available = qs.count()
@@ -600,15 +682,16 @@ def bulk_product_pick(request):
     with transaction.atomic():
         picks_to_update = list(qs.select_for_update()[:quantity])
         for i, pp in enumerate(picks_to_update):
-            pp.successful = True
+            pp.outcome = ProductPick.Outcome.PICKED
             pp.time_taken = time_taken if i == 0 else timedelta(0)
             pp.notes = f"{pp.notes}\n{stamp}" if pp.notes else stamp
             # Every row this operation marks carries the id, so the duplicate
             # check above finds it no matter which row it looks at.
             pp.client_pick_id = pick_id
-            pp.save(update_fields=["successful", "time_taken", "notes", "client_pick_id"])
+            pp.save(update_fields=["outcome", "successful", "time_taken", "notes",
+                                   "client_pick_id"])
 
-    remaining = qs.filter(successful__isnull=True).count()
+    remaining = qs.filter(outcome=ProductPick.Outcome.PENDING).count()
 
     return JsonResponse({
         "status": "ok",
@@ -652,6 +735,11 @@ def complete_picklist(request):
                 picklist.time_taken = now - pick_time
                 picklist.successful = True  # or set based on some logic
                 picklist.save()
+
+                # Lines still pending on a finished list are picks the server
+                # never heard about. The replay guard above means this runs
+                # once per completion.
+                resolve_pending_picks_to_lost(picklist)
 
                 # Decrement inventory for picked products (if inventory management enabled)
                 decrement_inventory_for_picklist(picklist, request.user)

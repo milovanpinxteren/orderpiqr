@@ -6,7 +6,9 @@ from orderpiqrApp.models import PickList, ProductPick
 class ProductPickInline(admin.TabularInline):
     model = ProductPick
     extra = 0  # No empty rows for adding new product picks
-    fields = ('product', 'quantity', 'time_taken', 'successful')
+    fields = ('product', 'quantity', 'time_taken', 'outcome', 'short_reason', 'successful')
+    # Derived from outcome in save(); editing it directly would be overwritten.
+    readonly_fields = ('successful',)
 
 class PickListAdmin(admin.ModelAdmin):
     list_display = ('picklist_code', 'device', 'pick_time', 'time_taken', 'successful')

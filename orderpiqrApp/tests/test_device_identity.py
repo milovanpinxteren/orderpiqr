@@ -118,7 +118,7 @@ class ForceReclaimTests(TestCase):
             customer=self.customer, device=self.holder, picklist_code='ORD-1',
             order=self.order, pick_started=True, successful=None)
         self.done = ProductPick.objects.create(
-            product=self.product, picklist=self.picklist, quantity=1, successful=True)
+            product=self.product, picklist=self.picklist, quantity=1, outcome='picked')
         self.pending = ProductPick.objects.create(
             product=self.product, picklist=self.picklist, quantity=1)
 
@@ -151,7 +151,7 @@ class ForceReclaimTests(TestCase):
         self.assertEqual(event.device, self.holder)
         self.assertEqual(event.picklist_code, 'ORD-1')
         self.assertIn('Claimer phone', event.message)
-        self.assertIn('1 recorded pick', event.message)
+        self.assertIn('1 recorded line', event.message)
 
     def test_claim_rebuilds_only_the_pending_units(self):
         # The order has 3 units; one was already picked. The picker's screen
@@ -162,8 +162,22 @@ class ForceReclaimTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['picklist']), 2)
         picks = ProductPick.objects.filter(picklist=self.picklist)
-        self.assertEqual(picks.filter(successful=True).count(), 1)
-        self.assertEqual(picks.filter(successful__isnull=True).count(), 2)
+        self.assertEqual(picks.filter(outcome='picked').count(), 1)
+        self.assertEqual(picks.filter(outcome='pending').count(), 2)
+
+    def test_force_reclaim_preserves_short_rows(self):
+        # A declared short is recorded work: the reclaim must keep it and the
+        # rebuilt on-screen list must be short by that unit too.
+        short = ProductPick.objects.create(
+            product=self.product, picklist=self.picklist, quantity=1,
+            outcome='short', short_reason='damaged')
+
+        response = self._claim(force=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(ProductPick.objects.filter(pk=short.pk).exists())
+        # 3 ordered units minus 1 picked minus 1 short = 1 on screen.
+        self.assertEqual(len(response.json()['picklist']), 1)
 
     def test_claiming_a_queued_order_is_unaffected(self):
         # No prior work: the claim must still build the full list.
