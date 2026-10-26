@@ -228,15 +228,24 @@
         </h4>
         <table id="scanned-list" class="scanned-list">
             <thead>
+            {# The trailing action column holds the "report missing" flag.    #}
+            {# Hidden until the settings gate below confirms                  #}
+            {# short_pick_enabled, exactly like the search magnifier: a       #}
+            {# warehouse without the feature gets no column, and domUpdater   #}
+            {# renders no cells for it either, so the two always agree.       #}
             <tr class="header-individual">
                 <th>{% trans "Product Code" %}</th>
                 <th>{% trans "Product Name" %}</th>
                 <th>{% trans "Location" %}</th>
+                <th class="th-action" style="display: none;"
+                    aria-label="{% trans 'Report missing' %}"></th>
             </tr>
             <tr class="header-grouped">
                 <th class="th-qty">{% trans "Qty" %}</th>
                 <th>{% trans "Location" %}</th>
                 <th>{% trans "Product" %}</th>
+                <th class="th-action" style="display: none;"
+                    aria-label="{% trans 'Report missing' %}"></th>
             </tr>
             </thead>
             <tbody></tbody>
@@ -331,6 +340,15 @@
                 searchToggle.style.display = 'flex';
             }
         }
+        // Short picks: the trailing flag column only exists for warehouses
+        // that use it. Strict true for the same reason as above — domUpdater
+        // gates the row cells on the identical check, so a missing key leaves
+        // header and body consistently three columns wide.
+        if (window.SETTINGS.short_pick_enabled === true) {
+            document.querySelectorAll('#scanned-list .th-action').forEach(function (th) {
+                th.style.display = 'table-cell';
+            });
+        }
     } catch (e) {
         window.SETTINGS = {};
         console.error("Failed to parse settings JSON:", e);
@@ -424,6 +442,7 @@
 <script src="{% get_static_prefix %}orderpiqrApp/js/manualOverride.js" type="module"></script>
 <script src="{% get_static_prefix %}orderpiqrApp/js/picklistSearch.js" type="module"></script>
 <script src="{% get_static_prefix %}orderpiqrApp/js/syncBadge.js" type="module"></script>
+<script src="{% get_static_prefix %}orderpiqrApp/js/shortPick.js" type="module"></script>
 <script src="{% static 'orderpiqrApp/js/installPrompt.js' %}"></script>
 <script src="{% get_static_prefix %}orderpiqrApp/js/camera_page.js" type="module"></script>
 <!-- Self-hosted (was https://unpkg.com/html5-qrcode, byte-identical to 2.3.8

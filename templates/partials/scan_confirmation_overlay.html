@@ -66,3 +66,70 @@
         </button>
     </div>
 </div>
+
+{# Short-pick sheet: "I cannot fill this line". Modelled on the bulk overlay  #}
+{# (same content box, stepper and button classes) because the two are the     #}
+{# same gesture from the picker's side — how many, then confirm.              #}
+{#                                                                            #}
+{# The five reason buttons are NOT written out here: shortPick.js builds them #}
+{# from shortReasons.js, which is also what labels the short rows in the      #}
+{# table. One source, so a reason cannot read one way on the button and       #}
+{# another way on the row it creates.                                         #}
+<div id="short-pick-overlay" class="scan-overlay hidden">
+    <div class="bulk-pick-overlay-content">
+        <div class="scan-overlay-icon short-overlay-icon">⚑</div>
+        <h2 id="short-overlay-product-name"></h2>
+        <p id="short-overlay-line-info" class="pick-secondary"></p>
+
+        <div class="bulk-pick-custom-section">
+            <div class="bulk-pick-divider">
+                <span>{% trans "How many are missing?" %}</span>
+            </div>
+
+            <div class="bulk-pick-stepper">
+                <button id="short-qty-minus" class="stepper-btn stepper-minus" type="button">&minus;</button>
+                <input id="short-pick-quantity" type="number" inputmode="numeric" class="bulk-pick-input" min="1" value="1">
+                <button id="short-qty-plus" class="stepper-btn stepper-plus" type="button">+</button>
+            </div>
+        </div>
+
+        <div class="bulk-pick-divider">
+            <span>{% trans "Why is it missing?" %}</span>
+        </div>
+        {# Tapping a reason confirms immediately: two taps from list to logged #}
+        {# short, because a picker standing at an empty shelf will not work a  #}
+        {# form. Only "Other" asks a follow-up.                                #}
+        <div id="short-reason-grid" class="short-reason-grid"></div>
+
+        <div id="short-other-section" class="short-other-section hidden">
+            <input id="short-reason-text" class="short-reason-text" type="text" maxlength="200"
+                   placeholder="{% trans 'What happened?' %}"
+                   aria-label="{% trans 'What happened?' %}">
+            <button id="short-other-confirm-btn" class="overlay-btn bulk-confirm-qty" type="button">
+                {% trans "Confirm" %}
+            </button>
+        </div>
+
+        <button id="short-cancel-btn" class="overlay-btn bulk-continue" type="button">
+            {% trans "Continue scanning" %}
+        </button>
+    </div>
+</div>
+
+{# Completion summary: with shorts on the list, "nothing left to pick" no     #}
+{# longer means "everything was picked", so finishing becomes a decision      #}
+{# instead of a side effect of the last scan. Blocking on purpose.            #}
+<div id="short-complete-overlay" class="scan-overlay hidden">
+    <div class="bulk-pick-overlay-content">
+        <div class="scan-overlay-icon short-overlay-icon">⚑</div>
+        <h2>{% trans "Finish with missing items?" %}</h2>
+        <p class="pick-secondary">{% trans "Nothing left to pick. These lines were reported missing:" %}</p>
+        <ul id="short-complete-summary" class="short-complete-summary"></ul>
+        <button id="short-finish-btn" class="overlay-btn bulk-confirm-all" type="button">
+            {% trans "Finish list" %}
+        </button>
+        <button id="short-keep-picking-btn" class="overlay-btn bulk-continue" type="button">
+            {% trans "Keep picking" %}
+        </button>
+    </div>
+</div>

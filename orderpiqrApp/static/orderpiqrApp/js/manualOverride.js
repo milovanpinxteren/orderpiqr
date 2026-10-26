@@ -1,6 +1,5 @@
-import {updateScannedList} from './domUpdater.js';
 import {showNotification} from './notifications.js';
-import {currentPicklist, productData, notifyPicklistCompleted, currentOrderID, onSuccessfulPick, showPickFollowUpOverlay} from './camera_page.js';  // Import currentPicklist and productData
+import {currentPicklist, productData, completeIfFinished, onSuccessfulPick, renderList, showPickFollowUpOverlay} from './camera_page.js';  // Import currentPicklist and productData
 const gettext = window.gettext;
 
 
@@ -38,7 +37,9 @@ function handleManualOverride(code) {
         currentPicklist.splice(productIndex, 1); // Remove the product from the picklist
     }
     clickTimes[code] = []; // Reset the click counter for this product
-    updateScannedList(currentPicklist, productData); // Update the table after removing the product
+    // Through camera_page's single render entry point, so the declared-short
+    // rows at the bottom of the table survive an override.
+    renderList();
     const product = productData.find(item => item.code === code);  // Match code in productData
     // The override is logged server-side via the product-pick call itself
     // (manualOverride flag) — no separate scan event, to avoid double counting.
@@ -60,7 +61,9 @@ function handleManualOverride(code) {
     // ever counted.
     showPickFollowUpOverlay(code, product ? product.description : code, {manualOverride: true});
 
-    if (currentPicklist.length === 0) {
-        notifyPicklistCompleted(currentOrderID, csrfToken);
-    }
+    // One completion path for all four 0-length sites. (This used to call
+    // notifyPicklistCompleted(currentOrderID, csrfToken) — csrfToken is not in
+    // scope in a module, so the last override on a list threw instead of
+    // completing it.)
+    completeIfFinished();
 }

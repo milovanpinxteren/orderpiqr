@@ -497,6 +497,62 @@ button:hover {
     overflow-wrap: anywhere;
 }
 
+/* Short picks: the trailing "report missing" column, and the rows it
+   produces. The column is hidden in the template until the settings gate
+   reveals it, so these rules only ever apply where the feature is on. */
+.th-action,
+.cell-action {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+    padding-left: 2px;
+    padding-right: 6px;
+}
+
+/* 40px square minimum: this is tapped with a gloved thumb next to a row that
+   registers a pick on a triple-tap, so it must not be a target you can miss
+   into. */
+.row-short-btn {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0;
+    border: 1px solid #e0c389;
+    border-radius: 8px;
+    background-color: #fdf6e8;
+    color: #a86b00;
+    font-size: 1.05rem;
+    line-height: 1;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.row-short-btn:active {
+    background-color: #f7e6c4;
+}
+
+/* Amber and muted: a recorded fact, not work still to do. */
+.short-row td {
+    background-color: #fdf6e8;
+    color: #8a6d3b;
+}
+
+.short-qty {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+    font-weight: 700;
+}
+
+.short-name {
+    overflow-wrap: anywhere;
+}
+
+.short-reason {
+    font-size: 0.75rem;
+    color: #a88b55;
+    margin-top: 2px;
+}
+
 /* Notifications */
 .notification-container {
     position: fixed;
@@ -859,6 +915,76 @@ button:hover {
 
 .bulk-confirm-qty:hover {
     background-color: #0e7a0e;
+}
+
+/* Short-pick overlays. They reuse .bulk-pick-overlay-content, the stepper and
+   the .overlay-btn family wholesale — only the amber accent and the reason
+   grid are new, because the sheet is the same gesture as a bulk confirm. */
+.short-overlay-icon {
+    background-color: #d9961f;
+}
+
+/* Two columns so five reasons fit above the fold on a phone, each still a
+   full-width-ish target. The last one spans both: "Other" is the odd one out
+   in every sense. */
+.short-reason-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.short-reason-btn {
+    min-height: 56px;
+    padding: 12px 10px;
+    font-size: 0.95rem;
+    background-color: #d9961f;
+    border: none;
+    cursor: pointer;
+}
+
+.short-reason-btn:active {
+    background-color: #bf8217;
+}
+
+.short-reason-grid .short-reason-btn:last-child {
+    grid-column: 1 / -1;
+}
+
+.short-other-section {
+    margin-bottom: 16px;
+}
+
+.short-other-section.hidden {
+    display: none;
+}
+
+.short-reason-text {
+    width: 100%;
+    box-sizing: border-box;
+    height: 48px;
+    padding: 0 12px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    border: 2px solid #d9961f;
+    border-radius: 8px;
+}
+
+.short-complete-summary {
+    list-style: none;
+    margin: 0 0 20px;
+    padding: 0;
+    text-align: left;
+}
+
+.short-complete-item {
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border-radius: 8px;
+    background-color: #fdf6e8;
+    color: #8a6d3b;
+    font-size: 0.95rem;
+    overflow-wrap: anywhere;
 }
 
 /* Picklist search: floating magnifier + panel over the camera feed, for
