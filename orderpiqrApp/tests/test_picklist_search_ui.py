@@ -81,12 +81,23 @@ class PicklistSearchUITests(TestCase):
         self.set_setting('picklist_search_enabled', 'true')
         self.assertIn('"picklist_search_enabled": true', self.scan_page())
 
-    def test_module_tag_is_unhashed(self):
-        """Manifest storage hashes a {% static %} tag URL but not the relative
-        import specifiers inside the module, so a hashed tag loads a second
-        shadow copy of the whole graph (pick day 2026-10-11)."""
+    def test_module_tag_is_unhashed_and_build_scoped(self):
+        """Two separate properties, both load-bearing.
+
+        The FILENAME stays unhashed: manifest storage hashes a static tag URL
+        but not the relative import specifiers inside the module, so a hashed
+        tag loads a second shadow copy of the whole graph (pick day
+        2026-10-11).
+
+        The DIRECTORY carries the build id: relative specifiers do inherit the
+        directory, so this is what keeps one page's graph on one build instead
+        of letting the service worker pair it with another build's cached
+        copies (2026-10-26).
+        """
+        from orderpiqrApp.utils.build_id import get_build_id
         html = self.scan_page()
         self.assertIn(
-            '<script src="/static/orderpiqrApp/js/picklistSearch.js" type="module"></script>',
+            '<script src="/static/b/%s/orderpiqrApp/js/picklistSearch.js" type="module"></script>'
+            % get_build_id(),
             html)
         self.assertNotRegex(html, r'picklistSearch\.[0-9a-f]{8,}\.js')

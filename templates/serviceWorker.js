@@ -1,4 +1,4 @@
-{% load static %}
+{% load static build_tags %}
 // serviceWorker.js — rendered by orderpiqrApp.views.scan_picklist_view.service_worker,
 // not served as a static file. CACHE_NAME carries the build id so a deploy
 // forces every open phone onto a fresh pre-cache instead of silently keeping
@@ -6,12 +6,25 @@
 // that isn't this name).
 const CACHE_NAME = '{{ cache_name }}';
 
-// The unhashed static-prefix tag on purpose, never the hashed one: these are
-// fetched by URL string at install time, not imported, so the v123 module-
-// graph hashing rule doesn't apply to them directly — but the cache name is
-// already the cache-buster, so a second hash on the URL would just make
-// every one of these fail to resolve against what the page itself requests.
+// Every entry below must be the EXACT URL the page itself requests, or the
+// cache is dead weight: `cache.match(req)` keys on the full URL, so a
+// pre-cached copy under any other spelling is never served and the request
+// goes to the network — which, offline, means it simply fails.
+//
+// That makes the tag that renders each URL load-bearing, and there are three:
+//   STATIC_PREFIX   unhashed, for files the page requests unhashed
+//   the static tag  hashed, for the classic scripts index.html tags hashed
+//   MODULE_PREFIX   build-scoped, for the ES-module graph
+// (Spelling the static tag out above would be parsed as a tag, not a comment —
+// this file is a Django template, and it does not know what a // comment is.)
 const STATIC_PREFIX = '{% get_static_prefix %}';
+// The module graph's build-scoped directory — the same prefix index.html tags
+// its module entry points with. Relative import specifiers inherit the
+// directory, so caching the graph under this prefix is what keeps a build's
+// modules together: a page from a later build asks for a different directory,
+// misses, and goes to the network instead of being handed a half-stale graph
+// (the 2026-10-26 breakage). See orderpiqrApp.views.static_views.
+const MODULE_PREFIX = '{% build_static_prefix %}';
 const urlsToCache = [
     '/',
     '/offline/',
@@ -20,41 +33,44 @@ const urlsToCache = [
     // one script throws on its first user-visible string — an offline reload
     // would survive everything except its own translations.
     '/jsi18n/',
-    STATIC_PREFIX + 'orderpiqrApp/css/camera_page.css',
-    STATIC_PREFIX + 'orderpiqrApp/css/camera_controls.css',
-    STATIC_PREFIX + 'icons/icon-192.png',
-    STATIC_PREFIX + 'icons/icon-512.png',
-    STATIC_PREFIX + 'manifest.json',
-    // Classic scripts the scan page loads outside the module graph.
-    STATIC_PREFIX + 'orderpiqrApp/js/clientHealth.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/installPrompt.js',
+    '{% static "orderpiqrApp/css/camera_page.css" %}',
+    '{% static "orderpiqrApp/css/camera_controls.css" %}',
+    '{% static "icons/icon-192.png" %}',
+    '{% static "icons/icon-512.png" %}',
+    '{% static "manifest.json" %}',
+    // Classic scripts the scan page loads outside the module graph, tagged
+    // hashed in index.html — so they are pre-cached hashed too. Pre-caching
+    // these unhashed is how an offline reload used to come up without its own
+    // error reporter: the entry existed but under a URL nothing asks for.
+    '{% static "orderpiqrApp/js/clientHealth.js" %}',
+    '{% static "orderpiqrApp/js/installPrompt.js" %}',
     // The vendor scanner library: self-hosted precisely so a bad CDN minute
     // can't take the scan page down, which is exactly the kind of failure
-    // this cache exists to survive too.
-    STATIC_PREFIX + 'orderpiqrApp/js/vendor/html5-qrcode-2.3.8.min.js',
+    // this cache exists to survive too. Classic script, hashed tag.
+    '{% static "orderpiqrApp/js/vendor/html5-qrcode-2.3.8.min.js" %}',
     // The ES module graph camera_page.js pulls in — entries the page tags
     // directly, plus the import-only modules (fingerprint.js, pickOutbox.js,
     // appUpdater.js) nothing in templates/index.html references by URL.
-    STATIC_PREFIX + 'orderpiqrApp/js/qrScanner.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/notifications.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/orderImportance.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/picklistHandler.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/domUpdater.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/scanEventReporter.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/manualOverride.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/picklistSearch.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/shortPick.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/qrScanner.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/notifications.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/orderImportance.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/picklistHandler.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/domUpdater.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/scanEventReporter.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/manualOverride.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/picklistSearch.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/shortPick.js',
     // Its own graph entry, not imported by camera_page — and needed most on
     // an offline reload: it is the module that tells the picker their queued
     // picks are queued rather than lost.
-    STATIC_PREFIX + 'orderpiqrApp/js/syncBadge.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/fingerprint.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/pickOutbox.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/syncBadge.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/fingerprint.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/pickOutbox.js',
     // Import-only (shortPick.js and domUpdater.js pull it in), so no tag in
     // index.html names it — exactly the category this block exists for.
-    STATIC_PREFIX + 'orderpiqrApp/js/shortReasons.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/appUpdater.js',
-    STATIC_PREFIX + 'orderpiqrApp/js/camera_page.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/shortReasons.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/appUpdater.js',
+    MODULE_PREFIX + 'orderpiqrApp/js/camera_page.js',
 ];
 
 
@@ -135,11 +151,16 @@ self.addEventListener('fetch', (event) => {
 
     const url = new URL(req.url);
     if (url.pathname.startsWith(STATIC_PREFIX)) {
+        // Build-scoped module URLs start with STATIC_PREFIX too
+        // ('/static/b/<build>/...'), so they land here as well — deliberately.
+        //
         // Stale-while-revalidate: serve the cached copy instantly (a picker
         // mid-shift cannot wait on a round trip for a script they already
-        // have), and refresh the cache in the background for next time. The
-        // cache name — not this logic — is what makes a deploy actually
-        // propagate; see CACHE_NAME above.
+        // have), and refresh the cache in the background for next time. This
+        // is only *correct* because every URL it can answer is build-scoped or
+        // content-hashed: stale bytes are then always the right bytes for the
+        // page that asked. A cached copy under a URL two builds share is what
+        // made this handler serve a mixed module graph on 2026-10-26.
         event.respondWith((async () => {
             const cache = await caches.open(CACHE_NAME);
             const cached = await cache.match(req);
