@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls.i18n import i18n_patterns
 from django.views.i18n import JavaScriptCatalog
 
@@ -12,6 +12,7 @@ from api.views.documentation_views import documentation_view
 from django.views.generic import TemplateView, RedirectView
 from django.contrib.admin.views.decorators import staff_member_required
 from orderpiqrApp.views.auth.signup_view import signup
+from orderpiqrApp.views.static_views import build_scoped_static
 
 from django.contrib import admin
 
@@ -62,6 +63,14 @@ urlpatterns = [
     # for the same reason as the route above — a language-prefixed URL would
     # not match the fixed '/serviceWorker.js' path the page registers.
     path('serviceWorker.js', service_worker, name='service-worker'),
+    # Build-scoped static, outside i18n for the same reason: the URL is
+    # constructed by relative import resolution inside the modules themselves,
+    # so it can never carry a language prefix. WhiteNoise has no file at this
+    # path and passes it through to here. See orderpiqrApp.views.static_views —
+    # this is what stops a deploy serving a page one build's modules out of
+    # another build's cache.
+    re_path(r'^static/b/(?P<build>[^/]+)/(?P<path>.+)$', build_scoped_static,
+            name='build-scoped-static'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),

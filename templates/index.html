@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load static i18n build_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -425,26 +425,32 @@
     });
 </script>
 
-<!-- The ES-module graph is loaded UNHASHED on purpose. Manifest static
-     storage hashes these tag URLs but NOT the relative import specifiers
-     inside the modules, so hashed tags load a second shadow copy of every
-     module next to the one the imports resolve to — the shadow camera_page
-     has an empty picklist, which silently lost every manual override and
-     wiped lists via false stop-the-line overlays (pick day 2026-10-11).
-     Unhashed URLs keep the graph single-instance; deploys still propagate
-     via the short max-age plus the build_id self-update. -->
-<script src="{% get_static_prefix %}orderpiqrApp/js/qrScanner.js" type="module"></script>
-<script src="{% get_static_prefix %}orderpiqrApp/js/notifications.js" type="module"></script>
-<script src="{% get_static_prefix %}orderpiqrApp/js/orderImportance.js" type="module"></script>
-<script src="{% get_static_prefix %}orderpiqrApp/js/picklistHandler.js" type="module"></script>
-<script src="{% get_static_prefix %}orderpiqrApp/js/domUpdater.js" type="module"></script>
-<script src="{% get_static_prefix %}orderpiqrApp/js/scanEventReporter.js" type="module"></script>
-<script src="{% get_static_prefix %}orderpiqrApp/js/manualOverride.js" type="module"></script>
-<script src="{% get_static_prefix %}orderpiqrApp/js/picklistSearch.js" type="module"></script>
-<script src="{% get_static_prefix %}orderpiqrApp/js/syncBadge.js" type="module"></script>
-<script src="{% get_static_prefix %}orderpiqrApp/js/shortPick.js" type="module"></script>
+<!-- The ES-module graph keeps its UNHASHED FILENAMES on purpose. Manifest
+     static storage hashes these tag URLs but NOT the relative import
+     specifiers inside the modules, so hashed tags load a second shadow copy
+     of every module next to the one the imports resolve to — the shadow
+     camera_page has an empty picklist, which silently lost every manual
+     override and wiped lists via false stop-the-line overlays (pick day
+     2026-10-11).
+
+     What IS versioned is the directory: build_static_prefix puts the build id
+     in a path segment, which relative import specifiers DO inherit (a query
+     string would not — './shortPick.js' drops it). So the whole graph is
+     fetched from one build's directory and can never be served another
+     build's copy out of the service-worker cache, which is what broke the
+     scan page on 2026-10-26. Single-instance graph, coherent per build. -->
+<script src="{% build_static_prefix %}orderpiqrApp/js/qrScanner.js" type="module"></script>
+<script src="{% build_static_prefix %}orderpiqrApp/js/notifications.js" type="module"></script>
+<script src="{% build_static_prefix %}orderpiqrApp/js/orderImportance.js" type="module"></script>
+<script src="{% build_static_prefix %}orderpiqrApp/js/picklistHandler.js" type="module"></script>
+<script src="{% build_static_prefix %}orderpiqrApp/js/domUpdater.js" type="module"></script>
+<script src="{% build_static_prefix %}orderpiqrApp/js/scanEventReporter.js" type="module"></script>
+<script src="{% build_static_prefix %}orderpiqrApp/js/manualOverride.js" type="module"></script>
+<script src="{% build_static_prefix %}orderpiqrApp/js/picklistSearch.js" type="module"></script>
+<script src="{% build_static_prefix %}orderpiqrApp/js/syncBadge.js" type="module"></script>
+<script src="{% build_static_prefix %}orderpiqrApp/js/shortPick.js" type="module"></script>
 <script src="{% static 'orderpiqrApp/js/installPrompt.js' %}"></script>
-<script src="{% get_static_prefix %}orderpiqrApp/js/camera_page.js" type="module"></script>
+<script src="{% build_static_prefix %}orderpiqrApp/js/camera_page.js" type="module"></script>
 <!-- Self-hosted (was https://unpkg.com/html5-qrcode, byte-identical to 2.3.8
      min). This was the only third-party script the scan page needed at
      runtime, and its failure was catastrophic *and* silent: Html5Qrcode ends

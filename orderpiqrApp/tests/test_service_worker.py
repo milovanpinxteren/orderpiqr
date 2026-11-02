@@ -4,6 +4,8 @@ Rendered rather than served as a static file: the whole point is that its
 cache name carries the current build id, so a deploy can force every open
 phone off its old pre-cache (see orderpiqrApp.views.scan_picklist_view.
 service_worker)."""
+import re
+
 from django.test import TestCase
 
 from orderpiqrApp.utils.build_id import get_build_id
@@ -37,6 +39,14 @@ class ServiceWorkerViewTests(TestCase):
         # Spot-check a representative entry from each category the design
         # calls for, rather than the whole list — this test should not have
         # to change every time a new module joins the scan-page graph.
+        #
+        # Matched hash-tolerantly ('camera_page.<hash>.css' as well as
+        # 'camera_page.css') because the right spelling differs per category
+        # and is not this test's subject: the ES-module graph stays unhashed
+        # under a build-scoped prefix, while everything the page tags with the
+        # static tag is pre-cached hashed, so that the cached URL is the one
+        # the page actually asks for. test_build_scoped_static.py is what pins
+        # down which category each asset belongs in.
         body = self.client.get('/serviceWorker.js').content.decode('utf-8')
         for expected in (
             "'/'", "'/offline/'",
@@ -46,7 +56,10 @@ class ServiceWorkerViewTests(TestCase):
             "orderpiqrApp/css/camera_page.css",
             "icons/icon-192.png",
         ):
-            self.assertIn(expected, body)
+            stem, _, extension = expected.rpartition('.')
+            pattern = r'%s(\.[0-9a-f]{8,})?\.%s' % (re.escape(stem), re.escape(extension)) \
+                if stem else re.escape(expected)
+            self.assertRegex(body, pattern, '%s is not pre-cached' % expected)
 
     def test_precaches_the_short_pick_modules(self):
         # Both of these are load-bearing offline: shortPick.js is how a picker
