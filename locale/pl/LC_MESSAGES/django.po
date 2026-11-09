@@ -1778,7 +1778,10 @@ msgstr "Niedobory"
 msgid ""
 "Let pickers report items they cannot pick (missing, damaged, wrong product) "
 "instead of leaving the line pending."
-msgstr "Pozwala kompletującym zgłaszać artykuły, których nie mogą pobrać (brak, uszkodzenie, niewłaściwy produkt), zamiast zostawiać pozycję jako oczekującą."
+msgstr ""
+"Pozwala kompletującym zgłaszać artykuły, których nie mogą pobrać (brak, "
+"uszkodzenie, niewłaściwy produkt), zamiast zostawiać pozycję jako "
+"oczekującą."
 
 #: .\orderpiqrApp\utils\start_page.py:31
 msgid "Company default"
@@ -5959,6 +5962,14 @@ msgstr "Dostęp kompletatora"
 #: .\templates\shopify\app.html:248
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr "Personel magazynu loguje się do aplikacji kompletatora tym kontem:"
+
+#: templates/manage/health/list.html:132
+msgid "lines on abandoned lists"
+msgstr "pozycje na porzuconych listach"
+
+#: templates/manage/health/list.html:136
+msgid "confirmed without a scan"
+msgstr "potwierdzone bez skanu"
 
 #~ msgid "Delete this device? It has no picked lists, so nothing is lost."
 #~ msgstr ""

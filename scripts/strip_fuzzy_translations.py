@@ -27,6 +27,8 @@ import argparse
 import sys
 from pathlib import Path
 
+from console_utf8 import force_utf8_output
+
 try:
     import polib
 except ImportError:
@@ -56,6 +58,7 @@ def strip_catalog(path, dry_run):
 
 
 def main():
+    force_utf8_output()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--locales', nargs='*', help='default: every locale on disk')
     parser.add_argument('--domains', nargs='*', default=list(DOMAINS))

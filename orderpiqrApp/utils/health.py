@@ -67,25 +67,52 @@ def pick_outcomes(customer, start, end):
     picker made and the server never stored. On 2026-10-11 that was 15.2% of
     all lines; nothing on the health page would have shown it.
 
+    Lines left pending on a list that was *never* completed are the same harm
+    through a second door, and this function used to miss them entirely: only
+    completion resolves pending rows to lost, so an abandoned claim keeps its
+    lines pending indefinitely and they counted as neither picked, short nor
+    lost. At HF that was 385 lines over 37 lists while the page reported 0.12%
+    unaccounted. They are now in `lines_lost` (identical harm) and also broken
+    out as `lines_abandoned`, because the fix is a different one: a completion
+    that never arrived is a client problem, a list nobody came back to is an
+    operational one.
+
     Returns (outcomes, current_build) instead of mutating a view context, so
     both the HTML page and the API can call this the same way.
     """
     # Imported here (not at module level) to avoid a circular import: these
     # models import from orderpiqrApp.utils in turn.
-    from orderpiqrApp.models import Device, PickList, ProductPick
+    from orderpiqrApp.models import Device, PickList, ProductPick, abandoned_picklist_q
 
     picklists = PickList.objects.filter(
         customer=customer, pick_time__gte=start, pick_time__lte=end, archived=False)
 
     completed_ids = list(picklists.filter(successful=True).values_list('picklist_id', flat=True))
+    # Disjoint from completed_ids by construction (successful=True vs NULL), so
+    # the two can be concatenated below without double-counting a line.
+    abandoned_ids = list(picklists.filter(abandoned_picklist_q())
+                         .values_list('picklist_id', flat=True))
     total_lines = ProductPick.objects.filter(picklist__in=picklists).count()
     # Union on purpose: completion normally resolves pending rows to lost, but
     # a completion that bypassed the hooks (admin-direct ORM write) leaves them
-    # pending — those are lost all the same.
+    # pending — those are lost all the same, as are the pending rows on a list
+    # that was abandoned before any completion could run.
     lost_lines = ProductPick.objects.filter(picklist__in=picklists).filter(
-        Q(outcome='lost') | Q(outcome='pending', picklist_id__in=completed_ids)).count()
+        Q(outcome='lost')
+        | Q(outcome='pending', picklist_id__in=completed_ids + abandoned_ids)).count()
+    abandoned_lines = ProductPick.objects.filter(
+        picklist__in=picklists, outcome='pending', picklist_id__in=abandoned_ids).count()
     short_lines = ProductPick.objects.filter(
         picklist__in=picklists, outcome='short').count()
+
+    # Was the work verified, or just asserted? Counted over picked rows whose
+    # verification is known (scan_verified is NULL for everything recorded
+    # before the column existed), so the percentage describes the rows it can
+    # actually speak for instead of diluting itself with history.
+    picked_rows = ProductPick.objects.filter(picklist__in=picklists, outcome='picked')
+    verified_lines = picked_rows.filter(scan_verified=True).count()
+    unverified_lines = picked_rows.filter(scan_verified=False).count()
+    known_verification = verified_lines + unverified_lines
 
     restarted = picklists.filter(notes__contains='Restarted by device')
 
@@ -98,10 +125,16 @@ def pick_outcomes(customer, start, end):
         'lists_total': picklists.count(),
         'lists_completed': len(completed_ids),
         'lists_open': picklists.filter(successful__isnull=True).count(),
+        'lists_abandoned': len(abandoned_ids),
         'lines_total': total_lines,
         'lines_short': short_lines,
         'lines_lost': lost_lines,
         'lines_lost_pct': round(100.0 * lost_lines / total_lines, 1) if total_lines else 0.0,
+        'lines_abandoned': abandoned_lines,
+        'lines_scan_verified': verified_lines,
+        'lines_unverified': unverified_lines,
+        'lines_unverified_pct': (round(100.0 * unverified_lines / known_verification, 1)
+                                 if known_verification else 0.0),
         'lists_restarted': restarted.count(),
         'devices_used': devices_used,
         'devices_on_old_build': Device.objects.filter(

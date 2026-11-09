@@ -3,6 +3,7 @@ import csv
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 from django import forms
+from django.db.models import Count
 from orderpiqrApp.models import Order, OrderLine, Product, UserProfile, PickList, ProductPick
 from django.utils.translation import gettext_lazy as _, ngettext
 from orderpiqrApp.utils.qr_pdf_generator import QRPDFGenerator  # You’ll build this next
@@ -19,6 +20,9 @@ class OrderAdmin(admin.ModelAdmin):
     class OrderLineInline(admin.TabularInline):  # or admin.StackedInline
         model = OrderLine
         extra = 1
+        # Without this the product field is a select holding every product of
+        # every customer, re-rendered for each line on the page.
+        autocomplete_fields = ('product',)
 
         def formfield_for_foreignkey(self, db_field, request, **kwargs):
             if db_field.name == "product" and not request.user.is_superuser:
@@ -97,11 +101,23 @@ class OrderAdmin(admin.ModelAdmin):
                 "%(count)s orders removed from queue.",
                 removed) % {"count": removed}, level=messages.SUCCESS)
 
-    list_display = ('order_code', 'customer', 'status', 'queue_position', 'created_at')
-    list_filter = ['status', 'customer']
-    search_fields = ['order_code']
+    list_display = ('order_code', 'customer', 'status', 'source', 'queue_position',
+                    'line_count', 'created_at', 'completed_at')
+    list_filter = ['status', 'customer', 'source', 'created_at']
+    # Searching product codes belongs on the Order lines changelist: reusing
+    # the line join here would also narrow the line_count annotation to the
+    # matching lines only.
+    search_fields = ['order_code', 'customer__name']
+    date_hierarchy = 'created_at'
+    ordering = ('-created_at',)
+    list_select_related = ('customer',)
     inlines = [OrderLineInline]
     actions = [generate_qr_codes, add_to_queue, remove_from_queue]
+
+    def line_count(self, obj):
+        return obj.n_lines
+    line_count.short_description = _('Lines')
+    line_count.admin_order_field = 'n_lines'
 
     # inside OrderAdmin
     def get_form(self, request, obj=None, **kwargs):
@@ -296,48 +312,45 @@ class OrderAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        if request.user.is_superuser:
-            return queryset
-        if request.user.groups.filter(name='companyadmin').exists():
-            user_profile = UserProfile.objects.get(user=request.user)
-            return queryset.filter(customer=user_profile.customer)
-        return queryset.none()
+        if not request.user.is_superuser:
+            if request.user.groups.filter(name='companyadmin').exists():
+                user_profile = UserProfile.objects.get(user=request.user)
+                queryset = queryset.filter(customer=user_profile.customer)
+            else:
+                return queryset.none()
+        return queryset.annotate(n_lines=Count('lines'))
 
     def get_readonly_fields(self, request, obj=None):
         if request.user.groups.filter(name='companyadmin').exists():
             return ['customer']
         return super().get_readonly_fields(request, obj)
 
-# inside OrderAdmin
-def get_form(self, request, obj=None, **kwargs):
-    # Hide 'customer' for company admins so the form doesn't require it
-    if request.user.groups.filter(name='companyadmin').exists() and not request.user.is_superuser:
-        kwargs = kwargs.copy()
-        exclude = list(kwargs.get('exclude', ()))
-        if 'customer' not in exclude:
-            exclude.append('customer')
-        kwargs['exclude'] = exclude
-    return super().get_form(request, obj, **kwargs)
 
-def get_changeform_initial_data(self, request):
-    # Optional: prefill for adds (harmless even if field is excluded)
-    data = super().get_changeform_initial_data(request)
-    if request.user.groups.filter(name='companyadmin').exists() and not request.user.is_superuser:
-        try:
-            data['customer'] = UserProfile.objects.get(user=request.user).customer_id
-        except UserProfile.DoesNotExist:
-            pass
-    return data
+class OrderLineAdmin(admin.ModelAdmin):
+    """Registered with real columns and filters because this is where a
+    product-level question gets answered: which orders asked for this code."""
 
-def save_model(self, request, obj, form, change):
-    # Force customer for company admins
-    if not request.user.is_superuser and request.user.groups.filter(name='companyadmin').exists():
-        try:
-            obj.customer = UserProfile.objects.get(user=request.user).customer
-        except UserProfile.DoesNotExist:
-            raise ValidationError(_("Your account is not linked to a customer."))
-    super().save_model(request, obj, form, change)
+    list_display = ('order', 'order_customer', 'product', 'quantity')
+    list_filter = ('order__customer', 'order__status')
+    search_fields = ['order__order_code', 'product__code', 'product__description']
+    list_select_related = ('order', 'order__customer', 'product')
+    autocomplete_fields = ('order', 'product')
+    ordering = ('-order__created_at',)
+
+    def order_customer(self, obj):
+        return obj.order.customer
+    order_customer.short_description = Order._meta.get_field('customer').verbose_name
+    order_customer.admin_order_field = 'order__customer__name'
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_superuser:
+            return queryset
+        if request.user.groups.filter(name='companyadmin').exists():
+            user_profile = UserProfile.objects.get(user=request.user)
+            return queryset.filter(order__customer=user_profile.customer)
+        return queryset.none()
 
 
 admin.site.register(Order, OrderAdmin)
-admin.site.register(OrderLine)
+admin.site.register(OrderLine, OrderLineAdmin)

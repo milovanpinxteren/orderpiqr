@@ -1777,7 +1777,9 @@ msgstr "Preluări incomplete"
 msgid ""
 "Let pickers report items they cannot pick (missing, damaged, wrong product) "
 "instead of leaving the line pending."
-msgstr "Permite operatorilor să raporteze articolele pe care nu le pot prelua (lipsă, deteriorat, produs greșit) în loc să lase rândul în așteptare."
+msgstr ""
+"Permite operatorilor să raporteze articolele pe care nu le pot prelua "
+"(lipsă, deteriorat, produs greșit) în loc să lase rândul în așteptare."
 
 #: .\orderpiqrApp\utils\start_page.py:31
 msgid "Company default"
@@ -5931,6 +5933,14 @@ msgid "Your warehouse staff log into the picker app with this account:"
 msgstr ""
 "Personalul din depozit se autentifică în aplicația de preluare cu acest "
 "cont:"
+
+#: templates/manage/health/list.html:132
+msgid "lines on abandoned lists"
+msgstr "rânduri pe liste abandonate"
+
+#: templates/manage/health/list.html:136
+msgid "confirmed without a scan"
+msgstr "confirmate fără scanare"
 
 #~ msgid "Delete this device? It has no picked lists, so nothing is lost."
 #~ msgstr ""

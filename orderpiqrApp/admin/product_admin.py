@@ -1,7 +1,7 @@
 import openpyxl
 from django.contrib import admin
 import csv
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.forms.models import BaseInlineFormSet
 from orderpiqrApp.utils.csv_import import read_csv_rows, PRODUCT_CSV_FIELDS, CSVImportError
 from orderpiqrApp.models import Product, ProductBarcode, UserProfile
@@ -37,9 +37,48 @@ class ProductBarcodeInline(admin.TabularInline):
     extra = 0
 
 
+class ProductAdminForm(forms.ModelForm):
+    """Checks the code for conflicts while the form is still being validated.
+
+    This check used to live in ``save_model``, which only runs once validation
+    has already passed — so a conflict there could do nothing but return
+    without saving, leaving the admin to report a save that never happened.
+    """
+
+    #: Set by ``ProductAdmin.get_form`` for admins whose customer is implied
+    #: rather than chosen in the form (it is read-only for them, so it never
+    #: reaches cleaned_data).
+    default_customer = None
+
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        code = (cleaned_data.get('code') or '').strip()
+        customer = cleaned_data.get('customer') or self.default_customer
+        if customer is None and self.instance.pk:
+            customer = self.instance.customer
+        # Barcode aliases share the code namespace with primary codes.
+        if code and customer and code_conflict(
+                customer, code,
+                exclude_product=self.instance if self.instance.pk else None):
+            self.add_error('code', _('A product with the code "%(code)s" already exists for this customer.') % {
+                'code': code,
+            })
+        return cleaned_data
+
+
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('code', 'description', 'location', 'customer')  # Display relevant fields
+    form = ProductAdminForm
+    list_display = ('code', 'description', 'location', 'inventory_quantity',
+                    'active', 'customer')  # Display relevant fields
+    list_filter = ('customer', 'active')
     search_fields = ['code', 'barcodes__code', 'description']
+    list_select_related = ('customer',)
+    autocomplete_fields = ('customer',)
+    ordering = ('code',)
     inlines = [ProductBarcodeInline]
 
     # actions = ['upload_file']  # Add the CSV upload action to the admin
@@ -202,34 +241,34 @@ class ProductAdmin(admin.ModelAdmin):
             return queryset.filter(customer=user_profile.customer)  # Only s # Assuming user is linked to customer
         return queryset.none()
 
+    def get_form(self, request, obj=None, change=False, **kwargs):
+        form_class = super().get_form(request, obj, change=change, **kwargs)
+        if request.user.is_superuser:
+            return form_class
+
+        profile = (UserProfile.objects.filter(user=request.user)
+                   .select_related('customer').first())
+
+        class TenantScopedForm(form_class):
+            default_customer = profile.customer if profile else None
+
+        return TenantScopedForm
+
     def save_model(self, request, obj, form, change):
-        """Override save_model to handle validation for duplicate codes"""
-        if request.user.groups.filter(name='companyadmin').exists():
-            user_profile = UserProfile.objects.get(user=request.user)
-            obj.customer = user_profile.customer
-            # Barcode aliases share the code namespace with primary codes.
-            if code_conflict(obj.customer, obj.code,
-                             exclude_product=obj if obj.pk else None):
-                form.add_error(None, _('A product with the code "%(code)s" already exists for this customer.') % {
-                    'code': obj.code,
-                })
-                messages.error(request,
-                               _('A product with the code "%(code)s" already exists, cannot add duplicate.') % {
-                                   'code': obj.code,
-                               })
-                return
-            else:
-                super().save_model(request, obj, form, change)
-                messages.success(request, _('The product "%(description)s" was added successfully.') % {
-                    'description': obj.description,
-                })
+        """Pin the product to the saving admin's own customer.
 
-        else:
-            raise ValidationError(_('User is not allowed to save products.'))
-
-    def message_user(self, request, message, level=messages.INFO, extra_tags='',
-                     fail_silently=False):
-        pass
+        A superuser is the only account that sees every customer, so it saves
+        whatever the form says. This used to raise ValidationError for anyone
+        who was *not* a company admin — meaning a superuser could not save a
+        product here at all. Code conflicts are caught in ProductAdminForm,
+        before this runs.
+        """
+        if not request.user.is_superuser:
+            profile = UserProfile.objects.filter(user=request.user).first()
+            if profile is None:
+                raise PermissionDenied(_('Your account is not linked to a customer.'))
+            obj.customer = profile.customer
+        super().save_model(request, obj, form, change)
 
     def get_readonly_fields(self, request, obj=None):
         """Make fields like customer read-only for companyadmin"""

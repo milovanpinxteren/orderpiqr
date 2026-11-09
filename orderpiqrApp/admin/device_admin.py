@@ -4,8 +4,15 @@ from orderpiqrApp.models import Device
 
 
 class DeviceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'last_login', 'lists_picked', 'customer')
-    search_fields = ['name', 'description']
+    list_display = ('name', 'description', 'customer', 'last_login', 'lists_picked',
+                    'display_mode', 'os', 'archived')
+    list_filter = ('customer', 'archived', 'display_mode', 'os', 'browser')
+    search_fields = ['name', 'description', 'device_fingerprint']
+    list_select_related = ('customer',)
+    date_hierarchy = 'last_login'
+    # Most recently active first: the question asked here is nearly always
+    # "who is picking now", not "which device was registered first".
+    ordering = ('-last_login',)
 
     def get_queryset(self, request):
         """Override queryset to filter by company"""

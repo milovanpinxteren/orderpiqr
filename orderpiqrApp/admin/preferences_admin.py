@@ -25,8 +25,9 @@ class SettingDefinitionAdmin(admin.ModelAdmin):
 class CustomerSettingValueAdmin(admin.ModelAdmin):
     list_display = ('customer', 'definition', 'value')
     search_fields = ['customer__name', 'definition__key', 'value']
-    list_filter = ['definition__key']
+    list_filter = ['customer', 'definition__key']
     ordering = ['customer', 'definition']
+    list_select_related = ('customer', 'definition')
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)

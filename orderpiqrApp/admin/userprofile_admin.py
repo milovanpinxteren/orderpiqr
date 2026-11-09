@@ -1,16 +1,35 @@
 from django.contrib import admin
-from django.utils.translation import gettext_lazy as _
-from orderpiqrApp.models import UserProfile, Customer
+from orderpiqrApp.models import UserProfile
 from django.contrib.auth.models import User
 
-class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'customer', 'get_username')
-    search_fields = ['user__username', 'user__email', 'customer__name']
-    list_filter = ('customer',)
 
-    def get_username(self, obj):
-        return obj.user.username  # Display the username in the admin
-    get_username.short_description = _('Username')
+def _user_field_label(name):
+    """Reuse auth's own verbose name, which Django already translates."""
+    return User._meta.get_field(name).verbose_name
+
+
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'customer', 'user_email', 'user_last_login', 'user_is_active')
+    search_fields = ['user__username', 'user__email', 'customer__name']
+    list_filter = ('customer', 'user__is_active', 'user__groups')
+    list_select_related = ('user', 'customer')
+    ordering = ('customer__name', 'user__username')
+
+    def user_email(self, obj):
+        return obj.user.email
+    user_email.short_description = _user_field_label('email')
+    user_email.admin_order_field = 'user__email'
+
+    def user_last_login(self, obj):
+        return obj.user.last_login
+    user_last_login.short_description = _user_field_label('last_login')
+    user_last_login.admin_order_field = 'user__last_login'
+
+    def user_is_active(self, obj):
+        return obj.user.is_active
+    user_is_active.short_description = _user_field_label('is_active')
+    user_is_active.admin_order_field = 'user__is_active'
+    user_is_active.boolean = True
 
     def get_queryset(self, request):
         """Override queryset to filter by company"""

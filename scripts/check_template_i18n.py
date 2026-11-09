@@ -28,6 +28,8 @@ import re
 import sys
 from pathlib import Path
 
+from console_utf8 import force_utf8_output
+
 TEMPLATE_DIR = Path(__file__).resolve().parent.parent / 'templates'
 
 #: Django constructs, masked out before the JavaScript is tokenised so that
@@ -170,6 +172,7 @@ def check_template(path, problems, warnings):
 
 
 def main():
+    force_utf8_output()
     if not TEMPLATE_DIR.is_dir():
         sys.exit(f'no templates directory at {TEMPLATE_DIR}')
 

@@ -1791,7 +1791,9 @@ msgstr "Fehlmengen"
 msgid ""
 "Let pickers report items they cannot pick (missing, damaged, wrong product) "
 "instead of leaving the line pending."
-msgstr "Picker können Artikel melden, die sie nicht picken können (fehlend, beschädigt, falsches Produkt), statt die Zeile offen zu lassen."
+msgstr ""
+"Picker können Artikel melden, die sie nicht picken können (fehlend, "
+"beschädigt, falsches Produkt), statt die Zeile offen zu lassen."
 
 #: .\orderpiqrApp\utils\start_page.py:31
 msgid "Company default"
@@ -5937,6 +5939,14 @@ msgstr "Kommissionierer-Zugang"
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr ""
 "Ihre Lagermitarbeiter melden sich mit diesem Konto in der Picker-App an:"
+
+#: templates/manage/health/list.html:132
+msgid "lines on abandoned lists"
+msgstr "Zeilen auf verlassenen Listen"
+
+#: templates/manage/health/list.html:136
+msgid "confirmed without a scan"
+msgstr "ohne Scan bestätigt"
 
 #~ msgid "Delete this device? It has no picked lists, so nothing is lost."
 #~ msgstr ""

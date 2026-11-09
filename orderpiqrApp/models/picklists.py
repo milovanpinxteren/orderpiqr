@@ -1,9 +1,20 @@
+from datetime import timedelta
+
 from django.utils.translation import gettext_lazy as _
 from django.db import models
+from django.db.models import Q
+from django.utils import timezone
 from .customers import Customer
 from .orders import Order
 from .devices import Device
 from .products import Product
+
+# A claimed list nobody has touched for this long, that was never completed,
+# is abandoned rather than in progress. Generous on purpose: the longest list
+# HF picks (113 lines) takes about 20 minutes, so two hours of silence cannot
+# be a picker who is still working — while a threshold in minutes would call
+# a coffee break a lost order.
+ABANDONED_AFTER = timedelta(hours=2)
 
 
 class PickList(models.Model):
@@ -91,6 +102,21 @@ class ProductPick(models.Model):
     # one bulk operation stamps the same id on every row it marks.
     client_pick_id = models.CharField(_("Client Pick Id"), max_length=64, blank=True,
                                       default='', db_index=True)
+    # How this pick was confirmed: True = the barcode was scanned, False = a
+    # human asserted it (triple-tap override, bulk "all N taken", an API quick
+    # action), NULL = recorded before this column existed.
+    #
+    # Overrides were only ever counted as ScanEvents, and one bulk confirm
+    # marks many rows from a single event — 76 override events covered ~1459
+    # lines at HF in a fortnight. So "how many events were overrides" was
+    # answerable and "what share of the picked lines was actually verified by a
+    # scan" was not, which is the one HF's accuracy case rests on. It belongs
+    # on the row because the line is the unit the question is asked in.
+    #
+    # Null means unknown, never "verified": asserting True for 29k rows of
+    # history we cannot vouch for would be the one error this column exists to
+    # stop. Only picked rows carry it — a declared short is not a pick.
+    scan_verified = models.BooleanField(_("Scan Verified"), null=True, blank=True)
 
     class Meta:
         verbose_name = _("Product Pick")
@@ -124,6 +150,22 @@ class ProductPick(models.Model):
             "product": self.product,
             "picklist_id": self.picklist.picklist_id
         }
+
+
+def abandoned_picklist_q(now=None):
+    """Filter for lists that were claimed, never completed, and have gone quiet.
+
+    Completion is what normally resolves a list's pending rows to lost, so a
+    list that is never completed keeps its lines `pending` forever: neither
+    picked, nor short, nor lost, and therefore invisible to every health
+    number. At HF that hid 385 lines across 37 lists — including an 80-line
+    order claimed at 20:38 and never touched again.
+
+    Leans on ``updated_at`` (list-level activity), which is only a usable
+    liveness signal because the pick endpoints now stamp it per pick.
+    """
+    cutoff = (now or timezone.now()) - ABANDONED_AFTER
+    return Q(successful__isnull=True, archived=False, updated_at__lt=cutoff)
 
 
 def resolve_pending_picks_to_lost(picklist):
