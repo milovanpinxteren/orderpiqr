@@ -260,7 +260,16 @@ def scan_picklist(request):
                         # gone quiet: the restart path below preserves every
                         # successful pick, so a takeover never loses work.
                         now = timezone.now()
-                        last_seen = max(h.device.last_login for h in holders)
+                        # The holding *list's* activity, not the holding
+                        # device's. `device.last_login` is global: a picker who
+                        # claims a list, never touches it, and keeps working
+                        # other lists all evening keeps that timestamp fresh, so
+                        # the dead claim never expires. On 2026-11-08 that locked
+                        # an 80-line order out permanently — the holder claimed
+                        # it at 20:38, picked nothing, and stayed busy elsewhere
+                        # until 21:25 while the picker who wanted it was refused
+                        # nine times in five minutes and gave up.
+                        last_seen = max(h.updated_at for h in holders)
                         if last_seen > now - STALE_LOCK_AFTER:
                             # The ScanEvent copy stays English: it is a stored
                             # diagnostic the health page aggregates, so it must
@@ -420,6 +429,26 @@ def _duplicate_pick_row(picklist, pick_id):
             .select_related("product").order_by("id").first())
 
 
+def _touch_picklist(picklist):
+    """Stamp list-level activity, which is what separates a picker who is still
+    working from a claim nobody is coming back to.
+
+    ``PickList.updated_at`` is ``auto_now``, but nothing in the pick path saved
+    the list, so it only moved on claim, restart and completion — leaving it
+    useless as a liveness signal for both the stale-lock check and the
+    abandoned-list metric that now read it.
+
+    A queryset update rather than ``picklist.save()`` on purpose: that override
+    recounts the device's lists and writes the Device row (see
+    ``PickList.save``), which would double the writes on the hottest path in
+    the app for nothing. ``auto_now`` does not fire on ``update()``, hence the
+    explicit timestamp.
+    """
+    now = timezone.now()
+    PickList.objects.filter(pk=picklist.pk).update(updated_at=now)
+    picklist.updated_at = now
+
+
 @require_POST
 def product_pick(request):
     payload = json.loads(request.body.decode("utf-8"))
@@ -540,8 +569,11 @@ def product_pick(request):
         pp.short_reason = ''
         pp.time_taken = time_taken
         pp.client_pick_id = pick_id
+        # Recorded per row, so the share of picked lines that a scan actually
+        # verified is countable without inferring it from override events.
+        pp.scan_verified = not manual_override
         pp.notes = f"{pp.notes}\n{stamp}" if pp.notes else stamp
-        pp.save(update_fields=update_fields)
+        pp.save(update_fields=update_fields + ["scan_verified"])
         marked = [pp]
         outcome = ProductPick.Outcome.PICKED
     else:
@@ -558,6 +590,8 @@ def product_pick(request):
             if not marked:
                 return JsonResponse({"status": "noop", "message": _("No pending ProductPick rows for this product.")},
                                     status=200, )
+            # scan_verified deliberately left alone: a declared short is not a
+            # pick, so neither True nor False says anything true about it.
             for i, pp in enumerate(marked):
                 pp.outcome = ProductPick.Outcome.SHORT
                 pp.short_reason = short_reason
@@ -572,6 +606,10 @@ def product_pick(request):
                        reason=short_reason, scanned_code=product_code,
                        picklist_code=order_id,
                        message=f"{len(marked)} unit(s) declared short ({short_reason})")
+
+    # Work recorded on this list is what proves the holder is alive; see
+    # _touch_picklist.
+    _touch_picklist(picklist)
 
     remaining_for_product = qs.filter(outcome=ProductPick.Outcome.PENDING).count()
 
@@ -685,11 +723,18 @@ def bulk_product_pick(request):
             pp.outcome = ProductPick.Outcome.PICKED
             pp.time_taken = time_taken if i == 0 else timedelta(0)
             pp.notes = f"{pp.notes}\n{stamp}" if pp.notes else stamp
+            # The reason this column exists: one "all N taken" confirm is a
+            # single override event but N unverified lines, so the event count
+            # alone understates unverified work by whatever the bulk sizes
+            # happen to be.
+            pp.scan_verified = not manual_override
             # Every row this operation marks carries the id, so the duplicate
             # check above finds it no matter which row it looks at.
             pp.client_pick_id = pick_id
             pp.save(update_fields=["outcome", "successful", "time_taken", "notes",
-                                   "client_pick_id"])
+                                   "client_pick_id", "scan_verified"])
+
+    _touch_picklist(picklist)
 
     remaining = qs.filter(outcome=ProductPick.Outcome.PENDING).count()
 

@@ -1777,7 +1777,10 @@ msgstr "Нестачі"
 msgid ""
 "Let pickers report items they cannot pick (missing, damaged, wrong product) "
 "instead of leaving the line pending."
-msgstr "Дозволяє комплектувальникам повідомляти про товари, які вони не можуть узяти (відсутній, пошкоджений, не той товар), замість того щоб залишати рядок в очікуванні."
+msgstr ""
+"Дозволяє комплектувальникам повідомляти про товари, які вони не можуть узяти"
+" (відсутній, пошкоджений, не той товар), замість того щоб залишати рядок в "
+"очікуванні."
 
 #: .\orderpiqrApp\utils\start_page.py:31
 msgid "Company default"
@@ -5963,6 +5966,14 @@ msgid "Your warehouse staff log into the picker app with this account:"
 msgstr ""
 "Ваші складські працівники входять у застосунок комплектувальника за "
 "допомогою цього облікового запису:"
+
+#: templates/manage/health/list.html:132
+msgid "lines on abandoned lists"
+msgstr "рядки у покинутих списках"
+
+#: templates/manage/health/list.html:136
+msgid "confirmed without a scan"
+msgstr "підтверджено без сканування"
 
 #~ msgid "Delete this device? It has no picked lists, so nothing is lost."
 #~ msgstr ""

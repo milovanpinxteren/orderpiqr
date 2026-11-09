@@ -5633,6 +5633,14 @@ msgstr ""
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr ""
 
+#: templates/manage/health/list.html:132
+msgid "lines on abandoned lists"
+msgstr ""
+
+#: templates/manage/health/list.html:136
+msgid "confirmed without a scan"
+msgstr ""
+
 #~ msgid "ago"
 #~ msgstr "ago"
 

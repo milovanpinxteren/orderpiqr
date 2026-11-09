@@ -188,6 +188,19 @@ class ScanPicklistTests(ScanEndpointTestCase):
             user=self.picker, customer=self.customer, device_fingerprint='other-fp',
             name='Other phone', description='', last_login=last_login, lists_picked=0)
 
+    def _holder_went_quiet(self, minutes):
+        """Age the held *list*, which is what staleness is judged on.
+
+        Backdating the holder's device is no longer enough (and never should
+        have been): `Device.last_login` is global, so a picker working other
+        lists kept a dead claim alive — see test_pick_accounting. The device is
+        aged alongside it so these cases still read as "the holder is gone".
+        """
+        quiet_since = timezone.now() - timedelta(minutes=minutes)
+        PickList.objects.filter(picklist_code='ORD-1', customer=self.customer).update(
+            updated_at=quiet_since)
+        Device.objects.filter(pk=self.device.pk).update(last_login=quiet_since)
+
     def _scan_as_other(self, picklist=('SMOOTHIE-1',)):
         return self.client.post('/orderpiqr/scan-picklist', data=json.dumps({
             'orderID': 'ORD-1',
@@ -200,8 +213,7 @@ class ScanPicklistTests(ScanEndpointTestCase):
         # storage was evicted returns as "another device" and was locked out of
         # their own list forever. Once the holder has gone quiet, hand it over.
         self._held_order(['SMOOTHIE-1', 'SALAD-1'])
-        Device.objects.filter(pk=self.device.pk).update(
-            last_login=timezone.now() - timedelta(minutes=45))
+        self._holder_went_quiet(minutes=45)
         self._other_device(last_login=timezone.now())
 
         response = self._scan_as_other(['SMOOTHIE-1', 'SALAD-1'])
@@ -216,8 +228,9 @@ class ScanPicklistTests(ScanEndpointTestCase):
             'orderID': 'ORD-1', 'productCode': 'SMOOTHIE-1',
             'deviceFingerprint': FINGERPRINT, 'timeTakenMs': 500,
         }), content_type='application/json')
-        Device.objects.filter(pk=self.device.pk).update(
-            last_login=timezone.now() - timedelta(hours=2))
+        # After the pick on purpose: recording work stamps list activity, so
+        # ageing the list first would be undone by it.
+        self._holder_went_quiet(minutes=120)
         self._other_device(last_login=timezone.now())
 
         response = self._scan_as_other(['SMOOTHIE-1', 'SMOOTHIE-1', 'SALAD-1'])
@@ -230,8 +243,7 @@ class ScanPicklistTests(ScanEndpointTestCase):
 
     def test_stale_lock_takeover_is_logged(self):
         self._held_order()
-        Device.objects.filter(pk=self.device.pk).update(
-            last_login=timezone.now() - timedelta(minutes=30))
+        self._holder_went_quiet(minutes=30)
         self._other_device(last_login=timezone.now())
 
         self._scan_as_other()

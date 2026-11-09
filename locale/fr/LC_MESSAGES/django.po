@@ -1777,7 +1777,10 @@ msgstr "Prélèvements incomplets"
 msgid ""
 "Let pickers report items they cannot pick (missing, damaged, wrong product) "
 "instead of leaving the line pending."
-msgstr "Permet aux préparateurs de signaler les articles qu'ils ne peuvent pas prélever (manquant, endommagé, mauvais produit) au lieu de laisser la ligne en attente."
+msgstr ""
+"Permet aux préparateurs de signaler les articles qu'ils ne peuvent pas "
+"prélever (manquant, endommagé, mauvais produit) au lieu de laisser la ligne "
+"en attente."
 
 #: .\orderpiqrApp\utils\start_page.py:31
 msgid "Company default"
@@ -5917,6 +5920,14 @@ msgid "Your warehouse staff log into the picker app with this account:"
 msgstr ""
 "Votre personnel d'entrepôt se connecte à l'application préparateur avec ce "
 "compte :"
+
+#: templates/manage/health/list.html:132
+msgid "lines on abandoned lists"
+msgstr "lignes sur listes abandonnées"
+
+#: templates/manage/health/list.html:136
+msgid "confirmed without a scan"
+msgstr "confirmé sans scan"
 
 #~ msgid "Delete this device? It has no picked lists, so nothing is lost."
 #~ msgstr ""

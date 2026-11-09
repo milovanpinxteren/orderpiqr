@@ -16,9 +16,21 @@ from orderpiqrApp.utils.health import health_window, pick_outcomes
     description="""
     The same counters shown on the manage health page's outcome tiles, as a
     tenant-scoped aggregate: how many lists and lines were picked, declared
-    short, or lost (recorded as pending on a list the device marked complete,
-    and never heard from again), plus fleet facts for the same window
-    (restarted lists, devices seen, devices still on an old build).
+    short, or lost, plus fleet facts for the same window (restarted lists,
+    devices seen, devices still on an old build).
+
+    **`lines_lost`** counts lines the picker worked but the server never
+    recorded, through either door: pending on a list the device marked
+    complete, or pending on a list that was claimed and abandoned.
+    `lines_abandoned` breaks out the second group, and `lists_abandoned`
+    counts the lists behind it.
+
+    **`lines_unverified`** is picked lines a human confirmed without scanning
+    the barcode (triple-tap override, bulk "all N taken"), with
+    `lines_scan_verified` as its counterpart. `lines_unverified_pct` is taken
+    over those two together, not over all picked lines: picks recorded before
+    this was tracked do not say how they were confirmed, and are excluded from
+    both counters rather than assumed verified.
 
     **Window:** defaults to a rolling 24 hours, like the HTML page. For a
     reproducible nightly pull, always pass explicit `date_from`/`date_to`
@@ -56,10 +68,15 @@ from orderpiqrApp.utils.health import health_window, pick_outcomes
                             "lists_total": 42,
                             "lists_completed": 38,
                             "lists_open": 4,
+                            "lists_abandoned": 1,
                             "lines_total": 610,
                             "lines_short": 12,
                             "lines_lost": 3,
                             "lines_lost_pct": 0.5,
+                            "lines_abandoned": 2,
+                            "lines_scan_verified": 560,
+                            "lines_unverified": 35,
+                            "lines_unverified_pct": 5.9,
                             "lists_restarted": 2,
                             "devices_used": 6,
                             "devices_on_old_build": 1,

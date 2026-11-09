@@ -1776,7 +1776,9 @@ msgstr "Tekorten"
 msgid ""
 "Let pickers report items they cannot pick (missing, damaged, wrong product) "
 "instead of leaving the line pending."
-msgstr "Laat pickers artikelen melden die ze niet kunnen picken (ontbrekend, beschadigd, verkeerd product) in plaats van de regel open te laten."
+msgstr ""
+"Laat pickers artikelen melden die ze niet kunnen picken (ontbrekend, "
+"beschadigd, verkeerd product) in plaats van de regel open te laten."
 
 #: .\orderpiqrApp\utils\start_page.py:31
 msgid "Company default"
@@ -5879,6 +5881,14 @@ msgstr "Toegang voor pickers"
 #: .\templates\shopify\app.html:248
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr "Uw magazijnmedewerkers loggen met dit account in op de picker-app:"
+
+#: templates/manage/health/list.html:132
+msgid "lines on abandoned lists"
+msgstr "regels op verlaten lijsten"
+
+#: templates/manage/health/list.html:136
+msgid "confirmed without a scan"
+msgstr "bevestigd zonder scan"
 
 #~ msgid "Delete this device? It has no picked lists, so nothing is lost."
 #~ msgstr ""

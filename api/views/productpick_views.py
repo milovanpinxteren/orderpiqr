@@ -144,8 +144,12 @@ class ProductPickViewSet(viewsets.ModelViewSet):
         pick = self.get_object()
         pick.outcome = ProductPick.Outcome.PICKED
         pick.short_reason = ''
+        # Someone asserting a pick through the API is, by definition, not a
+        # barcode scan — the same category as a triple-tap override.
+        pick.scan_verified = False
         pick.notes = request.data.get('notes', pick.notes)
-        pick.save(update_fields=['outcome', 'successful', 'short_reason', 'notes'])
+        pick.save(update_fields=['outcome', 'successful', 'short_reason', 'notes',
+                                 'scan_verified'])
 
         return Response({
             'status': 'ok',
