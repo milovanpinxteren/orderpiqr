@@ -7,13 +7,19 @@ class ScanEventAdmin(admin.ModelAdmin):
     """Read-only log view: ScanEvent rows are written by the scan endpoints and
     the picker client, never by hand."""
 
-    list_display = ('created_at', 'customer', 'event_type', 'scanned_code', 'picklist_code', 'device')
-    list_filter = ('event_type',)
-    search_fields = ('scanned_code', 'picklist_code')
-    readonly_fields = ('customer', 'device', 'event_type', 'scanned_code',
-                       'picklist_code', 'message', 'created_at')
+    list_display = ('created_at', 'customer', 'severity', 'event_type', 'reason',
+                    'scanned_code', 'picklist_code', 'device', 'build_id')
+    # severity before event_type: the triage question is "what hurt", and
+    # build_id is what attributes a spike to a release.
+    list_filter = ('customer', 'severity', 'event_type', 'reason',
+                   ('build_id', admin.AllValuesFieldListFilter))
+    search_fields = ('scanned_code', 'picklist_code', 'message')
+    readonly_fields = ('customer', 'device', 'event_type', 'severity', 'reason',
+                       'scanned_code', 'picklist_code', 'message', 'build_id',
+                       'client_ts', 'created_at')
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
+    list_select_related = ('customer', 'device')
 
     def has_add_permission(self, request):
         return False

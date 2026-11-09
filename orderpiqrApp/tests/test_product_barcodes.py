@@ -6,7 +6,7 @@ same product, and merging accidental duplicates must keep every code working.
 """
 import json
 
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group, Permission, User
 from django.db import IntegrityError
 from django.test import TestCase
 from django.urls import reverse
@@ -538,34 +538,55 @@ class HealthPageAliasTests(CompanyAdminTestCase):
 
 
 class AdminSaveModelTests(ProductBarcodeTestCase):
-    def test_django_admin_rejects_code_taken_as_alias(self):
-        from django.contrib import admin as django_admin
-        from django.contrib.messages.storage.fallback import FallbackStorage
-        from django.forms import modelform_factory
-        from django.test import RequestFactory
+    """Driven through the admin add view rather than save_model directly: the
+    duplicate check is form validation, which is the only place that can refuse
+    a save *and* say why. save_model runs after validation has already passed,
+    so a check there could only bail out silently."""
 
-        from orderpiqrApp.admin.product_admin import ProductAdmin
-
+    def setUp(self):
+        super().setUp()
         admin_group, _ = Group.objects.get_or_create(name='companyadmin')
-        staff = User.objects.create_user(username='staffadmin', password='pw12345678',
-                                         is_staff=True)
-        staff.groups.add(admin_group)
-        UserProfile.objects.create(user=staff, customer=self.customer)
+        self.staff = User.objects.create_user(username='staffadmin', password='pw12345678',
+                                              is_staff=True)
+        self.staff.groups.add(admin_group)
+        self.staff.user_permissions.add(*Permission.objects.filter(
+            content_type__app_label='orderpiqrApp',
+            codename__in=['add_product', 'change_product', 'view_product',
+                          'add_productbarcode', 'change_productbarcode',
+                          'view_productbarcode']))
+        UserProfile.objects.create(user=self.staff, customer=self.customer)
+        self.client.force_login(self.staff)
 
-        form_class = modelform_factory(Product, fields=['code', 'description', 'location'])
-        form = form_class(data={'code': OLD_EAN, 'description': 'Impostor', 'location': 'X'})
-        self.assertTrue(form.is_valid())
+    def add_product(self, code):
+        # 'customer' is read-only for a company admin, so it is deliberately
+        # absent here: the admin pins the product to their own customer.
+        return self.client.post(reverse('admin:orderpiqrApp_product_add'), data={
+            'code': code,
+            'description': 'Impostor',
+            'location': 'X',
+            'active': 'on',
+            'inventory_quantity': '0',
+            'barcodes-TOTAL_FORMS': '0',
+            'barcodes-INITIAL_FORMS': '0',
+            'barcodes-MIN_NUM_FORMS': '0',
+            'barcodes-MAX_NUM_FORMS': '1000',
+        })
 
-        request = RequestFactory().post('/admin/orderpiqrApp/product/add/')
-        request.user = staff
-        request.session = self.client.session
-        request._messages = FallbackStorage(request)
+    def test_django_admin_rejects_code_taken_as_alias(self):
+        response = self.add_product(OLD_EAN)
 
-        model_admin = ProductAdmin(Product, django_admin.site)
-        model_admin.save_model(request, form.save(commit=False), form, change=False)
-
-        # OLD_EAN is the smoothie's alias: the save must be refused.
+        # OLD_EAN is the smoothie's alias: the save must be refused, and the
+        # refusal has to reach the form rather than vanish.
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('code', response.context['adminform'].form.errors)
         self.assertFalse(Product.objects.filter(customer=self.customer, code=OLD_EAN).exists())
+
+    def test_company_admin_add_is_pinned_to_their_own_customer(self):
+        response = self.add_product('8700000000001')
+
+        self.assertEqual(response.status_code, 302)
+        product = Product.objects.get(code='8700000000001')
+        self.assertEqual(product.customer, self.customer)
 
 
 class ScanPageXssTests(ProductBarcodeTestCase):
