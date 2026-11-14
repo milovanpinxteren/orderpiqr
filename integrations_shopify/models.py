@@ -30,6 +30,10 @@ class ShopifyShop(models.Model):
     subscription_status = models.CharField(max_length=20, blank=True, default='')
     subscription_plan = models.CharField(max_length=100, blank=True, default='')
     subscription_checked_at = models.DateTimeField(null=True, blank=True)
+    # When the "your workspace is ready" email went to shop_email. A marker,
+    # not a log: activate_shop runs on every embedded-app load, and the
+    # merchant must not get the welcome mail again on each one.
+    welcome_email_sent_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         verbose_name = _('Shopify shop')

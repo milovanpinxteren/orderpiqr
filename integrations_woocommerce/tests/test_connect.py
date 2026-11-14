@@ -212,3 +212,64 @@ class DisconnectAndStatusTests(TestCase):
             f'/woocommerce/status?connection_id={self.connection.pk}',
             headers={'X-OrderPiqr-Plugin-Token': 'opqpt_wrong'})
         self.assertEqual(response.status_code, 401)
+
+
+class OpenOrderCleanupTests(TestCase):
+    """Closing a connection has to take its open orders with it, or the next
+    pairing imports the same orders again alongside the stale copies."""
+
+    def setUp(self):
+        self.customer = Customer.objects.create(name='Example Company')
+        self.raw_key, self.token = PairingToken.issue(self.customer)
+
+    def connect(self, key):
+        webhook_ids = iter(range(11, 30))
+        with patch.object(WooCommerceClient, 'get_system_status',
+                          return_value={'environment': {}}), \
+             patch.object(WooCommerceClient, 'create_webhook',
+                          side_effect=lambda *a, **kw: {'id': next(webhook_ids)}), \
+             patch.object(WooCommerceClient, 'delete_webhook', return_value={}):
+            return self.client.post('/woocommerce/connect',
+                                    json.dumps(connect_body(key)),
+                                    content_type='application/json').json()
+
+    def queued_order(self, connection, code, external_id):
+        order = Order.objects.create(
+            customer=self.customer, order_code=code, status='queued',
+            queue_position=1)
+        ExternalOrderLink.objects.create(
+            connection=connection, order=order, external_order_id=external_id)
+        return order
+
+    def test_reconnect_cancels_the_old_connections_open_orders(self):
+        first = self.connect(self.raw_key)
+        old = Connection.objects.get(pk=first['connection_id'])
+        stale = self.queued_order(old, '7898', '727')
+
+        raw_key2, _ = PairingToken.issue(self.customer)
+        self.connect(raw_key2)
+
+        stale.refresh_from_db()
+        self.assertEqual(stale.status, 'cancelled')
+        self.assertIsNone(stale.queue_position)
+        self.assertIn('re-paired', stale.notes)
+
+    def test_disconnect_cancels_open_orders(self):
+        connected = self.connect(self.raw_key)
+        connection = Connection.objects.get(pk=connected['connection_id'])
+        store = connection.woocommerce_store
+        raw, token_hash = WooCommerceStore.generate_plugin_token()
+        store.plugin_token_hash = token_hash
+        store.save(update_fields=['plugin_token_hash'])
+        stale = self.queued_order(connection, '7899', '728')
+
+        with patch.object(WooCommerceClient, 'delete_webhook', return_value={}):
+            response = self.client.post(
+                '/woocommerce/disconnect',
+                json.dumps({'connection_id': connection.pk, 'plugin_token': raw}),
+                content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
+        stale.refresh_from_db()
+        self.assertEqual(stale.status, 'cancelled')
+        self.assertIn('plugin disconnected', stale.notes)

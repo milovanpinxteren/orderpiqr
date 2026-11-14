@@ -18,6 +18,7 @@ from django.views.decorators.http import require_GET, require_POST
 from integrations.models import (
     Connection, ExternalOrderLink, ProductLink, WebhookInbox,
 )
+from integrations.services import intake
 from integrations_woocommerce import services
 from integrations_woocommerce.client import WooCommerceAPIError, WooCommerceClient, normalize_store_url
 from integrations_woocommerce.models import PairingToken, WooCommerceStore
@@ -94,6 +95,10 @@ def connect(request):
             logger.info("Webhook cleanup failed for %s", old_store.store_url)
         old_store.connection.status = 'disconnected'
         old_store.connection.save(update_fields=['status'])
+        # The new connection re-imports the store's open orders, so the old
+        # copies have to go or the queue carries both — suffixed, because
+        # order codes are unique per customer.
+        intake.cancel_open_orders(old_store.connection, reason='store re-paired')
 
     plugin_token, plugin_token_hash = WooCommerceStore.generate_plugin_token()
     with transaction.atomic():
@@ -164,6 +169,16 @@ def webhook(request):
                  .first())
     if store is None:
         return HttpResponse(status=400)
+    if store.connection.status == 'disconnected':
+        # A store that disconnected (or was superseded by a re-pair) must stop
+        # feeding us orders. Webhook removal happens over the store's REST API
+        # and routinely fails — the credentials are revoked, the site is behind
+        # a firewall, the plugin is already gone — so deliveries outlive the
+        # connection. 200, not 4xx: this is a settled state, and Woo disables a
+        # webhook that keeps erroring, which would also kill a later re-pair.
+        logger.info("Dropping %s for disconnected connection %s",
+                    topic, store.connection_id)
+        return HttpResponse(status=200)
 
     digest = base64.b64encode(
         hmac.new(store.webhook_secret.encode(), request.body, hashlib.sha256).digest()
@@ -242,6 +257,7 @@ def disconnect(request):
     if store.connection.status != 'disconnected':
         store.connection.status = 'disconnected'
         store.connection.save(update_fields=['status'])
+        intake.cancel_open_orders(store.connection, reason='plugin disconnected')
         try:
             services.remove_webhooks(store)
         except WooCommerceAPIError:

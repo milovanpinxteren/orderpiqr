@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 12:22+0100\n"
+"POT-Creation-Date: 2026-11-14 12:03+0100\n"
 "PO-Revision-Date: 2025-05-31 15:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,7 +57,7 @@ msgstr ""
 "Dezasociați utilizatorul în schimb."
 
 #: .\api\views\device_views.py:166
-#: .\orderpiqrApp\views\scan_picklist_view.py:613
+#: .\orderpiqrApp\views\scan_picklist_view.py:651
 msgid "Device not found"
 msgstr "Dispozitiv negăsit"
 
@@ -73,7 +73,7 @@ msgstr "Dispozitiv actualizat"
 msgid "User unassigned from device"
 msgstr "Utilizator dezasociat de dispozitiv"
 
-#: .\api\views\health_views.py:81 .\api\views\queue_views.py:85
+#: .\api\views\health_views.py:98 .\api\views\queue_views.py:85
 #: .\api\views\queue_views.py:165 .\api\views\queue_views.py:238
 #: .\api\views\queue_views.py:319 .\api\views\queue_views.py:416
 #: .\api\views\queue_views.py:588 .\api\views\queue_views.py:670
@@ -100,8 +100,8 @@ msgstr "Gestionarea inventarului nu este activată"
 #: .\api\views\product_views.py:195
 #: .\orderpiqrApp\views\inventory_views.py:133
 #: .\orderpiqrApp\views\inventory_views.py:194
-#: .\orderpiqrApp\views\scan_picklist_view.py:507
-#: .\orderpiqrApp\views\scan_picklist_view.py:665
+#: .\orderpiqrApp\views\scan_picklist_view.py:536
+#: .\orderpiqrApp\views\scan_picklist_view.py:703
 #: .\templates\inventory\picker.html:172
 msgid "Product not found"
 msgstr "Produs negăsit"
@@ -151,11 +151,11 @@ msgstr "Listă de preluare finalizată"
 msgid "Products updated successfully"
 msgstr "Produsele au fost actualizate cu succes"
 
-#: .\api\views\productpick_views.py:152
+#: .\api\views\productpick_views.py:156
 msgid "Pick marked as successful"
 msgstr "Preluare marcată ca reușită"
 
-#: .\api\views\productpick_views.py:193
+#: .\api\views\productpick_views.py:197
 msgid "Pick marked as failed"
 msgstr "Preluare marcată ca eșuată"
 
@@ -189,7 +189,7 @@ msgid "This order is already being picked"
 msgstr "Această comandă este deja în curs de preluare"
 
 #: .\api\views\queue_views.py:453 .\orderpiqrApp\views\queue_views.py:323
-#: .\orderpiqrApp\views\scan_picklist_view.py:289
+#: .\orderpiqrApp\views\scan_picklist_view.py:298
 msgid "This order has already been completed"
 msgstr "Această comandă a fost deja finalizată"
 
@@ -245,7 +245,7 @@ msgstr "Utilizator inactiv sau șters."
 msgid "Integrations"
 msgstr "Integrări"
 
-#: .\integrations\models.py:23 .\orderpiqrApp\models\picklists.py:52
+#: .\integrations\models.py:23 .\orderpiqrApp\models\picklists.py:63
 #: .\templates\manage\picklists\detail.html:58
 #: .\templates\manage\picklists\detail.html:153
 #: .\templates\manage\picklists\list.html:28
@@ -321,45 +321,62 @@ msgstr "Legături comenzi externe"
 msgid "Shopify integration"
 msgstr "Integrare Shopify"
 
-#: .\integrations_shopify\models.py:35
+#: .\integrations_shopify\emails.py:69
+#, python-format
+msgid "Your OrderPiqr workspace for %(shop)s is ready"
+msgstr "Spațiul tău de lucru OrderPiqr pentru %(shop)s este gata"
+
+#: .\integrations_shopify\models.py:39
 msgid "Shopify shop"
 msgstr "Magazin Shopify"
 
-#: .\integrations_shopify\models.py:36
+#: .\integrations_shopify\models.py:40
 msgid "Shopify shops"
 msgstr "Magazine Shopify"
 
-#: .\integrations_shopify\views.py:265 .\integrations_shopify\views.py:312
+#: .\integrations_shopify\views.py:282 .\integrations_shopify\views.py:329
 msgid "Could not load orders from Shopify"
 msgstr "Nu s-au putut încărca comenzile din Shopify"
 
-#: .\integrations_shopify\views.py:304
+#: .\integrations_shopify\views.py:321
 msgid "no orders selected"
 msgstr "nicio comandă selectată"
 
-#: .\integrations_shopify\views.py:390
+#: .\integrations_shopify\views.py:407
 msgid "link not found"
 msgstr "legătura nu a fost găsită"
 
-#: .\integrations_shopify\views.py:393
+#: .\integrations_shopify\views.py:410
 msgid "no product with that code"
 msgstr "niciun produs cu acest cod"
 
-#: .\integrations_shopify\views.py:422
+#: .\integrations_shopify\views.py:439
 msgid "Invalid username or password"
 msgstr "Nume de utilizator sau parolă incorecte"
 
-#: .\integrations_shopify\views.py:425
+#: .\integrations_shopify\views.py:442
 msgid "This account is not a company admin"
 msgstr "Acest cont nu este administrator de companie"
 
-#: .\integrations_shopify\views.py:428
+#: .\integrations_shopify\views.py:445
 msgid "Account has no company"
 msgstr "Contul nu are nicio companie"
 
-#: .\integrations_shopify\views.py:457
+#: .\integrations_shopify\views.py:474 .\integrations_shopify\views.py:510
 msgid "password too short (min 8 characters)"
 msgstr "parolă prea scurtă (min. 8 caractere)"
+
+#: .\integrations_shopify\views.py:501
+msgid ""
+"This store is linked to an existing OrderPiqr account. Use the password "
+"reset on orderpiqr.nl."
+msgstr ""
+"Acest magazin este conectat la un cont OrderPiqr existent. Folosește "
+"resetarea parolei pe orderpiqr.nl."
+
+#: .\integrations_shopify\views.py:514
+msgid "This workspace has no admin account"
+msgstr "Acest spațiu de lucru nu are un cont de administrator"
 
 #: .\integrations_woocommerce\apps.py:8
 msgid "WooCommerce integration"
@@ -389,21 +406,21 @@ msgstr "Token de asociere"
 msgid "Pairing tokens"
 msgstr "Tokenuri de asociere"
 
-#: .\integrations_woocommerce\views.py:59
+#: .\integrations_woocommerce\views.py:60
 msgid ""
 "This pairing key is not valid. Generate a new one in the OrderPiqr portal."
 msgstr ""
 "Această cheie de asociere nu este valabilă. Generați una nouă în portalul "
 "OrderPiqr."
 
-#: .\integrations_woocommerce\views.py:63
+#: .\integrations_woocommerce\views.py:64
 msgid ""
 "This pairing key has expired. Generate a new one in the OrderPiqr portal."
 msgstr ""
 "Această cheie de asociere a expirat. Generați una nouă în portalul "
 "OrderPiqr."
 
-#: .\integrations_woocommerce\views.py:79
+#: .\integrations_woocommerce\views.py:80
 msgid ""
 "Could not reach the store with these API credentials. Check the store URL "
 "and REST API key."
@@ -411,7 +428,7 @@ msgstr ""
 "Nu s-a putut contacta magazinul cu aceste credențiale API. Verificați URL-ul"
 " magazinului și cheia REST API."
 
-#: .\integrations_woocommerce\views.py:127
+#: .\integrations_woocommerce\views.py:132
 msgid ""
 "The store accepted the credentials but webhook registration failed. Check "
 "that the REST API key has Read/Write permissions."
@@ -419,13 +436,60 @@ msgstr ""
 "Magazinul a acceptat credențialele, dar înregistrarea webhookului a eșuat. "
 "Verificați dacă cheia REST API are permisiuni de citire/scriere."
 
-#: .\integrations_woocommerce\views.py:240
+#: .\integrations_woocommerce\views.py:255
 msgid "Invalid plugin token."
 msgstr "Token de plugin invalid."
 
-#: .\integrations_woocommerce\views.py:261
+#: .\integrations_woocommerce\views.py:277
 msgid "Invalid connection or plugin token."
 msgstr "Conexiune sau token de plugin invalid."
+
+#: .\orderpiqrApp\admin\customer_admin.py:113
+#| msgid "User"
+msgid "Users"
+msgstr "Utilizatori"
+
+#: .\orderpiqrApp\admin\customer_admin.py:124
+#: .\orderpiqrApp\models\devices.py:60 .\templates\manage\base.html:123
+#: .\templates\manage\devices\list.html:4
+#: .\templates\manage\devices\list.html:5
+#: .\templates\manage\devices\list.html:19
+#: .\templates\manage\devices\list.html:87
+msgid "Devices"
+msgstr "Dispozitive"
+
+#: .\orderpiqrApp\admin\customer_admin.py:132
+#: .\orderpiqrApp\models\products.py:23 .\templates\manage\base.html:70
+#: .\templates\manage\dashboard.html:14
+#: .\templates\manage\products\list.html:4
+#: .\templates\manage\products\list.html:5
+msgid "Products"
+msgstr "Produse"
+
+#: .\orderpiqrApp\admin\customer_admin.py:137
+#| msgid "Orders Today"
+msgid "Orders (30d)"
+msgstr "Comenzi (30 z)"
+
+#: .\orderpiqrApp\admin\customer_admin.py:142
+#| msgid "Picklist %(code)s"
+msgid "Picklists (30d)"
+msgstr "Liste de preluare (30 z)"
+
+#: .\orderpiqrApp\admin\customer_admin.py:148
+#| msgid "lines picked"
+msgid "Lines picked (30d)"
+msgstr "Linii preluate (30 z)"
+
+#: .\orderpiqrApp\admin\customer_admin.py:154
+#| msgid "Errors"
+msgid "Errors (30d)"
+msgstr "Erori (30 z)"
+
+#: .\orderpiqrApp\admin\customer_admin.py:165
+#| msgid "Last Login"
+msgid "Last pick"
+msgstr "Ultima preluare"
 
 #: .\orderpiqrApp\admin\email_admin.py:33 .\orderpiqrApp\models\orders.py:23
 #: .\templates\manage\dashboard.html:222
@@ -448,14 +512,14 @@ msgstr "Livrare"
 
 #: .\orderpiqrApp\admin\email_admin.py:49
 #: .\orderpiqrApp\models\scan_events.py:71
-#: .\templates\manage\health\list.html:431
+#: .\templates\manage\health\list.html:439
 msgid "Message"
 msgstr "Mesaj"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:33
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
-#: .\orderpiqrApp\models\picklists.py:76 .\orderpiqrApp\models\products.py:22
+#: .\orderpiqrApp\models\picklists.py:87 .\orderpiqrApp\models\products.py:22
 #: .\orderpiqrApp\models\products.py:57 .\templates\index.html:246
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
@@ -487,14 +551,14 @@ msgstr "Utilizator"
 
 #: .\orderpiqrApp\admin\inventory_admin.py:65
 #: .\orderpiqrApp\models\devices.py:38 .\orderpiqrApp\models\devices.py:59
-#: .\orderpiqrApp\models\inventory.py:45 .\orderpiqrApp\models\picklists.py:14
+#: .\orderpiqrApp\models\inventory.py:45 .\orderpiqrApp\models\picklists.py:25
 #: .\orderpiqrApp\models\scan_events.py:61
 #: .\orderpiqrApp\views\manage_views.py:2324
 #: .\templates\manage\dashboard.html:277
 #: .\templates\manage\devices\list.html:96
-#: .\templates\manage\health\list.html:165
-#: .\templates\manage\health\list.html:278
-#: .\templates\manage\health\list.html:430
+#: .\templates\manage\health\list.html:173
+#: .\templates\manage\health\list.html:286
+#: .\templates\manage\health\list.html:438
 #: .\templates\manage\picklists\detail.html:64
 #: .\templates\manage\picklists\list.html:77
 msgid "Device"
@@ -520,26 +584,26 @@ msgstr[0] "%(count)s cod QR de autentificare revocat."
 msgstr[1] "%(count)s coduri QR de autentificare revocate."
 msgstr[2] "%(count)s de coduri QR de autentificare revocate."
 
-#: .\orderpiqrApp\admin\order_admin.py:35
+#: .\orderpiqrApp\admin\order_admin.py:39
 msgid "Generate QR PDF for selected Orders"
 msgstr "Generează PDF QR pentru comenzile selectate"
 
-#: .\orderpiqrApp\admin\order_admin.py:38
+#: .\orderpiqrApp\admin\order_admin.py:42
 #: .\orderpiqrApp\views\manage_views.py:805
 #: .\orderpiqrApp\views\manage_views.py:809
 msgid "No orders selected."
 msgstr "Nicio comandă selectată."
 
-#: .\orderpiqrApp\admin\order_admin.py:47
+#: .\orderpiqrApp\admin\order_admin.py:51
 #, python-format
 msgid "Failed to generate QR batch: %(error)s"
 msgstr "Eșec la generarea lotului QR: %(error)s"
 
-#: .\orderpiqrApp\admin\order_admin.py:49
+#: .\orderpiqrApp\admin\order_admin.py:53
 msgid "Add selected orders to queue"
 msgstr "Adaugă comenzile selectate în coadă"
 
-#: .\orderpiqrApp\admin\order_admin.py:76
+#: .\orderpiqrApp\admin\order_admin.py:80
 #, python-format
 msgid "%(count)s order added to queue."
 msgid_plural "%(count)s orders added to queue."
@@ -547,7 +611,7 @@ msgstr[0] "%(count)s comandă adăugată în coadă."
 msgstr[1] "%(count)s comenzi adăugate în coadă."
 msgstr[2] "%(count)s de comenzi adăugate în coadă."
 
-#: .\orderpiqrApp\admin\order_admin.py:81
+#: .\orderpiqrApp\admin\order_admin.py:85
 #, python-format
 msgid "%(count)s order skipped (not in draft status)."
 msgid_plural "%(count)s orders skipped (not in draft status)."
@@ -555,11 +619,11 @@ msgstr[0] "%(count)s comandă omisă (nu are statusul schiță)."
 msgstr[1] "%(count)s comenzi omise (nu au statusul schiță)."
 msgstr[2] "%(count)s de comenzi omise (nu au statusul schiță)."
 
-#: .\orderpiqrApp\admin\order_admin.py:85
+#: .\orderpiqrApp\admin\order_admin.py:89
 msgid "Remove selected orders from queue"
 msgstr "Elimină comenzile selectate din coadă"
 
-#: .\orderpiqrApp\admin\order_admin.py:96
+#: .\orderpiqrApp\admin\order_admin.py:100
 #, python-format
 msgid "%(count)s order removed from queue."
 msgid_plural "%(count)s orders removed from queue."
@@ -567,63 +631,69 @@ msgstr[0] "%(count)s comandă eliminată din coadă."
 msgstr[1] "%(count)s comenzi eliminate din coadă."
 msgstr[2] "%(count)s de comenzi eliminate din coadă."
 
-#: .\orderpiqrApp\admin\order_admin.py:133
-#: .\orderpiqrApp\admin\order_admin.py:338 .\orderpiqr\views.py:219
+#: .\orderpiqrApp\admin\order_admin.py:119
+#: .\orderpiqrApp\admin\picklist_admin.py:46
+#| msgid "Order Lines"
+msgid "Lines"
+msgstr "Linii"
+
+#: .\orderpiqrApp\admin\order_admin.py:149
+#: .\orderpiqrApp\admin\product_admin.py:269 .\orderpiqr\views.py:219
 msgid "Your account is not linked to a customer."
 msgstr "Contul dumneavoastră nu este asociat cu un client."
 
-#: .\orderpiqrApp\admin\order_admin.py:157
+#: .\orderpiqrApp\admin\order_admin.py:173
 #, python-format
 msgid "Missing required column: \"%(column)s\""
 msgstr "Coloană obligatorie lipsă: \"%(column)s\""
 
-#: .\orderpiqrApp\admin\order_admin.py:173
+#: .\orderpiqrApp\admin\order_admin.py:189
 #, python-format
 msgid "Missing value for \"order_code\" in row %(row)d"
 msgstr "Valoare lipsă pentru \"order_code\" la rândul %(row)d"
 
-#: .\orderpiqrApp\admin\order_admin.py:179
+#: .\orderpiqrApp\admin\order_admin.py:195
 #, python-format
 msgid "Invalid quantity for product code \"%(code)s\" in row %(row)d"
 msgstr "Cantitate invalidă pentru codul produsului \"%(code)s\" la rândul %(row)d"
 
-#: .\orderpiqrApp\admin\order_admin.py:186
+#: .\orderpiqrApp\admin\order_admin.py:202
 #, python-format
 msgid "Unknown product code \"%(code)s\" in row %(row)d"
 msgstr "Cod produs necunoscut \"%(code)s\" la rândul %(row)d"
 
-#: .\orderpiqrApp\admin\order_admin.py:263
-#: .\orderpiqrApp\admin\product_admin.py:167
+#: .\orderpiqrApp\admin\order_admin.py:279
+#: .\orderpiqrApp\admin\product_admin.py:206
 msgid "Unsupported file format, only .csv and .xlsx are supported"
 msgstr "Format de fișier nesuportat, doar .csv și .xlsx sunt suportate"
 
-#: .\orderpiqrApp\admin\order_admin.py:265
+#: .\orderpiqrApp\admin\order_admin.py:281
 #, python-format
 msgid "%(orders)s orders and %(lines)s lines added."
 msgstr "%(orders)s comenzi și %(lines)s linii adăugate."
 
-#: .\orderpiqrApp\admin\order_admin.py:272
+#: .\orderpiqrApp\admin\order_admin.py:288
 #, python-format
 msgid "Overwritten orders: %(codes)s."
 msgstr "Comenzi suprascrise: %(codes)s."
 
-#: .\orderpiqrApp\admin\order_admin.py:280
+#: .\orderpiqrApp\admin\order_admin.py:296
 #, python-format
 msgid "Error processing file: %(msg)s"
 msgstr "Eroare la procesarea fișierului: %(msg)s"
 
-#: .\orderpiqrApp\admin\order_admin.py:282
-#: .\orderpiqrApp\admin\product_admin.py:178
+#: .\orderpiqrApp\admin\order_admin.py:298
+#: .\orderpiqrApp\admin\product_admin.py:217
 msgid "No file uploaded."
 msgstr "Niciun fișier încărcat."
 
-#: .\orderpiqrApp\admin\order_admin.py:284
-#: .\orderpiqrApp\admin\product_admin.py:180
+#: .\orderpiqrApp\admin\order_admin.py:300
+#: .\orderpiqrApp\admin\product_admin.py:219
 msgid "Upload CSV or XLSX File"
 msgstr "Încarcă fișier CSV sau XLSX"
 
-#: .\orderpiqrApp\admin\order_admin.py:294
-#: .\orderpiqrApp\admin\product_admin.py:192
+#: .\orderpiqrApp\admin\order_admin.py:310
+#: .\orderpiqrApp\admin\product_admin.py:231
 msgid "Invalid form submission."
 msgstr "Trimitere formular invalidă."
 
@@ -639,52 +709,30 @@ msgstr "Avansat"
 msgid "Duplicate barcode in this list."
 msgstr "Cod de bare duplicat în această listă."
 
-#: .\orderpiqrApp\admin\product_admin.py:62
-#, python-format
-msgid "Missing required column \"%(field)s\""
-msgstr "Lipsește coloana obligatorie \"%(field)s\""
-
-#: .\orderpiqrApp\admin\product_admin.py:89
-#, python-format
-msgid "Missing value for \"%(field)s\" in row %(row)d"
-msgstr "Valoare lipsă pentru \"%(field)s\" la rândul %(row)d"
-
-#: .\orderpiqrApp\admin\product_admin.py:169
-#, python-format
-msgid "%(added)d products added, %(overwritten)d products overwritten."
-msgstr "%(added)d produse adăugate, %(overwritten)d produse suprascrise."
-
-#: .\orderpiqrApp\admin\product_admin.py:175
-#, python-format
-msgid "Error processing file: %(error)s"
-msgstr "Eroare la procesarea fișierului: %(error)s"
-
-#: .\orderpiqrApp\admin\product_admin.py:213
+#: .\orderpiqrApp\admin\product_admin.py:67
 #, python-format
 msgid "A product with the code \"%(code)s\" already exists for this customer."
 msgstr "Un produs cu codul \"%(code)s\" există deja pentru acest client."
 
-#: .\orderpiqrApp\admin\product_admin.py:217
+#: .\orderpiqrApp\admin\product_admin.py:101
 #, python-format
-msgid "A product with the code \"%(code)s\" already exists, cannot add duplicate."
-msgstr "Un produs cu codul \"%(code)s\" există deja, nu se poate adăuga duplicat."
+msgid "Missing required column \"%(field)s\""
+msgstr "Lipsește coloana obligatorie \"%(field)s\""
 
-#: .\orderpiqrApp\admin\product_admin.py:223
+#: .\orderpiqrApp\admin\product_admin.py:128
 #, python-format
-msgid "The product \"%(description)s\" was added successfully."
-msgstr "Produsul \"%(description)s\" a fost adăugat cu succes."
+msgid "Missing value for \"%(field)s\" in row %(row)d"
+msgstr "Valoare lipsă pentru \"%(field)s\" la rândul %(row)d"
 
-#: .\orderpiqrApp\admin\product_admin.py:228
-msgid "User is not allowed to save products."
-msgstr "Utilizatorul nu are permisiunea să salveze produse."
+#: .\orderpiqrApp\admin\product_admin.py:208
+#, python-format
+msgid "%(added)d products added, %(overwritten)d products overwritten."
+msgstr "%(added)d produse adăugate, %(overwritten)d produse suprascrise."
 
-#: .\orderpiqrApp\admin\userprofile_admin.py:13
-#: .\templates\manage\profile.html:22 .\templates\manage\profile.html:178
-#: .\templates\registration\login.html:35
-#: .\templates\registration\signup.html:95
-#: .\templates\registration\signup.html:171
-msgid "Username"
-msgstr "Nume de utilizator"
+#: .\orderpiqrApp\admin\product_admin.py:214
+#, python-format
+msgid "Error processing file: %(error)s"
+msgstr "Eroare la procesarea fișierului: %(error)s"
 
 #: .\orderpiqrApp\forms\accounts\signup_form.py:18
 msgid "Company name"
@@ -770,7 +818,7 @@ msgstr "Descriere"
 #: .\orderpiqrApp\models\customers.py:16 .\orderpiqrApp\models\customers.py:25
 #: .\orderpiqrApp\models\devices.py:24
 #: .\orderpiqrApp\models\login_tokens.py:33 .\orderpiqrApp\models\orders.py:18
-#: .\orderpiqrApp\models\picklists.py:11
+#: .\orderpiqrApp\models\picklists.py:22
 #: .\orderpiqrApp\models\preferences.py:87
 #: .\orderpiqrApp\models\products.py:13 .\orderpiqrApp\models\products.py:58
 #: .\orderpiqrApp\models\scan_events.py:59
@@ -830,7 +878,7 @@ msgstr "Aplicație instalată"
 
 #: .\orderpiqrApp\models\devices.py:45 .\templates\manage\devices\list.html:24
 #: .\templates\manage\devices\list.html:137
-#: .\templates\manage\health\list.html:194
+#: .\templates\manage\health\list.html:202
 msgid "Browser tab"
 msgstr "Filă de browser"
 
@@ -842,19 +890,11 @@ msgstr "Mod de afișare"
 msgid "Last Build"
 msgstr "Ultima versiune"
 
-#: .\orderpiqrApp\models\devices.py:56 .\orderpiqrApp\models\picklists.py:26
+#: .\orderpiqrApp\models\devices.py:56 .\orderpiqrApp\models\picklists.py:37
 #: .\templates\manage\picklists\detail.html:50
 #: .\templates\manage\picklists\list.html:32
 msgid "Archived"
 msgstr "Arhivată"
-
-#: .\orderpiqrApp\models\devices.py:60 .\templates\manage\base.html:123
-#: .\templates\manage\devices\list.html:4
-#: .\templates\manage\devices\list.html:5
-#: .\templates\manage\devices\list.html:19
-#: .\templates\manage\devices\list.html:87
-msgid "Devices"
-msgstr "Dispozitive"
 
 #: .\orderpiqrApp\models\email_log.py:7
 msgid "Sent"
@@ -899,7 +939,7 @@ msgstr "Numărătoare stoc"
 msgid "Goods Received"
 msgstr "Marfă recepționată"
 
-#: .\orderpiqrApp\models\inventory.py:21 .\orderpiqrApp\models\picklists.py:60
+#: .\orderpiqrApp\models\inventory.py:21 .\orderpiqrApp\models\picklists.py:71
 msgid "Damaged"
 msgstr "Deteriorat"
 
@@ -915,7 +955,7 @@ msgstr "Corecție"
 msgid "Order Picked"
 msgstr "Comandă preluată"
 
-#: .\orderpiqrApp\models\inventory.py:25 .\orderpiqrApp\models\picklists.py:62
+#: .\orderpiqrApp\models\inventory.py:25 .\orderpiqrApp\models\picklists.py:73
 msgid "Other"
 msgstr "Altele"
 
@@ -935,8 +975,8 @@ msgstr "Tip modificare"
 #: .\orderpiqrApp\models\scan_events.py:68
 #: .\orderpiqrApp\views\manage_views.py:2323
 #: .\templates\inventory\picker.html:128
-#: .\templates\manage\health\list.html:232
-#: .\templates\manage\health\list.html:427
+#: .\templates\manage\health\list.html:240
+#: .\templates\manage\health\list.html:435
 #: .\templates\manage\inventory\add_correction.html:55
 #: .\templates\manage\inventory\logs.html:79
 #: .\templates\manage\products\form.html:130
@@ -945,7 +985,7 @@ msgid "Reason"
 msgstr "Motiv"
 
 #: .\orderpiqrApp\models\inventory.py:59 .\orderpiqrApp\models\orders.py:21
-#: .\orderpiqrApp\models\picklists.py:27 .\orderpiqrApp\models\picklists.py:86
+#: .\orderpiqrApp\models\picklists.py:38 .\orderpiqrApp\models\picklists.py:97
 #: .\orderpiqrApp\views\manage_views.py:2324
 #: .\templates\manage\inventory\logs.html:81
 #: .\templates\manage\orders\form.html:41
@@ -955,7 +995,7 @@ msgstr "Motiv"
 msgid "Notes"
 msgstr "Note"
 
-#: .\orderpiqrApp\models\inventory.py:60 .\orderpiqrApp\models\picklists.py:15
+#: .\orderpiqrApp\models\inventory.py:60 .\orderpiqrApp\models\picklists.py:26
 #: .\orderpiqrApp\models\scan_events.py:78
 msgid "Created At"
 msgstr "Creat la"
@@ -1129,7 +1169,7 @@ msgstr ""
 
 #: .\orderpiqrApp\models\orders.py:48 .\orderpiqrApp\models\orders.py:63
 #: .\templates\manage\dashboard.html:221
-#: .\templates\manage\health\list.html:277
+#: .\templates\manage\health\list.html:285
 #: .\templates\manage\picklists\detail.html:9
 #: .\templates\manage\picklists\list.html:76 .\templates\shopify\app.html:210
 msgid "Order"
@@ -1142,7 +1182,7 @@ msgstr "Comandă"
 msgid "Orders"
 msgstr "Comenzi"
 
-#: .\orderpiqrApp\models\orders.py:65 .\orderpiqrApp\models\picklists.py:79
+#: .\orderpiqrApp\models\orders.py:65 .\orderpiqrApp\models\picklists.py:90
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:92
 #: .\templates\manage\inventory\add_correction.html:48
 #: .\templates\manage\orders\form.html:366
@@ -1163,100 +1203,105 @@ msgstr "Linii comandă"
 msgid "Order %(order)s, Product: %(quantity)s x %(product)s"
 msgstr "Comanda %(order)s, Produs: %(quantity)s x %(product)s"
 
-#: .\orderpiqrApp\models\picklists.py:12
+#: .\orderpiqrApp\models\picklists.py:23
 msgid "Source Order"
 msgstr "Comandă sursă"
 
-#: .\orderpiqrApp\models\picklists.py:13
+#: .\orderpiqrApp\models\picklists.py:24
 #: .\orderpiqrApp\models\scan_events.py:70
 msgid "Picklist Code"
 msgstr "Cod listă de preluare"
 
-#: .\orderpiqrApp\models\picklists.py:19
+#: .\orderpiqrApp\models\picklists.py:30
 msgid "Updated At"
 msgstr "Actualizat la"
 
-#: .\orderpiqrApp\models\picklists.py:20
+#: .\orderpiqrApp\models\picklists.py:31
 msgid "Pick Started"
 msgstr "Preluare începută"
 
-#: .\orderpiqrApp\models\picklists.py:21
+#: .\orderpiqrApp\models\picklists.py:32
 #: .\templates\manage\picklists\detail.html:89
 msgid "Pick Time"
 msgstr "Timp preluare"
 
-#: .\orderpiqrApp\models\picklists.py:22 .\orderpiqrApp\models\picklists.py:80
+#: .\orderpiqrApp\models\picklists.py:33 .\orderpiqrApp\models\picklists.py:91
 msgid "Time Taken"
 msgstr "Durată"
 
-#: .\orderpiqrApp\models\picklists.py:23 .\orderpiqrApp\models\picklists.py:81
+#: .\orderpiqrApp\models\picklists.py:34 .\orderpiqrApp\models\picklists.py:92
 msgid "Successful"
 msgstr "Reușit"
 
-#: .\orderpiqrApp\models\picklists.py:30 .\orderpiqrApp\models\picklists.py:78
+#: .\orderpiqrApp\models\picklists.py:41 .\orderpiqrApp\models\picklists.py:89
 msgid "Pick List"
 msgstr "Listă de preluare"
 
-#: .\orderpiqrApp\models\picklists.py:31 .\templates\manage\base.html:110
+#: .\orderpiqrApp\models\picklists.py:42 .\templates\manage\base.html:110
 #: .\templates\manage\picklists\list.html:4
 #: .\templates\manage\picklists\list.html:5
 msgid "Pick Lists"
 msgstr "Liste de preluare"
 
-#: .\orderpiqrApp\models\picklists.py:41
+#: .\orderpiqrApp\models\picklists.py:52
 #, python-format
 msgid "PickList %(id)s for Device %(device)s"
 msgstr "Listă de preluare %(id)s pentru dispozitivul %(device)s"
 
-#: .\orderpiqrApp\models\picklists.py:53
+#: .\orderpiqrApp\models\picklists.py:64
 #: .\templates\manage\picklists\detail.html:147
 msgid "Picked"
 msgstr "Preluat"
 
-#: .\orderpiqrApp\models\picklists.py:54
+#: .\orderpiqrApp\models\picklists.py:65
 #: .\templates\manage\picklists\detail.html:149
 msgid "Short"
 msgstr "Incomplet"
 
-#: .\orderpiqrApp\models\picklists.py:55
+#: .\orderpiqrApp\models\picklists.py:66
 #: .\templates\manage\picklists\detail.html:151
 msgid "Lost"
 msgstr "Pierdut"
 
-#: .\orderpiqrApp\models\picklists.py:58
+#: .\orderpiqrApp\models\picklists.py:69
 msgid "Not found at location"
 msgstr "Negăsit la locație"
 
-#: .\orderpiqrApp\models\picklists.py:59
+#: .\orderpiqrApp\models\picklists.py:70
 msgid "Insufficient stock"
 msgstr "Stoc insuficient"
 
-#: .\orderpiqrApp\models\picklists.py:61
+#: .\orderpiqrApp\models\picklists.py:72
 msgid "Wrong product"
 msgstr "Produs greșit"
 
-#: .\orderpiqrApp\models\picklists.py:82
+#: .\orderpiqrApp\models\picklists.py:93
 msgid "Outcome"
 msgstr "Rezultat"
 
-#: .\orderpiqrApp\models\picklists.py:84
+#: .\orderpiqrApp\models\picklists.py:95
 msgid "Short Reason"
 msgstr "Motivul lipsei"
 
-#: .\orderpiqrApp\models\picklists.py:92
+#: .\orderpiqrApp\models\picklists.py:103
 msgid "Client Pick Id"
 msgstr "ID de preluare client"
 
-#: .\orderpiqrApp\models\picklists.py:96
+#: .\orderpiqrApp\models\picklists.py:119
+#| msgid "Scanner"
+msgid "Scan Verified"
+msgstr "Scanare verificată"
+
+#: .\orderpiqrApp\models\picklists.py:122
 msgid "Product Pick"
 msgstr "Preluare produs"
 
-#: .\orderpiqrApp\models\picklists.py:97
+#: .\orderpiqrApp\models\picklists.py:123
 #: .\templates\manage\picklists\detail.html:112
 msgid "Product Picks"
 msgstr "Preluări produs"
 
-#: .\orderpiqrApp\models\picklists.py:123
+#: .\orderpiqrApp\models\picklists.py:149
 #, python-format
 msgid "Pick of %(product)s in PickList %(picklist_id)s"
 msgstr "Preluare a %(product)s în lista %(picklist_id)s"
@@ -1332,8 +1377,8 @@ msgstr "Descriere sau îndrumări suplimentare pentru această setare."
 #: .\orderpiqrApp\models\preferences.py:27
 #: .\orderpiqrApp\views\manage_views.py:2323
 #: .\templates\manage\dashboard.html:275
-#: .\templates\manage\health\list.html:231
-#: .\templates\manage\health\list.html:426
+#: .\templates\manage\health\list.html:239
+#: .\templates\manage\health\list.html:434
 #: .\templates\manage\settings\api_tokens.html:52
 msgid "Type"
 msgstr "Tip"
@@ -1405,13 +1450,6 @@ msgstr "Cantitate inventar"
 #: .\orderpiqrApp\models\products.py:18
 msgid "Current stock quantity for this product."
 msgstr "Cantitatea de stoc curentă pentru acest produs."
-
-#: .\orderpiqrApp\models\products.py:23 .\templates\manage\base.html:70
-#: .\templates\manage\dashboard.html:14
-#: .\templates\manage\products\list.html:4
-#: .\templates\manage\products\list.html:5
-msgid "Products"
-msgstr "Produse"
 
 #: .\orderpiqrApp\models\products.py:60
 msgid "Barcode"
@@ -1509,7 +1547,7 @@ msgid "Severity"
 msgstr "Severitate"
 
 #: .\orderpiqrApp\models\scan_events.py:69
-#: .\templates\manage\health\list.html:428
+#: .\templates\manage\health\list.html:436
 msgid "Scanned Code"
 msgstr "Cod scanat"
 
@@ -1607,7 +1645,7 @@ msgstr "Denumire"
 
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:92
 #: .\templates\manage\dashboard.html:276
-#: .\templates\manage\health\list.html:354
+#: .\templates\manage\health\list.html:362
 #: .\templates\manage\products\list.html:96
 msgid "Code"
 msgstr "Cod"
@@ -2568,11 +2606,11 @@ msgstr "Dispozitivul nu a fost găsit și utilizatorul nu este autentificat"
 msgid "User has no customer profile"
 msgstr "Utilizatorul nu are profil de client"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:273
+#: .\orderpiqrApp\views\scan_picklist_view.py:282
 msgid "This order is already being picked by another device"
 msgstr "Această comandă este deja preluată de alt dispozitiv"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:375
+#: .\orderpiqrApp\views\scan_picklist_view.py:384
 #, python-format
 msgid ""
 "Unknown product code '%(code)s'. Add it to your products and scan the list "
@@ -2581,44 +2619,44 @@ msgstr ""
 "Cod de produs necunoscut '%(code)s'. Adăugați-l la produsele dumneavoastră "
 "și scanați lista din nou."
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:391
-#: .\orderpiqrApp\views\scan_picklist_view.py:730
-#: .\orderpiqrApp\views\scan_picklist_view.py:769
+#: .\orderpiqrApp\views\scan_picklist_view.py:400
+#: .\orderpiqrApp\views\scan_picklist_view.py:775
+#: .\orderpiqrApp\views\scan_picklist_view.py:814
 msgid "Picklist processed successfully"
 msgstr "Lista de preluare a fost procesată cu succes"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:453
-#: .\orderpiqrApp\views\scan_picklist_view.py:772
+#: .\orderpiqrApp\views\scan_picklist_view.py:482
+#: .\orderpiqrApp\views\scan_picklist_view.py:817
 msgid "Device not found with given fingerprint"
 msgstr "Nu s-a găsit niciun dispozitiv cu amprenta dată"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:474
+#: .\orderpiqrApp\views\scan_picklist_view.py:503
 msgid "PickList not found for device/customer"
 msgstr "Lista de preluare nu a fost găsită pentru dispozitiv/client"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:536
-#: .\orderpiqrApp\views\scan_picklist_view.py:559
+#: .\orderpiqrApp\views\scan_picklist_view.py:565
+#: .\orderpiqrApp\views\scan_picklist_view.py:591
 msgid "No pending ProductPick rows for this product."
 msgstr "Nu există rânduri ProductPick în așteptare pentru acest produs."
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:636
+#: .\orderpiqrApp\views\scan_picklist_view.py:674
 msgid "PickList not found"
 msgstr "Lista de preluare nu a fost găsită"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:675
+#: .\orderpiqrApp\views\scan_picklist_view.py:713
 #, python-format
 msgid "Requested %(wanted)s but only %(available)s unpicked rows available"
 msgstr ""
 "Au fost cerute %(wanted)s, dar sunt disponibile doar %(available)s rânduri "
 "nepreluate"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:766
+#: .\orderpiqrApp\views\scan_picklist_view.py:811
 msgid "No picklist found for this device and order"
 msgstr ""
 "Nu s-a găsit nicio listă de preluare pentru acest dispozitiv și această "
 "comandă"
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:774
+#: .\orderpiqrApp\views\scan_picklist_view.py:819
 msgid "Product not found for one of the product codes"
 msgstr "Nu s-a găsit niciun produs pentru unul dintre codurile de produs"
 
@@ -2883,8 +2921,8 @@ msgstr "Închide căutarea"
 msgid "Enable camera"
 msgstr "Activați camera"
 
-#: .\templates\index.html:226 .\templates\manage\health\list.html:276
-#: .\templates\manage\health\list.html:429
+#: .\templates\index.html:226 .\templates\manage\health\list.html:284
+#: .\templates\manage\health\list.html:437
 #: .\templates\manage\picklists\list.html:75
 msgid "Picklist"
 msgstr "Listă de preluare"
@@ -3185,9 +3223,9 @@ msgstr "Vezi toate"
 
 #: .\templates\manage\dashboard.html:237 .\templates\manage\dashboard.html:283
 #: .\templates\manage\devices\list.html:154
-#: .\templates\manage\health\list.html:207
-#: .\templates\manage\health\list.html:309
-#: .\templates\manage\health\list.html:438
+#: .\templates\manage\health\list.html:215
+#: .\templates\manage\health\list.html:317
+#: .\templates\manage\health\list.html:446
 #: .\templates\manage\orders\list.html:123
 #: .\templates\manage\picklists\list.html:125
 #: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:96
@@ -3204,7 +3242,7 @@ msgid "Recent Scan Issues"
 msgstr "Probleme recente de scanare"
 
 #: .\templates\manage\dashboard.html:266
-#: .\templates\manage\health\list.html:268
+#: .\templates\manage\health\list.html:276
 #, python-format
 msgid "%(counter)s picklist in progress for over 4 hours."
 msgid_plural "%(counter)s picklists in progress for over 4 hours."
@@ -3213,7 +3251,7 @@ msgstr[1] "%(counter)s liste de preluare sunt în curs de peste 4 ore."
 msgstr[2] "%(counter)s de liste de preluare sunt în curs de peste 4 ore."
 
 #: .\templates\manage\dashboard.html:274
-#: .\templates\manage\health\list.html:425
+#: .\templates\manage\health\list.html:433
 msgid "When"
 msgstr "Când"
 
@@ -3311,7 +3349,7 @@ msgstr "<span id=\"bulk-count\">0</span> selectate"
 
 #: .\templates\manage\devices\list.html:75
 #: .\templates\manage\devices\list.html:171
-#: .\templates\manage\health\list.html:326
+#: .\templates\manage\health\list.html:334
 #: .\templates\manage\picklists\detail.html:31
 #: .\templates\manage\picklists\list.html:59
 msgid "Archive"
@@ -3341,12 +3379,12 @@ msgid "counts are last 24 hours"
 msgstr "cifre pe ultimele 24 de ore"
 
 #: .\templates\manage\devices\list.html:98
-#: .\templates\manage\health\list.html:166
+#: .\templates\manage\health\list.html:174
 msgid "Phone"
 msgstr "Telefon"
 
 #: .\templates\manage\devices\list.html:99
-#: .\templates\manage\health\list.html:167
+#: .\templates\manage\health\list.html:175
 msgid "App"
 msgstr "Aplicație"
 
@@ -3363,7 +3401,7 @@ msgid "Last Seen"
 msgstr "Văzut ultima dată"
 
 #: .\templates\manage\devices\list.html:103
-#: .\templates\manage\health\list.html:282
+#: .\templates\manage\health\list.html:290
 #: .\templates\manage\integrations\list.html:30
 #: .\templates\manage\orders\list.html:98
 #: .\templates\manage\picklists\list.html:81
@@ -3395,12 +3433,12 @@ msgid "never named"
 msgstr "fără nume"
 
 #: .\templates\manage\devices\list.html:130
-#: .\templates\manage\health\list.html:187
+#: .\templates\manage\health\list.html:195
 msgid "unknown"
 msgstr "necunoscut"
 
 #: .\templates\manage\devices\list.html:135
-#: .\templates\manage\health\list.html:192
+#: .\templates\manage\health\list.html:200
 msgid "Installed"
 msgstr "Instalată"
 
@@ -3436,7 +3474,7 @@ msgid "Never"
 msgstr "Niciodată"
 
 #: .\templates\manage\devices\list.html:191
-#: .\templates\manage\health\list.html:495
+#: .\templates\manage\health\list.html:503
 #: .\templates\manage\inventory\logs.html:136
 #: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:152
@@ -3599,55 +3637,63 @@ msgid "picks not recorded"
 msgstr "preluări neînregistrate"
 
 #: .\templates\manage\health\list.html:132
+msgid "lines on abandoned lists"
+msgstr "rânduri pe liste abandonate"
+
+#: .\templates\manage\health\list.html:136
+msgid "confirmed without a scan"
+msgstr "confirmate fără scanare"
+
+#: .\templates\manage\health\list.html:140
 msgid "lines short"
 msgstr "rânduri incomplete"
 
-#: .\templates\manage\health\list.html:136
+#: .\templates\manage\health\list.html:144
 msgid "lists restarted"
 msgstr "liste repornite"
 
-#: .\templates\manage\health\list.html:140
+#: .\templates\manage\health\list.html:148
 msgid "lines picked"
 msgstr "linii preluate"
 
-#: .\templates\manage\health\list.html:144
+#: .\templates\manage\health\list.html:152
 msgid "devices used"
 msgstr "dispozitive folosite"
 
-#: .\templates\manage\health\list.html:148
+#: .\templates\manage\health\list.html:156
 msgid "on an old app version"
 msgstr "cu o versiune veche"
 
-#: .\templates\manage\health\list.html:157
+#: .\templates\manage\health\list.html:165
 msgid "By device"
 msgstr "Per dispozitiv"
 
-#: .\templates\manage\health\list.html:168
+#: .\templates\manage\health\list.html:176
 msgid "Lists"
 msgstr "Liste"
 
-#: .\templates\manage\health\list.html:169
+#: .\templates\manage\health\list.html:177
 msgid "Errors"
 msgstr "Erori"
 
-#: .\templates\manage\health\list.html:170
+#: .\templates\manage\health\list.html:178
 msgid "Logouts"
 msgstr "Deconectări"
 
-#: .\templates\manage\health\list.html:171
-#: .\templates\manage\health\list.html:280
+#: .\templates\manage\health\list.html:179
+#: .\templates\manage\health\list.html:288
 msgid "Restarts"
 msgstr "Reporniri"
 
-#: .\templates\manage\health\list.html:172
+#: .\templates\manage\health\list.html:180
 msgid "Overrides"
 msgstr "Suprascrieri"
 
-#: .\templates\manage\health\list.html:173
+#: .\templates\manage\health\list.html:181
 msgid "Last seen"
 msgstr "Văzut ultima dată"
 
-#: .\templates\manage\health\list.html:194
+#: .\templates\manage\health\list.html:202
 msgid ""
 "A browser tab can lose its stored identity, which locks the picker out of "
 "their own list."
@@ -3655,28 +3701,28 @@ msgstr ""
 "O filă de browser își poate pierde identitatea stocată, ceea ce îl blochează"
 " pe operator din propria listă."
 
-#: .\templates\manage\health\list.html:205
+#: .\templates\manage\health\list.html:213
 #, python-format
 msgid "%(rate)s/list"
 msgstr "%(rate)s/listă"
 
-#: .\templates\manage\health\list.html:210
+#: .\templates\manage\health\list.html:218
 msgid "No device activity in this period."
 msgstr "Nicio activitate a dispozitivelor în această perioadă."
 
-#: .\templates\manage\health\list.html:223
+#: .\templates\manage\health\list.html:231
 msgid "What exactly went wrong"
 msgstr "Ce anume a mers prost"
 
-#: .\templates\manage\health\list.html:233
+#: .\templates\manage\health\list.html:241
 msgid "Events"
 msgstr "Evenimente"
 
-#: .\templates\manage\health\list.html:255
+#: .\templates\manage\health\list.html:263
 msgid "Stale Picklists"
 msgstr "Liste de preluare blocate"
 
-#: .\templates\manage\health\list.html:269
+#: .\templates\manage\health\list.html:277
 #, python-format
 msgid "%(counter)s line still unpicked."
 msgid_plural "%(counter)s lines still unpicked."
@@ -3684,31 +3730,31 @@ msgstr[0] "%(counter)s linie este încă nepreluată."
 msgstr[1] "%(counter)s linii sunt încă nepreluate."
 msgstr[2] "%(counter)s de linii sunt încă nepreluate."
 
-#: .\templates\manage\health\list.html:270
+#: .\templates\manage\health\list.html:278
 msgid "shown live, not filtered by the date range above"
 msgstr "afișat live, fără filtrul de date de mai sus"
 
-#: .\templates\manage\health\list.html:279
+#: .\templates\manage\health\list.html:287
 msgid "Unpicked"
 msgstr "Nepreluate"
 
-#: .\templates\manage\health\list.html:281
+#: .\templates\manage\health\list.html:289
 msgid "Started"
 msgstr "Început"
 
-#: .\templates\manage\health\list.html:312
+#: .\templates\manage\health\list.html:320
 #: .\templates\manage\picklists\detail.html:16
 msgid "Mark this picklist as completed? This also completes the linked order."
 msgstr ""
 "Marcați această listă de preluare ca finalizată? Aceasta finalizează și "
 "comanda asociată."
 
-#: .\templates\manage\health\list.html:318
+#: .\templates\manage\health\list.html:326
 #: .\templates\manage\picklists\detail.html:22
 msgid "Mark completed"
 msgstr "Marchează ca finalizată"
 
-#: .\templates\manage\health\list.html:320
+#: .\templates\manage\health\list.html:328
 #: .\templates\manage\picklists\detail.html:25
 msgid ""
 "Archive this picklist? It stays in your history but no longer counts as "
@@ -3717,87 +3763,87 @@ msgstr ""
 "Arhivați această listă de preluare? Rămâne în istoric, dar nu mai este "
 "considerată blocată."
 
-#: .\templates\manage\health\list.html:346
+#: .\templates\manage\health\list.html:354
 msgid "Codes that need attention"
 msgstr "Coduri care necesită atenție"
 
-#: .\templates\manage\health\list.html:355
+#: .\templates\manage\health\list.html:363
 msgid "What is wrong"
 msgstr "Ce nu este în regulă"
 
-#: .\templates\manage\health\list.html:356
+#: .\templates\manage\health\list.html:364
 msgid "Details"
 msgstr "Detalii"
 
-#: .\templates\manage\health\list.html:357
+#: .\templates\manage\health\list.html:365
 msgid "Fix"
 msgstr "Rezolvă"
 
-#: .\templates\manage\health\list.html:369
+#: .\templates\manage\health\list.html:377
 msgid "extra barcode"
 msgstr "cod de bare suplimentar"
 
-#: .\templates\manage\health\list.html:374
+#: .\templates\manage\health\list.html:382
 msgid "Not in the catalogue"
 msgstr "Lipsește din catalog"
 
-#: .\templates\manage\health\list.html:375
+#: .\templates\manage\health\list.html:383
 msgid "scanned, but no product has this code"
 msgstr "scanat, dar niciun produs nu are acest cod"
 
-#: .\templates\manage\health\list.html:377
+#: .\templates\manage\health\list.html:385
 msgid "Barcode does not scan"
 msgstr "Codul de bare nu se scanează"
 
-#: .\templates\manage\health\list.html:378
+#: .\templates\manage\health\list.html:386
 msgid "pickers keep confirming it by hand"
 msgstr "operatorii îl confirmă mereu manual"
 
-#: .\templates\manage\health\list.html:380
+#: .\templates\manage\health\list.html:388
 msgid "Scanned outside its order"
 msgstr "Scanat în afara comenzii sale"
 
-#: .\templates\manage\health\list.html:381
+#: .\templates\manage\health\list.html:389
 msgid "the product exists, but was not on that list"
 msgstr "produsul există, dar nu era pe acea listă"
 
-#: .\templates\manage\health\list.html:383
+#: .\templates\manage\health\list.html:391
 msgid "Picks not recorded"
 msgstr "Preluări neînregistrate"
 
-#: .\templates\manage\health\list.html:384
+#: .\templates\manage\health\list.html:392
 msgid "the server refused the pick"
 msgstr "serverul a refuzat preluarea"
 
-#: .\templates\manage\health\list.html:386
+#: .\templates\manage\health\list.html:394
 msgid "Unreadable or wrong product"
 msgstr "Ilizibil sau produs greșit"
 
-#: .\templates\manage\health\list.html:390
+#: .\templates\manage\health\list.html:398
 #, python-format
 msgid "%(num)s&times; confirmed by hand"
 msgstr "%(num)s&times; confirmat manual"
 
-#: .\templates\manage\health\list.html:391
+#: .\templates\manage\health\list.html:399
 #, python-format
 msgid "%(num)s&times; not found on the list"
 msgstr "%(num)s&times; negăsit pe listă"
 
-#: .\templates\manage\health\list.html:392
+#: .\templates\manage\health\list.html:400
 #, python-format
 msgid "%(num)s&times; not recorded"
 msgstr "%(num)s&times; neînregistrat"
 
-#: .\templates\manage\health\list.html:393
+#: .\templates\manage\health\list.html:401
 #, python-format
 msgid "%(num)s&times; unreadable"
 msgstr "%(num)s&times; ilizibil"
 
-#: .\templates\manage\health\list.html:398
+#: .\templates\manage\health\list.html:406
 msgid "Add as product"
 msgstr "Adaugă ca produs"
 
-#: .\templates\manage\health\list.html:402
+#: .\templates\manage\health\list.html:410
 msgid ""
 "Add the code that is physically on the label as an extra barcode, so pickers"
 " can scan it instead of confirming by hand."
@@ -3805,24 +3851,24 @@ msgstr ""
 "Adaugă codul aflat fizic pe etichetă ca cod de bare suplimentar, pentru ca "
 "operatorii să poată scana în loc să confirme manual."
 
-#: .\templates\manage\health\list.html:402
+#: .\templates\manage\health\list.html:410
 msgid "Add extra barcode"
 msgstr "Adaugă cod de bare"
 
-#: .\templates\manage\health\list.html:405
+#: .\templates\manage\health\list.html:413
 msgid "Open product"
 msgstr "Deschide produsul"
 
-#: .\templates\manage\health\list.html:474
+#: .\templates\manage\health\list.html:482
 #, python-format
 msgid "build %(build)s"
 msgstr "versiunea %(build)s"
 
-#: .\templates\manage\health\list.html:510
+#: .\templates\manage\health\list.html:518
 msgid "No scan issues found"
 msgstr "Nu s-au găsit probleme de scanare"
 
-#: .\templates\manage\health\list.html:511
+#: .\templates\manage\health\list.html:519
 msgid ""
 "Failed scans, rejected picklists and manual overrides will appear here."
 msgstr ""
@@ -4745,6 +4791,13 @@ msgstr "Gestionează setările contului"
 msgid "Account Information"
 msgstr "Informații cont"
 
+#: .\templates\manage\profile.html:22 .\templates\manage\profile.html:178
+#: .\templates\registration\login.html:35
+#: .\templates\registration\signup.html:95
+#: .\templates\registration\signup.html:171
+msgid "Username"
+msgstr "Nume de utilizator"
+
 #: .\templates\manage\profile.html:24
 msgid "Username cannot be changed."
 msgstr "Numele de utilizator nu poate fi schimbat."
@@ -4850,10 +4903,12 @@ msgid "No login QR"
 msgstr "Niciun cod QR de autentificare"
 
 #: .\templates\manage\profile.html:142 .\templates\shopify\app.html:252
+#: .\templates\shopify\app.html:264
 msgid "New password (min 8 characters)"
 msgstr "Parolă nouă (min. 8 caractere)"
 
 #: .\templates\manage\profile.html:144 .\templates\shopify\app.html:253
+#: .\templates\shopify\app.html:265
 msgid "Set password"
 msgstr "Setează parola"
 
@@ -5469,6 +5524,7 @@ msgstr ""
 "href=\"%(url)s\">încercați din nou</a>"
 
 #: .\templates\registration\password_reset_email.html:2
+#: .\templates\shopify\email\welcome.txt:1
 msgid "Hello,"
 msgstr "Bună ziua,"
 
@@ -5499,6 +5555,7 @@ msgstr ""
 "siguranță. Parola nu va fi schimbată."
 
 #: .\templates\registration\password_reset_email.html:14
+#: .\templates\shopify\email\welcome.txt:19
 msgid "Best regards,"
 msgstr "Cu respect,"
 
@@ -5934,13 +5991,95 @@ msgstr ""
 "Personalul din depozit se autentifică în aplicația de preluare cu acest "
 "cont:"
 
-#: templates/manage/health/list.html:132
-msgid "lines on abandoned lists"
-msgstr "rânduri pe liste abandonate"
+#: .\templates\shopify\app.html:258
+#| msgid "Admin Account"
+msgid "Your admin account"
+msgstr "Contul tău de administrator"
 
-#: templates/manage/health/list.html:136
-msgid "confirmed without a scan"
-msgstr "confirmate fără scanare"
+#: .\templates\shopify\app.html:260
+msgid ""
+"This panel covers syncing. Everything else — your products, picker login QR "
+"codes, scan health and company settings — lives in the full OrderPiqr "
+"console, which you reach with this account:"
+msgstr ""
+"Acest panou se ocupă de sincronizare. Tot restul — produsele tale, codurile "
+"QR de conectare pentru operatori, sănătatea scanării și setările companiei —"
+" se află în consola OrderPiqr completă, la care ajungi cu acest cont:"
+
+#: .\templates\shopify\app.html:269
+#| msgid "Open the OrderPiqr settings"
+msgid "Open the OrderPiqr console"
+msgstr "Deschide consola OrderPiqr"
+
+#: .\templates\shopify\email\welcome.txt:3
+#, python-format
+msgid ""
+"Thanks for installing OrderPiqr on %(shop)s. Your orders are syncing already"
+" — here is how to reach the rest of it."
+msgstr ""
+"Mulțumim că ai instalat OrderPiqr pe %(shop)s. Comenzile tale se "
+"sincronizează deja — iată cum ajungi la restul."
+
+#: .\templates\shopify\email\welcome.txt:5
+#| msgid "Reset your password"
+msgid "1. Set your admin password"
+msgstr "1. Setează parola de administrator"
+
+#: .\templates\shopify\email\welcome.txt:7
+#, python-format
+msgid "Your admin username is %(username)s. Choose a password here:"
+msgstr ""
+"Numele tău de utilizator administrator este %(username)s. Alege o parolă "
+"aici:"
+
+#: .\templates\shopify\email\welcome.txt:11
+#, python-format
+msgid ""
+"That gives you the full OrderPiqr console at %(app_url)s: your products, the"
+" order queue, picker login QR codes and the scan health page."
+msgstr ""
+"Astfel ai consola OrderPiqr completă la %(app_url)s: produsele tale, coada "
+"de comenzi, codurile QR de conectare pentru operatori și pagina de sănătate "
+"a scanării."
+
+#: .\templates\shopify\email\welcome.txt:13
+msgid "2. Get your warehouse onto a phone"
+msgstr "2. Pune depozitul pe telefon"
+
+#: .\templates\shopify\email\welcome.txt:15
+msgid ""
+"In the OrderPiqr panel inside your Shopify admin, open \"Picker access\" and"
+" set a password for the picker account. Your staff log in with that on a "
+"phone, scan the picklist, and scan each product as they pick it."
+msgstr ""
+"În panoul OrderPiqr din administrarea Shopify, deschide \"Acces operator\" "
+"și setează o parolă pentru contul de operator. Angajații tăi se conectează "
+"cu ea pe telefon, scanează lista de preluare și scanează fiecare produs în "
+"timp ce îl preiau."
+
+#: .\templates\shopify\email\welcome.txt:17
+msgid ""
+"Stuck on anything, or want us to walk through it with you? Just reply to "
+"this email."
+msgstr ""
+"Te-ai blocat sau vrei să parcurgem împreună? Răspunde pur și simplu la acest"
+" e-mail."
+
+#: .\templates\shopify\email\welcome.txt:20
+#| msgid "The OrderPiqR Team"
+msgid "The OrderPiqr Team"
+msgstr "Echipa OrderPiqr"
+
+#, python-format
+#~ msgid "A product with the code \"%(code)s\" already exists, cannot add duplicate."
+#~ msgstr "Un produs cu codul \"%(code)s\" există deja, nu se poate adăuga duplicat."
+
+#, python-format
+#~ msgid "The product \"%(description)s\" was added successfully."
+#~ msgstr "Produsul \"%(description)s\" a fost adăugat cu succes."
+
+#~ msgid "User is not allowed to save products."
+#~ msgstr "Utilizatorul nu are permisiunea să salveze produse."
 
 #~ msgid "Delete this device? It has no picked lists, so nothing is lost."
 #~ msgstr ""

@@ -253,6 +253,23 @@
             <button id="btn-picker-password">{% trans "Set password" %}</button>
         </div>
     </div>
+
+    <div class="card" id="admin-card" style="display:none">
+        <h2>{% trans "Your admin account" %}</h2>
+        <p class="hint">
+            {% trans "This panel covers syncing. Everything else — your products, picker login QR codes, scan health and company settings — lives in the full OrderPiqr console, which you reach with this account:" %}
+            <strong id="admin-username">–</strong>
+        </p>
+        <div class="row" style="border-bottom:none">
+            <input type="text" id="admin-password" placeholder="{% trans 'New password (min 8 characters)' %}" style="flex:1">
+            <button id="btn-admin-password">{% trans "Set password" %}</button>
+        </div>
+        <p class="hint">
+            <a id="admin-link" href="#" target="_blank" rel="noopener">
+                {% trans "Open the OrderPiqr console" %} ↗
+            </a>
+        </p>
+    </div>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -330,6 +347,12 @@
         document.getElementById('stat-unresolved').textContent = data.unresolved_products;
         document.getElementById('picker-link').href = data.picker_url;
         document.getElementById('picker-username').textContent = data.picker_username || '–';
+        document.getElementById('admin-username').textContent = data.admin_username || '–';
+        document.getElementById('admin-link').href = data.picker_url;
+        // Only a workspace this install created is ours to hand out; a linked
+        // account's password belongs to whoever already owns it.
+        document.getElementById('admin-card').style.display =
+            data.auto_provisioned ? '' : 'none';
         document.getElementById('link-card').style.display =
             data.auto_provisioned ? '' : 'none';
         document.getElementById('billing-card').style.display =
@@ -415,6 +438,23 @@
         this.disabled = true;
         try {
             const res = await authFetch('/shopify/api/picker-password/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({password: input.value}),
+            });
+            if (res.ok) { toast(gettext('Password set')); input.value = ''; }
+            else {
+                const err = await res.json().catch(() => ({}));
+                toast(err.error || gettext('Failed'));
+            }
+        } finally { this.disabled = false; }
+    });
+
+    document.getElementById('btn-admin-password').addEventListener('click', async function () {
+        const input = document.getElementById('admin-password');
+        this.disabled = true;
+        try {
+            const res = await authFetch('/shopify/api/admin-password/', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({password: input.value}),

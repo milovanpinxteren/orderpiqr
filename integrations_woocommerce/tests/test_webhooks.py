@@ -181,3 +181,29 @@ class WebhookTests(TestCase):
         self.assertNotIn('description', row.payload)
         self.assertNotIn('images', row.payload)
         self.assertEqual(row.payload['sku'], 'WS-1')
+
+
+class DisconnectedStoreTests(WebhookTests):
+    """Webhook removal happens over the store's own REST API and routinely
+    fails — revoked credentials, firewalled site, plugin already gone — so
+    deliveries outlive the connection and have to be dropped on arrival."""
+
+    def test_delivery_for_disconnected_connection_is_dropped(self):
+        self.connection.status = 'disconnected'
+        self.connection.save(update_fields=['status'])
+
+        response = self.deliver(wc_order_payload())
+
+        # 200, not 4xx: Woo disables a webhook that keeps erroring, which would
+        # also break the next re-pair.
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(WebhookInbox.objects.exists())
+
+    def test_paused_connection_still_ingests(self):
+        self.connection.status = 'paused'
+        self.connection.save(update_fields=['status'])
+
+        response = self.deliver(wc_order_payload())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(WebhookInbox.objects.count(), 1)

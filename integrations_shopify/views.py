@@ -24,6 +24,12 @@ from integrations_shopify.session_tokens import (
 
 logger = logging.getLogger(__name__)
 
+# Topics that must be accepted even for an uninstalled shop: they are how the
+# install/delete lifecycle itself is driven.
+LIFECYCLE_TOPICS = frozenset({
+    'app/uninstalled', 'shop/redact', 'customers/redact', 'customers/data_request',
+})
+
 
 # --------------------------------------------------------------- webhooks --
 
@@ -56,6 +62,14 @@ def webhook(request):
     if shop is None:
         # Unknown shop (e.g. GDPR webhook after full deletion): acknowledge.
         logger.info("Webhook %s for unknown shop %s acknowledged", topic, shop_domain)
+        return HttpResponse(status=200)
+
+    if (shop.connection.status == 'disconnected'
+            and topic not in LIFECYCLE_TOPICS):
+        # Uninstalled shop: stop taking in orders and catalog changes. The
+        # lifecycle topics still have to land — shop/redact is what deletes
+        # this shop's data 48h later, and app/uninstalled may be redelivered.
+        logger.info("Dropping %s for uninstalled shop %s", topic, shop_domain)
         return HttpResponse(status=200)
 
     try:
@@ -160,6 +174,7 @@ def api_status(request):
               .filter(userprofile__customer=customer, groups__name='orderpicker')
               .order_by('pk')
               .first())
+    admin = services.admin_user_for(customer)
 
     services.check_subscription(shop)
     store_handle = shop.shop_domain.replace('.myshopify.com', '')
@@ -178,6 +193,8 @@ def api_status(request):
         'unresolved_products': unresolved,
         'picker_url': request.build_absolute_uri('/'),
         'picker_username': picker.username if picker else '',
+        'admin_username': admin.username if admin else '',
+        'admin_email': admin.email if admin else '',
         'auto_provisioned': connection.auto_provisioned,
         'customer_name': customer.name,
     })
@@ -458,6 +475,44 @@ def api_set_picker_password(request):
 
     store_handle = shop.shop_domain.replace('.myshopify.com', '')
     user = services.ensure_picker_user(shop.connection.customer, store_handle)
+    user.set_password(password)
+    user.save(update_fields=['password'])
+    return JsonResponse({'ok': True, 'username': user.username})
+
+
+@csrf_exempt
+@require_POST
+def api_set_admin_password(request):
+    """Set the password for this customer's companyadmin account.
+
+    The counterpart of api_set_picker_password, and the only way a self-install
+    merchant can reach orderpiqr.nl itself: the account was created with a
+    random password at install time and nobody has ever seen it. Proof of
+    ownership is the Shopify session token — whoever can open this console is
+    already an admin of the store this workspace belongs to.
+    """
+    shop = _authenticated_shop(request)
+    if shop is None:
+        return JsonResponse({'error': 'unauthorized'}, status=401)
+    if not shop.connection.auto_provisioned:
+        # A shop linked to a pre-existing OrderPiqr account: that account's
+        # password is not the store owner's to reset from here.
+        return JsonResponse(
+            {'error': _('This store is linked to an existing OrderPiqr '
+                        'account. Use the password reset on orderpiqr.nl.')},
+            status=403)
+    try:
+        data = json.loads(request.body or b'{}')
+        password = str(data['password'])
+    except (json.JSONDecodeError, KeyError):
+        return JsonResponse({'error': 'invalid request'}, status=400)
+    if len(password) < 8:
+        return JsonResponse({'error': _('password too short (min 8 characters)')}, status=400)
+
+    user = services.admin_user_for(shop.connection.customer)
+    if user is None:
+        return JsonResponse({'error': _('This workspace has no admin account')},
+                            status=404)
     user.set_password(password)
     user.save(update_fields=['password'])
     return JsonResponse({'ok': True, 'username': user.username})
