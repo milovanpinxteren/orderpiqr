@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 12:22+0100\n"
+"POT-Creation-Date: 2026-11-14 12:05+0100\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,7 +53,7 @@ msgid ""
 msgstr ""
 
 #: .\api\views\device_views.py:166
-#: .\orderpiqrApp\views\scan_picklist_view.py:613
+#: .\orderpiqrApp\views\scan_picklist_view.py:651
 msgid "Device not found"
 msgstr ""
 
@@ -69,7 +69,7 @@ msgstr ""
 msgid "User unassigned from device"
 msgstr ""
 
-#: .\api\views\health_views.py:81 .\api\views\queue_views.py:85
+#: .\api\views\health_views.py:98 .\api\views\queue_views.py:85
 #: .\api\views\queue_views.py:165 .\api\views\queue_views.py:238
 #: .\api\views\queue_views.py:319 .\api\views\queue_views.py:416
 #: .\api\views\queue_views.py:588 .\api\views\queue_views.py:670
@@ -96,8 +96,8 @@ msgstr ""
 #: .\api\views\product_views.py:195
 #: .\orderpiqrApp\views\inventory_views.py:133
 #: .\orderpiqrApp\views\inventory_views.py:194
-#: .\orderpiqrApp\views\scan_picklist_view.py:507
-#: .\orderpiqrApp\views\scan_picklist_view.py:665
+#: .\orderpiqrApp\views\scan_picklist_view.py:536
+#: .\orderpiqrApp\views\scan_picklist_view.py:703
 #: .\templates\inventory\picker.html:172
 msgid "Product not found"
 msgstr ""
@@ -145,11 +145,11 @@ msgstr ""
 msgid "Products updated successfully"
 msgstr ""
 
-#: .\api\views\productpick_views.py:152
+#: .\api\views\productpick_views.py:156
 msgid "Pick marked as successful"
 msgstr ""
 
-#: .\api\views\productpick_views.py:193
+#: .\api\views\productpick_views.py:197
 msgid "Pick marked as failed"
 msgstr ""
 
@@ -181,7 +181,7 @@ msgid "This order is already being picked"
 msgstr ""
 
 #: .\api\views\queue_views.py:453 .\orderpiqrApp\views\queue_views.py:323
-#: .\orderpiqrApp\views\scan_picklist_view.py:289
+#: .\orderpiqrApp\views\scan_picklist_view.py:298
 msgid "This order has already been completed"
 msgstr ""
 
@@ -236,7 +236,7 @@ msgstr ""
 msgid "Integrations"
 msgstr ""
 
-#: .\integrations\models.py:23 .\orderpiqrApp\models\picklists.py:52
+#: .\integrations\models.py:23 .\orderpiqrApp\models\picklists.py:63
 #: .\templates\manage\picklists\detail.html:58
 #: .\templates\manage\picklists\detail.html:153
 #: .\templates\manage\picklists\list.html:28
@@ -312,44 +312,59 @@ msgstr ""
 msgid "Shopify integration"
 msgstr ""
 
-#: .\integrations_shopify\models.py:35
+#: .\integrations_shopify\emails.py:69
+#, python-format
+msgid "Your OrderPiqr workspace for %(shop)s is ready"
+msgstr ""
+
+#: .\integrations_shopify\models.py:39
 msgid "Shopify shop"
 msgstr ""
 
-#: .\integrations_shopify\models.py:36
+#: .\integrations_shopify\models.py:40
 msgid "Shopify shops"
 msgstr ""
 
-#: .\integrations_shopify\views.py:265 .\integrations_shopify\views.py:312
+#: .\integrations_shopify\views.py:282 .\integrations_shopify\views.py:329
 msgid "Could not load orders from Shopify"
 msgstr ""
 
-#: .\integrations_shopify\views.py:304
+#: .\integrations_shopify\views.py:321
 msgid "no orders selected"
 msgstr ""
 
-#: .\integrations_shopify\views.py:390
+#: .\integrations_shopify\views.py:407
 msgid "link not found"
 msgstr ""
 
-#: .\integrations_shopify\views.py:393
+#: .\integrations_shopify\views.py:410
 msgid "no product with that code"
 msgstr ""
 
-#: .\integrations_shopify\views.py:422
+#: .\integrations_shopify\views.py:439
 msgid "Invalid username or password"
 msgstr ""
 
-#: .\integrations_shopify\views.py:425
+#: .\integrations_shopify\views.py:442
 msgid "This account is not a company admin"
 msgstr ""
 
-#: .\integrations_shopify\views.py:428
+#: .\integrations_shopify\views.py:445
 msgid "Account has no company"
 msgstr ""
 
-#: .\integrations_shopify\views.py:457
+#: .\integrations_shopify\views.py:474 .\integrations_shopify\views.py:510
 msgid "password too short (min 8 characters)"
+msgstr ""
+
+#: .\integrations_shopify\views.py:501
+msgid ""
+"This store is linked to an existing OrderPiqr account. Use the password "
+"reset on orderpiqr.nl."
+msgstr ""
+
+#: .\integrations_shopify\views.py:514
+msgid "This workspace has no admin account"
 msgstr ""
 
 #: .\integrations_woocommerce\apps.py:8
@@ -380,34 +395,75 @@ msgstr ""
 msgid "Pairing tokens"
 msgstr ""
 
-#: .\integrations_woocommerce\views.py:59
+#: .\integrations_woocommerce\views.py:60
 msgid ""
 "This pairing key is not valid. Generate a new one in the OrderPiqr portal."
 msgstr ""
 
-#: .\integrations_woocommerce\views.py:63
+#: .\integrations_woocommerce\views.py:64
 msgid ""
 "This pairing key has expired. Generate a new one in the OrderPiqr portal."
 msgstr ""
 
-#: .\integrations_woocommerce\views.py:79
+#: .\integrations_woocommerce\views.py:80
 msgid ""
 "Could not reach the store with these API credentials. Check the store URL "
 "and REST API key."
 msgstr ""
 
-#: .\integrations_woocommerce\views.py:127
+#: .\integrations_woocommerce\views.py:132
 msgid ""
 "The store accepted the credentials but webhook registration failed. Check "
 "that the REST API key has Read/Write permissions."
 msgstr ""
 
-#: .\integrations_woocommerce\views.py:240
+#: .\integrations_woocommerce\views.py:255
 msgid "Invalid plugin token."
 msgstr ""
 
-#: .\integrations_woocommerce\views.py:261
+#: .\integrations_woocommerce\views.py:277
 msgid "Invalid connection or plugin token."
+msgstr ""
+
+#: .\orderpiqrApp\admin\customer_admin.py:113
+msgid "Users"
+msgstr ""
+
+#: .\orderpiqrApp\admin\customer_admin.py:124
+#: .\orderpiqrApp\models\devices.py:60 .\templates\manage\base.html:123
+#: .\templates\manage\devices\list.html:4
+#: .\templates\manage\devices\list.html:5
+#: .\templates\manage\devices\list.html:19
+#: .\templates\manage\devices\list.html:87
+msgid "Devices"
+msgstr ""
+
+#: .\orderpiqrApp\admin\customer_admin.py:132
+#: .\orderpiqrApp\models\products.py:23 .\templates\manage\base.html:70
+#: .\templates\manage\dashboard.html:14
+#: .\templates\manage\products\list.html:4
+#: .\templates\manage\products\list.html:5
+msgid "Products"
+msgstr ""
+
+#: .\orderpiqrApp\admin\customer_admin.py:137
+msgid "Orders (30d)"
+msgstr ""
+
+#: .\orderpiqrApp\admin\customer_admin.py:142
+msgid "Picklists (30d)"
+msgstr ""
+
+#: .\orderpiqrApp\admin\customer_admin.py:148
+msgid "Lines picked (30d)"
+msgstr ""
+
+#: .\orderpiqrApp\admin\customer_admin.py:154
+msgid "Errors (30d)"
+msgstr ""
+
+#: .\orderpiqrApp\admin\customer_admin.py:165
+msgid "Last pick"
 msgstr ""
 
 #: .\orderpiqrApp\admin\email_admin.py:33 .\orderpiqrApp\models\orders.py:23
@@ -431,14 +487,14 @@ msgstr ""
 
 #: .\orderpiqrApp\admin\email_admin.py:49
 #: .\orderpiqrApp\models\scan_events.py:71
-#: .\templates\manage\health\list.html:431
+#: .\templates\manage\health\list.html:439
 msgid "Message"
 msgstr ""
 
 #: .\orderpiqrApp\admin\inventory_admin.py:33
 #: .\orderpiqrApp\admin\inventory_admin.py:69
 #: .\orderpiqrApp\models\inventory.py:32 .\orderpiqrApp\models\orders.py:64
-#: .\orderpiqrApp\models\picklists.py:76 .\orderpiqrApp\models\products.py:22
+#: .\orderpiqrApp\models\picklists.py:87 .\orderpiqrApp\models\products.py:22
 #: .\orderpiqrApp\models\products.py:57 .\templates\index.html:246
 #: .\templates\manage\inventory\add_correction.html:15
 #: .\templates\manage\inventory\logs.html:77
@@ -470,14 +526,14 @@ msgstr ""
 
 #: .\orderpiqrApp\admin\inventory_admin.py:65
 #: .\orderpiqrApp\models\devices.py:38 .\orderpiqrApp\models\devices.py:59
-#: .\orderpiqrApp\models\inventory.py:45 .\orderpiqrApp\models\picklists.py:14
+#: .\orderpiqrApp\models\inventory.py:45 .\orderpiqrApp\models\picklists.py:25
 #: .\orderpiqrApp\models\scan_events.py:61
 #: .\orderpiqrApp\views\manage_views.py:2324
 #: .\templates\manage\dashboard.html:277
 #: .\templates\manage\devices\list.html:96
-#: .\templates\manage\health\list.html:165
-#: .\templates\manage\health\list.html:278
-#: .\templates\manage\health\list.html:430
+#: .\templates\manage\health\list.html:173
+#: .\templates\manage\health\list.html:286
+#: .\templates\manage\health\list.html:438
 #: .\templates\manage\picklists\detail.html:64
 #: .\templates\manage\picklists\list.html:77
 msgid "Device"
@@ -502,107 +558,112 @@ msgid_plural "%(count)s login QRs revoked."
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\orderpiqrApp\admin\order_admin.py:35
+#: .\orderpiqrApp\admin\order_admin.py:39
 msgid "Generate QR PDF for selected Orders"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:38
+#: .\orderpiqrApp\admin\order_admin.py:42
 #: .\orderpiqrApp\views\manage_views.py:805
 #: .\orderpiqrApp\views\manage_views.py:809
 msgid "No orders selected."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:47
+#: .\orderpiqrApp\admin\order_admin.py:51
 #, python-format
 msgid "Failed to generate QR batch: %(error)s"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:49
+#: .\orderpiqrApp\admin\order_admin.py:53
 msgid "Add selected orders to queue"
 msgstr "Add selected orders to queue"
 
-#: .\orderpiqrApp\admin\order_admin.py:76
+#: .\orderpiqrApp\admin\order_admin.py:80
 #, python-format
 msgid "%(count)s order added to queue."
 msgid_plural "%(count)s orders added to queue."
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\orderpiqrApp\admin\order_admin.py:81
+#: .\orderpiqrApp\admin\order_admin.py:85
 #, python-format
 msgid "%(count)s order skipped (not in draft status)."
 msgid_plural "%(count)s orders skipped (not in draft status)."
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\orderpiqrApp\admin\order_admin.py:85
+#: .\orderpiqrApp\admin\order_admin.py:89
 msgid "Remove selected orders from queue"
 msgstr "Remove selected orders from queue"
 
-#: .\orderpiqrApp\admin\order_admin.py:96
+#: .\orderpiqrApp\admin\order_admin.py:100
 #, python-format
 msgid "%(count)s order removed from queue."
 msgid_plural "%(count)s orders removed from queue."
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\orderpiqrApp\admin\order_admin.py:133
-#: .\orderpiqrApp\admin\order_admin.py:338 .\orderpiqr\views.py:219
-msgid "Your account is not linked to a customer."
+#: .\orderpiqrApp\admin\order_admin.py:119
+#: .\orderpiqrApp\admin\picklist_admin.py:46
+msgid "Lines"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:157
-#, python-format
-msgid "Missing required column: \"%(column)s\""
+#: .\orderpiqrApp\admin\order_admin.py:149
+#: .\orderpiqrApp\admin\product_admin.py:269 .\orderpiqr\views.py:219
+msgid "Your account is not linked to a customer."
 msgstr ""
 
 #: .\orderpiqrApp\admin\order_admin.py:173
 #, python-format
+msgid "Missing required column: \"%(column)s\""
+msgstr ""
+
+#: .\orderpiqrApp\admin\order_admin.py:189
+#, python-format
 msgid "Missing value for \"order_code\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:179
+#: .\orderpiqrApp\admin\order_admin.py:195
 #, python-format
 msgid "Invalid quantity for product code \"%(code)s\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:186
+#: .\orderpiqrApp\admin\order_admin.py:202
 #, python-format
 msgid "Unknown product code \"%(code)s\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:263
-#: .\orderpiqrApp\admin\product_admin.py:167
+#: .\orderpiqrApp\admin\order_admin.py:279
+#: .\orderpiqrApp\admin\product_admin.py:206
 msgid "Unsupported file format, only .csv and .xlsx are supported"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:265
+#: .\orderpiqrApp\admin\order_admin.py:281
 #, python-format
 msgid "%(orders)s orders and %(lines)s lines added."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:272
+#: .\orderpiqrApp\admin\order_admin.py:288
 #, python-format
 msgid "Overwritten orders: %(codes)s."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:280
+#: .\orderpiqrApp\admin\order_admin.py:296
 #, python-format
 msgid "Error processing file: %(msg)s"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:282
-#: .\orderpiqrApp\admin\product_admin.py:178
+#: .\orderpiqrApp\admin\order_admin.py:298
+#: .\orderpiqrApp\admin\product_admin.py:217
 msgid "No file uploaded."
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:284
-#: .\orderpiqrApp\admin\product_admin.py:180
+#: .\orderpiqrApp\admin\order_admin.py:300
+#: .\orderpiqrApp\admin\product_admin.py:219
 msgid "Upload CSV or XLSX File"
 msgstr ""
 
-#: .\orderpiqrApp\admin\order_admin.py:294
-#: .\orderpiqrApp\admin\product_admin.py:192
+#: .\orderpiqrApp\admin\order_admin.py:310
+#: .\orderpiqrApp\admin\product_admin.py:231
 msgid "Invalid form submission."
 msgstr ""
 
@@ -618,51 +679,29 @@ msgstr ""
 msgid "Duplicate barcode in this list."
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:62
-#, python-format
-msgid "Missing required column \"%(field)s\""
-msgstr ""
-
-#: .\orderpiqrApp\admin\product_admin.py:89
-#, python-format
-msgid "Missing value for \"%(field)s\" in row %(row)d"
-msgstr ""
-
-#: .\orderpiqrApp\admin\product_admin.py:169
-#, python-format
-msgid "%(added)d products added, %(overwritten)d products overwritten."
-msgstr ""
-
-#: .\orderpiqrApp\admin\product_admin.py:175
-#, python-format
-msgid "Error processing file: %(error)s"
-msgstr ""
-
-#: .\orderpiqrApp\admin\product_admin.py:213
+#: .\orderpiqrApp\admin\product_admin.py:67
 #, python-format
 msgid "A product with the code \"%(code)s\" already exists for this customer."
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:217
+#: .\orderpiqrApp\admin\product_admin.py:101
 #, python-format
-msgid "A product with the code \"%(code)s\" already exists, cannot add duplicate."
+msgid "Missing required column \"%(field)s\""
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:223
+#: .\orderpiqrApp\admin\product_admin.py:128
 #, python-format
-msgid "The product \"%(description)s\" was added successfully."
+msgid "Missing value for \"%(field)s\" in row %(row)d"
 msgstr ""
 
-#: .\orderpiqrApp\admin\product_admin.py:228
-msgid "User is not allowed to save products."
+#: .\orderpiqrApp\admin\product_admin.py:208
+#, python-format
+msgid "%(added)d products added, %(overwritten)d products overwritten."
 msgstr ""
 
-#: .\orderpiqrApp\admin\userprofile_admin.py:13
-#: .\templates\manage\profile.html:22 .\templates\manage\profile.html:178
-#: .\templates\registration\login.html:35
-#: .\templates\registration\signup.html:95
-#: .\templates\registration\signup.html:171
-msgid "Username"
+#: .\orderpiqrApp\admin\product_admin.py:214
+#, python-format
+msgid "Error processing file: %(error)s"
 msgstr ""
 
 #: .\orderpiqrApp\forms\accounts\signup_form.py:18
@@ -749,7 +788,7 @@ msgstr ""
 #: .\orderpiqrApp\models\customers.py:16 .\orderpiqrApp\models\customers.py:25
 #: .\orderpiqrApp\models\devices.py:24
 #: .\orderpiqrApp\models\login_tokens.py:33 .\orderpiqrApp\models\orders.py:18
-#: .\orderpiqrApp\models\picklists.py:11
+#: .\orderpiqrApp\models\picklists.py:22
 #: .\orderpiqrApp\models\preferences.py:87
 #: .\orderpiqrApp\models\products.py:13 .\orderpiqrApp\models\products.py:58
 #: .\orderpiqrApp\models\scan_events.py:59
@@ -809,7 +848,7 @@ msgstr ""
 
 #: .\orderpiqrApp\models\devices.py:45 .\templates\manage\devices\list.html:24
 #: .\templates\manage\devices\list.html:137
-#: .\templates\manage\health\list.html:194
+#: .\templates\manage\health\list.html:202
 msgid "Browser tab"
 msgstr ""
 
@@ -821,18 +860,10 @@ msgstr ""
 msgid "Last Build"
 msgstr ""
 
-#: .\orderpiqrApp\models\devices.py:56 .\orderpiqrApp\models\picklists.py:26
+#: .\orderpiqrApp\models\devices.py:56 .\orderpiqrApp\models\picklists.py:37
 #: .\templates\manage\picklists\detail.html:50
 #: .\templates\manage\picklists\list.html:32
 msgid "Archived"
-msgstr ""
-
-#: .\orderpiqrApp\models\devices.py:60 .\templates\manage\base.html:123
-#: .\templates\manage\devices\list.html:4
-#: .\templates\manage\devices\list.html:5
-#: .\templates\manage\devices\list.html:19
-#: .\templates\manage\devices\list.html:87
-msgid "Devices"
 msgstr ""
 
 #: .\orderpiqrApp\models\email_log.py:7
@@ -878,7 +909,7 @@ msgstr ""
 msgid "Goods Received"
 msgstr ""
 
-#: .\orderpiqrApp\models\inventory.py:21 .\orderpiqrApp\models\picklists.py:60
+#: .\orderpiqrApp\models\inventory.py:21 .\orderpiqrApp\models\picklists.py:71
 msgid "Damaged"
 msgstr ""
 
@@ -894,7 +925,7 @@ msgstr ""
 msgid "Order Picked"
 msgstr ""
 
-#: .\orderpiqrApp\models\inventory.py:25 .\orderpiqrApp\models\picklists.py:62
+#: .\orderpiqrApp\models\inventory.py:25 .\orderpiqrApp\models\picklists.py:73
 msgid "Other"
 msgstr ""
 
@@ -914,8 +945,8 @@ msgstr ""
 #: .\orderpiqrApp\models\scan_events.py:68
 #: .\orderpiqrApp\views\manage_views.py:2323
 #: .\templates\inventory\picker.html:128
-#: .\templates\manage\health\list.html:232
-#: .\templates\manage\health\list.html:427
+#: .\templates\manage\health\list.html:240
+#: .\templates\manage\health\list.html:435
 #: .\templates\manage\inventory\add_correction.html:55
 #: .\templates\manage\inventory\logs.html:79
 #: .\templates\manage\products\form.html:130
@@ -924,7 +955,7 @@ msgid "Reason"
 msgstr ""
 
 #: .\orderpiqrApp\models\inventory.py:59 .\orderpiqrApp\models\orders.py:21
-#: .\orderpiqrApp\models\picklists.py:27 .\orderpiqrApp\models\picklists.py:86
+#: .\orderpiqrApp\models\picklists.py:38 .\orderpiqrApp\models\picklists.py:97
 #: .\orderpiqrApp\views\manage_views.py:2324
 #: .\templates\manage\inventory\logs.html:81
 #: .\templates\manage\orders\form.html:41
@@ -934,7 +965,7 @@ msgstr ""
 msgid "Notes"
 msgstr ""
 
-#: .\orderpiqrApp\models\inventory.py:60 .\orderpiqrApp\models\picklists.py:15
+#: .\orderpiqrApp\models\inventory.py:60 .\orderpiqrApp\models\picklists.py:26
 #: .\orderpiqrApp\models\scan_events.py:78
 msgid "Created At"
 msgstr ""
@@ -1101,7 +1132,7 @@ msgstr ""
 
 #: .\orderpiqrApp\models\orders.py:48 .\orderpiqrApp\models\orders.py:63
 #: .\templates\manage\dashboard.html:221
-#: .\templates\manage\health\list.html:277
+#: .\templates\manage\health\list.html:285
 #: .\templates\manage\picklists\detail.html:9
 #: .\templates\manage\picklists\list.html:76 .\templates\shopify\app.html:210
 msgid "Order"
@@ -1114,7 +1145,7 @@ msgstr ""
 msgid "Orders"
 msgstr ""
 
-#: .\orderpiqrApp\models\orders.py:65 .\orderpiqrApp\models\picklists.py:79
+#: .\orderpiqrApp\models\orders.py:65 .\orderpiqrApp\models\picklists.py:90
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:92
 #: .\templates\manage\inventory\add_correction.html:48
 #: .\templates\manage\orders\form.html:366
@@ -1135,100 +1166,105 @@ msgstr ""
 msgid "Order %(order)s, Product: %(quantity)s x %(product)s"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:12
+#: .\orderpiqrApp\models\picklists.py:23
 msgid "Source Order"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:13
+#: .\orderpiqrApp\models\picklists.py:24
 #: .\orderpiqrApp\models\scan_events.py:70
 msgid "Picklist Code"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:19
+#: .\orderpiqrApp\models\picklists.py:30
 msgid "Updated At"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:20
+#: .\orderpiqrApp\models\picklists.py:31
 msgid "Pick Started"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:21
+#: .\orderpiqrApp\models\picklists.py:32
 #: .\templates\manage\picklists\detail.html:89
 msgid "Pick Time"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:22 .\orderpiqrApp\models\picklists.py:80
+#: .\orderpiqrApp\models\picklists.py:33 .\orderpiqrApp\models\picklists.py:91
 msgid "Time Taken"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:23 .\orderpiqrApp\models\picklists.py:81
+#: .\orderpiqrApp\models\picklists.py:34 .\orderpiqrApp\models\picklists.py:92
 msgid "Successful"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:30 .\orderpiqrApp\models\picklists.py:78
+#: .\orderpiqrApp\models\picklists.py:41 .\orderpiqrApp\models\picklists.py:89
 msgid "Pick List"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:31 .\templates\manage\base.html:110
+#: .\orderpiqrApp\models\picklists.py:42 .\templates\manage\base.html:110
 #: .\templates\manage\picklists\list.html:4
 #: .\templates\manage\picklists\list.html:5
 msgid "Pick Lists"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:41
+#: .\orderpiqrApp\models\picklists.py:52
 #, python-format
 msgid "PickList %(id)s for Device %(device)s"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:53
+#: .\orderpiqrApp\models\picklists.py:64
 #: .\templates\manage\picklists\detail.html:147
 msgid "Picked"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:54
+#: .\orderpiqrApp\models\picklists.py:65
 #: .\templates\manage\picklists\detail.html:149
 msgid "Short"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:55
+#: .\orderpiqrApp\models\picklists.py:66
 #: .\templates\manage\picklists\detail.html:151
 msgid "Lost"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:58
+#: .\orderpiqrApp\models\picklists.py:69
 msgid "Not found at location"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:59
+#: .\orderpiqrApp\models\picklists.py:70
 msgid "Insufficient stock"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:61
+#: .\orderpiqrApp\models\picklists.py:72
 msgid "Wrong product"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:82
+#: .\orderpiqrApp\models\picklists.py:93
 msgid "Outcome"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:84
+#: .\orderpiqrApp\models\picklists.py:95
 msgid "Short Reason"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:92
+#: .\orderpiqrApp\models\picklists.py:103
 msgid "Client Pick Id"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:96
+#: .\orderpiqrApp\models\picklists.py:119
+#| msgid "Scanner"
+msgid "Scan Verified"
+msgstr ""
+
+#: .\orderpiqrApp\models\picklists.py:122
 msgid "Product Pick"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:97
+#: .\orderpiqrApp\models\picklists.py:123
 #: .\templates\manage\picklists\detail.html:112
 msgid "Product Picks"
 msgstr ""
 
-#: .\orderpiqrApp\models\picklists.py:123
+#: .\orderpiqrApp\models\picklists.py:149
 #, python-format
 msgid "Pick of %(product)s in PickList %(picklist_id)s"
 msgstr ""
@@ -1302,8 +1338,8 @@ msgstr ""
 #: .\orderpiqrApp\models\preferences.py:27
 #: .\orderpiqrApp\views\manage_views.py:2323
 #: .\templates\manage\dashboard.html:275
-#: .\templates\manage\health\list.html:231
-#: .\templates\manage\health\list.html:426
+#: .\templates\manage\health\list.html:239
+#: .\templates\manage\health\list.html:434
 #: .\templates\manage\settings\api_tokens.html:52
 msgid "Type"
 msgstr ""
@@ -1372,13 +1408,6 @@ msgstr ""
 
 #: .\orderpiqrApp\models\products.py:18
 msgid "Current stock quantity for this product."
-msgstr ""
-
-#: .\orderpiqrApp\models\products.py:23 .\templates\manage\base.html:70
-#: .\templates\manage\dashboard.html:14
-#: .\templates\manage\products\list.html:4
-#: .\templates\manage\products\list.html:5
-msgid "Products"
 msgstr ""
 
 #: .\orderpiqrApp\models\products.py:60
@@ -1477,7 +1506,7 @@ msgid "Severity"
 msgstr ""
 
 #: .\orderpiqrApp\models\scan_events.py:69
-#: .\templates\manage\health\list.html:428
+#: .\templates\manage\health\list.html:436
 msgid "Scanned Code"
 msgstr ""
 
@@ -1568,7 +1597,7 @@ msgstr ""
 
 #: .\orderpiqrApp\utils\qr_pdf_generator.py:92
 #: .\templates\manage\dashboard.html:276
-#: .\templates\manage\health\list.html:354
+#: .\templates\manage\health\list.html:362
 #: .\templates\manage\products\list.html:96
 msgid "Code"
 msgstr ""
@@ -2438,51 +2467,51 @@ msgstr ""
 msgid "User has no customer profile"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:273
+#: .\orderpiqrApp\views\scan_picklist_view.py:282
 msgid "This order is already being picked by another device"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:375
+#: .\orderpiqrApp\views\scan_picklist_view.py:384
 #, python-format
 msgid ""
 "Unknown product code '%(code)s'. Add it to your products and scan the list "
 "again."
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:391
-#: .\orderpiqrApp\views\scan_picklist_view.py:730
-#: .\orderpiqrApp\views\scan_picklist_view.py:769
+#: .\orderpiqrApp\views\scan_picklist_view.py:400
+#: .\orderpiqrApp\views\scan_picklist_view.py:775
+#: .\orderpiqrApp\views\scan_picklist_view.py:814
 msgid "Picklist processed successfully"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:453
-#: .\orderpiqrApp\views\scan_picklist_view.py:772
+#: .\orderpiqrApp\views\scan_picklist_view.py:482
+#: .\orderpiqrApp\views\scan_picklist_view.py:817
 msgid "Device not found with given fingerprint"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:474
+#: .\orderpiqrApp\views\scan_picklist_view.py:503
 msgid "PickList not found for device/customer"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:536
-#: .\orderpiqrApp\views\scan_picklist_view.py:559
+#: .\orderpiqrApp\views\scan_picklist_view.py:565
+#: .\orderpiqrApp\views\scan_picklist_view.py:591
 msgid "No pending ProductPick rows for this product."
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:636
+#: .\orderpiqrApp\views\scan_picklist_view.py:674
 msgid "PickList not found"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:675
+#: .\orderpiqrApp\views\scan_picklist_view.py:713
 #, python-format
 msgid "Requested %(wanted)s but only %(available)s unpicked rows available"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:766
+#: .\orderpiqrApp\views\scan_picklist_view.py:811
 msgid "No picklist found for this device and order"
 msgstr ""
 
-#: .\orderpiqrApp\views\scan_picklist_view.py:774
+#: .\orderpiqrApp\views\scan_picklist_view.py:819
 msgid "Product not found for one of the product codes"
 msgstr ""
 
@@ -2724,8 +2753,8 @@ msgstr ""
 msgid "Enable camera"
 msgstr "Enable camera"
 
-#: .\templates\index.html:226 .\templates\manage\health\list.html:276
-#: .\templates\manage\health\list.html:429
+#: .\templates\index.html:226 .\templates\manage\health\list.html:284
+#: .\templates\manage\health\list.html:437
 #: .\templates\manage\picklists\list.html:75
 msgid "Picklist"
 msgstr ""
@@ -3020,9 +3049,9 @@ msgstr ""
 
 #: .\templates\manage\dashboard.html:237 .\templates\manage\dashboard.html:283
 #: .\templates\manage\devices\list.html:154
-#: .\templates\manage\health\list.html:207
-#: .\templates\manage\health\list.html:309
-#: .\templates\manage\health\list.html:438
+#: .\templates\manage\health\list.html:215
+#: .\templates\manage\health\list.html:317
+#: .\templates\manage\health\list.html:446
 #: .\templates\manage\orders\list.html:123
 #: .\templates\manage\picklists\list.html:125
 #: .\templates\manage\queue\list.html:106 .\templates\queue\manage.html:96
@@ -3039,7 +3068,7 @@ msgid "Recent Scan Issues"
 msgstr ""
 
 #: .\templates\manage\dashboard.html:266
-#: .\templates\manage\health\list.html:268
+#: .\templates\manage\health\list.html:276
 #, python-format
 msgid "%(counter)s picklist in progress for over 4 hours."
 msgid_plural "%(counter)s picklists in progress for over 4 hours."
@@ -3047,7 +3076,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: .\templates\manage\dashboard.html:274
-#: .\templates\manage\health\list.html:425
+#: .\templates\manage\health\list.html:433
 msgid "When"
 msgstr ""
 
@@ -3143,7 +3172,7 @@ msgstr ""
 
 #: .\templates\manage\devices\list.html:75
 #: .\templates\manage\devices\list.html:171
-#: .\templates\manage\health\list.html:326
+#: .\templates\manage\health\list.html:334
 #: .\templates\manage\picklists\detail.html:31
 #: .\templates\manage\picklists\list.html:59
 msgid "Archive"
@@ -3173,12 +3202,12 @@ msgid "counts are last 24 hours"
 msgstr ""
 
 #: .\templates\manage\devices\list.html:98
-#: .\templates\manage\health\list.html:166
+#: .\templates\manage\health\list.html:174
 msgid "Phone"
 msgstr ""
 
 #: .\templates\manage\devices\list.html:99
-#: .\templates\manage\health\list.html:167
+#: .\templates\manage\health\list.html:175
 msgid "App"
 msgstr ""
 
@@ -3195,7 +3224,7 @@ msgid "Last Seen"
 msgstr ""
 
 #: .\templates\manage\devices\list.html:103
-#: .\templates\manage\health\list.html:282
+#: .\templates\manage\health\list.html:290
 #: .\templates\manage\integrations\list.html:30
 #: .\templates\manage\orders\list.html:98
 #: .\templates\manage\picklists\list.html:81
@@ -3224,12 +3253,12 @@ msgid "never named"
 msgstr ""
 
 #: .\templates\manage\devices\list.html:130
-#: .\templates\manage\health\list.html:187
+#: .\templates\manage\health\list.html:195
 msgid "unknown"
 msgstr ""
 
 #: .\templates\manage\devices\list.html:135
-#: .\templates\manage\health\list.html:192
+#: .\templates\manage\health\list.html:200
 msgid "Installed"
 msgstr ""
 
@@ -3260,7 +3289,7 @@ msgid "Never"
 msgstr ""
 
 #: .\templates\manage\devices\list.html:191
-#: .\templates\manage\health\list.html:495
+#: .\templates\manage\health\list.html:503
 #: .\templates\manage\inventory\logs.html:136
 #: .\templates\manage\orders\list.html:168
 #: .\templates\manage\picklists\list.html:152
@@ -3422,221 +3451,229 @@ msgid "picks not recorded"
 msgstr ""
 
 #: .\templates\manage\health\list.html:132
-msgid "lines short"
+msgid "lines on abandoned lists"
 msgstr ""
 
 #: .\templates\manage\health\list.html:136
-msgid "lists restarted"
+msgid "confirmed without a scan"
 msgstr ""
 
 #: .\templates\manage\health\list.html:140
-msgid "lines picked"
+msgid "lines short"
 msgstr ""
 
 #: .\templates\manage\health\list.html:144
-msgid "devices used"
+msgid "lists restarted"
 msgstr ""
 
 #: .\templates\manage\health\list.html:148
+msgid "lines picked"
+msgstr ""
+
+#: .\templates\manage\health\list.html:152
+msgid "devices used"
+msgstr ""
+
+#: .\templates\manage\health\list.html:156
 msgid "on an old app version"
 msgstr ""
 
-#: .\templates\manage\health\list.html:157
+#: .\templates\manage\health\list.html:165
 msgid "By device"
 msgstr ""
 
-#: .\templates\manage\health\list.html:168
+#: .\templates\manage\health\list.html:176
 msgid "Lists"
 msgstr ""
 
-#: .\templates\manage\health\list.html:169
+#: .\templates\manage\health\list.html:177
 msgid "Errors"
 msgstr ""
 
-#: .\templates\manage\health\list.html:170
+#: .\templates\manage\health\list.html:178
 msgid "Logouts"
 msgstr ""
 
-#: .\templates\manage\health\list.html:171
-#: .\templates\manage\health\list.html:280
+#: .\templates\manage\health\list.html:179
+#: .\templates\manage\health\list.html:288
 msgid "Restarts"
 msgstr ""
 
-#: .\templates\manage\health\list.html:172
+#: .\templates\manage\health\list.html:180
 msgid "Overrides"
 msgstr "Overrides"
 
-#: .\templates\manage\health\list.html:173
+#: .\templates\manage\health\list.html:181
 msgid "Last seen"
 msgstr ""
 
-#: .\templates\manage\health\list.html:194
+#: .\templates\manage\health\list.html:202
 msgid ""
 "A browser tab can lose its stored identity, which locks the picker out of "
 "their own list."
 msgstr ""
 
-#: .\templates\manage\health\list.html:205
+#: .\templates\manage\health\list.html:213
 #, python-format
 msgid "%(rate)s/list"
 msgstr ""
 
-#: .\templates\manage\health\list.html:210
+#: .\templates\manage\health\list.html:218
 msgid "No device activity in this period."
 msgstr ""
 
-#: .\templates\manage\health\list.html:223
+#: .\templates\manage\health\list.html:231
 msgid "What exactly went wrong"
 msgstr ""
 
-#: .\templates\manage\health\list.html:233
+#: .\templates\manage\health\list.html:241
 msgid "Events"
 msgstr ""
 
-#: .\templates\manage\health\list.html:255
+#: .\templates\manage\health\list.html:263
 msgid "Stale Picklists"
 msgstr ""
 
-#: .\templates\manage\health\list.html:269
+#: .\templates\manage\health\list.html:277
 #, python-format
 msgid "%(counter)s line still unpicked."
 msgid_plural "%(counter)s lines still unpicked."
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\templates\manage\health\list.html:270
+#: .\templates\manage\health\list.html:278
 msgid "shown live, not filtered by the date range above"
 msgstr ""
 
-#: .\templates\manage\health\list.html:279
+#: .\templates\manage\health\list.html:287
 msgid "Unpicked"
 msgstr ""
 
-#: .\templates\manage\health\list.html:281
+#: .\templates\manage\health\list.html:289
 msgid "Started"
 msgstr ""
 
-#: .\templates\manage\health\list.html:312
+#: .\templates\manage\health\list.html:320
 #: .\templates\manage\picklists\detail.html:16
 msgid "Mark this picklist as completed? This also completes the linked order."
 msgstr ""
 
-#: .\templates\manage\health\list.html:318
+#: .\templates\manage\health\list.html:326
 #: .\templates\manage\picklists\detail.html:22
 msgid "Mark completed"
 msgstr ""
 
-#: .\templates\manage\health\list.html:320
+#: .\templates\manage\health\list.html:328
 #: .\templates\manage\picklists\detail.html:25
 msgid ""
 "Archive this picklist? It stays in your history but no longer counts as "
 "stale."
 msgstr ""
 
-#: .\templates\manage\health\list.html:346
+#: .\templates\manage\health\list.html:354
 msgid "Codes that need attention"
 msgstr ""
 
-#: .\templates\manage\health\list.html:355
+#: .\templates\manage\health\list.html:363
 msgid "What is wrong"
 msgstr ""
 
-#: .\templates\manage\health\list.html:356
+#: .\templates\manage\health\list.html:364
 msgid "Details"
 msgstr ""
 
-#: .\templates\manage\health\list.html:357
+#: .\templates\manage\health\list.html:365
 msgid "Fix"
 msgstr ""
 
-#: .\templates\manage\health\list.html:369
+#: .\templates\manage\health\list.html:377
 msgid "extra barcode"
 msgstr ""
 
-#: .\templates\manage\health\list.html:374
+#: .\templates\manage\health\list.html:382
 msgid "Not in the catalogue"
 msgstr ""
 
-#: .\templates\manage\health\list.html:375
+#: .\templates\manage\health\list.html:383
 msgid "scanned, but no product has this code"
 msgstr ""
 
-#: .\templates\manage\health\list.html:377
+#: .\templates\manage\health\list.html:385
 msgid "Barcode does not scan"
 msgstr ""
 
-#: .\templates\manage\health\list.html:378
+#: .\templates\manage\health\list.html:386
 msgid "pickers keep confirming it by hand"
 msgstr ""
 
-#: .\templates\manage\health\list.html:380
+#: .\templates\manage\health\list.html:388
 msgid "Scanned outside its order"
 msgstr ""
 
-#: .\templates\manage\health\list.html:381
+#: .\templates\manage\health\list.html:389
 msgid "the product exists, but was not on that list"
 msgstr ""
 
-#: .\templates\manage\health\list.html:383
+#: .\templates\manage\health\list.html:391
 msgid "Picks not recorded"
 msgstr ""
 
-#: .\templates\manage\health\list.html:384
+#: .\templates\manage\health\list.html:392
 msgid "the server refused the pick"
 msgstr ""
 
-#: .\templates\manage\health\list.html:386
+#: .\templates\manage\health\list.html:394
 msgid "Unreadable or wrong product"
 msgstr ""
 
-#: .\templates\manage\health\list.html:390
+#: .\templates\manage\health\list.html:398
 #, python-format
 msgid "%(num)s&times; confirmed by hand"
 msgstr ""
 
-#: .\templates\manage\health\list.html:391
+#: .\templates\manage\health\list.html:399
 #, python-format
 msgid "%(num)s&times; not found on the list"
 msgstr ""
 
-#: .\templates\manage\health\list.html:392
+#: .\templates\manage\health\list.html:400
 #, python-format
 msgid "%(num)s&times; not recorded"
 msgstr ""
 
-#: .\templates\manage\health\list.html:393
+#: .\templates\manage\health\list.html:401
 #, python-format
 msgid "%(num)s&times; unreadable"
 msgstr ""
 
-#: .\templates\manage\health\list.html:398
+#: .\templates\manage\health\list.html:406
 msgid "Add as product"
 msgstr ""
 
-#: .\templates\manage\health\list.html:402
+#: .\templates\manage\health\list.html:410
 msgid ""
 "Add the code that is physically on the label as an extra barcode, so pickers"
 " can scan it instead of confirming by hand."
 msgstr ""
 
-#: .\templates\manage\health\list.html:402
+#: .\templates\manage\health\list.html:410
 msgid "Add extra barcode"
 msgstr ""
 
-#: .\templates\manage\health\list.html:405
+#: .\templates\manage\health\list.html:413
 msgid "Open product"
 msgstr ""
 
-#: .\templates\manage\health\list.html:474
+#: .\templates\manage\health\list.html:482
 #, python-format
 msgid "build %(build)s"
 msgstr ""
 
-#: .\templates\manage\health\list.html:510
+#: .\templates\manage\health\list.html:518
 msgid "No scan issues found"
 msgstr ""
 
-#: .\templates\manage\health\list.html:511
+#: .\templates\manage\health\list.html:519
 msgid ""
 "Failed scans, rejected picklists and manual overrides will appear here."
 msgstr ""
@@ -4516,6 +4553,13 @@ msgstr ""
 msgid "Account Information"
 msgstr ""
 
+#: .\templates\manage\profile.html:22 .\templates\manage\profile.html:178
+#: .\templates\registration\login.html:35
+#: .\templates\registration\signup.html:95
+#: .\templates\registration\signup.html:171
+msgid "Username"
+msgstr ""
+
 #: .\templates\manage\profile.html:24
 msgid "Username cannot be changed."
 msgstr ""
@@ -4614,10 +4658,12 @@ msgid "No login QR"
 msgstr ""
 
 #: .\templates\manage\profile.html:142 .\templates\shopify\app.html:252
+#: .\templates\shopify\app.html:264
 msgid "New password (min 8 characters)"
 msgstr ""
 
 #: .\templates\manage\profile.html:144 .\templates\shopify\app.html:253
+#: .\templates\shopify\app.html:265
 msgid "Set password"
 msgstr ""
 
@@ -5209,6 +5255,7 @@ msgid ""
 msgstr ""
 
 #: .\templates\registration\password_reset_email.html:2
+#: .\templates\shopify\email\welcome.txt:1
 msgid "Hello,"
 msgstr ""
 
@@ -5234,6 +5281,7 @@ msgid ""
 msgstr ""
 
 #: .\templates\registration\password_reset_email.html:14
+#: .\templates\shopify\email\welcome.txt:19
 msgid "Best regards,"
 msgstr ""
 
@@ -5633,12 +5681,63 @@ msgstr ""
 msgid "Your warehouse staff log into the picker app with this account:"
 msgstr ""
 
-#: templates/manage/health/list.html:132
-msgid "lines on abandoned lists"
+#: .\templates\shopify\app.html:258
+msgid "Your admin account"
 msgstr ""
 
-#: templates/manage/health/list.html:136
-msgid "confirmed without a scan"
+#: .\templates\shopify\app.html:260
+msgid ""
+"This panel covers syncing. Everything else — your products, picker login QR "
+"codes, scan health and company settings — lives in the full OrderPiqr "
+"console, which you reach with this account:"
+msgstr ""
+
+#: .\templates\shopify\app.html:269
+msgid "Open the OrderPiqr console"
+msgstr ""
+
+#: .\templates\shopify\email\welcome.txt:3
+#, python-format
+msgid ""
+"Thanks for installing OrderPiqr on %(shop)s. Your orders are syncing already"
+" — here is how to reach the rest of it."
+msgstr ""
+
+#: .\templates\shopify\email\welcome.txt:5
+msgid "1. Set your admin password"
+msgstr ""
+
+#: .\templates\shopify\email\welcome.txt:7
+#, python-format
+msgid "Your admin username is %(username)s. Choose a password here:"
+msgstr ""
+
+#: .\templates\shopify\email\welcome.txt:11
+#, python-format
+msgid ""
+"That gives you the full OrderPiqr console at %(app_url)s: your products, the"
+" order queue, picker login QR codes and the scan health page."
+msgstr ""
+
+#: .\templates\shopify\email\welcome.txt:13
+msgid "2. Get your warehouse onto a phone"
+msgstr ""
+
+#: .\templates\shopify\email\welcome.txt:15
+msgid ""
+"In the OrderPiqr panel inside your Shopify admin, open \"Picker access\" and"
+" set a password for the picker account. Your staff log in with that on a "
+"phone, scan the picklist, and scan each product as they pick it."
+msgstr ""
+
+#: .\templates\shopify\email\welcome.txt:17
+msgid ""
+"Stuck on anything, or want us to walk through it with you? Just reply to "
+"this email."
+msgstr ""
+
+#: .\templates\shopify\email\welcome.txt:20
+msgid "The OrderPiqr Team"
 msgstr ""
 
 #~ msgid "ago"

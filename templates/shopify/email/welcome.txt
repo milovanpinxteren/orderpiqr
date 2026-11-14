@@ -1,0 +1,21 @@
+{% load i18n %}{% autoescape off %}{% blocktrans %}Hello,{% endblocktrans %}
+
+{% blocktrans with shop=shop_name %}Thanks for installing OrderPiqr on {{ shop }}. Your orders are syncing already — here is how to reach the rest of it.{% endblocktrans %}
+
+{% blocktrans %}1. Set your admin password{% endblocktrans %}
+
+{% blocktrans with username=admin_username %}Your admin username is {{ username }}. Choose a password here:{% endblocktrans %}
+
+{{ set_password_url }}
+
+{% blocktrans %}That gives you the full OrderPiqr console at {{ app_url }}: your products, the order queue, picker login QR codes and the scan health page.{% endblocktrans %}
+
+{% blocktrans %}2. Get your warehouse onto a phone{% endblocktrans %}
+
+{% blocktrans %}In the OrderPiqr panel inside your Shopify admin, open "Picker access" and set a password for the picker account. Your staff log in with that on a phone, scan the picklist, and scan each product as they pick it.{% endblocktrans %}
+
+{% blocktrans %}Stuck on anything, or want us to walk through it with you? Just reply to this email.{% endblocktrans %}
+
+{% blocktrans %}Best regards,{% endblocktrans %}
+{% blocktrans %}The OrderPiqr Team{% endblocktrans %}
+{% endautoescape %}

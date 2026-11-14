@@ -8,7 +8,7 @@ from django.db.models import Max
 from django.utils import timezone
 
 from orderpiqrApp.models import Order, OrderLine, Product
-from orderpiqrApp.utils.products import resolve_product
+from orderpiqrApp.utils.products import add_alias_codes, resolve_product
 from integrations.models import ExternalOrderLink, ProductLink
 
 logger = logging.getLogger(__name__)
@@ -68,6 +68,35 @@ def resolve_line(connection, line, config):
     return None
 
 
+def _register_alias_codes(product, line, config):
+    """Make the variant's *other* identifiers scannable too.
+
+    A variant usually carries both an EAN and a SKU, but a product gets only
+    the first one in the identifier chain as its primary code. The warehouse
+    label is whichever the merchant happens to print, so a picker scanning the
+    SKU of a barcode-coded product got "unknown product" on a catalog we
+    imported ourselves.
+
+    ``add_alias_codes`` drops the primary code and skips any code another
+    product already owns, so this can never steal a code and send a picker to
+    the wrong item. Only the identifier types the connection actually matches
+    on are used — ``variant_id`` and friends are internal platform ids, not
+    anything printed on a box.
+    """
+    others = [
+        str((line.identifiers or {}).get(id_type) or '').strip()
+        for id_type in config['identifier_chain']
+    ]
+    codes = [code for code in others if code and code != product.code]
+    if not codes:
+        return 0
+    added, conflicts = add_alias_codes(product.customer, product, codes)
+    if conflicts:
+        logger.info("Alias codes skipped for product %s (owned elsewhere): %s",
+                    product.code, conflicts)
+    return added
+
+
 def _auto_create_product(connection, line, config):
     """Create a Product for an unknown external variant (auto_create policy)."""
     code = ''
@@ -91,6 +120,7 @@ def _auto_create_product(connection, line, config):
             active=True,
         )
         logger.info("Auto-created product %s for connection %s", code, connection.pk)
+        _register_alias_codes(product, line, config)
 
     ProductLink.objects.update_or_create(
         connection=connection,
@@ -196,6 +226,38 @@ def import_external_order(connection, ext_order):
     logger.info("Imported order %s (%s) for connection %s",
                 order_code, ext_order.external_order_id, connection.pk)
     return order, True
+
+
+@transaction.atomic
+def cancel_open_orders(connection, reason=''):
+    """Cancel every still-open order this connection imported.
+
+    Called when a connection stops being the live link to the store (plugin
+    disconnected, app uninstalled, store re-paired). Orders a picker already
+    started or finished are left alone — only draft/queued ones go.
+
+    Without this, a re-pair imports the store's open orders again on the new
+    connection while the old copies sit in the queue forever, and because
+    order codes are unique per customer the new copies arrive suffixed
+    ('7898' + '7898-2'). That is exactly how NELA COLLECTIVE ended up with a
+    queue of 49 orders of which 31 were duplicates.
+    """
+    order_ids = list(connection.order_links.values_list('order_id', flat=True))
+    open_orders = Order.objects.filter(
+        order_id__in=order_ids, status__in=['draft', 'queued'])
+    stamp = f"[{timezone.now():%Y-%m-%d %H:%M}] Cancelled: {connection.platform} "
+    stamp += reason or 'connection closed'
+    count = 0
+    for order in open_orders:
+        order.status = 'cancelled'
+        order.queue_position = None
+        order.notes = f"{order.notes}\n{stamp}" if order.notes else stamp
+        order.save(update_fields=['status', 'queue_position', 'notes'])
+        count += 1
+    if count:
+        logger.info("Cancelled %s open orders on connection %s (%s)",
+                    count, connection.pk, reason)
+    return count
 
 
 @transaction.atomic

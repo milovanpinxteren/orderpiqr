@@ -346,6 +346,8 @@ class ShopifyConnector(BaseConnector):
                 'uninstalled_at', 'encrypted_access_token', 'encrypted_refresh_token'])
             self.connection.status = 'disconnected'
             self.connection.save(update_fields=['status'])
+            from integrations.services.intake import cancel_open_orders
+            cancel_open_orders(self.connection, reason='app uninstalled')
             return True
 
         if topic in ('customers/data_request', 'customers/redact'):

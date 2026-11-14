@@ -12,6 +12,7 @@ from integrations.models import Connection
 # this module has historically been its import path.
 from integrations.services.catalog import enqueue_product_sync, sync_products  # noqa: F401
 from integrations_shopify.client import ShopifyClient
+from integrations_shopify.emails import send_welcome_email
 from integrations_shopify.models import ShopifyShop
 from orderpiqrApp.models import Customer, UserProfile
 
@@ -96,16 +97,23 @@ def provision_shop(shop_domain):
     return shop, True
 
 
-def _create_group_user(customer, base, group):
+def _create_group_user(customer, base, group, email=''):
     """Create a user in `group` for `customer` with a unique username derived
-    from `base` and a random password (the merchant sets a real one later)."""
+    from `base` and a random password (the merchant sets a real one later).
+
+    `email` matters more than it looks: a user with no address can never
+    receive a password reset, so a self-install admin whose random password
+    nobody ever saw would be locked out of orderpiqr.nl permanently. It is
+    filled in from the shop's own email as soon as token exchange tells us
+    what that is (see `activate_shop`).
+    """
     username = base
     suffix = 2
     while User.objects.filter(username=username).exists():
         username = f"{base}{suffix}"
         suffix += 1
     user = User.objects.create_user(
-        username=username, password=secrets.token_urlsafe(16))
+        username=username, email=email, password=secrets.token_urlsafe(16))
     user.groups.add(group)
     UserProfile.objects.create(user=user, customer=customer)
     return user
@@ -118,6 +126,28 @@ def _provision_users(customer, store_name):
     picker_group, _ = Group.objects.get_or_create(name='orderpicker')
     _create_group_user(customer, f"{store_name}_admin", admin_group)
     _create_group_user(customer, f"{store_name}_picker", picker_group)
+
+
+def admin_user_for(customer):
+    """The customer's companyadmin account (the oldest, if several)."""
+    return (User.objects
+            .filter(userprofile__customer=customer, groups__name='companyadmin')
+            .order_by('pk')
+            .first())
+
+
+def backfill_user_emails(shop):
+    """Give the auto-provisioned users the shop's email address.
+
+    Only fills blanks: once a merchant has set a real address on an account we
+    never overwrite it, and a shop linked to a pre-existing OrderPiqr account
+    must keep that account's own addresses.
+    """
+    if not shop.shop_email or not shop.connection.auto_provisioned:
+        return 0
+    return (User.objects
+            .filter(userprofile__customer=shop.connection.customer, email='')
+            .update(email=shop.shop_email[:254]))
 
 
 def ensure_picker_user(customer, base_name):
@@ -149,6 +179,11 @@ def activate_shop(shop):
     if connection.status != 'active':
         connection.status = 'active'
         connection.save(update_fields=['status'])
+
+    # Now that we know the shop's email, make the accounts reachable: an
+    # address to reset to, and a mail telling the merchant how.
+    backfill_user_emails(shop)
+    send_welcome_email(shop)
 
     check_subscription(shop, force=True)
 

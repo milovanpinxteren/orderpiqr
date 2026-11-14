@@ -92,6 +92,12 @@ class Command(BaseCommand):
 
             if connector.handle_event(row):
                 row.status = 'processed'
+            elif row.connection.status == 'disconnected':
+                # handle_event has had its say (lifecycle topics are its job),
+                # so anything left here is order or catalog traffic from a
+                # store that is no longer connected. Rows already in the inbox
+                # when the connection closed must not become orders either.
+                row.status = 'skipped'
             else:
                 ext_order = connector.parse_order_event(row)
                 if ext_order is None:
